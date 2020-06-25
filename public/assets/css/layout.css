@@ -1,0 +1,45 @@
+.default-body {
+    background-color: #fff;
+    color: #636b6f;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+    height: 100vh;
+    margin: 0;
+}
+
+.full-height {
+    height: 100vh;
+}
+
+.flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.input {
+    display: flex;
+    justify-content: start;
+    flex-direction: column;
+}
+
+.position-ref {
+    position: relative;
+}
+
+.mt-1 {
+    margin-top: 8px;
+}
+
+.mb-1 {
+    margin-bottom: 8px;
+}
+
+.mr-1 {
+    margin-right: 8px;
+}
+
+.ml-1 {
+    margin-left: 8px;
+}

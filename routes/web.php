@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', 'LoginController@index');
+Route::post('/login/doLogin', 'LoginController@login');
+
+Route::middleware('session')->group(function () {
+    Route::get('/', 'HomeController@index');
+    Route::get('/logout', 'HomeController@logout');
 });
