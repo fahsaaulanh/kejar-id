@@ -21,9 +21,13 @@ Built with ❤️
 
 **Component Directory Structure**  
 Bootstrap CSS Directory in `/public/css/bootstrap.css`
+
 Jquery is also include in `/public/js/jquery.js`
+
 view folder structures  `/resources/views`
+
 controller folder structures `/app/Http/Controllers` there is example e.g `LoginController` and `HomeController`
+
 API service folder structures `/app/Services` there is example e.g `User`
 
 **composer.lock**  
