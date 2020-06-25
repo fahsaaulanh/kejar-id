@@ -19,7 +19,7 @@ Built with ❤️
 
 ### Convention
 
-**Component Directory Structure**  
+**Directory Structure**  
 Bootstrap CSS Directory in `/public/css/bootstrap.css`
 
 Jquery is also include in `/public/js/jquery.js`
