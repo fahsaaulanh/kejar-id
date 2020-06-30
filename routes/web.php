@@ -19,4 +19,19 @@ Route::post('/login/doLogin', 'LoginController@login');
 Route::middleware('session')->group(function () {
     Route::get('/', 'HomeController@index');
     Route::get('/logout', 'HomeController@logout');
+
+    Route::middleware('admin')->group(function() {
+         // Khusus route admin disini
+        Route::get('/admin', 'HomeController@admin');
+    });
+
+    Route::middleware('teacher')->group(function() {
+         // Khusus route teacher disini
+        Route::get('/teacher', 'HomeController@teacher');
+    });
+
+    Route::middleware('student')->group(function() {
+         // Khusus route student disini
+        Route::get('/student', 'HomeController@student');
+    });
 });

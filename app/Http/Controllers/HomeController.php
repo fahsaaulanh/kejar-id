@@ -21,6 +21,18 @@ class HomeController extends Controller
         return view('home/index');
     }
 
+    public function teacher(Request $request) {
+        echo 'Example Teacher';
+    }
+
+    public function admin(Request $request) {
+        echo 'Example Admin';
+    }
+
+    public function student(Request $request) {
+        echo 'Example Student';
+    }
+
     public function logout(Request $request) {
         $userApi = new UserApi();
         $response = $userApi->me();
