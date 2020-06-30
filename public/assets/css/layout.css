@@ -1,3 +1,137 @@
+@font-face {
+    font-family: 'kejar-matrikulasi';
+    src:  url('fonts/kejar-matrikulasi.eot?r4k8l1');
+    src:  url('fonts/kejar-matrikulasi.eot?r4k8l1#iefix') format('embedded-opentype'),
+      url('fonts/kejar-matrikulasi.ttf?r4k8l1') format('truetype'),
+      url('fonts/kejar-matrikulasi.woff?r4k8l1') format('woff'),
+      url('fonts/kejar-matrikulasi.svg?r4k8l1#kejar-matrikulasi') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+  }
+  
+  i, .icomoon-liga {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'kejar-matrikulasi' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    
+    /* Enable Ligatures ================ */
+    letter-spacing: 0;
+    -webkit-font-feature-settings: "liga";
+    -moz-font-feature-settings: "liga=1";
+    -moz-font-feature-settings: "liga";
+    -ms-font-feature-settings: "liga" 1;
+    font-feature-settings: "liga";
+    -webkit-font-variant-ligatures: discretionary-ligatures;
+    font-variant-ligatures: discretionary-ligatures;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .kejar-left:before {
+    content: "\e917";
+    color: #334e68;
+  }
+  .kejar-add:before {
+    content: "\e900";
+    color: #334e68;
+  }
+  .kejar-application:before {
+    content: "\e901";
+    color: #334e68;
+  }
+  .kejar-arrow-left:before {
+    content: "\e902";
+    color: #334e68;
+  }
+  .kejar-arrow-right:before {
+    content: "\e903";
+    color: #334e68;
+  }
+  .kejar-arsip-asesmen:before {
+    content: "\e904";
+    color: #334e68;
+  }
+  .kejar-arsip-asesmen-bold:before {
+    content: "\e905";
+    color: #334e68;
+  }
+  .kejar-belum-mengerjakan:before {
+    content: "\e906";
+    color: #334e68;
+  }
+  .kejar-belum-mengerjakan-small:before {
+    content: "\e907";
+    color: #334e68;
+  }
+  .kejar-close:before {
+    content: "\e908";
+    color: #334e68;
+  }
+  .kejar-dot:before {
+    content: "\e909";
+    color: #334e68;
+  }
+  .kejar-download:before {
+    content: "\e90a";
+    color: #334e68;
+  }
+  .kejar-exit:before {
+    content: "\e90b";
+    color: #334e68;
+  }
+  .kejar-ink:before {
+    content: "\e90c";
+  }
+  .kejar-next:before {
+    content: "\e90d";
+    color: #334e68;
+  }
+  .kejar-open-book:before {
+    content: "\e90e";
+    color: #334e68;
+  }
+  .kejar-right:before {
+    content: "\e90f";
+    color: #334e68;
+  }
+  .kejar-round:before {
+    content: "\e910";
+    color: #334e68;
+  }
+  .kejar-show:before {
+    content: "\e911";
+    color: #334e68;
+  }
+  .kejar-soal-benar:before {
+    content: "\e912";
+    color: #334e68;
+  }
+  .kejar-stage:before {
+    content: "\e913";
+    color: #334e68;
+  }
+  .kejar-sudah-dikerjakan:before {
+    content: "\e914";
+    color: #334e68;
+  }
+  .kejar-sudah-dikerjakan-small:before {
+    content: "\e915";
+    color: #334e68;
+  }
+  .kejar-upload:before {
+    content: "\e916";
+    color: #334e68;
+  }
+  
+
 .default-body {
     background-color: #fff;
     color: #636b6f;
