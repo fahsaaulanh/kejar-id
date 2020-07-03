@@ -1,0 +1,122 @@
+*{
+	font-family: 'Roboto Mono', monospace;
+}
+
+body{
+	background: #F4F8FF;
+}
+
+.bg-dark-custom{
+	height: 40px;
+	background: #202020;
+}
+
+.btn-logout, .btn-logout:hover{
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+	text-decoration: none;
+	color: #fff;
+}
+
+.navbar{
+	padding: 0rem 1rem !important;
+}
+
+.navbar .navbar-brand{
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+	color: #fff !important;
+}
+
+.navbar .navbar-brand{
+	padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+}
+
+.content-header{
+	margin-top: 80px;
+	margin-bottom: 30px;
+}
+
+.content-header .content-title{
+	margin: 0px 30px;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 33px;
+	line-height: 36px;
+	text-align: center;
+	color: #202020;
+}
+
+.content-body{
+	padding: 0px 143px;
+}
+
+.card-deck{
+    justify-content: center;
+}
+
+.card, .card:hover{
+	border: 0;
+    border-radius: 0;
+    text-decoration: none;
+    text-align: center;
+    color: #202020;
+    margin-top: 40px;
+    max-width: 344px !important;
+    min-width: 224px !important;
+}
+
+.card-body{
+	padding: 2rem 1.25rem;
+}
+
+.card-img, .card-img-top{
+	border-radius: 0;
+}
+
+.card-title{
+	font-style: normal;
+	font-weight: bold;
+	font-size: 19px;
+	line-height: 24px;
+}
+
+.card-text{
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 24px;
+}
+
+@media screen and (max-width: 992px){
+	.content-body{
+		padding: 0px 40px;
+	}
+}
+
+@media screen and (max-width: 768px){
+	.content-body{
+		padding: 0px 40px;
+	}
+}
+
+/* @media screen and (min-width: 588px) and (max-width: 841px){
+    .card:nth-child(3){
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media screen and (min-width: 993px) and (max-width: 1017px){
+    .card:nth-child(3){
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+} */
