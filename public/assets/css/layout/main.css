@@ -1,0 +1,38 @@
+*{
+	font-family: 'Roboto Mono', monospace;
+}
+
+body{
+	background: #F4F8FF;
+}
+
+.bg-dark-custom{
+	height: 40px;
+	background: #202020;
+}
+
+.btn-logout, .btn-logout:hover{
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+	text-decoration: none;
+	color: #fff;
+}
+
+.navbar{
+	padding: 0rem 1rem !important;
+}
+
+.navbar .navbar-brand{
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+	color: #fff !important;
+}
+
+.navbar .navbar-brand{
+	padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+}
