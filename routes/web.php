@@ -23,6 +23,13 @@ Route::middleware('session')->group(function () {
     Route::middleware('admin')->group(function() {
          // Khusus route admin disini
         Route::get('/admin', 'HomeController@admin');
+        
+        Route::prefix('{game}/stages')->group(function(){
+            Route::get('/', 'StageController@index');
+
+            Route::post('/upload', 'StageController@upload');
+            Route::patch('/{stageId}/order', 'StageController@order');
+        });
     });
 
     Route::middleware('teacher')->group(function() {
