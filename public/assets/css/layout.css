@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'kejar-matrikulasi';
-    src:  url('../fonts/kejar-matrikulasi.eot?r4k8l1');
-    src:  url('../fonts/kejar-matrikulasi.eot?r4k8l1#iefix') format('embedded-opentype'),
-      url('../fonts/kejar-matrikulasi.ttf?r4k8l1') format('truetype'),
-      url('../fonts/kejar-matrikulasi.woff?r4k8l1') format('woff'),
-      url('../fonts/kejar-matrikulasi.svg?r4k8l1#kejar-matrikulasi') format('svg');
+    src:  url('../font/kejar-matrikulasi.eot?r4k8l1');
+    src:  url('../font/kejar-matrikulasi.eot?r4k8l1#iefix') format('embedded-opentype'),
+      url('../font/kejar-matrikulasi.ttf?r4k8l1') format('truetype'),
+      url('../font/kejar-matrikulasi.woff?r4k8l1') format('woff'),
+      url('../font/kejar-matrikulasi.svg?r4k8l1#kejar-matrikulasi') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
