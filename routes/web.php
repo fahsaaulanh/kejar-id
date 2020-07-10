@@ -23,15 +23,18 @@ Route::middleware('session')->group(function () {
     Route::middleware('admin')->group(function() {
          // Khusus route admin disini
         Route::get('/admin', 'HomeController@admin');
-        Route::prefix('{game}/stages')->group(function(){
-            Route::get('/', 'StageController@index');
-            Route::post('/upload', 'StageController@upload');
-            Route::patch('/{stageId}/order', 'StageController@order');
-            Route::prefix('{stage}')->group(function(){
-                Route::get('/', 'RoundController@index');
-                Route::get('/edit/{id}', 'RoundController@edit');
-                Route::post('/import', 'RoundController@import');
-                Route::post('/order/update', 'RoundController@updateOrder');
+        Route::prefix('/admin')->group(function(){
+            Route::prefix('{game}')->group(function(){
+                Route::get('/', 'Admin\StageController@index');
+    
+                Route::post('/upload', 'Admin\StageController@upload');
+                Route::patch('/{stageId}/order', 'Admin\StageController@order');
+                Route::prefix('{stage}')->group(function(){
+                    Route::get('/', 'RoundController@index');
+                    Route::get('/edit/{id}', 'RoundController@edit');
+                    Route::post('/import', 'RoundController@import');
+                    Route::post('/order/update', 'RoundController@updateOrder');
+                });
             });
         });
     });

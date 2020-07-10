@@ -1,6 +1,6 @@
-@extends('layouts.app')
+@extends('layout.main')
 
-@section('styles')
+@section('css')
 <link rel="stylesheet" href="{{ url('/assets/css/stage.css') }}">
 @endsection
 
@@ -47,7 +47,7 @@
                         <input type="text" class="stage-id" value="{{ $stage['id'] }}">
                     </div>
                     <div class="stage-text w-100">
-                        <a href="#" class="text-link">
+                        <a href="{{ url('admin/' . $game['uri'] . '/' . $stage['id']) }}" class="text-link">
                             <span class="stage-number">Babak </span> : {{ $stage['title'] }}
                         </a>
                     </div>
@@ -71,7 +71,7 @@
 
 @include('modals/_upload_stages')
 
-@section('scripts')
+@push('script')
 <script>
     
     // Ceking Element
@@ -145,7 +145,7 @@
     function orderUpdate(id, order){
         $.ajax({
             type: "POST",
-            url: "{{ url('/OBR/stages/') }}/" + id + "/order",
+            url: "{{ url('admin/'. $game['uri'] . '/stages/') }}/" + id + "/order",
             data: {
                 "_method": "PATCH",
                 "_token": "{{ csrf_token() }}",
@@ -158,4 +158,4 @@
         });
     }
 </script>
-@endsection
+@endpush
