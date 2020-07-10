@@ -1,0 +1,218 @@
+*{
+    font-family: 'Roboto Mono';
+}
+
+/* Content */
+.content{
+    margin: 50px auto;
+}   
+
+/* Top Link */
+.top-link{
+    margin-bottom: 18px;
+    font-size: 15px;
+}
+
+.link-back{
+    font-size: 15px !important;
+    padding: 10px 12px;
+}
+
+.link-back a{
+    color: #334E68;
+    text-decoration: none;
+}
+
+.link-back:hover a{
+    color: #1888FF;
+}
+
+.link-back:hover a i{
+    color: #1888FF;
+}
+
+.btn-status{
+    padding: 10px 12px;
+    border-radius: 0px;
+}
+
+.btn-revise{
+    background: #E9F2FF;
+}
+
+/* Breadcrumb */
+.breadcrumb{
+    font-size: 17px !important;
+}
+
+a.breadcrumb-item{
+    color: #9daebd !important;
+}
+
+.breadcrumb-item.active{
+    color: #202020 !important;
+}
+
+/* Title */
+.text-title{
+    font-weight: bold;
+    font-style: 25px;
+    color: #202020;
+}
+
+/* Copy link ID */
+.copy-link-id{
+    font-size: 15px;
+    cursor: pointer;
+    color: #3167F6;
+    text-decoration: none !important;
+}
+
+.copy-link-id:hover{
+    color: #1888FF;
+}
+
+
+/* Round Detail Group */
+.round-detail-group{
+    margin: 40px 0px;
+}
+
+.round-detail{
+    margin-bottom: 24px;
+    color: #202020;
+}
+
+.round-detail-title{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* Button Modal */
+.btn-modal{
+    background-color: #FFFFFF;
+    border: 2px solid #E9F2FF;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    line-height: 20px;
+    font-size: 17px;
+    border-radius: 0px;
+    text-align: left;
+    color: #3167F6;
+    margin: 8px 0px;
+}
+
+.btn-modal:hover{
+    color: #1888FF;
+}
+
+
+/* Table of Questions */
+.table-questions{
+    margin-top: 8px;
+}
+
+.table-questions table thead th{
+    border: 0;
+    background: #F4F6F9;
+    color: #202020;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.table-questions table tbody{
+    color: #202020;
+}
+
+.table-questions table tbody tr:nth-child(1) td{
+    border-top: 0px !important;
+}
+
+/* Pagination */
+.pagination-detail{
+    font-size: 15px;
+    color: #334E68;
+}
+
+.page-item .page-link{
+    background: #FFFFFF;
+    border: 2px solid #EBF1F6;
+    border-radius: 0px !important;    
+    color: #7C92A7;
+}
+
+.page-item.disabled .page-link{
+    border: 2px solid #EBF1F6;
+}
+
+.page-item.active .page-link{
+    background: #E9F2FF;
+    color: #202020;
+    border: 2px solid #EBF1F6;
+    color: #3167F6;
+    font-weight: bold;
+}
+
+
+/* Upload Question Modal */
+#upload_question .modal-content{
+    border-radius: 0px;
+}
+
+#upload_question .modal-title{
+    font-size: 17px;
+    font-weight: bold;
+    color: #202020;
+}
+
+#upload_question .question_name{
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 15px;
+    line-height: 20px;
+    color: #7C92A7;
+    background: #FFFFFF;
+    margin: 0;
+    border: 2px solid #EBF1F6;
+}
+
+#upload_question .btn-choose-question{
+    color: #3167F6;
+    display: block;
+    font-size: 15px;
+    line-height: 20px;
+    padding: 10px 16px;
+    margin: 0;
+}
+
+#upload_question .text-download{
+    color: #3167F6;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: none !important;
+} 
+
+#upload_question .text-download:hover{
+    color: #1888FF;
+}
+
+#upload_question .btn-secondary{
+    background-color: transparent;
+    border: none;
+    color: #202020;
+    border-radius: 0px;
+    font-size: 15px;
+    line-height: 20px;
+    padding: 10px 12px;
+}
+
+#upload_question .btn-primary{
+    border: none;
+    color: #202020;
+    background: #3167F6;
+    color: #FFFFFF;
+    border-radius: 0px;
+    font-size: 15px;
+    line-height: 20px;
+    padding: 10px 12px;
+}

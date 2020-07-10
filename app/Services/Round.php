@@ -24,9 +24,9 @@ class Round extends Service {
         return $this->showResponse($response);
     }
 
-    public function update($data, $id)
+    public function getDetail($roundId)
     {
-    	$response = $this->patch('/matrikulasi/libraries/rounds/' . $id, $data);
+        $response = $this->get("/matrikulasi/libraries/rounds/$roundId");
         return $this->showResponse($response);
     }
 }
