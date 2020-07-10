@@ -5,18 +5,19 @@
 @endsection
 
 @section('content')
+
 <div class="container-fluid">
     <div class="row justify-content-center my-4">
         <div class="col-md-10 col-lg-6">
             <!-- Link Back -->
             <div class="d-flex align-items-center">
-                <a href="{{ url('/') }}" class="text-link link-back d-flex align-items center">
+                <a href="{{ url('/dashboard') }}" class="text-link link-back d-flex align-items center">
                     <i class="kejar kejar-arrow-left"></i> <span class="ml-2">Kembali</span>
                 </a>
             </div>
             <!-- Breadcrumb -->
             <nav class="breadcrumb bg-transparent p-0">
-                <a class="breadcrumb-item" href="{{ url('/') }}">Beranda</a>
+                <a class="breadcrumb-item" href="{{ url('/dashboard') }}">Beranda</a>
                 <span class="breadcrumb-item active">{{ $game['short'] }}</span>
             </nav>
             <!-- Title -->
@@ -32,7 +33,7 @@
                     @endif
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-md btn-modal btn-block">
+                    <button class="btn btn-md btn-modal btn-block" data-toggle="modal" data-target="#uploadRoundModal">
                         <i class="kejar kejar-upload"></i> Unggah Ronde
                     </button>
                 </div>
@@ -47,7 +48,7 @@
                         <input type="text" class="stage-id" value="{{ $stage['id'] }}">
                     </div>
                     <div class="stage-text w-100">
-                        <a href="{{ url('admin/' . $game['uri'] . '/' . $stage['id']) }}" class="text-link">
+                        <a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id']) . '/rounds' }}" class="text-link">
                             <span class="stage-number">Babak </span> : {{ $stage['title'] }}
                         </a>
                     </div>
@@ -73,7 +74,7 @@
 
 @push('script')
 <script>
-    
+
     // Ceking Element
     checkElements();
     function checkElements(){
@@ -132,7 +133,7 @@
         var mainElId = $(mainEl).find('input').val();
         var minorElId = $(minorEl).find('input').val();
 
-        $.each(elements, function (key, value) { 
+        $.each(elements, function (key, value) {
              if ($(value).find('input').val() == mainElId){
                 orderUpdate(mainElId, (key + 1));
              } else if ($(value).find('input').val() == minorElId){

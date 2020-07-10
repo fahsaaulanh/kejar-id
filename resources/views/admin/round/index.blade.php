@@ -7,7 +7,7 @@
 @section('content')
 <div class="row">
     <div class="col-12">
-        <form method="POST" action="{{ url($game . '/stages/' . $stages['id'] . '/import') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/upload') }}" enctype="multipart/form-data">
             @csrf
             <div class="modal fade" id="uploadRoundModal" tabindex="-1" role="dialog" aria-labelledby="uploadRoundModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -55,21 +55,21 @@
     <div class="col-12">
         <div class="content">
             <div class="content-header">
-                <a href="{{ url($game . '/stages') }}" class="btn-back">
+                <a href="{{ url('admin/' . $game['uri'] . '/stages') }}" class="btn-back">
                     <i class="kejar-arrow-left"></i>
                         Kembali
                 </a>
                 <ul class="breadcrumb-custom">
                     <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url($game . '/stages') }}">OBR</a></li>
-                    <li class="breadcrumb-item active"><a href="{{ url($game . '/stages/' . $stages['id']) }}">Babak 1</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('admin/' . $game['uri'] . '/stages') }}">OBR</a></li>
+                    <li class="breadcrumb-item active"><a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/') }}">Babak 1</a></li>
                 </ul>
-                <h2 class="title-round">{{ $stages['title'] }}</h2>
-                <button class="btn-round-id" data-id="{{ $stages['id'] }}" type="button">Salid ID Babak</button>
+                <h2 class="title-round">{{ $stage['title'] }}</h2>
+                <button class="btn-round-id" data-id="{{ $stage['id'] }}" type="button">Salid ID Babak</button>
             </div>
             <div class="content-body">
                 <h5 class="title-description">Deskripsi Babak</h5>
-                <p class="description">{{ $stages['description'] }}</p>
+                <p class="description">{{ $stage['description'] }}</p>
                 <div class="btn-group-action row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12 mar-bot">
                         <button type="button" class="btn-upload btn-block" data-toggle="modal" data-target="#uploadRoundModal">
@@ -78,7 +78,7 @@
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                        <button type="button" class="btn-upload btn-block">
+                        <button type="button" class="btn-upload btn-block" data-toggle="modal" data-target="#upload_question">
                             <i class="kejar-download"></i>
                                 Unggah Soal
                         </button>
@@ -92,7 +92,7 @@
                             <button class="btn-clipboard" type="button" data-id="{{ $round['id'] }}">
                                 <i class="kejar-ink"></i>
                             </button>
-                            <a href="#" class="round-list"><span>Ronde {{ $loop->iteration }}</span>: {{ $round['title'] }}</a>
+                            <a href="{{ url()->current() . '/' . $round['id'] . '/questions' }}" class="round-list"><span>Ronde {{ $loop->iteration }}</span>: {{ $round['title'] }}</a>
                         </div>
                         <div class="btn-group-sort">
                             @if($round['status'] == 'PUBLISHED')
@@ -126,6 +126,8 @@
 </div>
 @endsection
 
+@include('modals/_upload_question')
+
 @push('script')
 <script>
     $(document).on('click', '.btn-round-id, .btn-clipboard', function(){
@@ -155,7 +157,7 @@
         buttonSortCheck();
         $.ajax({
             type: "POST",
-            url: "{{ url($game . '/stages/' . $stages['id'] . '/order/update') }}",
+            url: "{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/order/update') }}",
             data: {
                 '_token' : '{{ csrf_token() }}',
                 'this_id' : this_id,
@@ -181,7 +183,7 @@
         buttonSortCheck();
         $.ajax({
             type: "POST",
-            url: "{{ url($game . '/stages/' . $stages['id'] . '/order/update') }}",
+            url: "{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/order/update') }}",
             data: {
                 '_token' : '{{ csrf_token() }}',
                 'this_id' : this_id,

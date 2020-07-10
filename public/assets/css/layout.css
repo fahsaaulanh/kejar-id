@@ -9,7 +9,7 @@
     font-style: normal;
     font-display: block;
   }
-  
+
   i, .icomoon-liga {
     /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'kejar-matrikulasi' !important;
@@ -19,7 +19,7 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-    
+
     /* Enable Ligatures ================ */
     letter-spacing: 0;
     -webkit-font-feature-settings: "liga";
@@ -29,12 +29,12 @@
     font-feature-settings: "liga";
     -webkit-font-variant-ligatures: discretionary-ligatures;
     font-variant-ligatures: discretionary-ligatures;
-  
+
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
+
   .kejar-left:before {
     content: "\e917";
     color: #334e68;
@@ -130,7 +130,7 @@
     content: "\e916";
     color: #334e68;
   }
-  
+
 
 .default-body {
     background-color: #fff;

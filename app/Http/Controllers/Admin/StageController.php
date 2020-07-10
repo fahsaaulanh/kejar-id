@@ -55,10 +55,10 @@ class StageController extends Controller
 
     public function upload(Request $request, $game)
     {
-        
+
         $this->validate($request, [
             'stage_file' => 'required|file'
-        ]); 
+        ]);
 
         if ($request->file('stage_file')->getClientOriginalExtension() != 'xlsx') {
             return redirect()->back();
@@ -108,7 +108,7 @@ class StageController extends Controller
 
         $stage = $stage->reorder($game, $stageId, $payload);
 
-        
+
         return response()->json($stage);
     }
 

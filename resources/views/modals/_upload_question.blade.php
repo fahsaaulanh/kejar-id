@@ -9,7 +9,7 @@
                     </button>
             </div>
             <div class="modal-body">
-                <form action="{{ url($game['uri'] . '/stages/' . $stageId . '/rounds/' . $roundId .'/upload') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center" id="form-upload-questions">
+                <form action="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/upload/questions') }}" method="POST" enctype="multipart/form-data" class="d-flex align-items-center" id="form-upload-questions">
                     @csrf
                     <div class="col-8 p-0">
                         <input type="text" name="question_name" id="question_name" class="question_name" value="Pilih file" disabled>
