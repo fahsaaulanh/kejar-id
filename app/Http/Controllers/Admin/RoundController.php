@@ -10,11 +10,11 @@ use App\Http\Controllers\Controller;
 
 class RoundController extends Controller
 {
-    public function index($game, $stage)
+    public function index($game, $stageId)
     {
         $stagesApi = new StageApi();
-        $response = $stagesApi->show($game, $stage);
-        $stages = $response['data'];
+        $response = $stagesApi->show($game, $stageId);
+        $stage = $response['data'];
 
         $roundApi = new RoundApi();
         $response = $roundApi->index();
@@ -31,10 +31,22 @@ class RoundController extends Controller
             $rounds = '';
         }
 
-        return view('admin/round/index', compact('game', 'stages', 'rounds'));
+        if ($game == "OBR") { $game = ['short' => 'OBR','title' => 'Operasi Bilangan Rill','uri' => 'OBR']; } else if($game == "VOCABULARY"){ $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'VOCABULARY']; } else if($game == "KATABAKU"){ $game = ['short' => 'Kata Baku','title' => 'KATA BAKU','uri' => 'KATABAKU']; } else{ abort(404); }
+
+        return view('admin/round/index', compact('game', 'stage', 'rounds'));
     }
 
-    public function import(Request $req)
+    public function updateStatus(Request $request, $game, $stageId, $roundId)
+    {
+        $roundApi = new RoundApi();
+        $round = $roundApi->getDetail($roundId)['data'];
+        $round['status'] = $request->status;
+        $roundApi->update($round, $roundId);
+
+        return response()->json(['status' => $request->status]);
+    }
+
+    public function uploadFile(Request $req)
     {
         $file = $req->file('excel_file');
         $theArray = Excel::toArray([], $file);
@@ -80,10 +92,10 @@ class RoundController extends Controller
         }
     }
 
-    public function edit($id)
+    public function edit($stageId)
     {
         $roundApi = new RoundApi();
-        $round = $roundApi->edit($id);
+        $round = $roundApi->getDetail($stageId);
 
         return response()->json($round);
     }
@@ -95,8 +107,8 @@ class RoundController extends Controller
 
         $roundApi = new RoundApi();
 
-        $this_data = $roundApi->edit($this_id);
-        $to_data = $roundApi->edit($to_id);
+        $this_data = $roundApi->getDetail($this_id);
+        $to_data = $roundApi->getDetail($to_id);
 
         $this_data_change = [
             'id' => $this_data['data']['id'],
@@ -127,5 +139,39 @@ class RoundController extends Controller
         $roundApi->update($to_data_change, $to_id);
 
         echo "success";
+    }
+
+    public function updateTitle(Request $request, $roundId)
+    {
+        $roundApi = new RoundApi;
+
+        $payload = [
+            "title" => $request->title
+        ];
+
+        $response = $roundApi->update($payload, $roundId);
+
+        if($response['error']) {
+            return redirect('/logout');
+        }
+
+        return redirect('/dashboard');
+    }
+
+    public function updateDirection(Request $request, $roundId)
+    {
+        $roundApi = new RoundApi;
+
+        $payload = [
+            "direction" => $request->direction
+        ];
+
+        $response = $roundApi->update($payload, $roundId);
+
+        if($response['error']) {
+            return redirect('/logout');
+        }
+
+        return redirect('/dashboard');
     }
 }

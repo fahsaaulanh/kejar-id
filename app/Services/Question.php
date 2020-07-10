@@ -16,6 +16,5 @@ class Question extends Service {
         $response = $this->post("/libraries/questions", $payload);
         return $this->showResponse($response);
     }
-    
 
 }

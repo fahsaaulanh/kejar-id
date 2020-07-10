@@ -61,7 +61,7 @@
                     @endif
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-md btn-modal btn-block">
+                    <button class="btn btn-md btn-modal btn-block" data-toggle="modal" data-target="#createQuestionModal">
                         <i class="kejar kejar-add"></i> Input Soal
                     </button>
                 </div>
@@ -118,9 +118,10 @@
     </div>
 </div>
 
-@include('modals._upload_question')
-
 @endsection
+
+@include('modals._upload_question')
+@include('modals._createQuestion')
 
 @section('scripts')
 <script>
@@ -149,7 +150,7 @@
        var statusUpdate = status == 'PUBLISHED' ? 'NOT_PUBLISHED' : 'PUBLISHED';
        $.ajax({
            type: "POST",
-           url: "{{ url($game['uri'] . '/'. $stageId .'/'. $roundId .'/status') }}",
+           url: "{{ url('admin/' . $game['uri'] . '/stages/'. $stageId .'/rounds/'. $roundId .'/status') }}",
            data: {
                "_token": "{{ csrf_token() }}",
                "_method": "PATCH",

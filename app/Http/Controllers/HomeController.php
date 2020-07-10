@@ -9,6 +9,14 @@ use App\Services\User as UserApi;
 class HomeController extends Controller
 {
     public function index(Request $request) {
+        $data = [
+            'message' => '',
+        ];
+
+        return view('login/index', $data);
+    }
+
+    public function dashboard(Request $request) {
         $userApi = new UserApi();
         $response = $userApi->me();
 
@@ -18,7 +26,7 @@ class HomeController extends Controller
 
         session(['user' => $response['data']]);
 
-        return view('home/index');
+        return view('home/dashboard', $response['data']);
     }
 
     public function teacher(Request $request) {

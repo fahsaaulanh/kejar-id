@@ -11,7 +11,7 @@ class LoginController extends Controller
 {
     public function index(Request $request) {
         if ($request->session()->has('token')) {
-            return redirect('/');
+            return redirect('/dashboard');
         }
 
         $data = [
@@ -27,7 +27,7 @@ class LoginController extends Controller
         $response = $userApi->login($data['username'], $data['password']);
         if (!$response['error']) {
             session(['token' => $response['data']['token']]);
-            return redirect('/');
+            return redirect('/dashboard');
         }
 
         $request->session()->flash('message', $response['message']);
