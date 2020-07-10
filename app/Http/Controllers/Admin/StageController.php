@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Imports\StagesImport;
 use Illuminate\Http\Request;
 use App\Services\Stage as StageApi;
@@ -49,7 +50,7 @@ class StageController extends Controller
         // Sorting Stages
         $stages = $this->aasort($stages, 'order');
 
-        return view('stage.index', compact('stages', 'game'));
+        return view('admin.stage.index', compact('stages', 'game'));
     }
 
     public function upload(Request $request, $game)

@@ -4,6 +4,10 @@
     font-family: 'Roboto Mono';
 }
 
+body{
+    background-color: #FFFFFF;
+}
+
 /* Link */
 
 .text-link{
