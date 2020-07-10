@@ -26,7 +26,7 @@ Route::middleware('session')->group(function () {
         Route::prefix('/admin')->group(function(){
             Route::prefix('{game}')->group(function(){
                 Route::get('/', 'Admin\StageController@index');
-    
+
                 Route::post('/upload', 'Admin\StageController@upload');
                 Route::patch('/{stageId}/order', 'Admin\StageController@order');
                 Route::prefix('{stage}')->group(function(){
@@ -34,6 +34,8 @@ Route::middleware('session')->group(function () {
                     Route::get('/edit/{id}', 'RoundController@edit');
                     Route::post('/import', 'RoundController@import');
                     Route::post('/order/update', 'RoundController@updateOrder');
+                    Route::patch('/status', 'Round\RoundController@updateStatus');
+                    Route::post('/upload', 'Round\RoundController@uploadFile');
                 });
             });
         });

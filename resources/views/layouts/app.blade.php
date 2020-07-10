@@ -10,7 +10,7 @@
         <link href="{{ url('/assets/css/bootstrap.css') }}" rel="stylesheet">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-  
+
         <!-- Custom -->
         @yield('styles')
     </head>
@@ -32,4 +32,4 @@
     <script src="{{ url('assets/js/jquery.js') }}"></script>
     <script src="{{ url('assets/js/bootstrap.js') }}"></script>
     @yield('scripts')
-    </html>
+</html>

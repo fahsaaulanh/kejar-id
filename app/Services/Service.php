@@ -47,6 +47,7 @@ class Service {
             'status' => $response->status(),
             'error' => false,
             'data' => $body['data'] ? $body['data'] : null,
+            'meta' => $body['meta'] ?? null,
         ];
     }
 }
