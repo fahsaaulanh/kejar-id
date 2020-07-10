@@ -1,13 +1,13 @@
-@extends('../layout/main')
+@extends('../../layout/main')
 
 @section('css')
-<link href="{{ asset('/assets/css/round/style.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/css/admin/round/style.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
 <div class="row">
     <div class="col-12">
-        <form method="POST" action="{{ url('/round/import') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ url($game . '/stages/' . $stages['id'] . '/import') }}" enctype="multipart/form-data">
             @csrf
             <div class="modal fade" id="uploadRoundModal" tabindex="-1" role="dialog" aria-labelledby="uploadRoundModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -155,7 +155,7 @@
         buttonSortCheck();
         $.ajax({
             type: "POST",
-            url: "{{ url('/round/order/update') }}",
+            url: "{{ url($game . '/stages/' . $stages['id'] . '/order/update') }}",
             data: {
                 '_token' : '{{ csrf_token() }}',
                 'this_id' : this_id,
@@ -181,7 +181,7 @@
         buttonSortCheck();
         $.ajax({
             type: "POST",
-            url: "{{ url('/round/order/update') }}",
+            url: "{{ url($game . '/stages/' . $stages['id'] . '/order/update') }}",
             data: {
                 '_token' : '{{ csrf_token() }}',
                 'this_id' : this_id,

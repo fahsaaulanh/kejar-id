@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Services\Stage as StageApi;
 use App\Services\Round as RoundApi;
-use App\Imports\RoundImport;
-use Rap2hpoutre\FastExcel\FastExcel;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
 
 class RoundController extends Controller
 {
@@ -32,9 +31,9 @@ class RoundController extends Controller
             $rounds = '';
         }
 
-        return view('round/index', compact('game', 'stages', 'rounds'));
+        return view('admin/round/index', compact('game', 'stages', 'rounds'));
     }
-    
+
     public function import(Request $req)
     {
         $file = $req->file('excel_file');
@@ -57,7 +56,7 @@ class RoundController extends Controller
         }
 
         try{
-            for ($i = 4; $i < $total_array; $i++) { 
+            for ($i = 4; $i < $total_array; $i++) {
                 $lastOrder += 1;
                 $store = new RoundApi;
                 $data = [
@@ -70,7 +69,7 @@ class RoundController extends Controller
                     'total_question' => $theArray[1][$i][3],
                     'question_timespan' => $theArray[1][$i][4],
                     'order' => $lastOrder,
-                    'status' => $theArray[1][$i][8]
+                    'status' => 'NOT_PUBLISHED'
                 ];
                 $store = $store->store($data);
             }
