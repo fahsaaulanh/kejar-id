@@ -55,12 +55,14 @@
     <div class="col-12">
         <div class="content">
             <div class="content-header">
-                <a href="{{ url('admin/' . $game['uri'] . '/stages') }}" class="btn-back">
-                    <i class="kejar-arrow-left"></i>
-                        Kembali
+                <a href="{{ url('admin/' . $game['uri'] . '/stages') }}" class="btn-back row align-items-center">
+                    <div class="row  align-items-center">
+                        <i class="kejar-arrow-left"></i>
+                         <p style="margin: 0 0 0 0">Kembali</p>
+                        </div>
                 </a>
                 <ul class="breadcrumb-custom">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Beranda</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Beranda</a></li>
                     <li class="breadcrumb-item"><a href="{{ url('admin/' . $game['uri'] . '/stages') }}">OBR</a></li>
                     <li class="breadcrumb-item active"><a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/') }}">Babak 1</a></li>
                 </ul>

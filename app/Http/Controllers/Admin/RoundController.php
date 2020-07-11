@@ -51,7 +51,7 @@ class RoundController extends Controller
     {
         $file = $req->file('excel_file');
         $theArray = Excel::toArray([], $file);
-        $total_array = count($theArray[1]);
+        $total_array = count($theArray[0]);
         $takeLastOrder = new RoundApi;
         $response = $takeLastOrder->index();
         $rounds = $response['data'];
@@ -73,14 +73,14 @@ class RoundController extends Controller
                 $lastOrder += 1;
                 $store = new RoundApi;
                 $data = [
-                    'id' => $theArray[1][$i][1],
-                    'stage_id' => $theArray[1][$i][0],
-                    'title' => $theArray[1][$i][2],
-                    'description' => $theArray[1][$i][5],
-                    'direction' => $theArray[1][$i][7],
-                    'material' => $theArray[1][$i][6],
-                    'total_question' => $theArray[1][$i][3],
-                    'question_timespan' => $theArray[1][$i][4],
+                    'id' => $theArray[0][$i][1],
+                    'stage_id' => $theArray[0][$i][0],
+                    'title' => $theArray[0][$i][2],
+                    'description' => $theArray[0][$i][5],
+                    'direction' => $theArray[0][$i][7],
+                    'material' => $theArray[0][$i][6],
+                    'total_question' => $theArray[0][$i][3],
+                    'question_timespan' => $theArray[0][$i][4],
                     'order' => $lastOrder,
                     'status' => 'NOT_PUBLISHED'
                 ];
