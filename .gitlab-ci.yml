@@ -62,3 +62,24 @@ staging:deploy:
       when: manual
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: on_success
+
+staging:process:
+  image: registry.gitlab.com/idsdeveloper/kejar/docker:2.0
+  stage: staging
+  when: manual
+  variables:
+    APP_ENV: staging
+  script:
+    - cp .env.example .env
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$STAGING_PRIVATE_KEY")
+    - ssh -fNL 5432:127.0.0.1:5432 deployer@165.22.58.49 -o StrictHostKeyChecking=no
+    - composer install
+  cache:
+    key: composer
+    paths:
+      - vendor/
+    policy: pull
+  only:
+    - master
+    - /^staging-.*$/
