@@ -1,0 +1,141 @@
+*{
+    font-family: 'Roboto Mono';
+}
+
+/* Content */
+.content{
+    margin: 50px auto;
+}   
+
+/* Top Link */
+.top-link{
+    margin-bottom: 18px;
+    font-size: 15px;
+}
+
+.link-back{
+    font-size: 15px !important;
+    padding: 10px 12px;
+}
+
+.link-back a{
+    color: #334E68;
+    text-decoration: none;
+}
+
+.link-back:hover a{
+    color: #1888FF;
+}
+
+.link-back:hover a i{
+    color: #1888FF;
+}
+
+/* Breadcrumb */
+.breadcrumb{
+    font-size: 17px !important;
+    margin-bottom: 0px !important;   
+}
+
+a.breadcrumb-item{
+    color: #9daebd !important;
+}
+
+.breadcrumb-item.active{
+    color: #202020 !important;
+}
+
+/* Title */
+.text-title{
+    font-weight: bold;
+    font-size: 33px;
+    color: #202020;
+    margin-bottom: 20px;
+}
+
+
+/* Stage Group */
+
+.stages-group{
+    margin-top: 40px;
+}
+
+.stage-item{
+    display: flex;
+    align-items: flex-start;
+    box-sizing: border-box;
+    justify-content: left;
+    background-color: #F4F6F9;
+    padding: 14px 16px;
+    margin: 8px 0px;
+}
+
+.stage-icon{
+    text-align: left;
+    box-sizing: border-box;
+    margin: auto 10px;
+    padding: 0;
+    margin-left: 0px;
+}
+
+.stage-icon i{
+    font-size: 20px !important;
+    vertical-align: middle;
+    display: table-cell;
+    cursor: pointer;
+}
+
+.kejar-sudah-dikerjakan:before{
+    color: #4DC978;
+}
+
+.stage-item:hover .kejar-right:before{
+    color: #7233DA !important;
+}
+
+.stage-item .stage-text{
+    font-size: 17px;
+    column-width: auto;
+    width: 90% !important;
+    overflow: hidden !important;
+    white-space: break-word;
+    text-overflow: ellipsis !important;
+}
+
+.stage-item .stage-text a{
+    color: #202020;
+    text-decoration: none;
+}
+
+.stage-item .stage-text:hover a{
+    text-decoration: none !important;
+    color: #7233DA !important;
+}
+
+.stage-item .stage-status-icon{
+    box-sizing: border-box;
+    display: flex !important;
+    position: absolute;
+    right: 35px;
+    padding: 4px;
+}
+
+.stage-item:hover{
+    background-color: #E9F2FF;
+}
+
+.stage-number{
+    float: left;
+    margin-right: 8px;
+}
+
+.text-wrap{
+    overflow: hidden;
+    float: left;
+}
+
+@media (max-width: 767.98px) {  
+    .stage-icon{
+        display: none !important;
+    }
+ }
