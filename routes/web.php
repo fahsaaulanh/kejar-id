@@ -57,5 +57,10 @@ Route::middleware('session')->group(function () {
     Route::middleware('student')->group(function() {
          // Khusus route student disini
         Route::get('/student', 'HomeController@student');
+
+        Route::prefix('student')->group(function(){
+
+            Route::get('/{game}/stages', 'Student\GameController@index');
+        });
     });
 });
