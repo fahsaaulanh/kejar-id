@@ -37,7 +37,7 @@
                                 <i class="kejar kejar-right"></i>
                             </div>
                             <div class="stage-text w-100">
-                                <a href="{{ url('/student/' . $game['uri'] . '/' . $stage['id']) }}" class="text-link">
+                                <a href="{{ url('/student/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}" class="text-link">
                                     <span class="stage-number">Babak {{ ++$key }} : </span><span class="text-wrap">{{ $stage['title'] }}</span>
                                 </a>
                             </div>
