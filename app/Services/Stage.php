@@ -18,7 +18,7 @@ class Stage extends Service {
         return $this->showResponse($response);
     }
 
-    public function show($game, $stageId)
+    public function getDetail($game, $stageId)
     {
         $response = $this->get("/matrikulasi/games/$game/stages/$stageId");
         return $this->showResponse($response);

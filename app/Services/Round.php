@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class Round extends Service {
 
-    public function index()
+    public function index($filter)
     {
-        $response = $this->get('/matrikulasi/libraries/rounds');
+        $response = $this->get("/matrikulasi/libraries/rounds". $filter);
         return $this->showResponse($response);
     }
 

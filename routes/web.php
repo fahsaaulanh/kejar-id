@@ -60,7 +60,16 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('student')->group(function(){
 
-            Route::get('/{game}/stages', 'Student\GameController@index');
+            Route::prefix('/{game}/stages')->group(function(){
+
+                Route::get('/', 'Student\GameController@index');
+
+                Route::prefix('/{stageId}/rounds')->group(function(){
+
+                    Route::get('/', 'Student\RoundController@index');
+                });
+            });
         });
+
     });
 });

@@ -23,7 +23,7 @@ class QuestionController extends Controller
         }
 
         $stageApi = new StageApi();
-        $stage = $stageApi->show($game, $stageId)['data'] ?? null;
+        $stage = $stageApi->getDetail($game, $stageId)['data'] ?? null;
 
         $roundQuestionApi = new RoundQuestion();
         $roundQuestions = $roundQuestionApi->getAll($roundId, $request->page ?? 1);

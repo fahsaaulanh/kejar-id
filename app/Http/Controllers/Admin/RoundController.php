@@ -12,12 +12,13 @@ class RoundController extends Controller
 {
     public function index($game, $stageId)
     {
-        $stagesApi = new StageApi();
-        $response = $stagesApi->show($game, $stageId);
+        $stageApi = new StageApi();
+        $response = $stageApi->getDetail($game, $stageId);
         $stage = $response['data'];
 
         $roundApi = new RoundApi();
-        $response = $roundApi->index();
+        $filter = `?filter[stage_id]=$stageId`;
+        $response = $roundApi->index($filter);
         $rounds = $response['data'];
 
         if($rounds != ''){
