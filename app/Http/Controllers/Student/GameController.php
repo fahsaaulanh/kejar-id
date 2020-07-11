@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Services\Stage as StageApi;
-use App\Services\Task as TaskApi;
-use Illuminate\Http\Request;
+
+// use App\Services\Task as TaskApi;
 
 class GameController extends Controller
 {
     public function index($game)
     {
-        $stageApi = new StageApi();
+        $stageApi = new StageApi;
         $stages = $stageApi->getAll($game)['data'] ?? [];
 
         $modStages = [];
@@ -22,17 +22,15 @@ class GameController extends Controller
 
         $stages = $modStages;
 
-        $taskApi = new TaskApi();
-
-        if ($game == 'OBR') {
+        if ($game === 'OBR') {
             $game = [];
             $game['uri'] = 'OBR';
             $game['title'] = 'Operasi Bilangan Rill';
-        } else if($game == 'VOCABULARY'){
+        } elseif ($game === 'VOCABULARY') {
             $game = [];
             $game['uri'] = 'VOCABULARY';
             $game['title'] = 'Vocabulary';
-        } else if($game == 'KATABAKU'){
+        } elseif ($game === 'KATABAKU') {
             $game = [];
             $game['uri'] = 'KATABAKU';
             $game['title'] = 'Kata Baku';

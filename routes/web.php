@@ -21,18 +21,18 @@ Route::middleware('session')->group(function () {
     Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/logout', 'HomeController@logout');
 
-    Route::middleware('admin')->group(function() {
+    Route::middleware('admin')->group(function () {
 
         Route::get('/admin', 'HomeController@admin');
 
-        Route::prefix('/admin')->group(function(){
+        Route::prefix('/admin')->group(function () {
 
-            Route::prefix('{game}/stages')->group(function(){
+            Route::prefix('{game}/stages')->group(function () {
                 Route::get('/', 'Admin\StageController@index');
                 Route::post('/upload', 'Admin\StageController@upload');
                 Route::patch('/{stageId}/order', 'Admin\StageController@order');
 
-                Route::prefix('{stageId}/rounds')->group(function(){
+                Route::prefix('{stageId}/rounds')->group(function () {
                     Route::get('/', 'Admin\RoundController@index');
                     Route::get('/edit/{roundId}', 'Admin\RoundController@edit');
                     Route::post('/order/update', 'Admin\RoundController@updateOrder');
@@ -40,7 +40,7 @@ Route::middleware('session')->group(function () {
                     Route::post('/upload', 'Admin\RoundController@uploadFile');
                     Route::post('/upload/questions', 'Admin\QuestionController@uploadFile');
 
-                    Route::prefix('{roundId}/questions')->group(function(){
+                    Route::prefix('{roundId}/questions')->group(function () {
                         Route::get('/', 'Admin\QuestionController@index');
                         Route::post('/', 'Admin\QuestionController@storeQuestion');
                     });
@@ -49,27 +49,26 @@ Route::middleware('session')->group(function () {
         });
     });
 
-    Route::middleware('teacher')->group(function() {
+    Route::middleware('teacher')->group(function () {
          // Khusus route teacher disini
         Route::get('/teacher', 'HomeController@teacher');
     });
 
-    Route::middleware('student')->group(function() {
+    Route::middleware('student')->group(function () {
          // Khusus route student disini
         Route::get('/student', 'HomeController@student');
 
-        Route::prefix('student')->group(function(){
+        Route::prefix('student')->group(function () {
 
-            Route::prefix('/{game}/stages')->group(function(){
+            Route::prefix('/{game}/stages')->group(function () {
 
                 Route::get('/', 'Student\GameController@index');
 
-                Route::prefix('/{stageId}/rounds')->group(function(){
+                Route::prefix('/{stageId}/rounds')->group(function () {
 
                     Route::get('/', 'Student\RoundController@index');
                 });
             });
         });
-
     });
 });

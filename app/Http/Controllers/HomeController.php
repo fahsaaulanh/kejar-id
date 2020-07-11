@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 // User Service
-use Illuminate\Http\Request;
 use App\Services\User as UserApi;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index(Request $request) {
+    public function index()
+    {
         $data = [
             'message' => '',
         ];
@@ -16,11 +17,12 @@ class HomeController extends Controller
         return view('login/index', $data);
     }
 
-    public function dashboard(Request $request) {
-        $userApi = new UserApi();
+    public function dashboard()
+    {
+        $userApi = new UserApi;
         $response = $userApi->me();
 
-        if($response['error']) {
+        if ($response['error']) {
             return redirect('/login');
         }
 
@@ -29,23 +31,27 @@ class HomeController extends Controller
         return view('home/dashboard', $response['data']);
     }
 
-    public function teacher(Request $request) {
+    public function teacher()
+    {
         echo 'Example Teacher';
     }
 
-    public function admin(Request $request) {
+    public function admin()
+    {
         echo 'Example Admin';
     }
 
-    public function student(Request $request) {
+    public function student()
+    {
         echo 'Example Student';
     }
 
-    public function logout(Request $request) {
-        $userApi = new UserApi();
+    public function logout(Request $request)
+    {
+        $userApi = new UserApi;
         $response = $userApi->me();
 
-        if(!$response['error']) {
+        if (!$response['error']) {
             $request->session()->flush();
         }
 
