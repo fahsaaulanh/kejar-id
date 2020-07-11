@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Imports\StagesImport;
-use Illuminate\Http\Request;
 use App\Services\Stage as StageApi;
-use Excel;
 use Exception;
-use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StageController extends Controller
 {
@@ -17,31 +15,29 @@ class StageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $game)
+    public function index($game)
     {
-        $stage = new StageApi();
+        $stage = new StageApi;
 
-        if ($game == "OBR") {
+        if ($game === 'OBR') {
             $game = [
                 'short' => 'OBR',
                 'title' => 'Operasi Bilangan Rill',
-                'uri' => 'OBR'
+                'uri' => 'OBR',
             ];
-
-        } else if($game == "VOCABULARY"){
+        } elseif ($game === 'VOCABULARY') {
             $game = [
                 'short' => 'Vocabulary',
                 'title' => 'VOCABULARY',
-                'uri' => 'VOCABULARY'
+                'uri' => 'VOCABULARY',
             ];
-
-        } else if($game == "KATABAKU"){
+        } elseif ($game === 'KATABAKU') {
             $game = [
                 'short' => 'Kata Baku',
                 'title' => 'KATA BAKU',
-                'uri' => 'KATABAKU'
+                'uri' => 'KATABAKU',
             ];
-        } else{
+        } else {
             abort(404);
         }
 
@@ -57,10 +53,10 @@ class StageController extends Controller
     {
 
         $this->validate($request, [
-            'stage_file' => 'required|file'
+            'stage_file' => 'required|file',
         ]);
 
-        if ($request->file('stage_file')->getClientOriginalExtension() != 'xlsx') {
+        if ($request->file('stage_file')->getClientOriginalExtension() !== 'xlsx') {
             return redirect()->back();
         }
 
@@ -70,17 +66,17 @@ class StageController extends Controller
             $data = Excel::toArray([], $file);
 
             for ($i=4; $i < count($data[0]); $i++) {
-                $stage = new StageApi();
+                $stage = new StageApi;
 
                 $stages = $stage->getAll($game)['data'];
-                $stagesSum = $stages == null ? 0 : count($stages);
+                $stagesSum = $stages === null ? 0 : count($stages);
 
                 $collection = [
                     // 'number' => $data[0][$i][0],
                     'title' => $data[0][$i][1],
                     'game' => $data[0][0][1],
                     'description' => $data[0][$i][2],
-                    'order' => $stagesSum + 1
+                    'order' => $stagesSum + 1,
                     // 'note' => $data[0][$i][3],
                 ];
 
@@ -95,9 +91,9 @@ class StageController extends Controller
 
     public function order($game, $stageId, Request $request)
     {
-        $stage = new StageApi();
+        $stage = new StageApi;
 
-        $stageDetail = $stage->show($game, $stageId)['data'];
+        $stageDetail = $stage->getDetail($game, $stageId)['data'];
 
         $payload = [
             'title' => $stageDetail['title'],
@@ -108,30 +104,29 @@ class StageController extends Controller
 
         $stage = $stage->reorder($game, $stageId, $payload);
 
-
         return response()->json($stage);
     }
 
-    private function aasort($array, $key) {
-        if($array != null){
-            $sorter=array();
-            $ret=array();
+    private function aasort($array, $key)
+    {
+        if ($array !== null) {
+            $sorter=[];
+            $ret=[];
             reset($array);
             foreach ($array as $ii => $va) {
                 $sorter[$ii]=$va[$key];
             }
+
             asort($sorter);
-            foreach ($sorter as $ii => $va) {
+            foreach ($sorter as $ii) {
                 $ret[$ii]=$array[$ii];
             }
+
             $array=$ret;
-        }
-        else {
+        } else {
             $array = [];
         }
 
         return $array;
     }
-
-
 }

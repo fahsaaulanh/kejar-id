@@ -2,44 +2,55 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use App\Services\Stage as StageApi;
-use App\Services\Round as RoundApi;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use App\Services\Round as RoundApi;
+use App\Services\Stage as StageApi;
+use Exception;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RoundController extends Controller
 {
     public function index($game, $stageId)
     {
-        $stageApi = new StageApi();
+        $stageApi = new StageApi;
         $response = $stageApi->getDetail($game, $stageId);
         $stage = $response['data'];
 
-        $roundApi = new RoundApi();
+        $roundApi = new RoundApi;
         $filter = `?filter[stage_id]=$stageId`;
         $response = $roundApi->index($filter);
         $rounds = $response['data'];
 
-        if($rounds != ''){
-            $round = array();
-            foreach ($rounds as $key => $row)
-            {
+        if ($rounds !== '') {
+            $round = [];
+            foreach ($rounds as $key => $row) {
                 $round[$key] = $row['order'];
             }
+
             array_multisort($round, SORT_ASC, $rounds);
-        }else{
+        } else {
             $rounds = '';
         }
 
-        if ($game == "OBR") { $game = ['short' => 'OBR','title' => 'Operasi Bilangan Rill','uri' => 'OBR']; } else if($game == "VOCABULARY"){ $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'VOCABULARY']; } else if($game == "KATABAKU"){ $game = ['short' => 'Kata Baku','title' => 'KATA BAKU','uri' => 'KATABAKU']; } else{ abort(404); }
+        if ($game === 'OBR') {
+            $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
+        } elseif ($game === 'VOCABULARY') {
+            $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'VOCABULARY'];
+        } elseif ($game === 'KATABAKU') {
+            $game = ['short' => 'Kata Baku', 'title' => 'KATA BAKU', 'uri' => 'KATABAKU'];
+        } else {
+            abort(404);
+        }
 
         return view('admin/round/index', compact('game', 'stage', 'rounds'));
     }
 
     public function updateStatus(Request $request, $game, $stageId, $roundId)
     {
-        $roundApi = new RoundApi();
+        $game ; // if not used will lint fail
+        $stageId; // if not used will lint fail
+        $roundApi = new RoundApi;
         $round = $roundApi->getDetail($roundId)['data'];
         $round['status'] = $request->status;
         $roundApi->update($round, $roundId);
@@ -56,19 +67,19 @@ class RoundController extends Controller
         $response = $takeLastOrder->index();
         $rounds = $response['data'];
 
-        if($rounds != ''){
-            $round = array();
-            foreach ($rounds as $key => $row)
-            {
+        if ($rounds !== '') {
+            $round = [];
+            foreach ($rounds as $key => $row) {
                 $round[$key] = $row['order'];
             }
+
             array_multisort($round, SORT_DESC, $rounds);
             $lastOrder = $rounds[0]['order'];
-        }else{
+        } else {
             $lastOrder = 0;
         }
 
-        try{
+        try {
             for ($i = 4; $i < $total_array; $i++) {
                 $lastOrder += 1;
                 $store = new RoundApi;
@@ -82,20 +93,20 @@ class RoundController extends Controller
                     'total_question' => $theArray[0][$i][3],
                     'question_timespan' => $theArray[0][$i][4],
                     'order' => $lastOrder,
-                    'status' => 'NOT_PUBLISHED'
+                    'status' => 'NOT_PUBLISHED',
                 ];
                 $store = $store->store($data);
             }
 
             return back();
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return back();
         }
     }
 
     public function edit($stageId)
     {
-        $roundApi = new RoundApi();
+        $roundApi = new RoundApi;
         $round = $roundApi->getDetail($stageId);
 
         return response()->json($round);
@@ -106,7 +117,7 @@ class RoundController extends Controller
         $this_id = $request->this_id;
         $to_id = $request->to_id;
 
-        $roundApi = new RoundApi();
+        $roundApi = new RoundApi;
 
         $this_data = $roundApi->getDetail($this_id);
         $to_data = $roundApi->getDetail($to_id);
@@ -121,7 +132,7 @@ class RoundController extends Controller
             'total_question' => $this_data['data']['total_question'],
             'question_timespan' => $this_data['data']['question_timespan'],
             'order' => $to_data['data']['order'],
-            'status' => $this_data['data']['status']
+            'status' => $this_data['data']['status'],
         ];
         $to_data_change = [
             'id' => $to_data['data']['id'],
@@ -133,13 +144,13 @@ class RoundController extends Controller
             'total_question' => $to_data['data']['total_question'],
             'question_timespan' => $to_data['data']['question_timespan'],
             'order' => $this_data['data']['order'],
-            'status' => $to_data['data']['status']
+            'status' => $to_data['data']['status'],
         ];
 
         $roundApi->update($this_data_change, $this_id);
         $roundApi->update($to_data_change, $to_id);
 
-        echo "success";
+        echo 'success';
     }
 
     public function updateTitle(Request $request, $roundId)
@@ -147,12 +158,12 @@ class RoundController extends Controller
         $roundApi = new RoundApi;
 
         $payload = [
-            "title" => $request->title
+            'title' => $request->title,
         ];
 
         $response = $roundApi->update($payload, $roundId);
 
-        if($response['error']) {
+        if ($response['error']) {
             return redirect('/logout');
         }
 
@@ -164,12 +175,12 @@ class RoundController extends Controller
         $roundApi = new RoundApi;
 
         $payload = [
-            "direction" => $request->direction
+            'direction' => $request->direction,
         ];
 
         $response = $roundApi->update($payload, $roundId);
 
-        if($response['error']) {
+        if ($response['error']) {
             return redirect('/logout');
         }
 

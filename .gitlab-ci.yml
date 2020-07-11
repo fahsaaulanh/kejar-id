@@ -1,0 +1,64 @@
+variables:
+  GIT_DEPTH: 1
+
+stages:
+  - test
+  - build
+  - staging
+
+test:lint:
+  image: registry.gitlab.com/idsdeveloper/kejar/docker:2.0
+  stage: test
+  script:
+    - cp .env.example .env
+    - composer install
+    - composer lint:check
+  cache:
+    key: composer
+    paths:
+      - vendor/
+  except:
+    - master
+
+build:app:
+  image: registry.gitlab.com/idsdeveloper/kejar/docker:2.0
+  stage: build
+  script:
+    - composer install --optimize-autoloader --no-dev --no-suggest --prefer-dist --no-scripts --no-plugins
+    - rm -rf ./tests
+    - rm -rf ./database
+    - rm -rf ./storage
+    - cd $CI_PROJECT_DIR/deploy/output
+    - find $CI_PROJECT_DIR -printf "%P\n" -type f -o -type l -o -type d | tar --exclude='.*' --exclude='*.xml'
+      --exclude='deploy' -czf build.tar.gz --no-recursion -C $CI_PROJECT_DIR -T -
+  artifacts:
+    expire_in: 1 day
+    paths:
+    - deploy/output/build.tar.gz
+  cache:
+    key: composer
+    paths:
+      - vendor/
+    policy: pull
+  only:
+    - master
+    - /^staging-.*$/
+
+staging:deploy:
+  image: williamyeh/ansible:ubuntu18.04
+  stage: staging
+  script:
+    - cd deploy
+    - echo "$STAGING_PRIVATE_KEY" > staging.key
+    - chmod 400 staging.key
+    - export ANSIBLE_HOST_KEY_CHECKING=false
+    - ansible-playbook -v -i inventory staging.yml
+    - rm -rf staging.key
+  cache: {}
+  dependencies:
+    - build:app
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^staging-.*$/'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: on_success

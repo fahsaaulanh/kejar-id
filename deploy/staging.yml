@@ -1,0 +1,76 @@
+---
+- hosts: app
+
+  vars:
+    deploy_archive: "{{ lookup('env', 'CI_PROJECT_DIR') }}/deploy/output/build.tar.gz"
+    deploy_path: "{{ ansible_env.HOME }}/app/matrikulasi"
+    deploy_retention: 3
+
+  tasks:
+  - name: Define deploy name
+    set_fact:
+      deploy_name: "{{ ansible_date_time.date | regex_replace('[^0-9]+', '') }}-{{ ansible_date_time.time | regex_replace('[^0-9]+', '') }}"
+  - name: Define deploy target path
+    set_fact:
+      deploy_target_path: "{{ deploy_path }}/releases/{{ deploy_name }}"
+
+  - name: Ensure release directory created
+    file:
+      name: "{{ deploy_target_path }}"
+      state: directory
+  - name: Ensure archive is copied and extracted
+    unarchive:
+      src: "{{ deploy_archive }}"
+      dest: "{{ deploy_target_path }}"
+
+  - name: Ensure release storage directory removed
+    file:
+      name: "{{ deploy_target_path }}/storage"
+      state: absent
+  - name: Ensure storage symlink is created
+    file:
+      src: "{{ deploy_path }}/storage"
+      dest: "{{ deploy_target_path }}/storage"
+      state: link
+      force: yes
+      follow: no
+  - name: Ensure env symlink is created
+    file:
+      src: "{{ deploy_path }}/.env"
+      dest: "{{ deploy_target_path }}/.env"
+      state: link
+      force: yes
+      follow: no
+  - name: Switch current to latest release
+    file:
+      src: "{{ deploy_target_path }}"
+      dest: "{{ deploy_path }}/current"
+      state: link
+      force: yes
+      follow: no
+
+  - name: List removable old releases
+    shell: "ls -t | tail -n +{{ deploy_retention | int + 1 }}"
+    args:
+      chdir: "{{ deploy_path }}/releases"
+    register: deploy_clean_list
+    changed_when: deploy_clean_list.stdout != ""
+  - name: Clean up old releases
+    file:
+      path: "{{ deploy_path }}/releases/{{ item }}"
+      state: absent
+    with_items: "{{ deploy_clean_list.stdout_lines }}"
+
+  # this is a workaround for sudo command-limiting see https://gist.github.com/nanobeep/3b3d614a709086ff832a
+  - name: Reload php-fpm
+    shell: sh -c "sudo systemctl reload php7.4-fpm.service"
+    become: yes
+    become_user: deployer
+    become_method: sudo
+
+  # this is a workaround for sudo command-limiting see https://gist.github.com/nanobeep/3b3d614a709086ff832a
+  - name: Reload nginx
+    shell: sh -c "sudo systemctl reload nginx.service"
+    become: yes
+    become_user: deployer
+    become_method: sudo
