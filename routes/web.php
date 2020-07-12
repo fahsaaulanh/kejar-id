@@ -55,6 +55,7 @@ Route::middleware('session')->group(function () {
     });
 
     Route::middleware('student')->group(function () {
+        Route::get('/result', 'ResultController@index'); //TODO EXAM
          // Khusus route student disini
         Route::get('/student', 'HomeController@student');
 
