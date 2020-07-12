@@ -18,4 +18,11 @@ class Question extends Service
 
         return $this->showResponse($response);
     }
+
+    public function update($id, $payload)
+    {
+        $response = $this->patch('/libraries/questions/'.$id, $payload);
+
+        return $this->showResponse($response);
+    }
 }

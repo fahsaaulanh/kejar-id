@@ -85,7 +85,8 @@ class QuestionController extends Controller
 
                 $questionApi = new QuestionApi;
                 $question = $questionApi->store($collection);
-
+                // update status to Valid
+                $questionApi->update($question['data']['id'], ['status' => '2']);
                 $payloadQS = [
                     'question_id' => $question['data']['id'],
                     'round_id' => $data[2][$i][0],
@@ -124,6 +125,7 @@ class QuestionController extends Controller
             ];
 
             $response = $questionApi->store($payload);
+            $questionApi->update($response['data']['id'], ['status' => '2']);
             $payloadQS = [
                 'question_id' => $response['data']['id'],
                 'round_id' => $roundId,
