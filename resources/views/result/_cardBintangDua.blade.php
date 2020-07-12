@@ -12,7 +12,7 @@
                              <i class="kejar-arsip-asesmen middle-star-border"></i>
                              <i class="kejar-arsip-asesmen side-stars-border"></i>
                             </div>
-                        <h3 class="score-title">Yaah...</h3> 
+                        <h3 class="score-title">Yaah...</h3>
                         <p class="score-description">Semangat, ya! Pasti kamu bisa kalau terus mengulang.</p>
                         <br>
                         <div class="res-container">
@@ -34,6 +34,6 @@
 </div>
 <script>
     $('.close-icon').on('click',function() {
-        window.location.href = "{{URL::to('/')}}"
+        window.location.href = "{{URL::to('/dashboard')}}"
     });
 </script>

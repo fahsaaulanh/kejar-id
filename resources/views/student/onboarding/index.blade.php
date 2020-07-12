@@ -40,7 +40,7 @@
                     </div>
                     <!-- Start Button -->
                     <div class="d-flex justify-content-end btn-start-group">
-                        <a href="{{ url('student/' . str_replace(' ', '', $game) . '/' . $stage['id'] . '/' . $round['id']) }}" class="btn btn-primary btn-start d-flex align-items-center">
+                        <a href="{{ url('student/' . str_replace(' ', '', $game) . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/exam') }}" class="btn btn-primary btn-start d-flex align-items-center">
                             Mulai <i class="kejar kejar-next"></i>
                         </a>
                     </div>

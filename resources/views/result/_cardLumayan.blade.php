@@ -12,7 +12,7 @@
                              <i class="kejar-arsip-asesmen-bold middle-star"></i>
                              <i class="kejar-arsip-asesmen side-stars-border"></i>
                             </div>
-                        <h3 class="score-title">Lumayan!</h3> 
+                        <h3 class="score-title">Lumayan!</h3>
                         <p class="score-description">Masih ada yang salah tadi. Ulangi lagi yuk!</p>
                         <br>
                         <div class="res-container">
@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="col-md-8 p-2">
                                     <button class="btn btn-block rounded-0 btn-next">Ronde Berikutnya
-                                        <i class="kejar-arrow-right" aria-hidden="true"></i> 
+                                        <i class="kejar-arrow-right" aria-hidden="true"></i>
                                     </button>
                                     </button>
                                 </div>
@@ -38,6 +38,6 @@
 </div>
 <script>
     $('.close-icon').on('click',function() {
-        window.location.href = "{{URL::to('/')}}"
+        window.location.href = "{{URL::to('/dashboard')}}"
     });
 </script>
