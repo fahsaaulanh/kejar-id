@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'kejar-matrikulasi';
-    src:  url('../font/kejar-matrikulasi.eot?r4k8l1');
-    src:  url('../font/kejar-matrikulasi.eot?r4k8l1#iefix') format('embedded-opentype'),
-      url('../font/kejar-matrikulasi.ttf?r4k8l1') format('truetype'),
-      url('../font/kejar-matrikulasi.woff?r4k8l1') format('woff'),
-      url('../font/kejar-matrikulasi.svg?r4k8l1#kejar-matrikulasi') format('svg');
+    src:  url('../font/kejar-matrikulasi.eot');
+    src:  url('../font/kejar-matrikulasi.eot') format('embedded-opentype'),
+      url('../font/kejar-matrikulasi.ttf') format('truetype'),
+      url('../font/kejar-matrikulasi.woff') format('woff'),
+      url('../font/kejar-matrikulasi.svg') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -53,11 +53,13 @@
   }
   .kejar-arrow-right:before {
     content: "\e903";
-    color: #334e68;
+    margin-top: 50%;
+    color: #fff !important;
+  
   }
   .kejar-arsip-asesmen:before {
     content: "\e904";
-    color: #334e68;
+    color: #EBF1F6 !important;
   }
   .kejar-arsip-asesmen-bold:before {
     content: "\e905";
