@@ -10,11 +10,11 @@ class OnBoardingController extends Controller
 {
     public function index($game, $stageId, $roundId)
     {
-        $stageApi = new StageApi;
-        $stage = $stageApi->getDetail($game, $stageId)['data'] ?? [];
-
+        $stageId;
         $roundApi = new RoundApi;
         $round = $roundApi->getDetail($roundId)['data'] ?? [];
+        $stageApi = new StageApi;
+        $stage = $stageApi->getDetail($game, $round['stage_id'])['data'] ?? [];
 
         $game = $game === 'KATABAKU' ? 'KATA BAKU' : $game;
 
