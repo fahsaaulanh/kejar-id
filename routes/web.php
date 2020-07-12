@@ -67,6 +67,12 @@ Route::middleware('session')->group(function () {
                 Route::prefix('/{stageId}/rounds')->group(function () {
 
                     Route::get('/', 'Student\RoundController@index');
+
+                    Route::prefix("{roundId}")->group(function(){
+
+                        Route::get('/onboarding', 'Student\OnBoardingController@index');
+
+                    });
                 });
             });
         });

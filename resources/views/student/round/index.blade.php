@@ -31,7 +31,7 @@
                                         <span class="flag-icon">
                                             <i class="kejar-round"></i>
                                         </span>
-                                        <a href="#">Ronde {{ ++$key }} :<span class="question-round"> {{ $round['title'] }}</span></a>
+                                        <a href="{{ url()->current() . '/' . $round['id'] . '/onboarding' }}">Ronde {{ ++$key }} :<span class="question-round"> {{ $round['title'] }}</span></a>
                                     </div>
                                     <div class="status-btn-group">
                                         <div class="star-group">
@@ -45,7 +45,7 @@
                                                 <i class="i-star"></i>
                                             </span>
                                         </div>
-                                        <a href="#" class="btn-play"><span>Main </span><span><i class="kejar-next"></i></span><span>.</span></a>
+                                        <a href="{{ url()->current() . '/' . $round['id'] . '/onboarding' }}" class="btn-play"><span>Main </span><span><i class="kejar-next"></i></span><span>.</span></a>
                                     </div>
                                 </div>
                             @empty
