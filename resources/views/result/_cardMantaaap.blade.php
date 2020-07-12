@@ -11,7 +11,7 @@
                              <i class="kejar-arsip-asesmen-bold middle-star"></i>
                              <i class="kejar-arsip-asesmen-bold side-stars"></i>
                             </div>
-                        <h3 class="score-title">Mantaaap!</h3> 
+                        <h3 class="score-title">Mantaaap!</h3>
                         <p class="score-description">Kamu berhasil menjawab soal dengan benar!</p>
                         <br>
                         <div class="res-container">
@@ -21,7 +21,7 @@
                                 </div>
                                 <div class="col-md-8 p-2">
                                     <button class="btn btn-block rounded-0 btn-next">Ronde Berikutnya
-                                        <i class="kejar-arrow-right" aria-hidden="true"></i> 
+                                        <i class="kejar-arrow-right" aria-hidden="true"></i>
                                     </button>
                                     </button>
                                 </div>
@@ -37,6 +37,6 @@
 </div>
 <script>
     $('.close-icon').on('click',function() {
-        window.location.href = "{{URL::to('/')}}"
+        window.location.href = "{{URL::to('/dashboard')}}"
     });
 </script>

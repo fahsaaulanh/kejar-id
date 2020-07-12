@@ -39,7 +39,7 @@ Route::middleware('session')->group(function () {
                     Route::patch('{roundId}/status', 'Admin\RoundController@updateStatus');
                     Route::post('/upload', 'Admin\RoundController@uploadFile');
                     Route::post('/upload/questions', 'Admin\QuestionController@uploadFile');
-                    Route::post('/modal/round/update/{id}', 'Admin\roundModalController@updateRoundModal');
+                    Route::post('/modal/round/update/{id}', 'Admin\RoundModalController@updateRoundModal');
 
                     Route::prefix('{roundId}/questions')->group(function () {
                         Route::get('/', 'Admin\QuestionController@index');
@@ -56,11 +56,12 @@ Route::middleware('session')->group(function () {
     });
 
     Route::middleware('student')->group(function () {
-        Route::get('/result', 'ResultController@index'); //TODO EXAM
+
          // Khusus route student disini
         Route::get('/student', 'HomeController@student');
 
         Route::prefix('student')->group(function () {
+            Route::get('/result', 'Student\ResultController@index'); //TODO EXAM
 
             Route::prefix('/{game}/stages')->group(function () {
 
@@ -70,13 +71,15 @@ Route::middleware('session')->group(function () {
 
                     Route::get('/', 'Student\RoundController@index');
 
-                    Route::prefix("{roundId}")->group(function(){
-
-                        Route::get('/onboarding', 'Student\OnBoardingController@index');
-
-                    });
+                    // exam
+                    Route::get('{roundId}/onboarding', 'Student\OnBoardingController@index');
+                    Route::get('{roundId}/exam', 'Student\MatrikulasiExamController@index');
+                    Route::post('{roundId}/check', 'Student\MatrikulasiExamController@checkAnswer');
+                    Route::post('{roundId}/{taskId}/finish', 'Student\MatrikulasiExamController@finish');
                 });
             });
         });
+        Route::get('/{game}/{stageId}/{roundId}', 'Student\MatrikulasiExamController@index');
+        Route::post('/{game}/{stageId}/{roundId}/check-answer', 'Student\MatrikulasiExamController@checkAnswer');
     });
 });

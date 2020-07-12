@@ -44,7 +44,7 @@ class StageController extends Controller
         // Get All Stages Data
         $stages = $stage->getAll($game['uri'])['data'];
         // Sorting Stages
-        $stages = $this->aasort($stages, 'order');
+        // $stages = $this->aasort($stages, 'order');
 
         return view('admin.stage.index', compact('stages', 'game'));
     }
@@ -107,26 +107,26 @@ class StageController extends Controller
         return response()->json($stage);
     }
 
-    private function aasort($array, $key)
-    {
-        if ($array !== null) {
-            $sorter=[];
-            $ret=[];
-            reset($array);
-            foreach ($array as $ii => $va) {
-                $sorter[$ii]=$va[$key];
-            }
+    // private function aasort($array, $key)
+    // {
+    //     if ($array !== null) {
+    //         $sorter=[];
+    //         $ret=[];
+    //         reset($array);
+    //         foreach ($array as $ii => $va) {
+    //             $sorter[$ii]=$va[$key];
+    //         }
 
-            asort($sorter);
-            foreach ($sorter as $ii) {
-                $ret[$ii]=$array[$ii];
-            }
+    //         asort($sorter);
+    //         foreach ($sorter as $ii) {
+    //             $ret[$ii]=$array[$ii];
+    //         }
 
-            $array=$ret;
-        } else {
-            $array = [];
-        }
+    //         $array=$ret;
+    //     } else {
+    //         $array = [];
+    //     }
 
-        return $array;
-    }
+    //     return $array;
+    // }
 }

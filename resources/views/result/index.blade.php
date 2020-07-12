@@ -25,13 +25,21 @@
                     <a href="{{ url('/logout') }}" class="btn btn-primary my-2 my-sm-0">Logout</a>
                 </div>
             </nav>
-            @if ($score >= 90)
+            @if ($task['score'] >= 90)
                 @include('result._cardMantaaap')
-            @elseif ($score >= 80)
+            @elseif ($task['score'] >= 80)
                 @include('result._cardLumayan')
-            @elseif ($score >= 75)
+            @elseif ($task['score'] >= 75)
                 @include('result._cardBintangSatu')
-            @elseif ($score < 75)
+            @elseif ($task['score'] < 75)
                 @include('result._cardBintangDua')
             @endif
+<script>
+    $('.btn-restart').on('click',function() {
+        window.location.href = "{{URL::to('/dashboard')}}"
+    });
+    $('.btn-next').on('click',function() {
+        window.location.href = "{{URL::to('/dashboard')}}"
+    });
+</script>
 </html>

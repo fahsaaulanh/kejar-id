@@ -1,0 +1,294 @@
+*{
+    font-family: 'Roboto Mono';
+}
+
+/* Timer Stick */
+.timer-stick{
+    background: #EBF1F6;
+    display: block;
+    height: 12px;
+    width: 81.4%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    position: fixed;
+    z-index: 10;
+}
+
+.timer-stick .timer-length{
+    background: #4DC978;
+    width: 100%;
+    display: block;
+    height: inherit;
+}
+
+/* Exam Navbar */
+.exam-navbar{
+    margin-top: 44px;
+}
+
+.exam-navbar .question-amount{
+    font-size: 15px;
+    color: #7c92a7 !important;
+}
+
+.exam-navbar .question-amount .active{
+    color: #202020;
+    font-weight: bold;
+}
+
+/* Link Logout */
+
+.exam-navbar .link-logout a{
+    color: #334E68;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.exam-navbar .link-logout a i{
+    margin-right: 5px;
+}
+
+/* Command Text */
+.command{
+    margin-top: 8px;
+    font-size: 15px;
+    color: #202020;
+}
+
+/* Notification */
+.notification{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-top: -40px;
+    font-weight: bold;
+    text-align: center;
+    font-size: 25px;
+}
+
+.notification i::before{
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.notification-success, .notification-success i::before{
+    color: #4DC978;
+}
+
+.notification-failed, .notification-failed i::before{
+    color: #FF4343;
+}
+
+/* Question */
+.question{
+    margin: 0px auto;
+    margin-top: 81px;
+}
+.question .question-text{
+    text-align: center;
+    font-size: 64px !important;
+    color: #202020;
+}
+
+/* Answer Input */
+.answer{
+    margin-top: 32px;
+    display: block;
+}
+
+.answer .answer-input{
+    border: 0px;
+    border-bottom: 4px solid #A6D1FF;
+    font-size: 64px;
+    color: #334E68;
+    padding: 8px 0px;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    line-height: 20px;
+}
+
+/* Next Button */
+.next-button{
+    margin: 0 auto;
+    margin-top: 56px;
+    padding: 12px 16px;
+    font-size: 17px;
+    text-align: center;
+}
+
+.next-button .btn-next{
+    background: #F13392;
+    border-radius: 0px;
+    color: #f2f2f2;
+    padding: 20px 24px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.next-button .btn-next  i::before{
+    color: white;
+    font-size: 25px;
+}
+
+@media screen and (max-width: 1200px) {
+    .question .question-text{
+        font-size: 48px;
+    }
+    .answer .answer-input{
+        font-size: 48px;
+    }
+
+    .next-button .btn-next{
+        padding: 16px 20px;
+    }
+
+    .next-button .btn-next{
+        font-size: 19px;
+    }
+
+    .timer-stick{
+        width: 100%;
+    }
+
+    .next-button .btn-next  i::before{
+        color: white;
+        font-size: 19px;
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .exam-navbar{
+        margin-top: 20px;
+    }
+    /* Notification */
+    .notification .notification-text{
+        font-size: 17px;
+    }
+    .notification .notification-text i::before{
+        font-size: 17px;
+    }
+    /* Question */
+    .question .question-text{
+        font-size: 28px !important;
+    }
+    /* Answer Input */
+    .answer .answer-input{
+        font-size: 28px !important;
+    }
+    /* Modal Exit */
+    #exitExamModal .modal-content{
+        padding: 23px 0px !important;
+    }
+
+    .timer-stick{
+        width: 100%;
+    }
+
+    .next-button .btn-next{
+        padding: 12px 16px;
+    }
+    .next-button .btn-next{
+        font-size: 17px;
+    }
+
+    .next-button .btn-next  i::before{
+        color: white;
+        font-size: 17px;
+    }
+}
+
+.question-item{
+    display: none;
+}
+
+.question-item:first-child{
+    display: block;
+}
+
+.btn-next-disabled{
+    background: #EBF1F6 !important;
+    color: #ffffff !important;
+    pointer-events: none;
+}
+
+.notification-success, .notification-failed{
+    display: none;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+/* Modal Exit */
+#exitExamModal .modal-content{
+    padding: 16px;
+}
+
+#exitExamModal .modal-title{
+    font-size: 19px;
+    font-weight: bold;
+    padding: 0px 15px;
+}
+
+#exitExamModal .modal-body{
+    font-size: 15px;
+    font-weight: normal;
+}
+
+#exitExamModal .close{
+    outline: none;
+}
+
+#exitExamModal .btn{
+    padding: 10px 12px;
+    font-size: 15px;
+}
+
+#exitExamModal .btn-transparent{
+    background-color: transparent !important;
+}

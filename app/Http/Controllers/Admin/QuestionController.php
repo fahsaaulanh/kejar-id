@@ -102,8 +102,9 @@ class QuestionController extends Controller
         return redirect()->back()->with(['message', 'Success']);
     }
 
-    public function storeQuestion(Request $request, $game, $roundId)
+    public function storeQuestion(Request $request, $game, $stageId, $roundId)
     {
+        $stageId;
         $user = session('user');
         $questionApi = new QuestionApi;
         $roundQuestionApi = new RoundQuestion;
