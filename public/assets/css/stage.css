@@ -16,7 +16,11 @@ body{
 }
 
 .text-link:hover{
-    color: #7233DA;
+    color: #1888FF;
+}
+
+button:hover .kejar::before, a:hover .kejar::before{
+    color: #1888FF !important;
 }
 
 /* Link back */
@@ -39,6 +43,14 @@ body{
 
 .breadcrumb span{
     color: #202020 !important;
+}
+
+.breadcrumb-item{
+    text-decoration: none !important;
+}
+
+.breadcrumb-item:hover{
+    color: #1888FF;
 }
 
 /* Title */

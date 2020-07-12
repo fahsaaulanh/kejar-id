@@ -4,11 +4,11 @@
             <div class="modal-header border-0">
                 <h5 class="modal-title">Unggah Babak</h5>
                 <button class="close modal-close" data-dismiss="modal">
-                    <span>&times;</span>
+                    <i class="kejar kejar-close"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ url('/admin/'. $game['uri'] .'/stages/upload') }}" method="post" enctype="multipart/form-data" id="stage-upload-form">
+                <form action="{{ url('admin/'. $game['uri'] .'/stages/upload') }}" method="post" enctype="multipart/form-data" id="stage-upload-form">
                     @csrf
                     <div class="row">
                         <div class="col-8">

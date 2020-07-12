@@ -48,7 +48,7 @@
                         <input type="text" class="stage-id" value="{{ $stage['id'] }}">
                     </div>
                     <div class="stage-text w-100">
-                        <a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id']) . '/rounds' }}" class="text-link">
+                        <a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id']) }}/rounds" class="text-link">
                             <span class="stage-number">Babak </span> : {{ $stage['title'] }}
                         </a>
                     </div>
@@ -146,7 +146,7 @@
     function orderUpdate(id, order){
         $.ajax({
             type: "POST",
-            url: "{{ url('admin/'. $game['uri'] . '/stages/') }}/" + id + "/order",
+            url: "{{ url('admin/'. $game['uri'] . '/') }}/stages" + id + "/order",
             data: {
                 "_method": "PATCH",
                 "_token": "{{ csrf_token() }}",
