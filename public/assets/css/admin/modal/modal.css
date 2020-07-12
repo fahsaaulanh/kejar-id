@@ -1,0 +1,201 @@
+.modal.modal-custom .modal-content{
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.modal.modal-custom .modal-content .modal-header, .modal .modal-content .modal-body, .modal .modal-content .modal-footer{
+    padding: 25px 22px;
+    border: 0 !important;
+}
+
+.modal.modal-custom .modal-content .modal-body{
+    margin-top: -20px;
+}
+
+.modal.modal-custom .modal-content .modal-header h5{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 19px;
+    line-height: 20px;
+    color: #000;
+}
+
+.form-title{
+	font-weight: bold;
+	font-size: 15px;
+	line-height: 20px;
+	color: #202020;
+}
+
+#descriptionTextArea{
+	border-radius: 0 !important;
+	border: 2px solid #EBF1F6;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 24px;
+}
+
+#materiTextArea{
+	border-radius: 0 !important;
+	border: 2px solid #EBF1F6;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 24px;
+}
+
+.btn-cancel{
+	cursor: pointer;
+	display: inline-block;
+	border: 0;
+	width: 80px;
+	height: 40px;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	background-color: transparent;
+	color: #3167F6;
+}
+
+.btn-cancel:hover{
+	color: #1888FF;
+}
+
+.btn-save{
+	cursor: pointer;
+	display: inline-block;
+	border: 0;
+	width: 80px;
+	height: 40px;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	background: #3167F6;
+	color: #FFF;
+}
+
+.btn-save:hover{
+	background: #1888FF;
+}
+
+.btn-description-group{
+	text-align: center;
+	margin: auto;
+	position: absolute;
+	top: 50%;
+	bottom: 50%;
+}
+
+.btn-description-group .btn-description-edit{
+	cursor: pointer;
+	display: inline-block;
+	border: 0;
+	width: 180px;
+	height: 40px;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	background: #3167F6;
+	color: #FFF;
+}
+
+.btn-setting-group{
+	text-align: center;
+	margin: auto;
+	position: absolute;
+	top: 50%;
+	bottom: 50%;
+}
+
+.btn-setting-group .btn-setting-edit{
+	cursor: pointer;
+	display: inline-block;
+	border: 0;
+	width: 180px;
+	height: 40px;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	background: #3167F6;
+	color: #FFF;
+}
+
+.btn-material-group{
+	text-align: center;
+	margin: auto;
+	position: absolute;
+	top: 50%;
+	bottom: 50%;
+}
+
+.btn-material-group .btn-material-edit{
+	cursor: pointer;
+	display: inline-block;
+	border: 0;
+	width: 150px;
+	height: 40px;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	background: #3167F6;
+	color: #FFF;
+}
+
+.btn-setting-group{
+	text-align: center;
+	margin: auto;
+	position: absolute;
+	top: 50%;
+	bottom: 50%;
+}
+
+.btn-setting-group .btn-setting-edit{
+	cursor: pointer;
+	display: inline-block;
+	border: 0;
+	width: 180px;
+	height: 40px;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 20px;
+	text-align: center;
+	background: #3167F6;
+	color: #FFF;
+}
+
+.input-custom{
+	border: 2px solid #EBF1F6;
+	border-radius: 0;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 15px;
+	line-height: 20px;
+}
+
+.close{
+	font-size: 20px;
+	color: #334E68;
+}
+
+.round-detail:nth-child(1) h5, .round-detail:nth-child(1) p, .round-detail:nth-child(2) h5, .round-detail:nth-child(2) p, .round-detail:nth-child(3) h5, .round-detail:nth-child(3) p{
+	cursor: pointer;
+}
+
+@media (min-width: 540px){
+	#descriptionEditModal .modal-dialog {
+	    width: 544px !important;
+	}
+
+	#materialEditModal .modal-dialog {
+	    max-width: 704px !important;
+	}
+
+	#settingEditModal .modal-dialog {
+	    max-width: 544px !important;
+	}
+}

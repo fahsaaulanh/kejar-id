@@ -39,6 +39,7 @@ Route::middleware('session')->group(function () {
                     Route::patch('{roundId}/status', 'Admin\RoundController@updateStatus');
                     Route::post('/upload', 'Admin\RoundController@uploadFile');
                     Route::post('/upload/questions', 'Admin\QuestionController@uploadFile');
+                    Route::post('/modal/round/update/{id}', 'Admin\roundModalController@updateRoundModal');
 
                     Route::prefix('{roundId}/questions')->group(function(){
                         Route::get('/', 'Admin\QuestionController@index');
