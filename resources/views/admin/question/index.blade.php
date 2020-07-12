@@ -2,6 +2,7 @@
 
 @section('styles')
 <link rel="stylesheet" href="{{ url('/assets/css/ronde.css') }}">
+<link rel="stylesheet" href="{{ url('/assets/css/admin/modal/modal.css') }}">
 @endsection
 
 @section('content')
@@ -33,6 +34,10 @@
             <div class="round-detail-group">
                 <div class="round-detail">
                     <h5 class="round-detail-title">Pengaturan Ronde</h5>
+                    <p>{{ $round['description'] }}</p>
+                </div>
+                <div class="round-detail">
+                    <h5 class="round-detail-title">Deskripsi Ronde</h5>
                     <p>{{ $round['description'] }}</p>
                 </div>
                 <div class="round-detail">
@@ -122,6 +127,9 @@
 
 @include('modals._upload_question')
 @include('modals._createQuestion')
+@include('admin.modal.descriptionRoundEditModal')
+@include('admin.modal.settingRoundEditModal')
+@include('admin.modal.materialEditModal')
 
 @section('scripts')
 <script>
