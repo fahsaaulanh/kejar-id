@@ -36,7 +36,7 @@
                     <div class="command">
                         <p class="command-text">Jawablah dengan benar!</p>
                     </div>
-                    <form class="question-list" id="question-list" method="POST" action="{{ url('student/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/' . $taskId . '/finish') }}" id="process" data-total="{{ count($questions) }}" data-task="{{ $taskId }}" data-check="{{ url('student/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/check') }}">
+                    <form class="question-list" id="question-list" method="POST" action="{{ url('student/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/' . $taskId . '/finish') }}" id="process" data-total="{{ count($questions) }}" data-task="{{ $taskId }}" data-check="{{ url('student/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/check') }}" data-timer="{{ $timespan }}">
                         @foreach($questions as $key => $question)
                         <div class="question-item" data-index="{{ $key }}" data-number="{{ ++$key }}" data-repeatance="0" data-id="{{ $question['id'] }}">
                             <!-- Notification -->
@@ -46,7 +46,7 @@
                                 </p>
                                 @if($game == 'OBR')
                                 <p class="notification-text notification-failed">
-                                    <i class="kejar kejar-close bg-dark"></i> Salah
+                                    &times; Salah
                                 </p>
                                 @else
                                 <p class="notification-text notification-failed">
