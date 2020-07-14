@@ -25,6 +25,12 @@ Route::middleware('session')->group(function () {
 
         Route::get('/admin', 'HomeController@admin');
 
+        // example
+        Route::get('/example-header', fn () => view('example/withHeader'));
+
+        Route::get('/example-noheader', fn () => view('example/withoutHeader'));
+        // end of example
+
         Route::prefix('/admin')->group(function () {
 
             Route::prefix('{game}/stages')->group(function () {
