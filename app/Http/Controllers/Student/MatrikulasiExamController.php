@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Services\Round as RoundApi;
 use App\Services\Task as TaskApi;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,9 @@ class MatrikulasiExamController extends Controller
 
         $questions = $taskApi->question($taskId)['data'] ?? abort(404);
 
-        return view('student.exam.index', compact('game', 'stageId', 'roundId', 'questions', 'taskId'));
+        $timespan = $this->getTimer($roundId);
+
+        return view('student.exam.index', compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan'));
     }
 
     public function checkAnswer(Request $request)
@@ -49,5 +52,13 @@ class MatrikulasiExamController extends Controller
         $task = $taskApi->finish($taskId)['data'];
 
         return view('result.index', compact('task'));
+    }
+
+    private function getTimer($roundId)
+    {
+        $roundApi = new RoundApi;
+        $round = $roundApi->getDetail($roundId)['data'];
+
+        return $round['question_timespan'];
     }
 }

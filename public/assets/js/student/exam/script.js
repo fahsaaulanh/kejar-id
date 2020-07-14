@@ -3,6 +3,7 @@ $(document).ready(function(){
 
     var questionsList = $('.question-list');
     var questions = $('.question-list .question-item');
+    var timer = $('.question-list').data('timer') * 1000;
     var i = 0;
 
     startQuestion();
@@ -23,7 +24,7 @@ $(document).ready(function(){
         $('.timer-length').css({'background': '#4DC978', 'width' : '100%'});
         $('.timer-length').animate({
             width: '0%'
-        }, 10000, function(){
+        }, timer, function(){
             checkAnswer();
         });
         timerGetStarted();
@@ -141,8 +142,6 @@ $(document).ready(function(){
     });
 
     $('#exitExamModal').on('show.bs.modal', event => {
-        var button = $(event.relatedTarget);
-        var modal = $(this);
         // Use above variables to manipulate the DOM
         // $('.timer-length').stop();
         timerGetStoped();
@@ -151,20 +150,17 @@ $(document).ready(function(){
     $('#exitExamModal').on('hide.bs.modal', event => {
         $('.timer-length').animate({
             width: '0%'
-        }, 10000, function(){
+        }, timer, function(){
             checkAnswer();
         });
     });
 
     function timerGetStoped() {
-        jQuery.queue( $('.timer-length'), "fx", []);
         $('.timer-length').stop();
     }
 
     function timerGetStarted() {
-        jQuery.queue( $('.timer-length'), "fx", function() {
-            jQuery.dequeue(this);
-        });
+        
     }
 
     $(document).on("keydown", function(e) {
