@@ -68,12 +68,21 @@
         </div>
     </div>
 </div>
+@include('modals/_upload_stages')
+@include('modals/_create_stage')
 @endsection
 
-@include('modals/_upload_stages')
 
 @push('script')
 <script>
+
+    $('#createStageModal').on('show.bs.modal', event => {
+        $('#upload-stages').modal('hide');
+    });
+
+    $('#createStageModal').on('hide.bs.modal', event => {
+        $('#upload-stages').modal('show');
+    });
 
     // Ceking Element
     checkElements();

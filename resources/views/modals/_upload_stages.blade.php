@@ -28,8 +28,8 @@
             </div>
             <div class="modal-footer border-0">
                 <div class="d-flex w-100 justify-content-between align-items-center">
-                    <a href="#" class="link-create-stage d-block">
-                        <i class="kejar kejar-add"></i> Buat babak
+                    <a href="#" class="link-create-stage d-block" data-toggle="modal" data-target="#createStageModal">
+                        <i class="kejar kejar-add"></i> Buat Babak
                     </a>
                     <div>
                         <button class="btn btn-cancel" data-dismiss="modal">Batal</button>

@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn-modal btn-make-round">
+                            <button type="button" class="btn-modal btn-make-round" data-toggle="modal" data-target="#createRoundModal">
                                 <i class="kejar-add"></i> Buat Ronde
                             </button>
                             <div class="d-flex justify-content-end align-items-center">
@@ -126,9 +126,10 @@
         </div>
     </div>
 </div>
+@include('modals/_upload_question')
+@include('modals/_create_round')
 @endsection
 
-@include('modals/_upload_question')
 
 @push('script')
 <script>
@@ -219,5 +220,13 @@
     }
 
     buttonSortCheck();
+
+    $('#createRoundModal').on('show.bs.modal', function(){
+        $('#uploadRoundModal').modal('hide');
+    });
+
+    $('#createRoundModal').on('hide.bs.modal', function(){
+        $('#uploadRoundModal').modal('show');
+    });
 </script>
 @endpush

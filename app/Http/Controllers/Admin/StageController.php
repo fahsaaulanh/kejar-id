@@ -42,7 +42,7 @@ class StageController extends Controller
         }
 
         // Get All Stages Data
-        $stages = $stage->getAll($game['uri'])['data'];
+        $stages = $stage->getAll($game['uri'])['data'] ?? [];
         // Sorting Stages
         // $stages = $this->aasort($stages, 'order');
 
@@ -105,6 +105,26 @@ class StageController extends Controller
         $stage = $stage->reorder($game, $stageId, $payload);
 
         return response()->json($stage);
+    }
+
+    public function create(Request $request, $game)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+        
+        $stageApi = new StageApi;
+        $payload = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'game' => $game,
+            'order' => count($stageApi->getAll($game)['data'] ?? []) + 1,
+        ];
+
+        $stageApi->store($game, $payload);
+
+        return redirect()->back()->with(['message' => 'Success!']);
     }
 
     // private function aasort($array, $key)
