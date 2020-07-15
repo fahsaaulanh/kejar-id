@@ -389,3 +389,44 @@ button{
         margin-bottom: 16px;
     }
 }
+
+
+/* Modal Create Round */
+#createRoundModal .form-control{
+    font-size: 15px;
+    border-radius: 0px;
+    border: 2px solid #EBF1F6;
+    padding: 10px 16px;
+    box-shadow: none;
+}
+
+#createRoundModal label{
+    font-size: 15px;
+}
+
+#createRoundModal textarea{
+    resize: none;
+}
+
+#createRoundModal .btn-modal{
+    font-size: 15px;
+    padding: 10px 12px;
+    border-radius: 0px;
+}
+
+#createRoundModal .btn-modal-transparent{
+    background-color: transparent;
+    color: #3167F6;
+}
+
+#createRoundModal .btn-modal-primary{
+    background-color: #3167F6;
+    color: #FFFFFF;
+}
+
+#createRoundModal .link-modal-primary{
+    color: #3167F6;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;    
+}

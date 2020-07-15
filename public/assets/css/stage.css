@@ -176,6 +176,7 @@ button:hover .kejar::before, a:hover .kejar::before{
 }
 
 .btn-cancel{
+    color: #3167F6;
     background-color: transparent !important;
 }
 
@@ -194,4 +195,46 @@ button:hover .kejar::before, a:hover .kejar::before{
     color: #3167F6;
     font-size: 15px;
     padding: 10px 16px;
+}
+
+
+/* Stage */
+#createStageModal .form-control{
+    border-radius: 0px;
+    font-size: 15px;
+    box-shadow: none !important;
+    padding: 10px 16px;
+    border: 2px solid #EBF1F6;
+}
+
+#createStageModal .form-group label{
+    font-size: 15px;
+}
+
+#createStageModal textarea{
+    resize: none;
+}
+
+.modal .link-modal-primary{
+    color: #3167F6;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.modal .btn-modal{
+    padding: 10px 12px !important;
+    font-size: 15px !important;
+    border: 0;
+    margin: 0;
+}
+
+.modal .btn-modal-primary{
+    background-color: #3167F6;
+    color: #FFFFFF;
+}
+
+.modal .btn-modal-transparent{
+    background-color: transparent;
+    color: #3167F6;
 }

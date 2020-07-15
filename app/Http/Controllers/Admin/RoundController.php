@@ -186,4 +186,31 @@ class RoundController extends Controller
 
         return redirect('/dashboard');
     }
+
+    public function createRound(Request $request, $game, $stageId)
+    {
+        $game;
+        $this->validate($request, [
+            'title' => 'required',
+            'question_showed' => 'required',
+            'timespan' => 'required',
+        ]);
+
+        $roundApi = new RoundApi;
+        $data = [
+            'stage_id' => $stageId,
+            'title' => $request->title,
+            'description' => $request->description ?? 'tambahkan deskripsi', // database tidak nullable
+            'direction' => $request->direction ?? 'tambahkan petunjuk', // database tidak nullable
+            'material' => 'buat materi', // database tidak nullable
+            'total_question' => $request->question_showed,
+            'question_timespan' => $request->timespan,
+            'order' => count($roundApi->index()['data'] ?? []) + 1,
+            'status' => 'NOT_PUBLISHED', // status unknown
+        ];
+
+        $roundApi->store($data);
+
+        return redirect()->back()->with(['message' => 'Success!']);
+    }
 }
