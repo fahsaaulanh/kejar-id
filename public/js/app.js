@@ -37292,8 +37292,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/prawitamutia/Documents/kejar/matrikulasi/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/prawitamutia/Documents/kejar/matrikulasi/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/mackbookids01/Syukron/Developer/API/kejar/matrikulasi/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/mackbookids01/Syukron/Developer/API/kejar/matrikulasi/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

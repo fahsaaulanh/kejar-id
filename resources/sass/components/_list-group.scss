@@ -1,0 +1,55 @@
+.list-group {
+    display: grid;
+    grid-row: auto;
+    grid-row-gap: 1.6rem;
+    padding: 0;
+    margin: 0;
+  }
+
+.list-group-item {
+  height: 4.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 1.6rem;
+  margin: 0;
+  background-color: $grey-15;
+  border: none;
+  border-radius: 0 !important;
+
+  &:hover {
+      background-color: $blue-tp;
+      a {
+          color: $purple;
+      }
+  }
+
+  a {
+    @include h4-reg;
+    color: $black-1;
+    text-overflow: ellipsis;
+    padding: 0 !important;
+    margin: 0 !important;
+    &:hover {
+        color: $purple;
+        text-decoration: none;
+    }
+  }
+
+  i {
+      padding: 0 !important;
+      margin-right: 0.8rem !important;
+      line-height: 2rem;
+      font-size: 2rem;
+      top: 0.3rem;
+      left: 0.2rem;
+
+      ::before {
+          color: $black-1;
+      }
+
+      &:hover {
+          color: $purple;
+      }
+  }
+}

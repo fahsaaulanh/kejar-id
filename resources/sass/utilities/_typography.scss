@@ -1,0 +1,180 @@
+body {
+    font-family: $font-family-monospace;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+    color: $black-1;
+    margin: unset;
+    padding: unset;
+    background: $white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    margin: unset;
+}
+
+h1 {
+    font-size: 3.3rem;
+    line-height: 3.6rem; 
+}
+
+@mixin h1 {
+    font-weight: bold;
+    font-size: 3.3rem;
+    line-height: 3.6rem; 
+}
+
+@mixin h1-reg {
+    font-weight: normal;
+    font-size: 3.3rem;
+    line-height: 3.6rem; 
+}
+
+h2 {
+    font-size: 2.5rem;
+    line-height: 2.8rem;
+}
+
+@mixin h2 {
+    font-weight: bold;
+    font-size: 2.5rem;
+    line-height: 2.8rem;
+}
+
+@mixin h2-reg {
+    font-weight: normal;
+    font-size: 2.5rem;
+    line-height: 2.8rem;
+}
+
+h3 {
+    font-size: 1.9rem;
+    line-height: 2.4rem;
+}
+
+@mixin h3 {
+    font-weight: bold;
+    font-size: 1.9rem;
+    line-height: 2.4rem;
+}
+
+@mixin h3-reg {
+    font-weight: normal;
+    font-size: 1.9rem;
+    line-height: 2.4rem;
+}
+
+h4 {
+    font-size: 1.7rem;
+    line-height: 2rem;
+}
+
+@mixin h4 {
+    font-weight: bold;
+    font-size: 1.7rem;
+    line-height: 2rem;
+}
+
+@mixin h4-reg {
+    font-weight: normal;
+    font-size: 1.7rem;
+    line-height: 2rem;
+}
+
+h5 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+@mixin h5 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+@mixin h5-reg {
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+h6 {
+    font-size: 1.3rem;
+    line-height: 16rem;
+}
+
+@mixin h6 {
+    font-weight: bold;
+    font-size: 1.3rem;
+    line-height: 16rem;
+}
+
+@mixin h6-reg {
+    font-weight: normal;
+    font-size: 1.3rem;
+    line-height: 16rem;
+}
+
+.label {
+    font-weight: normal;
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+}
+
+@mixin label-bold {
+    font-weight: bold;
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+}
+
+@mixin label {
+    font-weight: normal;
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+}
+
+.lead {
+    font-weight: normal;
+    font-size: 1.7rem;
+    line-height: 2.4rem;
+}
+
+p {
+    font-weight: normal;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+}
+
+.display-1, .display-2, .display-3 {
+    font-weight: normal;
+}
+
+.display-1 {
+    font-size: 6.4rem;
+    line-height: 8rem;
+}
+
+.display-2 {
+    font-size: 4.8rem;
+    line-height: 5.6rem;
+}
+
+.display-3 {
+    font-size: 2.8rem;
+    line-height: 3.6rem;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-reguler {
+    font-weight: normal;
+}
+
+.brand-hero {
+    text-align: center;
+    text-overflow: wrap;
+    padding: 2rem;
+    margin-bottom: 4rem;
+}

@@ -1,8 +1,20 @@
+// Make 1 rem as 10 px
+html {
+    font-size: 62.5%;
+}
+
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&display=swap');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+// Kejar
+@import 'utilities';
+@import 'layout';
+@import 'components';
+
