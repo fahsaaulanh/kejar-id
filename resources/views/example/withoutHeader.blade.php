@@ -26,9 +26,5 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-@endsection
-=======
     <div class="bg-lego-mobile"></div>
 @endsection
->>>>>>> add basic scss
