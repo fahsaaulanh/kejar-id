@@ -1,0 +1,33 @@
+.breadcrumb {
+    background: transparent;
+    padding: 0 !important;
+    margin: 0.8rem 0 !important;
+}
+
+.breadcrumb-item {
+    @include h5-reg;
+    color: $grey-6;
+
+    &:hover {
+        color: $blue-2;
+        text-decoration: none;
+    }
+
+    &.active {
+        color: $black-1 !important;
+    }
+}
+
+.page-title {
+    margin-bottom: 4rem;
+}
+
+.copy-id {
+    @include h5-reg;
+    color: $blue;
+
+    &:hover {
+        color: $blue-2;
+        cursor: pointer;
+    }
+}
