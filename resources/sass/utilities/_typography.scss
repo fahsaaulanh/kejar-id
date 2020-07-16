@@ -100,19 +100,19 @@ h5 {
 
 h6 {
     font-size: 1.3rem;
-    line-height: 16rem;
+    line-height: 1.6rem;
 }
 
 @mixin h6 {
     font-weight: bold;
     font-size: 1.3rem;
-    line-height: 16rem;
+    line-height: 1.6rem;
 }
 
 @mixin h6-reg {
     font-weight: normal;
     font-size: 1.3rem;
-    line-height: 16rem;
+    line-height: 1.6rem;
 }
 
 .label {

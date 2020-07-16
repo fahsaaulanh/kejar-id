@@ -8,3 +8,72 @@
         width: 100%
     }
 }
+
+.row.dashboard{
+    margin-left: 0rem;
+    box-sizing: border-box;
+    width: 100%;
+    align-items: center;
+
+    .content-header{
+        margin: 3rem auto;
+
+        .content-title{
+            @include h1;
+            margin: 0rem 3rem;
+            font-weight: bold;
+            text-align: center;
+            color: $black;
+        }
+    }
+
+    .content-body{
+
+        @media screen and (max-width: 38.4rem) {
+            .content-body{
+                padding: 0rem 4rem;
+            }
+        }
+
+        @media screen and (max-width: 76.8rem) {
+            .content-body{
+                padding: 0rem 4rem;
+            }
+        }
+
+        .card-deck{
+            justify-content: center;
+
+            .card{
+                border: 0rem;
+                border-radius: 0;
+                text-decoration: none;
+                text-align: center;
+                color: $black;
+                margin-top: 4rem;
+                max-width: 34.4rem;
+                min-width: 22.4rem;
+
+                .card-body{
+                    padding: 2rem 1.25rem;
+
+                    .card-img, .card-img-top{
+                        border-radius: 0;
+                    }
+
+                    .card-title{
+                        font-weight: bold;
+                        font-size: 1.9rem;
+                        line-height: 2.4rem;
+                    }
+
+                    .card-text{
+                        font-weight: normal;
+                        font-size: 1.5rem;
+                        line-height: 2.4rem;
+                    }
+                }
+            }
+        }
+    }
+}
