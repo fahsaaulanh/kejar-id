@@ -23,9 +23,11 @@
       src: "{{ deploy_archive }}"
       dest: "{{ deploy_target_path }}"
   - name: Ensure directories are 0775
-    command: find {{ deploy_target_path }} -type d -exec chmod -c 0775 {} \;
+    command: find {{ deploy_target_path }} -not \( -path node_modules -prune \) -not \( -path vendor -prune \) -type d -exec chmod -c 0775 {} \;
+    no_log: true
   - name: Ensure files are 0664
-    command: find {{ deploy_target_path }} -type f -exec chmod -c 0664 {} \;
+    command: find {{ deploy_target_path }} -not \( -path node_modules -prune \) -not \( -path vendor -prune \) -type f -exec chmod -c 0664 {} \;
+    no_log: true
   - name: Ensure release storage directory removed
     file:
       name: "{{ deploy_target_path }}/storage"
