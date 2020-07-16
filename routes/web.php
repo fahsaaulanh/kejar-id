@@ -18,7 +18,6 @@ Route::get('/login', 'LoginController@index');
 Route::post('/login', 'LoginController@login');
 
 Route::middleware('session')->group(function () {
-    Route::get('/dashboard', 'HomeController@dashboard');
     Route::get('/logout', 'HomeController@logout');
 
     Route::middleware('admin')->group(function () {
@@ -59,31 +58,36 @@ Route::middleware('session')->group(function () {
     });
 
     Route::middleware('teacher')->group(function () {
-         // Khusus route teacher disini
+        // Khusus route teacher disini
         Route::get('/teacher', 'HomeController@teacher');
     });
 
     Route::middleware('student')->group(function () {
 
-         // Khusus route student disini
-        Route::get('/student', 'HomeController@student');
+        // Khusus route student disini
 
-        Route::prefix('student')->group(function () {
+        Route::prefix('students')->group(function () {
+
             Route::get('/result', 'Student\ResultController@index'); //TODO EXAM
 
-            Route::prefix('/{game}/stages')->group(function () {
+            Route::prefix('/games')->group(function () {
 
                 Route::get('/', 'Student\GameController@index');
 
-                Route::prefix('/{stageId}/rounds')->group(function () {
+                Route::prefix('/{game}/stages')->group(function () {
 
-                    Route::get('/', 'Student\RoundController@index');
+                    Route::get('/', 'Student\StageController@index');
 
-                    // exam
-                    Route::get('{roundId}/onboarding', 'Student\OnBoardingController@index');
-                    Route::get('{roundId}/exam', 'Student\MatrikulasiExamController@index');
-                    Route::post('{roundId}/check', 'Student\MatrikulasiExamController@checkAnswer');
-                    Route::post('{roundId}/{taskId}/finish', 'Student\MatrikulasiExamController@finish');
+                    Route::prefix('/{stageId}/rounds')->group(function () {
+
+                        Route::get('/', 'Student\RoundController@index');
+
+                        // exam
+                        Route::get('/{roundId}/onboarding', 'Student\OnBoardingController@index');
+                        Route::get('/{roundId}/exam', 'Student\MatrikulasiExamController@index');
+                        Route::post('/{roundId}/check', 'Student\MatrikulasiExamController@checkAnswer');
+                        Route::post('/{roundId}/{taskId}/finish', 'Student\MatrikulasiExamController@finish');
+                    });
                 });
             });
         });

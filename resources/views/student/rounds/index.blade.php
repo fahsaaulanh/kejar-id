@@ -11,13 +11,13 @@
                 <div class="col-12">
                     <div class="content">
                         <div class="content-header">
-                            <a href="{{ url('/stages') }}" class="btn-back">
+                            <a href="{{ url('/students/games/' . $game['uri'] . '/stages') }}" class="btn-back">
                                 <i class="kejar-arrow-left"></i>
                                  Kembali
                             </a>
                             <ul class="breadcrumb-custom">
-                                <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Beranda</a></li>
-                                <li class="breadcrumb-item"><a href="{{ url('/student/' . $game['uri'] . '/stages') }}">{{ $game['uri'] }}</a></li>
+                                <li class="breadcrumb-item"><a href="{{ url('/students/games') }}">Beranda</a></li>
+                                <li class="breadcrumb-item"><a href="{{ url('/students/games/' . $game['uri'] . '/stages') }}">{{ $game['uri'] }}</a></li>
                                 <li class="breadcrumb-item active"><a href="#">{{ $stage['title'] }}</a></li>
                             </ul>
                             <h2 class="title-round">{{ $stage['title'] }}</h2>
