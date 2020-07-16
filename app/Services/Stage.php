@@ -7,7 +7,7 @@ class Stage extends Service
 
     public function getAll($game)
     {
-        $response = $this->get("/matrikulasi/games/$game/stages");
+        $response = $this->get("/matrikulasi/games/$game/stages?per_page=10");
 
         return $this->showResponse($response);
     }

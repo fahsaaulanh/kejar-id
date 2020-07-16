@@ -8,8 +8,21 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->session()->has('token')) {
+            $userApi = new UserApi;
+            $responseMe = $userApi->me();
+
+            if ($responseMe['data']['role'] === 'STUDENT') {
+                return redirect('/students/games');
+            }
+
+            if ($responseMe['error']) {
+                return redirect('/login');
+            }
+        }
+        
         $data = [
             'message' => '',
         ];
@@ -19,16 +32,7 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        $userApi = new UserApi;
-        $response = $userApi->me();
-
-        if ($response['error']) {
-            return redirect('/login');
-        }
-
-        session(['user' => $response['data']]);
-
-        return view('home/dashboard', $response['data']);
+        echo 'Dashboard';
     }
 
     public function teacher()

@@ -3,39 +3,21 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use App\Services\Stage as StageApi;
-
-// use App\Services\Task as TaskApi;
+use App\Services\User as UserApi;
 
 class GameController extends Controller
 {
-    public function index($game)
+    public function index()
     {
-        $stageApi = new StageApi;
-        $stages = $stageApi->getAll($game)['data'] ?? [];
+        $userApi = new UserApi;
+        $response = $userApi->me();
 
-        $modStages = [];
-        foreach ($stages as $stage) {
-            $stage['status'] = 'done';
-            $modStages[] = $stage;
+        if ($response['error']) {
+            return redirect('/login');
         }
 
-        $stages = $modStages;
+        session(['user' => $response['data']]);
 
-        if ($game === 'OBR') {
-            $game = [];
-            $game['uri'] = 'OBR';
-            $game['title'] = 'Operasi Bilangan Rill';
-        } elseif ($game === 'VOCABULARY') {
-            $game = [];
-            $game['uri'] = 'VOCABULARY';
-            $game['title'] = 'Vocabulary';
-        } elseif ($game === 'KATABAKU') {
-            $game = [];
-            $game['uri'] = 'KATABAKU';
-            $game['title'] = 'Kata Baku';
-        }
-
-        return view('student.game.index', compact('game', 'stages'));
+        return view('student.games.index', $response['data']);
     }
 }

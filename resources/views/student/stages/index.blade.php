@@ -14,14 +14,14 @@
 
                     <!-- Link back -->
                     <div class="link-back">
-                        <a href="{{ url('/dashboard') }}" class="text-link d-flex align-items-center">
+                        <a href="{{ url('/students/games') }}" class="text-link d-flex align-items-center">
                             <i class="kejar kejar-arrow-left"></i> <span class="ml-2">Kembali</span>
                         </a>
                     </div>
 
                     <!-- Breadcrumb -->
                     <nav class="breadcrumb bg-transparent p-0">
-                        <a class="breadcrumb-item" href="{{ url('/dashboard') }}">Beranda</a>
+                        <a class="breadcrumb-item" href="{{ url('/students/games') }}">Beranda</a>
                         <span class="breadcrumb-item active">{{ $game['uri'] }}</span>
                     </nav>
 
@@ -37,7 +37,7 @@
                                 <i class="kejar kejar-right"></i>
                             </div>
                             <div class="stage-text w-100">
-                                <a href="{{ url('/student/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}" class="text-link">
+                                <a href="{{ url('/students/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}" class="text-link">
                                     <span class="stage-number">Babak {{ ++$key }} : </span><span class="text-wrap">{{ $stage['title'] }}</span>
                                 </a>
                             </div>

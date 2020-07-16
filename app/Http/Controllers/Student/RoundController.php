@@ -8,11 +8,10 @@ use App\Services\Stage as StageApi;
 
 class RoundController extends Controller
 {
-    // Open View User Round
     public function index($game, $stageId)
     {
         $stageApi = new StageApi;
-        $response = $stageApi->getDetail($game, $stageId);
+        $response = $stageApi->getDetail(strtoupper($game), $stageId);
         $stage = $response['data'];
 
         $roundApi = new RoundApi;
@@ -32,16 +31,16 @@ class RoundController extends Controller
             $rounds = '';
         }
 
-        if ($game === 'OBR') {
-            $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
-        } elseif ($game === 'VOCABULARY') {
-            $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'VOCABULARY'];
-        } elseif ($game === 'KATABAKU') {
-            $game = ['short' => 'Kata Baku', 'title' => 'KATA BAKU', 'uri' => 'KATABAKU'];
+        if ($game === 'obr') {
+            $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'obr'];
+        } elseif ($game === 'vocabulary') {
+            $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'vocabulary'];
+        } elseif ($game === 'katabaku') {
+            $game = ['short' => 'Kata Baku', 'title' => 'KATA BAKU', 'uri' => 'katabaku'];
         } else {
             abort(404);
         }
 
-        return view('student.round.index', compact('game', 'stage', 'rounds'));
+        return view('student.rounds.index', compact('game', 'stage', 'rounds'));
     }
 }
