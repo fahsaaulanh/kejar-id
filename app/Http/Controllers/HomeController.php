@@ -10,19 +10,22 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->session()->has('token')) {
+        if ($request->session()->has('token') === true) {
             $userApi = new UserApi;
             $responseMe = $userApi->me();
-
             if ($responseMe['data']['role'] === 'STUDENT') {
                 return redirect('/students/games');
+            }
+
+            if ($responseMe['data']['role'] === 'ADMIN') {
+                return redirect('/admin');
             }
 
             if ($responseMe['error']) {
                 return redirect('/login');
             }
         }
-        
+
         $data = [
             'message' => '',
         ];
@@ -32,7 +35,9 @@ class HomeController extends Controller
 
     public function dashboard()
     {
-        echo 'Dashboard';
+        $user = session('user');
+
+        return view('home.dashboard', $user);
     }
 
     public function teacher()
@@ -42,7 +47,7 @@ class HomeController extends Controller
 
     public function admin()
     {
-        echo 'Example Admin';
+        return view('home.dashboard');
     }
 
     public function student()
@@ -52,12 +57,7 @@ class HomeController extends Controller
 
     public function logout(Request $request)
     {
-        $userApi = new UserApi;
-        $response = $userApi->me();
-
-        if (!$response['error']) {
-            $request->session()->flush();
-        }
+        $request->session()->flush();
 
         return redirect('/login');
     }
