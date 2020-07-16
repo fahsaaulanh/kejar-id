@@ -5,9 +5,10 @@ stages:
   - test
   - build
   - staging
+  - production
 
 test:lint:
-  image: registry.gitlab.com/idsdeveloper/kejar/docker:2.0
+  image: registry.gitlab.com/idsdeveloper/kejar/docker:latest
   stage: test
   script:
     - cp .env.example .env
@@ -21,10 +22,12 @@ test:lint:
     - master
 
 build:app:
-  image: registry.gitlab.com/idsdeveloper/kejar/docker:2.0
+  image: registry.gitlab.com/idsdeveloper/kejar/docker:latest
   stage: build
   script:
     - composer install --optimize-autoloader --no-dev --no-suggest --prefer-dist --no-scripts --no-plugins
+    - yarn install
+    - yarn production
     - rm -rf ./tests
     - rm -rf ./database
     - rm -rf ./storage
@@ -39,20 +42,22 @@ build:app:
     key: composer
     paths:
       - vendor/
+      - node_modules/
     policy: pull
   only:
     - master
     - /^staging-.*$/
+    - /^release-.*$/
 
 staging:deploy:
   image: williamyeh/ansible:ubuntu18.04
   stage: staging
   script:
     - cd deploy
-    - echo "$STAGING_PRIVATE_KEY" > staging.key
+    - echo "$DEPLOYER_PRIVATE_KEY" > staging.key
     - chmod 400 staging.key
     - export ANSIBLE_HOST_KEY_CHECKING=false
-    - ansible-playbook -v -i inventory staging.yml
+    - ansible-playbook -v -i staging playbook.yml
     - rm -rf staging.key
   cache: {}
   dependencies:
@@ -62,4 +67,26 @@ staging:deploy:
       when: manual
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: on_success
+  environment:
+    name: staging
+    url: https://matrik-sushi.kejar.id
+
+production:deploy:
+  image: williamyeh/ansible:ubuntu18.04
+  stage: production
+  script:
+    - cd deploy
+    - echo "$DEPLOYER_PRIVATE_KEY" > production.key
+    - chmod 400 production.key
+    - export ANSIBLE_HOST_KEY_CHECKING=false
+    - ansible-playbook -v -i production playbook.yml
+    - rm -rf production.key
+  cache: {}
+  dependencies:
+    - build:app
+  only:
+    - /^release-.*$/
+  environment:
+    name: production
+    url: https://matrikulasi.kejar.id
 
