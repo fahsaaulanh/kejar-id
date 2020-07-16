@@ -81,7 +81,7 @@
                     <tbody>
                         @forelse($roundQuestionsData as $question)
                         <tr>
-                            <td class="align-middle">{{ $question['question']['question']  }}</td>
+                            <td class="align-middle">${{ $question['question']['question'] }}$</td>
                             <td class="align-middle">{{ $question['question']['answer'] }}</td>
                         </tr>
                         @empty

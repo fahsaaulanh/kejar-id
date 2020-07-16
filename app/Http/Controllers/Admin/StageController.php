@@ -113,7 +113,7 @@ class StageController extends Controller
             'title' => 'required',
             'description' => 'required',
         ]);
-        
+
         $stageApi = new StageApi;
         $payload = [
             'title' => $request->title,

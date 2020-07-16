@@ -41,8 +41,15 @@ class LoginController extends Controller
             $userApiMe = new UserApi;
             $responseMe = $userApiMe->me();
 
+
+            $request->session()->put('user', $responseMe['data']);
+
             if ($responseMe['data']['role'] === 'STUDENT') {
                 return redirect('/students/games');
+            }
+
+            if ($responseMe['data']['role'] === 'ADMIN') {
+                return redirect('/admin');
             }
         }
 

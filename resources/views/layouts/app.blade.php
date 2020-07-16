@@ -10,7 +10,7 @@
         <link href="{{ url('/assets/css/bootstrap.css') }}" rel="stylesheet">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-
+        <script src="{{ url('js/check-for-tex.js') }}" defer></script>
         <!-- Custom -->
         @yield('styles')
     </head>

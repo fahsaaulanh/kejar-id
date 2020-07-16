@@ -18,7 +18,7 @@
                     $role = session('user')['role'];
 
                     if($role === 'ADMIN') {
-                        $prefix = 'admins';
+                        $prefix = 'admin';
                     } elseif ($role === 'STUDENT') {
                         $prefix = 'students';
                     } elseif ($role === 'TEACHER') {
@@ -26,21 +26,21 @@
                     }
 
                 @endphp
-                <a href="{{ url($prefix . '/obr/stages') }}" class="card">
+                <a href="{{ url($prefix . '/OBR/stages') }}" class="card">
                     <img src="{{ asset('assets/images/home/obr.png') }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Operasi Bilangan Riil</h5>
                         <p class="card-text">Berhitung lebih cepat dan tepat agar belajar Matematika mudah dan lancar.</p>
                     </div>
                 </a>
-                <a href="{{ url($prefix . '/katabaku/stages') }}" class="card">
+                <a href="{{ url($prefix . '/KATABAKU/stages') }}" class="card">
                     <img src="{{ asset('assets/images/home/kata-baku.png') }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Kata Baku</h5>
                         <p class="card-text">Menulis lebih profesional dengan Bahasa Indonesia yang baik dan benar.</p>
                     </div>
                 </a>
-                <a href="{{ url($prefix . '/vocabulary/stages') }}" class="card">
+                <a href="{{ url($prefix . '/VOCABULARY/stages') }}" class="card">
                     <img src="{{ asset('assets/images/home/vocab.png') }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Vocabulary</h5>
