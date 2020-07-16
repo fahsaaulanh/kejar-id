@@ -13,8 +13,17 @@ class HomeController extends Controller
         if ($request->session()->has('token') === true) {
             $userApi = new UserApi;
             $responseMe = $userApi->me();
+            
             if ($responseMe['data']['role'] === 'STUDENT') {
                 return redirect('/students/games');
+            }
+            
+            if ($responseMe['data']['role'] === 'ADMIN') {
+                return redirect('/admin/games');
+            }
+            
+            if ($responseMe['data']['role'] === 'ADMIN') {
+                return redirect('/admin/games');
             }
 
             if ($responseMe['data']['role'] === 'ADMIN') {
@@ -47,7 +56,16 @@ class HomeController extends Controller
 
     public function admin()
     {
-        return view('home.dashboard');
+        $userApi = new UserApi;
+        $response = $userApi->me();
+
+        if ($response['error']) {
+            return redirect('/login');
+        }
+
+        session(['user' => $response['data']]);
+
+        return view('admin.games.index', $response['data']);
     }
 
     public function student()

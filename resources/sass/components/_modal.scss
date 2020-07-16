@@ -1,0 +1,129 @@
+.modal{
+
+    .modal-content{
+        border-radius: 0rem;
+        border: 0rem;
+        padding: 1.6rem;
+
+        .modal-header{
+            border: none !important;
+
+            .modal-title{
+                @include h3;
+            }
+        }
+    
+        .modal-body{
+            padding-bottom: 3rem;
+
+            .custom-upload{
+                margin-bottom: 0rem !important;
+
+                input[type="text"]{
+                    width: 100%;
+                    border-radius: 0rem;
+                    border: 2px solid $grey-13;
+                    padding: 1rem 1.2rem;
+                    color: $grey-6;
+                }
+
+                .btn-label{
+                    @include h5-reg;
+                    padding: 1rem 1.2rem;
+                    color: $blue;
+
+                    &:hover{
+                        color: $blue-2;
+                    }
+                }
+                
+                input[type="file"]{
+                    display: none;
+                }
+            }
+
+            .form-group{
+                
+                label{
+                    @include h5;
+                }
+
+                textarea{
+                    height: 7.5rem;
+                }
+            }
+    
+
+            .link-download{
+                @include h6-reg;
+                color: $blue;
+                line-height: 0rem !important;
+                text-decoration: none;
+
+                &:hover{
+                    color: $blue-2;
+                    cursor: pointer;
+                }
+            }
+        }
+    
+        .modal-footer{
+            border: none !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+    
+            a{
+                @include h5-reg;
+                color: $blue;
+                text-decoration: none;
+    
+                i{
+                    font-size: 2rem;
+                    top: 0.1rem;
+    
+                    &:before{
+                        color: $blue;
+                        font-size: 1.5rem;
+                    }
+                }
+    
+                &:hover{
+                    color: $blue-2;
+    
+                    i{
+                        &:before{
+                            color: $blue-2;
+                        }
+                    }
+                }
+            }
+    
+            .btn{
+                @include h5-reg;
+                padding: 0.8rem 1rem;
+                border-radius: 0rem;
+            }
+
+            .btn-cancel{
+                color: $blue;
+                background: transparent;
+
+                &:hover{
+                    color: $blue-2;
+                }
+            }
+
+            .btn-primary{
+                background: $blue;
+                color: $white;
+
+                &:hover{
+                    background: $blue-2;
+                }
+            }
+
+        }
+    }
+    
+}

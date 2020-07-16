@@ -22,7 +22,7 @@ Route::middleware('session')->group(function () {
 
     Route::middleware('admin')->group(function () {
 
-        Route::get('/admin', 'HomeController@admin');
+        Route::get('/admin/games', 'HomeController@admin');
 
         // example
         Route::get('/example-header', fn () => view('example/withHeader'));
@@ -34,8 +34,9 @@ Route::middleware('session')->group(function () {
 
             Route::prefix('{game}/stages')->group(function () {
                 Route::get('/', 'Admin\StageController@index');
+                Route::post('/', 'Admin\StageController@create');
                 Route::post('/upload', 'Admin\StageController@upload');
-                Route::post('/create', 'Admin\StageController@create');
+                Route::post('/upload-rounds', 'Admin\StageController@uploadRounds');
                 Route::patch('/{stageId}/order', 'Admin\StageController@order');
 
                 Route::prefix('{stageId}/rounds')->group(function () {

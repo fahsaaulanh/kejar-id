@@ -95,6 +95,7 @@ class RoundController extends Controller
                     'order' => $lastOrder,
                     'status' => 'NOT_PUBLISHED',
                 ];
+
                 $store = $store->store($data);
             }
 

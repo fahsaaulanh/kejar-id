@@ -32,11 +32,7 @@
         </div>
 
         <!-- List of Stages (Admin)-->
-<<<<<<< HEAD
-        <div class="list-group">
-=======
         <div class="list-group">       
->>>>>>> add basic scss
             <div class="list-group-item">
                 <a href="#">
                     <i class="kejar-ink"></i>
