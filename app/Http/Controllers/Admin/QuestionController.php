@@ -46,7 +46,7 @@ class QuestionController extends Controller
         }
 
         $game = $this->getGame($game);
-        
+
         return view(
             'admin.questions.index',
             compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
@@ -64,7 +64,7 @@ class QuestionController extends Controller
         ]);
 
         $file = $request->file('question_file');
-        
+
         try {
             $data = Excel::toArray([], $file);
 
@@ -82,7 +82,7 @@ class QuestionController extends Controller
                 $roundIdIndex = 0;
                 $questionIndex = 1;
                 $answerIndex = 2;
-                $game = $data[$sheetIndex][0][1];
+                // $game = $data[$sheetIndex][0][1];
 
                 $collection = [
                     'owner' => 'KEJAR',
@@ -102,7 +102,7 @@ class QuestionController extends Controller
                 $roundQuestionMeta = $roundQuestionApi
                                 ->getAll($data[$sheetIndex][$row][$roundIdIndex], $request->page ?? 1)['meta'] ?? [];
                 $questionTotal = $roundQuestionMeta['total'] ?? 0;
-                
+
                 $payloadQS = [
                     'question_id' => $question['data']['id'],
                     'round_id' => $data[$sheetIndex][$row][$roundIdIndex],
@@ -143,11 +143,11 @@ class QuestionController extends Controller
                         'status' => '2',
                         'created_by'=> session('user.id'),
                     ];
-                    
+
                     $question = $questionApi->store($collection);
                     $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
                     $questionTotal = $roundQuestionMeta['total'] ?? 0;
-                    
+
                     $payloadQS = [
                         'question_id' => $question['data']['id'],
                         'round_id' => $roundId,
