@@ -1,0 +1,23 @@
+.page-description{
+    margin: 4rem auto;
+
+    .page-description-item{
+        margin: 2rem auto !important;
+
+        h5{
+            @include h5;
+            font-weight: bold;
+            line-height: 2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        p{
+            @include h5-reg;
+            line-height: 2rem;
+        }
+    }
+}
+
+.material-default{
+    color: $grey-6;
+}

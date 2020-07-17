@@ -49,9 +49,15 @@ Route::middleware('session')->group(function () {
                     Route::post('/upload-question', 'Admin\QuestionController@uploadFile');
                     Route::post('/modal/round/update/{id}', 'Admin\RoundModalController@updateRoundModal');
 
-                    Route::prefix('{roundId}/questions')->group(function () {
+                    Route::prefix('{roundId}')->group(function () {
                         Route::get('/', 'Admin\QuestionController@index');
-                        Route::post('/', 'Admin\QuestionController@storeQuestion');
+                        Route::patch('/', 'Admin\QuestionController@update');
+
+                        Route::prefix('questions')->group(function () {
+                            Route::post('/', 'Admin\QuestionController@create');
+                            Route::post('/upload', 'Admin\QuestionController@upload');
+                            Route::patch('/{questionId}', 'Admin\QuestionController@updateQuestion');
+                        });
                     });
                 });
             });

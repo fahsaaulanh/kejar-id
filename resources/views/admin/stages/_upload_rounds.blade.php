@@ -8,7 +8,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ url('admin/'. $game['uri'] .'/stages/upload-rounds') }}" method="post" enctype="multipart/form-data" id="round-upload-form">
+                <form action="{{ secure_url('admin/'. $game['uri'] .'/stages/upload-rounds') }}" method="post" enctype="multipart/form-data" id="round-upload-form">
                     @csrf
                     <div class="row custom-upload">
                         <div class="col-8">

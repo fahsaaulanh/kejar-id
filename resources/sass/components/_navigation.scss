@@ -1,0 +1,35 @@
+.navigation{
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem auto;
+    align-items: center;
+
+    .pagination-detail{
+        @include h5-reg;
+        color: $grey-3;
+    }
+
+    .pagination{
+        border-radius: 0rem;
+
+        .page-item{
+            border-radius: 0rem;
+
+            .page-link{
+                @include h6;
+                padding: 1rem;
+                border-radius: 0rem;
+                border: 2px solid $grey-13;
+            }
+        }
+
+        .active{
+
+            .page-link{
+                background: $blue-tp !important;
+                color: $blue !important;
+                font-weight: bold;
+            }
+        }
+    }
+}
