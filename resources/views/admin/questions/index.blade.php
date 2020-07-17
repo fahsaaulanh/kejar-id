@@ -8,13 +8,13 @@
 
     <!-- Link Back -->
     <div class="px-3 row align-items-center justify-content-between">
-        <a class ="btn-back" href="{{ secure_url('/admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}">
+        <a class ="btn-back" href="{{ url('/admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}">
             <i class="kejar-back"></i>Kembali
         </a>
         <button class="{{ $round['status'] == 'PUBLISHED' ? 'btn-revise' : 'btn-publish'}}" onclick="document.getElementById('update-status-form').submit();">
             {{ $round['status'] == 'PUBLISHED' ? 'Revisi' : 'Terbitkan'}}
         </button>
-        <form action="{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id']) }}" method="post" id="update-status-form" class="d-none">
+        <form action="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id']) }}" method="post" id="update-status-form" class="d-none">
             @csrf
             @method('PATCH')
             <input type="hidden" name="status" value="{{ $round['status'] == 'PUBLISHED' ? 'NOT_PUBLISHED' : 'PUBLISHED' }}">
@@ -23,9 +23,9 @@
 
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="{{ secure_url('/admin/games') }}">Beranda</a>
-        <a class="breadcrumb-item" href="{{ secure_url('/admin/' . $game['uri'] . '/stages') }}">{{ $game['short'] }}</a>
-        <a class="breadcrumb-item" href="{{ secure_url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}">Babak {{ $stage['order'] }}</a>
+        <a class="breadcrumb-item" href="{{ url('/admin/games') }}">Beranda</a>
+        <a class="breadcrumb-item" href="{{ url('/admin/' . $game['uri'] . '/stages') }}">{{ $game['short'] }}</a>
+        <a class="breadcrumb-item" href="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}">Babak {{ $stage['order'] }}</a>
         <span class="breadcrumb-item active">Ronde {{ $round['order'] }}</span>
     </nav>
 
@@ -140,7 +140,7 @@
 
     $(document).on('click', '.btn-add', function(){
         var index = $('.table-form tbody tr').length;
-        
+
         $('.table-form').find('tbody').append('<tr><td><input type="text" placeholder="Ketik soal" name="question[' + index + '][question]" class="form-control"></td><td><input type="text" placeholder="Ketik jawaban" name="question['+ index +'][answer]" class="form-control"></td></tr>');
     });
 
@@ -152,7 +152,7 @@
     });
 
     $('[data-toggle="popover"]').popover();
-    
+
     function textToClipboard (text) {
         event.preventDefault();
         setTimeout(() => {
@@ -193,7 +193,7 @@
         var id = $(this).parent().data('id');
         var question = $(this).parent().data('question');
         var answer = $(this).parent().data('answer');
-        url = "{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/') }}/" + id;
+        url = "{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/') }}/" + id;
         $(modal).find('form').attr('action', url);
         $(modal).find('input[name="question"]').val(question);
         $(modal).find('input[name="answer"]').val(answer);
