@@ -23,9 +23,18 @@
           color: $purple;
       }
 
-      .stage-order-buttons{
+      .stage-order-buttons, .round-order-buttons{
           display: grid;
       }
+
+      .btn-icon{
+          &.order-status{
+              display: none;
+          }
+          &.sort-up, &.sort-down{
+              display: block;
+          }
+    }
   }
 
   a {

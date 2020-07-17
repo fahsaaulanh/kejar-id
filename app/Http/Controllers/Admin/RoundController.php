@@ -25,16 +25,17 @@ class RoundController extends Controller
         $response = $roundApi->index($filter);
         $rounds = $response['data'] ?? [];
 
-        // if ($rounds !== '') {
-        //     $round = [];
-        //     foreach ($rounds as $key => $row) {
-        //         $round[$key] = $row['order'];
-        //     }
+        // For ordering the round
+        if ($rounds !== '') {
+            $round = [];
+            foreach ($rounds as $key => $row) {
+                $round[$key] = $row['order'];
+            }
 
-        //     array_multisort($round, SORT_ASC, $rounds);
-        // } else {
-        //     $rounds = '';
-        // }
+            array_multisort($round, SORT_ASC, $rounds);
+        } else {
+            $rounds = '';
+        }
 
         if ($game === 'OBR') {
             $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
@@ -61,10 +62,24 @@ class RoundController extends Controller
         return response()->json(['status' => $request->status]);
     }
 
-    public function uploadFile(Request $req)
+    public function uploadRoundsFile(Request $req)
     {
         $file = $req->file('excel_file');
+
+        if (is_null($file) === true) {
+            return redirect()->back()->withErrors([
+                'error' => ['Silakan pilih file terlebih dahulu'],
+            ]);
+        }
+
         $theArray = Excel::toArray([], $file);
+
+        if ($theArray[0][3][0] !== 'ID Babak') {
+            return redirect()->back()->withErrors([
+                'error' => ['Data tidak berhasil diunggah! Silakan download format data yang tersedia!'],
+            ]);
+        }
+
         $total_array = count($theArray[0]);
         $takeLastOrder = new RoundApi;
         $response = $takeLastOrder->index();
@@ -84,27 +99,27 @@ class RoundController extends Controller
 
         try {
             for ($i = 4; $i < $total_array; $i++) {
-                $lastOrder += 1;
+                $lastOrder++;
                 $store = new RoundApi;
                 $data = [
-                    'id' => $theArray[1][$i][1],
-                    'stage_id' => $theArray[1][$i][0],
-                    'title' => $theArray[1][$i][2],
-                    'description' => $theArray[1][$i][5],
-                    'direction' => $theArray[1][$i][7],
-                    'material' => $theArray[1][$i][6],
-                    'total_question' => $theArray[1][$i][3],
-                    'question_timespan' => $theArray[1][$i][4],
+                    'stage_id' => $theArray[0][$i][0],
+                    'title' => $theArray[0][$i][1],
+                    'description' => $theArray[0][$i][4],
+                    'direction' => $theArray[0][$i][6],
+                    'material' => $theArray[0][$i][5],
+                    'total_question' => $theArray[0][$i][2],
+                    'question_timespan' => $theArray[0][$i][3],
                     'order' => $lastOrder,
                     'status' => 'NOT_PUBLISHED',
                 ];
-
                 $store = $store->store($data);
             }
 
-            return back();
+            return redirect()->back()->with('success', 'Data berhasil diunggah!');
         } catch (Exception $e) {
-            return back();
+            return redirect()->back()->withErrors([
+                'error' => [$e],
+            ]);
         }
     }
 
@@ -127,28 +142,10 @@ class RoundController extends Controller
         $to_data = $roundApi->getDetail($to_id);
 
         $this_data_change = [
-            'id' => $this_data['data']['id'],
-            'stage_id' => $this_data['data']['stage_id'],
-            'title' => $this_data['data']['title'],
-            'description' => $this_data['data']['description'],
-            'direction' => $this_data['data']['direction'],
-            'material' => $this_data['data']['material'],
-            'total_question' => $this_data['data']['total_question'],
-            'question_timespan' => $this_data['data']['question_timespan'],
             'order' => $to_data['data']['order'],
-            'status' => $this_data['data']['status'],
         ];
         $to_data_change = [
-            'id' => $to_data['data']['id'],
-            'stage_id' => $to_data['data']['stage_id'],
-            'title' => $to_data['data']['title'],
-            'description' => $to_data['data']['description'],
-            'direction' => $to_data['data']['direction'],
-            'material' => $to_data['data']['material'],
-            'total_question' => $to_data['data']['total_question'],
-            'question_timespan' => $to_data['data']['question_timespan'],
             'order' => $this_data['data']['order'],
-            'status' => $to_data['data']['status'],
         ];
 
         $roundApi->update($this_data_change, $this_id);
