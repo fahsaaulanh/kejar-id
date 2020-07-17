@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Question as QuestionApi;
 use App\Services\Round as RoundApi;
+use App\Services\RoundQuestion;
 use App\Services\Stage as StageApi;
 use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Throwable;
 
 class RoundController extends Controller
 {
@@ -66,7 +69,7 @@ class RoundController extends Controller
     {
         $file = $req->file('excel_file');
 
-        if (is_null($file) === true) {
+        if (is_null($file)) {
             return redirect()->back()->withErrors([
                 'error' => ['Silakan pilih file terlebih dahulu'],
             ]);
@@ -213,5 +216,99 @@ class RoundController extends Controller
         $roundApi->store($data);
 
         return redirect()->back()->with(['message' => 'Success!']);
+    }
+
+    public function uploadQuestionFile($game, $stageId, Request $req)
+    {
+        $game;
+        $stageId;
+
+        $file = $req->file('question_file');
+
+        if (is_null($file) === true) {
+            return redirect()->back()->withErrors([
+                'error' => ['Silakan pilih file terlebih dahulu'],
+            ]);
+        }
+
+        $data = Excel::toArray([], $file);
+
+        try {
+            if ($data[0][3][0] !== 'ID Ronde') {
+                return redirect()->back()->withErrors([
+                    'error' => ['Data tidak berhasil diunggah! Silakan download format data yang tersedia!'],
+                ]);
+            }
+
+            $questionApi = new QuestionApi;
+            $roundQuestionApi = new RoundQuestion;
+            $roundApi = new RoundApi;
+
+            for ($i=4; $i < count($data[0]); $i++) {
+                $sheetIndex = 0;
+                $row = $i;
+                $roundIdIndex = 0;
+                $questionIndex = 1;
+                $answerIndex = 2;
+
+                $collection = [
+                    'owner' => 'KEJAR',
+                    'subject_id'=> null,
+                    'topic_id'=> null,
+                    'bank'=> $this->gameDefault($game),
+                    'type'=> 'MCQSA',
+                    'question'=> (string)$data[$sheetIndex][$row][$questionIndex],
+                    'choices'=> null,
+                    'answer'=> (string)$data[$sheetIndex][$row][$answerIndex],
+                    'level'=> 'LEVEL_1',
+                    'status' => '2',
+                    'created_by'=> session('user.id'),
+                ];
+
+                $question = $questionApi->store($collection);
+                $roundQuestionMeta = $roundQuestionApi
+                                ->getAll($data[$sheetIndex][$row][$roundIdIndex], $req->page ?? 1)['meta'] ?? [];
+                $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                $payloadQS = [
+                    'question_id' => $question['data']['id'],
+                    'round_id' => $data[$sheetIndex][$row][$roundIdIndex],
+                    'order' => $questionTotal + 1,
+                ];
+
+                $roundQuestionApi->store($question['data']['id'], $payloadQS);
+
+                $roundData = [
+                    'status' => 'PUBLISHED',
+                ];
+                $roundApi->update($roundData, $data[$sheetIndex][$row][$roundIdIndex]);
+            }
+        } catch (Throwable $th) {
+            return $th;
+        }
+
+        return redirect()->back()->with('success', 'Soal berhasil ditambahkan!');
+    }
+
+    private function gameDefault($game)
+    {
+        switch ($game) {
+            case 'OBR':
+                return 'OBR';
+
+                break;
+            case 'KATABAKU':
+                return 'Kata Baku';
+
+                break;
+            case 'VOCABULARY':
+                return 'Vocabulary';
+
+                break;
+            default:
+                return $game;
+
+                break;
+        }
     }
 }

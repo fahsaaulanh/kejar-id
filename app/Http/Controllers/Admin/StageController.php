@@ -178,6 +178,24 @@ class StageController extends Controller
         return redirect()->back()->with(['message' => 'Success!']);
     }
 
+    // Update Stage Modal
+    public function updateStageModal(Request $req, $game, $stageId)
+    {
+        $stageApi = new StageApi;
+        $editData = $stageApi->getDetail($game, $stageId)['data'] ?? [];
+        
+        $payload = [
+            'title' => $req->title ?? $editData['title'],
+            'game' => $editData['game'],
+            'description' => $req->description ?? $editData['description'],
+            'order' => $editData['order'],
+        ];
+
+        $stageApi->reorder($game, $stageId, $payload);
+
+        return redirect()->back();
+    }
+
     private function getGame($game)
     {
         if ($game === 'OBR') {

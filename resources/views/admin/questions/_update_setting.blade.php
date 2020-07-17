@@ -15,11 +15,11 @@
                     <div class="row">
                         <div class="form-group col-6">
                             <label for="total_question" class="font-weight-bold">Soal Ditampilkan</label>
-                            <input type="text" class="form-control" id="total_question" name="total_question" placeholder="Ketik soal ditampilkan" required value="{{ $round['total_question'] }}">
+                            <input type="number" class="form-control" id="total_question" name="total_question" placeholder="Ketik soal ditampilkan" required value="{{ $round['total_question'] }}">
                         </div>
                         <div class="form-group col-6">
                             <label for="question_timespan" class="font-weight-bold">Waktu per Soal (detik)</label>
-                            <input type="text" class="form-control" id="question_timespan" name="question_timespan" placeholder="Ketik waktu per soal" required value="{{ $round['question_timespan'] }}">
+                            <input type="number" class="form-control" id="question_timespan" name="question_timespan" placeholder="Ketik waktu per soal" required value="{{ $round['question_timespan'] }}">
                         </div>
                     </div>
                 </form>

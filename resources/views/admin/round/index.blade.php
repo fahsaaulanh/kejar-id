@@ -20,7 +20,6 @@
 
     <h5 class="mb-08rem">Deskripsi Babak</h5>
     <p class="mb-4rem">{{ $stage['description'] }}</p>
-
     @if($errors->has('error'))
         <script>
             alert("{{ $errors->first('error') }}");
@@ -39,7 +38,6 @@
             <i class="kejar-upload"></i>Unggah Soal
         </button>
     </div>
-
     <div class="list-group">
         @forelse($rounds as $round)
         <div class="list-group-item" data-id="{{ $round['id'] }}">
@@ -73,6 +71,8 @@
     </div>
 </div>
 
+@include('admin.round._update_title')
+@include('admin.round._update_description')
 @include('admin.round._upload_rounds')
 @include('admin.round._upload_question')
 @include('admin.round._create_round')
@@ -83,6 +83,14 @@
 <script>
     $(function () {
         $('[data-toggle="popover"]').popover();
+    });
+
+    $(document).on('dblclick', 'h2', function() {
+        $('#editTitle').modal('show');
+    });
+
+    $(document).on('dblclick', 'h5, p', function() {
+        $('#editDescription').modal('show');
     });
 
     $(document).on('click', '.kejar-ink', function(e) {

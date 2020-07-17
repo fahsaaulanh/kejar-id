@@ -9118,6 +9118,10 @@ p {
   margin-bottom: 0.8rem;
 }
 
+.mb-4rem {
+  margin-bottom: 4rem;
+}
+
 .mt-08rem {
   margin-top: 0.8rem;
 }
@@ -9327,6 +9331,11 @@ p {
   grid-gap: 0.8rem;
 }
 
+.round-order-buttons {
+  grid-template-columns: auto auto;
+  grid-gap: 0.8rem;
+}
+
 .btn-icon {
   width: 2rem;
   height: 2rem;
@@ -9418,6 +9427,24 @@ p {
 
 .btn-publish:hover {
   background-color: #1888FF;
+}
+
+.btn-icon.order-status {
+  display: block;
+}
+
+.btn-icon.order-status i.kejar-belum-mengerjakan1::before {
+  color: #FF4343;
+}
+
+.btn-icon.order-status i.kejar-sudah-dikerjakan::before {
+  color: #4DC978;
+}
+
+.btn-icon.sort-up,
+.btn-icon.sort-down {
+  cursor: pointer;
+  display: none;
 }
 
 .card-384 {
@@ -9796,8 +9823,18 @@ i,
   color: #7233DA;
 }
 
-.list-group-item:hover .stage-order-buttons {
+.list-group-item:hover .stage-order-buttons,
+.list-group-item:hover .round-order-buttons {
   display: grid;
+}
+
+.list-group-item:hover .btn-icon.order-status {
+  display: none;
+}
+
+.list-group-item:hover .btn-icon.sort-up,
+.list-group-item:hover .btn-icon.sort-down {
+  display: block;
 }
 
 .list-group-item a {
@@ -9852,6 +9889,17 @@ i,
   padding-bottom: 3rem;
 }
 
+.modal .modal-content .modal-body .form-group input[type=text],
+.modal .modal-content .modal-body .form-group input[type=number],
+.modal .modal-content .modal-body .form-group textarea {
+  width: 100%;
+  border-radius: 0rem;
+  border: 2px solid #EBF1F6;
+  padding: 1rem 1.2rem;
+  color: #7C92A7;
+  background-color: #FFFFFF !important;
+}
+
 .modal .modal-content .modal-body .custom-upload {
   margin-bottom: 0rem !important;
 }
@@ -9862,6 +9910,7 @@ i,
   border: 2px solid #EBF1F6;
   padding: 1rem 1.2rem;
   color: #7C92A7;
+  background-color: #FFFFFF !important;
 }
 
 .modal .modal-content .modal-body .custom-upload .btn-label {
@@ -9899,9 +9948,17 @@ i,
   text-decoration: none;
 }
 
+.modal .modal-content .modal-body .link-download i::before {
+  color: #3167F6;
+}
+
 .modal .modal-content .modal-body .link-download:hover {
   color: #1888FF;
   cursor: pointer;
+}
+
+.modal .modal-content .modal-body .link-download:hover i::before {
+  color: #1888FF;
 }
 
 .modal .modal-content .modal-footer {
@@ -9957,6 +10014,7 @@ i,
 .modal .modal-content .modal-footer .btn-primary {
   background: #3167F6;
   color: #FFFFFF;
+  border: 0;
 }
 
 .modal .modal-content .modal-footer .btn-primary:hover {
