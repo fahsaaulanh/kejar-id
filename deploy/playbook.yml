@@ -53,6 +53,8 @@
       state: link
       force: yes
       follow: no
+  - name: Ensure owner current to www-data
+    command: chown -R deployer:www-data {{ deploy_path }}/current/
   - name: List removable old releases
     shell: "ls -t | tail -n +{{ deploy_retention | int + 1 }}"
     args:
