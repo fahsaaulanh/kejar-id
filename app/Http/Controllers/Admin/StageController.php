@@ -68,7 +68,7 @@ class StageController extends Controller
                 $row = $i;
                 $title = 0;
                 $description = 1;
-                $game = $data[$sheetIndex][0][1];
+                // $game = $data[$sheetIndex][0][1];
 
                 $collection = [
                     'title' => $data[$sheetIndex][$row][$title],
