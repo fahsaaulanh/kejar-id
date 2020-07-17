@@ -125,11 +125,12 @@
 
 @endsection
 
-@include('modals._upload_question')
-@include('modals._createQuestion')
-@include('admin.modal.descriptionRoundEditModal')
-@include('admin.modal.settingRoundEditModal')
-@include('admin.modal.materialEditModal')
+@include('admin.question._upload_questions')
+@include('admin.question._create_question')
+@include('admin.question._rename_round')
+@include('admin.question._update_description')
+@include('admin.question._update_setting')
+@include('admin.question._update_material')
 
 @section('scripts')
 <script>

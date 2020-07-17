@@ -32,7 +32,7 @@
                     <hr class="border-0">
                     <div class="row">
                         <div class="col-md-12">
-                            <button class="btn btn-add-question font-add-question" id="btnAdd" type="button" onclick="AddTextBox()">
+                            <button class="btn btn-link btn-add-question font-add-question" id="btnAdd" type="button" onclick="AddTextBox()">
                                 <i class="kejar-add">  </i> Tambah Soal
                                 <asp:Button ID="btnPost" Text="Submit" CssClass="btn btn-success" runat="server" OnClick="Post" />
                             </button>
@@ -40,8 +40,8 @@
                     </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-cancel font-button" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-modal-save font-button">Save changes</button>
+                    <button type="button" class="btn-cancel" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn-save">Simpan</button>
                 </div>
             </div>
         </div>
