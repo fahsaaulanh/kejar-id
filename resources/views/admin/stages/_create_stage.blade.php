@@ -2,7 +2,7 @@
 <div class="modal fade" id="createStageModal" tabindex="-1" role="dialog" aria-labelledby="createStageModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{ url('admin/'. $game['uri'] .'/stages') }}" method="post" id="createStageForm">
+            <form action="{{ secure_url('admin/'. $game['uri'] .'/stages') }}" method="post" id="createStageForm">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">Buat Babak</h5>

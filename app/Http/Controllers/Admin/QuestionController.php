@@ -7,9 +7,9 @@ use App\Services\Question as QuestionApi;
 use App\Services\Round as RoundApi;
 use App\Services\RoundQuestion;
 use App\Services\Stage as StageApi;
-use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Throwable;
 
 class QuestionController extends Controller
 {
@@ -24,7 +24,10 @@ class QuestionController extends Controller
         }
 
         $stageApi = new StageApi;
-        $stage = $stageApi->getDetail($game, $stageId)['data'] ?? null;
+        $stage = $stageApi->getDetail($game, $stageId)['data'] ?? [];
+        if (count($stage) < 1 || $stage['game'] !== $game) {
+            abort('404');
+        }
 
         $roundQuestionApi = new RoundQuestion;
         $roundQuestions = $roundQuestionApi->getAll($roundId, $request->page ?? 1);
@@ -33,7 +36,6 @@ class QuestionController extends Controller
 
         $questionApi = new QuestionApi;
 
-        // $questions = [];
         for ($i=0; $i < count($roundQuestionsData); $i++) {
             $question = $questionApi->getDetail($roundQuestionsData[$i]['question_id']);
             if (!($question['data'] ?? null)) {
@@ -43,6 +45,186 @@ class QuestionController extends Controller
             $roundQuestionsData[$i]['question'] = $question['data'];
         }
 
+        $game = $this->getGame($game);
+        
+        return view(
+            'admin.questions.index',
+            compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
+        );
+    }
+
+    public function upload($game, $stageId, $roundId, Request $request)
+    {
+        $game;
+        $stageId;
+        $roundId;
+
+        $this->validate($request, [
+            'question_file' => 'required|file',
+        ]);
+
+        $file = $request->file('question_file');
+        
+        try {
+            $data = Excel::toArray([], $file);
+
+            if ($data[0][3][0] !== 'ID Ronde') {
+                return redirect()->back()->withErrors([
+                    'error' => ['Data tidak berhasil diunggah! Silakan download format data yang tersedia!'],
+                ]);
+            }
+
+            $questionApi = new QuestionApi;
+            $roundQuestionApi = new RoundQuestion;
+            for ($i=4; $i < count($data[0]); $i++) {
+                $sheetIndex = 0;
+                $row = $i;
+                $roundIdIndex = 0;
+                $questionIndex = 1;
+                $answerIndex = 2;
+                $game = $data[$sheetIndex][0][1];
+
+                $collection = [
+                    'owner' => 'KEJAR',
+                    'subject_id'=> null,
+                    'topic_id'=> null,
+                    'bank'=> $game,
+                    'type'=> 'MCQSA',
+                    'question'=> (string)$data[$sheetIndex][$row][$questionIndex],
+                    'choices'=> null,
+                    'answer'=> (string)$data[$sheetIndex][$row][$answerIndex],
+                    'level'=> 'LEVEL_1',
+                    'status' => '2',
+                    'created_by'=> session('user.id'),
+                ];
+
+                $question = $questionApi->store($collection);
+                $roundQuestionMeta = $roundQuestionApi
+                                ->getAll($data[$sheetIndex][$row][$roundIdIndex], $request->page ?? 1)['meta'] ?? [];
+                $questionTotal = $roundQuestionMeta['total'] ?? 0;
+                
+                $payloadQS = [
+                    'question_id' => $question['data']['id'],
+                    'round_id' => $data[$sheetIndex][$row][$roundIdIndex],
+                    'order' => $questionTotal + 1,
+                ];
+
+                $roundQuestionApi->store($question['data']['id'], $payloadQS);
+            }
+        } catch (Throwable $th) {
+            return $th;
+        }
+
+        return redirect()->back()->with('message', 'Soal berhasil ditambahkan!');
+    }
+
+    public function create($game, $stageId, $roundId, Request $request)
+    {
+        $game;
+        $stageId;
+        $roundId;
+
+        try {
+            $questionApi = new QuestionApi;
+            $roundQuestionApi = new RoundQuestion;
+
+            foreach ($request->input('question') as $question) {
+                if ($question['question'] !== null && $question['answer'] !== null) {
+                    $collection = [
+                        'owner' => 'KEJAR',
+                        'subject_id'=> null,
+                        'topic_id'=> null,
+                        'bank'=> $game,
+                        'type'=> 'MCQSA',
+                        'question'=> (string)$question['question'],
+                        'choices'=> null,
+                        'answer'=> (string)$question['answer'],
+                        'level'=> 'LEVEL_1',
+                        'status' => '2',
+                        'created_by'=> session('user.id'),
+                    ];
+                    
+                    $question = $questionApi->store($collection);
+                    $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                    $questionTotal = $roundQuestionMeta['total'] ?? 0;
+                    
+                    $payloadQS = [
+                        'question_id' => $question['data']['id'],
+                        'round_id' => $roundId,
+                        'order' => $questionTotal + 1,
+                    ];
+
+                    $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                }
+            }
+        } catch (Throwable $th) {
+            return $th;
+        }
+
+        return redirect()->back()->with('message', 'Berhasil menambahkan data!');
+    }
+
+    public function update($game, $stageId, $roundId, Request $request)
+    {
+        $game;
+        $stageId;
+        $roundId;
+        try {
+            $roundApi = new RoundApi;
+
+            $round = $roundApi->getDetail($roundId)['data'] ?? [];
+
+            $payload = [
+                'title' => $request->title ?? $round['title'],
+                'description' => $request->description ?? $round['description'],
+                'direction' => $request->direction ?? $round['direction'],
+                'material' => $request->material ?? $round['material'],
+                'total_question' => $request->total_question ?? $round['total_question'],
+                'question_timespan' => $request->question_timespan ?? $round['question_timespan'],
+                'status' => $request->status ?? $round['status'],
+            ];
+
+            $roundApi->update($payload, $round['id']);
+        } catch (Throwable $th) {
+            return $th;
+        }
+
+        return redirect()->back()->with('message', 'Mengubah Data Ronde Berhasil!');
+    }
+
+    public function updateQuestion($game, $stageId, $roundId, $questionId, Request $request)
+    {
+        $game;
+        $stageId;
+        $roundId;
+        $questionId;
+
+        $this->validate($request, [
+            'question' => 'required',
+            'answer' => 'required',
+        ]);
+
+        try {
+            $questionApi = new QuestionApi;
+
+
+            $payload = [
+                'question'=> (string)$request->question,
+                'answer'=> (string)$request->answer,
+                'tags' => ['answer', 'question'],
+                'created_by' => session('user.id'),
+            ];
+
+            $questionApi->update($questionId, $payload);
+        } catch (Throwable $th) {
+            return $th;
+        }
+
+        return redirect()->back()->with('message', 'Berhasil mengubah soal!');
+    }
+
+    private function getGame($game)
+    {
         if ($game === 'OBR') {
             $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
         } elseif ($game === 'VOCABULARY') {
@@ -53,91 +235,6 @@ class QuestionController extends Controller
             abort(404);
         }
 
-        return view(
-            'admin.question.index',
-            compact('game', 'stageId', 'stage', 'roundId', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
-        );
-    }
-
-    public function uploadFile(Request $request, $game)
-    {
-        $this->validate($request, [
-            'question_file' => 'required',
-        ]);
-
-        $file = $request->file('question_file');
-        $data = Excel::toArray([], $file);
-
-        try {
-            for ($i=4; $i < count($data[2]); $i++) {
-                $collection = [
-                    'subject_id'=> null,
-                    'topic_id'=> null,
-                    'bank'=> $game,
-                    'type'=> 'MCQSA',
-                    'question'=> (string)$data[2][$i][1],
-                    'choices'=> [],
-                    'answer'=> (string)$data[2][$i][2],
-                    'level'=> 'LEVEL_1',
-                    'created_by'=> session('user')['id'],
-                ];
-
-
-                $questionApi = new QuestionApi;
-                $question = $questionApi->store($collection);
-                // update status to Valid
-                $questionApi->update($question['data']['id'], ['status' => '2']);
-                $payloadQS = [
-                    'question_id' => $question['data']['id'],
-                    'round_id' => $data[2][$i][0],
-                    'order' => 1,
-                ];
-
-                $roundQuestionApi = new RoundQuestion;
-                $roundQuestionApi->store($data[2][$i][0], $payloadQS);
-            }
-        } catch (Exception $e) {
-            return $e;
-        }
-
-        return redirect()->back()->with(['message', 'Success']);
-    }
-
-    public function storeQuestion(Request $request, $game, $stageId, $roundId)
-    {
-        $stageId;
-        $user = session('user');
-        $questionApi = new QuestionApi;
-        $roundQuestionApi = new RoundQuestion;
-        $data = $request->input('question');
-
-        foreach ($data as $questions) {
-            $payload = [
-                'subject_id' => null,
-                'topic_id' => null,
-                'bank' => $game,
-                'type' => 'MCQSA',
-                'question' => $questions['question'],
-                'choices' => null,
-                'answer' => $questions['answer'],
-                'level' => 'LEVEL_1',
-                'created_by' => $user['id'],
-            ];
-
-            $response = $questionApi->store($payload);
-            $questionApi->update($response['data']['id'], ['status' => '2']);
-            $payloadQS = [
-                'question_id' => $response['data']['id'],
-                'round_id' => $roundId,
-                'order' => 1,
-            ];
-            $roundQuestionApi->store($roundId, $payloadQS);
-        }
-
-        if (!$response['error']) {
-            return redirect()->back()->with('message', 'Success!');
-        }
-
-        return redirect('/dashboard');
+        return $game;
     }
 }

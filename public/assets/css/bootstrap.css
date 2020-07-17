@@ -9342,6 +9342,84 @@ p {
   left: 0 !important;
 }
 
+.btn-add {
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: #3167F6;
+  text-align: left;
+  width: 100%;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  border: 0.2rem solid #E9F2FF;
+  border-top: none;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  outline: none;
+  padding: 0.5rem 1.2rem !important;
+  margin: 0;
+}
+
+.btn-add i {
+  margin-right: 1.6rem;
+  font-size: 2rem;
+  line-height: 2rem;
+}
+
+.btn-add i:before {
+  color: #3167F6;
+}
+
+.btn-add:hover {
+  color: #1888FF !important;
+  text-decoration: none;
+}
+
+.btn-add:hover i:before {
+  color: #1888FF;
+}
+
+.btn-revise {
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: #3167F6;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  border: none;
+  box-sizing: border-box;
+  background: #E9F2FF;
+  outline: none;
+  padding: 1rem 1.2rem !important;
+  margin: 0;
+}
+
+.btn-revise:hover {
+  color: #1888FF;
+}
+
+.btn-publish {
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: #FFFFFF;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  border: none;
+  box-sizing: border-box;
+  background: #3167F6;
+  outline: none;
+  padding: 1rem 1.2rem !important;
+  margin: 0;
+}
+
+.btn-publish:hover {
+  background-color: #1888FF;
+}
+
 .card-384 {
   display: block;
   background: #FFFFFF;
@@ -9883,5 +9961,132 @@ i,
 
 .modal .modal-content .modal-footer .btn-primary:hover {
   background: #1888FF;
+}
+
+.page-description {
+  margin: 4rem auto;
+}
+
+.page-description .page-description-item {
+  margin: 2rem auto !important;
+}
+
+.page-description .page-description-item h5 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: bold;
+  line-height: 2rem;
+  margin-bottom: 0.8rem;
+}
+
+.page-description .page-description-item p {
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  line-height: 2rem;
+}
+
+.material-default {
+  color: #7C92A7;
+}
+
+.table-responsive {
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  border: 0rem !important;
+}
+
+.table thead {
+  border: 0rem;
+}
+
+.table thead th {
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  background-color: #F4F6F9;
+  padding: 1rem;
+  border: 0rem;
+  width: 50%;
+}
+
+.table tbody tr td {
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  padding: 1.4rem 1.2rem;
+  border-top: 0.2rem solid #F4F6F9;
+  border-bottom: 0.2rem solid #F4F6F9;
+}
+
+.table tbody tr:first-child td {
+  border-top: none;
+}
+
+.table-form tbody tr td {
+  padding: 0.5rem 0;
+}
+
+.table-form tbody tr td:first-child {
+  padding-right: 0.5rem;
+}
+
+.table-form tbody tr td:last-child {
+  padding-left: 0.5rem;
+}
+
+.table-form-footer {
+  padding: 0;
+}
+
+.table-form-footer tr {
+  padding: 0;
+}
+
+.table-form-footer tr th {
+  border: 0;
+  background: none;
+  padding: 0 !important;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem auto;
+  align-items: center;
+}
+
+.navigation .pagination-detail {
+  font-weight: normal;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  color: #334E68;
+}
+
+.navigation .pagination {
+  border-radius: 0rem;
+}
+
+.navigation .pagination .page-item {
+  border-radius: 0rem;
+}
+
+.navigation .pagination .page-item .page-link {
+  font-weight: bold;
+  font-size: 1.3rem;
+  line-height: 1.6rem;
+  padding: 1rem;
+  border-radius: 0rem;
+  border: 2px solid #EBF1F6;
+}
+
+.navigation .pagination .active .page-link {
+  background: #E9F2FF !important;
+  color: #3167F6 !important;
+  font-weight: bold;
 }
 

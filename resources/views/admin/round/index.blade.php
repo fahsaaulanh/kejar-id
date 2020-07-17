@@ -6,13 +6,13 @@
 <div class="container">
 
     <div class="page-title">
-        <a class="btn-back" href="{{ url('admin/' . $game['uri'] . '/stages') }}" class="btn-back">
+        <a class="btn-back" href="{{ secure_url('admin/' . $game['uri'] . '/stages') }}" class="btn-back">
             <i class="kejar-back"></i>Kembali
         </a>
         <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ url('admin/games') }}">Beranda</a>
-            <a class="breadcrumb-item" href="{{ url('admin/' . $game['uri'] . '/stages') }}">OBR</a>
-            <span class="breadcrumb-item active" href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/') }}">Babak 1</span>
+            <a class="breadcrumb-item" href="{{ secure_url('admin/games') }}">Beranda</a>
+            <a class="breadcrumb-item" href="{{ secure_url('admin/' . $game['uri'] . '/stages') }}">OBR</a>
+            <span class="breadcrumb-item active" href="{{ secure_url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/') }}">Babak {{ $stage['order'] }}</span>
         </nav>
         <h2 class="mb-08rem">{{ $stage['title'] }}</h2>
         <span class="copy-id" data-id="{{ $stage['id'] }}">Salid ID Babak</span>
@@ -43,7 +43,7 @@
     <div class="list-group">
         @forelse($rounds as $round)
         <div class="list-group-item" data-id="{{ $round['id'] }}">
-            <a href="{{ url()->current() . '/' . $round['id'] }}">
+            <a href="{{ secure_url()->current() . '/' . $round['id'] }}">
                 <i class="kejar-ink" data-id="{{ $round['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
                 <span></span> : {{ $round['title'] }}
             </a>
