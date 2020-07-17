@@ -103,8 +103,13 @@
     }
 }
 
-.stage-order-buttons {
+.stage-order-buttons{
     display: none;
+    grid-template-columns: auto auto;
+    grid-gap: 0.8rem;
+}
+
+.round-order-buttons {
     grid-template-columns: auto auto;
     grid-gap: 0.8rem;
 }
@@ -121,6 +126,21 @@
     i {
         top: 0 !important;
         left: 0 !important;
+    }
+
+    &.order-status {
+        display: block;
+        i.kejar-belum-mengerjakan1::before{
+            color: $red-2;
+        }
+        i.kejar-sudah-dikerjakan::before{
+            color: $green-2;
+        }
+    }
+
+    &.sort-up, &.sort-down {
+        cursor: pointer;
+        display: none;
     }
 }
 
