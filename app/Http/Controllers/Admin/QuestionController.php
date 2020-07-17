@@ -88,7 +88,7 @@ class QuestionController extends Controller
                     'owner' => 'KEJAR',
                     'subject_id'=> null,
                     'topic_id'=> null,
-                    'bank'=> $game,
+                    'bank'=> $this->gameDefault($game),
                     'type'=> 'MCQSA',
                     'question'=> (string)$data[$sheetIndex][$row][$questionIndex],
                     'choices'=> null,
@@ -134,7 +134,7 @@ class QuestionController extends Controller
                         'owner' => 'KEJAR',
                         'subject_id'=> null,
                         'topic_id'=> null,
-                        'bank'=> $game,
+                        'bank'=> $this->gameDefault($game),
                         'type'=> 'MCQSA',
                         'question'=> (string)$question['question'],
                         'choices'=> null,
@@ -236,5 +236,27 @@ class QuestionController extends Controller
         }
 
         return $game;
+    }
+
+    private function gameDefault($game)
+    {
+        switch ($game) {
+            case 'OBR':
+                return 'OBR';
+
+                break;
+            case 'KATABAKU':
+                return 'Kata Baku';
+
+                break;
+            case 'VOCABULARY':
+                return 'Vocabulary';
+
+                break;
+            default:
+                return $game;
+
+                break;
+        }
     }
 }
