@@ -21,12 +21,18 @@ class StageController extends Controller
         $stage = new StageApi;
 
         $game = strtoupper($game);
+        
+        $filter = [
+            'per_page' => 99,
+        ];
+
+        $stages = $stage->getAll($game, $filter)['data'] ?? [];
 
         $game = $this->getGame($game);
         
-        $stages = $stage->getAll($game['uri'])['data'] ?? [];
+        $stagesCount = count($stages);
 
-        return view('admin.stages.index', compact('stages', 'game'));
+        return view('admin.stages.index', compact('stages', 'game', 'stagesCount'));
     }
 
     public function upload(Request $request, $game)

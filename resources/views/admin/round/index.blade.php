@@ -126,7 +126,7 @@
         </div>
     </div>
 </div>
-@include('modals/_upload_question')
+@include('admin/question/_upload_questions')
 @include('modals/_create_round')
 @endsection
 

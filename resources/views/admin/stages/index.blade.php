@@ -6,13 +6,13 @@
     <div class="container">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/admin/games') }}">
+        <a class ="btn-back" href="{{ secure_url('/admin/games') }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ url('/admin/games') }}">Beranda</a>
+            <a class="breadcrumb-item" href="{{ secure_url('/admin/games') }}">Beranda</a>
             <span class="breadcrumb-item active">{{ $game['short'] }}</span>
         </nav>
 
@@ -42,14 +42,14 @@
         </div>
 
         <!-- List of Stages (Admin)-->
-        <div class="list-group">       
+        <div class="list-group">
             @forelse ($stages as $stage)
             <div class="list-group-item" data-id="{{ $stage['id'] }}">
                 <a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id']) }}/rounds">
                     <i class="kejar-ink" onclick="textToClipboard('<?= $stage['id'] ?>')" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
                     <span class="stage-number">Babak </span> : {{ $stage['title'] }}
                 </a>
-                <!-- <div class="hover-only"> -->
+                @if ($stagesCount > 1)
                     <div class="stage-order-buttons">
                         <button class="btn-icon">
                             <i class="kejar-top"></i>
@@ -58,6 +58,7 @@
                             <i class="kejar-bottom"></i>
                         </button>
                     </div>
+                @endif
                 <!-- </div> -->
             </div>
             @empty
@@ -164,7 +165,7 @@
     function orderUpdate(id, order){
         $.ajax({
             type: "POST",
-            url: "{{ url('admin/'. $game['uri'] . '/') }}/stages/" + id + "/order",
+            url: "{{ secure_url('admin/'. $game['uri'] . '/') }}/stages/" + id + "/order",
             data: {
                 "_method": "PATCH",
                 "_token": "{{ csrf_token() }}",
