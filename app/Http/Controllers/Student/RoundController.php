@@ -15,7 +15,10 @@ class RoundController extends Controller
         $stage = $response['data'];
 
         $roundApi = new RoundApi;
-        $filter = `?filter[stage_id]=$stageId`;
+        $filter = [
+            'filter[stage_id]' => $stageId,
+            'per_page' => 99,
+        ];
         $response = $roundApi->index($filter);
 
         $rounds = $response['data'] ?? [];

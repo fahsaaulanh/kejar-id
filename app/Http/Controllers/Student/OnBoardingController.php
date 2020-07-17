@@ -14,12 +14,12 @@ class OnBoardingController extends Controller
         $roundApi = new RoundApi;
         $round = $roundApi->getDetail($roundId)['data'] ?? [];
         $stageApi = new StageApi;
-        $stage = $stageApi->getDetail($game, $round['stage_id'])['data'] ?? [];
+        $stage = $stageApi->getDetail(strtoupper($game), $stageId)['data'] ?? [];
 
-        $game = $game === 'KATABAKU' ? 'KATA BAKU' : $game;
+        $game = $game === 'katabaku' ? 'kata baku' : $game;
 
         if (count($round) > 0) {
-            return view('student.onboarding.index', [
+            return view('student.onboardings.index', [
                 'round' => $round,
                 'stage' => $stage,
                 'game' => $game,

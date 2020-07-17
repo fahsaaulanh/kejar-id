@@ -5,9 +5,9 @@ namespace App\Services;
 class Stage extends Service
 {
 
-    public function getAll($game)
+    public function getAll($game, $filter)
     {
-        $response = $this->get("/matrikulasi/games/$game/stages?per_page=10");
+        $response = $this->get("/matrikulasi/games/$game/stages", $filter);
 
         return $this->showResponse($response);
     }

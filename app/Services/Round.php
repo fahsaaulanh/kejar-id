@@ -5,9 +5,9 @@ namespace App\Services;
 class Round extends Service
 {
 
-    public function index($filter = '')
+    public function index($filter)
     {
-        $response = $this->get('/matrikulasi/libraries/rounds'. $filter);
+        $response = $this->get('/matrikulasi/libraries/rounds', $filter);
 
         return $this->showResponse($response);
     }

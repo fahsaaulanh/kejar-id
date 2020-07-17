@@ -1,5 +1,7 @@
 @extends('layout.main')
 
+@section('title', 'Student Stages')
+
 @section('css')
 <link rel="stylesheet" href="{{ url('/assets/css/bootstrap.css') }}">
 <link rel="stylesheet" href="{{ url('/assets/css/student_game.css') }}">
