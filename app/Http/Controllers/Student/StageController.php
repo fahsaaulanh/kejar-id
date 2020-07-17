@@ -11,7 +11,11 @@ class StageController extends Controller
     {
         $stageApi = new StageApi;
 
-        $stages = $stageApi->getAll(strtoupper($game))['data'] ?? [];
+        $filter = [
+            'per_page' => 99,
+        ];
+
+        $stages = $stageApi->getAll(strtoupper($game), $filter)['data'] ?? [];
 
         $modStages = [];
         foreach ($stages as $stage) {
@@ -20,7 +24,7 @@ class StageController extends Controller
         }
 
         $stages = $modStages;
-        
+
         if ($game === 'obr') {
             $game = [];
             $game['uri'] = 'obr';

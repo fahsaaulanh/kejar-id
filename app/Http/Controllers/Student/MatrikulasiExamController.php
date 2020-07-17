@@ -22,7 +22,7 @@ class MatrikulasiExamController extends Controller
 
         $timespan = $this->getTimer($roundId);
 
-        return view('student.exam.index', compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan'));
+        return view('student.exams.index', compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan'));
     }
 
     public function checkAnswer(Request $request)
@@ -51,7 +51,7 @@ class MatrikulasiExamController extends Controller
         $taskApi = new TaskApi;
         $task = $taskApi->finish($taskId)['data'];
 
-        return view('result.index', compact('task'));
+        return view('student.results.index', compact('task'));
     }
 
     private function getTimer($roundId)

@@ -83,11 +83,13 @@ Route::middleware('session')->group(function () {
 
                         Route::get('/', 'Student\RoundController@index');
 
-                        // exam
-                        Route::get('/{roundId}/onboarding', 'Student\OnBoardingController@index');
-                        Route::get('/{roundId}/exam', 'Student\MatrikulasiExamController@index');
-                        Route::post('/{roundId}/check', 'Student\MatrikulasiExamController@checkAnswer');
-                        Route::post('/{roundId}/{taskId}/finish', 'Student\MatrikulasiExamController@finish');
+                        Route::prefix('/{roundId}')->group(function () {
+                            // exam
+                            Route::get('/onboardings', 'Student\OnBoardingController@index');
+                            Route::get('/exams', 'Student\MatrikulasiExamController@index');
+                            Route::post('/check', 'Student\MatrikulasiExamController@checkAnswer');
+                            Route::post('/{taskId}/finishes', 'Student\MatrikulasiExamController@finish');
+                        });
                     });
                 });
             });

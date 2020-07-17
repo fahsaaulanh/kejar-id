@@ -1,5 +1,7 @@
 @extends('layout.main')
 
+@section('title', 'Student Games')
+
 @section('css')
 <link href="{{ url('/assets/css/home/style.css') }}" rel="stylesheet">
 @endsection
