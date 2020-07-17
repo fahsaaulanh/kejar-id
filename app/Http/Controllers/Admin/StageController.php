@@ -21,7 +21,7 @@ class StageController extends Controller
         $stage = new StageApi;
 
         $game = strtoupper($game);
-        
+
         $filter = [
             'per_page' => 99,
         ];
@@ -29,7 +29,7 @@ class StageController extends Controller
         $stages = $stage->getAll($game, $filter)['data'] ?? [];
 
         $game = $this->getGame($game);
-        
+
         $stagesCount = count($stages);
 
         return view('admin.stages.index', compact('stages', 'game', 'stagesCount'));
@@ -62,7 +62,7 @@ class StageController extends Controller
             $stageApi = new StageApi;
             $stages = $stageApi->getAll($game)['data'] ?? [];
             $stagesSum = $stages === null ? 0 : count($stages);
-            
+
             for ($i=4; $i < count($data[0]); $i++) {
                 $sheetIndex = 0;
                 $row = $i;
@@ -83,7 +83,7 @@ class StageController extends Controller
             return $e;
         }
 
-        return redirect()->back()->with('message', 'Success!');
+        return redirect()->back()->with('success', 'Babak berhasil ditambahkan!');
     }
 
     public function uploadRounds(Request $request, $game)
@@ -135,7 +135,7 @@ class StageController extends Controller
             return $e;
         }
 
-        return redirect()->back()->with('message', 'Success!');
+        return redirect()->back()->with('success', 'Ronde berhasil ditambahkan!!');
     }
 
     public function order($game, $stageId, Request $request)
@@ -163,7 +163,7 @@ class StageController extends Controller
             'title' => 'required',
             'description' => 'required',
         ]);
-        
+
         $game = strtoupper($game);
         $stageApi = new StageApi;
         $payload = [
@@ -183,7 +183,7 @@ class StageController extends Controller
     {
         $stageApi = new StageApi;
         $editData = $stageApi->getDetail($game, $stageId)['data'] ?? [];
-        
+
         $payload = [
             'title' => $req->title ?? $editData['title'],
             'game' => $editData['game'],
