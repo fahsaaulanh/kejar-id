@@ -38,6 +38,7 @@ Route::middleware('session')->group(function () {
                 Route::post('/upload', 'Admin\StageController@upload');
                 Route::post('/upload-rounds', 'Admin\StageController@uploadRounds');
                 Route::patch('/{stageId}/order', 'Admin\StageController@order');
+                Route::post('/modal/stage/update/{stageId}', 'Admin\StageController@updateStageModal');
 
                 Route::prefix('{stageId}/rounds')->group(function () {
                     Route::get('/', 'Admin\RoundController@index');
@@ -46,7 +47,7 @@ Route::middleware('session')->group(function () {
                     Route::patch('{roundId}/status', 'Admin\RoundController@updateStatus');
                     Route::post('/upload', 'Admin\RoundController@uploadRoundsFile');
                     Route::post('/', 'Admin\RoundController@createRound');
-                    Route::post('/upload-question', 'Admin\QuestionController@uploadFile');
+                    Route::post('/upload-question', 'Admin\RoundController@uploadQuestionFile');
                     Route::post('/modal/round/update/{id}', 'Admin\RoundModalController@updateRoundModal');
 
                     Route::prefix('{roundId}')->group(function () {

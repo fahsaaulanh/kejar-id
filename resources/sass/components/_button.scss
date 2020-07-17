@@ -35,7 +35,7 @@
     &:hover {
         color: $blue-2 !important;
         text-decoration: none;
-        
+
         i {
             &:before {
                 color: $blue-2 !important;
@@ -56,7 +56,7 @@
     }
 }
 
-.upload-buttons {    
+.upload-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 1.6rem;
