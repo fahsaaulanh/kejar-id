@@ -2,7 +2,7 @@
 <div class="modal fade" id="createStageModal" tabindex="-1" role="dialog" aria-labelledby="createStageModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="{{ secure_url('admin/'. $game['uri'] .'/stages') }}" method="post" id="createStageForm">
+            <form action="{{ url('admin/'. $game['uri'] .'/stages') }}" method="post" id="createStageForm">
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">Buat Babak</h5>
@@ -10,7 +10,7 @@
                         <i class="kejar kejar-close"></i>
                     </button>
                 </div>
-                <div class="modal-body"> 
+                <div class="modal-body">
                     <div class="form-group">
                         <label for="title" class="font-weight-bold">Judul Babak</label>
                         <input type="text" class="form-control" name="title" id="title" placeholder="Ketik judul babak" required="" autocomplete="off">
