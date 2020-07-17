@@ -5,7 +5,7 @@ namespace App\Services;
 class Stage extends Service
 {
 
-    public function getAll($game, $filter)
+    public function getAll($game, $filter = [])
     {
         $response = $this->get("/matrikulasi/games/$game/stages", $filter);
 
