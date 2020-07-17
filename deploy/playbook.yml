@@ -28,8 +28,6 @@
   - name: Ensure files are 0664
     command: find {{ deploy_target_path }} -not \( -path node_modules -prune \) -not \( -path vendor -prune \) -type f -exec chmod -c 0664 {} \;
     no_log: true
-  - name: Ensure bootstrap owner current to www-data
-    command: chown -R deployer:www-data {{ deploy_target_path }}/bootstrap
   - name: Ensure release storage directory removed
     file:
       name: "{{ deploy_target_path }}/storage"
