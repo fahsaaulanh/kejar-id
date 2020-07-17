@@ -110,7 +110,11 @@ class StageController extends Controller
 
             for ($i=4; $i < count($data[0]); $i++) {
                 $roundApi = new RoundApi;
-                $filter = '?filter[stage_id]=' . $data[0][$i][0];
+                $filter = [
+                    'filter[stage_id]' => $data[0][$i][0],
+                    'per_page' => 99,
+                ];
+
                 $rounds = $roundApi->index($filter)['data'] ?? [];
                 $roundsSum = $rounds === null ? 0 : count($rounds);
 
