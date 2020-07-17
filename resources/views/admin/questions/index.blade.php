@@ -49,7 +49,7 @@
 
         <div class="page-description-item material">
             <h5>Materi</h5>
-            <p class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{{$round['material']}}</p>
+            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{{$round['material']}}</pre>
         </div>
 
         <div class="page-description-item direction">
