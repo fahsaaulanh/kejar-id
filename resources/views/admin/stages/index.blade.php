@@ -6,13 +6,13 @@
     <div class="container">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ secure_url('/admin/games') }}">
+        <a class ="btn-back" href="{{ url('/admin/games') }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ secure_url('/admin/games') }}">Beranda</a>
+            <a class="breadcrumb-item" href="{{ url('/admin/games') }}">Beranda</a>
             <span class="breadcrumb-item active">{{ $game['short'] }}</span>
         </nav>
 
