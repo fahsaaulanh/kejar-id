@@ -32,6 +32,11 @@
                 alert("{{ $errors->first('stage_file') }}");
             </script>
         @endif
+        @if (\Session::has('success'))
+            <script>
+                alert("{{ \Session::get('success') }}");
+            </script>
+        @endif
         <div class="upload-buttons">
             <button class="btn-upload" data-toggle="modal" data-target="#upload-stages">
                 <i class="kejar-upload"></i>Unggah Babak
