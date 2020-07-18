@@ -206,7 +206,7 @@ class RoundController extends Controller
             'title' => $request->title,
             'description' => $request->description ?? 'tambahkan deskripsi', // database tidak nullable
             'direction' => $request->direction ?? 'tambahkan petunjuk', // database tidak nullable
-            'material' => 'buat materi', // database tidak nullable
+            'material' => 'Buat Materi', // database tidak nullable
             'total_question' => $request->question_showed,
             'question_timespan' => $request->timespan,
             'order' => count($roundApi->index()['data'] ?? []) + 1,
