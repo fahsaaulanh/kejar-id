@@ -16,16 +16,36 @@ class OnBoardingController extends Controller
         $stageApi = new StageApi;
         $stage = $stageApi->getDetail(strtoupper($game), $stageId)['data'] ?? [];
 
-        $game = $game === 'katabaku' ? 'kata baku' : $game;
-
         if (count($round) > 0) {
             return view('student.onboardings.index', [
                 'round' => $round,
                 'stage' => $stage,
-                'game' => $game,
+                'game' => $this->getGame($game),
             ]);
         }
 
         abort('404');
+    }
+
+    private function getGame($game)
+    {
+        switch ($game) {
+            case 'obr':
+                return 'OBR';
+
+                break;
+            case 'vocabulary':
+                return 'Vocabulary';
+
+                break;
+            case 'katabaku':
+                return 'Kata Baku';
+
+                break;
+            default:
+                return $game;
+
+                break;
+        }
     }
 }
