@@ -28,15 +28,18 @@ class StageController extends Controller
         if ($game === 'obr') {
             $game = [];
             $game['uri'] = 'obr';
+            $game['short'] = 'OBR';
             $game['title'] = 'Operasi Bilangan Rill';
         } elseif ($game === 'vocabulary') {
             $game = [];
             $game['uri'] = 'vocabulary';
             $game['title'] = 'Vocabulary';
+            $game['short'] = 'Vocabulary';
         } elseif ($game === 'katabaku') {
             $game = [];
             $game['uri'] = 'katabaku';
             $game['title'] = 'Kata Baku';
+            $game['short'] = 'Vocabulary';
         }
 
         return view('student.stages.index', compact('game', 'stages'));

@@ -66,3 +66,44 @@
       }
   }
 }
+
+.list-group-student{
+
+    .list-group-item{
+        height: auto !important;
+
+        .kejar-sudah-dikerjakan{
+            &:before{
+                color: $green-2;
+            }
+        }
+
+        &:hover{
+            a > i{
+                &:before{
+                    color: $purple;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 36rem) {
+        .list-group-item{
+
+            a > span:nth-child(1){
+                display: block;
+                float: right;
+            }
+
+            a > span:nth-child(2){
+                float: left;
+                display: block;
+                width: 100%;
+            }
+
+            a > i{
+                display: none;
+            }
+        }
+    }
+}
