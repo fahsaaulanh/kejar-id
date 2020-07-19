@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Services\Round as RoundApi;
 use App\Services\Stage as StageApi;
-use App\Services\user as UserApi;
+use App\Services\User as UserApi;
 
 class RoundController extends Controller
 {
@@ -29,9 +29,7 @@ class RoundController extends Controller
         if ($data !== []) {
             foreach ($data as $key => $round) {
                 $userApi = new UserApi;
-                $responseMe = $userApi->me();
                 $filter = [
-                    'filter[student_id]' => $responseMe['data']['userable_id'],
                     'filter[taskable_id]' => $round['id'],
                     'filter[taskable_type]' => 'MATRIKULASI',
                     'per_page' => 99,
