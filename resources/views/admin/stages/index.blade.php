@@ -171,7 +171,7 @@
     function orderUpdate(id, order){
         $.ajax({
             type: "POST",
-            url: "{{ secure_url('admin/'. $game['uri'] . '/') }}/stages/" + id + "/order",
+            url: "{{ url('admin/'. $game['uri'] . '/') }}/stages/" + id + "/order",
             data: {
                 "_method": "PATCH",
                 "_token": "{{ csrf_token() }}",

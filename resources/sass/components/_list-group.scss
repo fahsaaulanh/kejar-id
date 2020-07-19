@@ -4,83 +4,137 @@
     grid-row-gap: 1.6rem;
     padding: 0;
     margin: 0;
-  }
-
-.list-group-item {
-  height: 4.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.4rem 1.6rem;
-  margin: 0;
-  background-color: $grey-15;
-  border: none;
-  border-radius: 0 !important;
-
-  &:hover {
-      background-color: $blue-tp;
-      a {
-          color: $purple;
-      }
-
-      .stage-order-buttons, .round-order-buttons{
-          display: grid;
-      }
-
-      .btn-icon{
-          &.order-status{
-              display: none;
-          }
-          &.sort-up, &.sort-down{
-              display: block;
-          }
-    }
-  }
-
-  a {
-    @include h4-reg;
-    color: $black-1;
-    text-overflow: ellipsis;
-    padding: 0 !important;
-    margin: 0 !important;
-    &:hover {
-        color: $purple;
-        text-decoration: none;
-    }
-  }
-
-  i {
-      padding: 0 !important;
-      margin-right: 0.8rem !important;
-      line-height: 2rem;
-      font-size: 2rem;
-      top: 0.3rem;
-      left: 0.2rem;
-
-      ::before {
-          color: $black-1;
-      }
-
-      &:hover {
-          color: $purple;
-      }
-  }
 }
 
-.list-group-student{
+.star-item {
+    display: flex;
+}
 
-    .list-group-item{
+.star-icon{
+    margin-right: -10px;
+    font-size: 20px;
+}
+
+.star-icon .i-star:before{
+    content: "\e904";
+    color: #ABBED4;
+}
+
+.star-icon.active .i-star:before{
+    content: "\e905";
+    color: #FFD600;
+}
+
+.list-group-item {
+    height: 4.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 1.6rem;
+    margin: 0;
+    background-color: $grey-15;
+    border: none;
+    border-radius: 0 !important;
+
+    &:hover {
+        background-color: $blue-tp;
+        a {
+            color: $purple;
+        }
+        
+        .star-item {
+            display: none;
+        }
+
+        .stage-order-buttons,
+        .round-order-buttons {
+            display: grid;
+        }
+
+        .btn-icon {
+            &.order-status {
+                display: none;
+            }
+            &.sort-up,
+            &.sort-down {
+                display: block;
+            }
+        }
+
+        .play-button {
+            display: flex;
+            justify-content: flex-end;
+
+            .btn-next {
+                @include h5;
+                display: flex;
+                align-items: center;
+                border-radius: 0;
+                color: $white !important;
+                padding: 1.6rem 2rem;
+                background: $purple;
+
+                i {
+                    margin-left: 1rem;
+                    &:before {
+                        color: $white !important;
+                        font-size: 2rem;
+                    }
+                    &:hover {
+                        color: $white !important;
+                    }
+                }
+
+                &:hover {
+                    background: $purple-2 !important;
+                }
+            }
+        }
+    }
+
+    a {
+        @include h4-reg;
+        color: $black-1;
+        text-overflow: ellipsis;
+        padding: 0 !important;
+        margin: 0 !important;
+        &:hover {
+            color: $purple;
+            text-decoration: none;
+        }
+    }
+
+    i {
+        padding: 0 !important;
+        margin-right: 0.8rem !important;
+        line-height: 2rem;
+        font-size: 2rem;
+        top: 0.3rem;
+        left: 0.2rem;
+
+        ::before {
+            color: $black-1;
+        }
+
+        &:hover {
+            color: $purple;
+        }
+    }
+}
+
+.list-group-student {
+    .list-group-item {
         height: auto !important;
 
-        .kejar-sudah-dikerjakan{
-            &:before{
+        .kejar-sudah-dikerjakan {
+            &:before {
                 color: $green-2;
             }
         }
 
-        &:hover{
-            a > i{
-                &:before{
+        &:hover {
+            a > i {
+                &:before {
                     color: $purple;
                 }
             }
@@ -88,20 +142,19 @@
     }
 
     @media screen and (max-width: 36rem) {
-        .list-group-item{
-
-            a > span:nth-child(1){
+        .list-group-item {
+            a > span:nth-child(1) {
                 display: block;
                 float: right;
             }
 
-            a > span:nth-child(2){
+            a > span:nth-child(2) {
                 float: left;
                 display: block;
                 width: 100%;
             }
 
-            a > i{
+            a > i {
                 display: none;
             }
         }

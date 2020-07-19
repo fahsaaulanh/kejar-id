@@ -41,7 +41,6 @@
                 color: $blue-2 !important;
             }
         }
-
     }
 
     i {
@@ -87,7 +86,7 @@
         font-size: 2rem;
         line-height: 2rem;
 
-        &:before{
+        &:before {
             color: $blue;
         }
     }
@@ -96,14 +95,14 @@
         color: $blue-2 !important;
         text-decoration: none;
         i {
-            &:before{
+            &:before {
                 color: $blue-2;
             }
         }
     }
 }
 
-.stage-order-buttons{
+.stage-order-buttons {
     display: none;
     grid-template-columns: auto auto;
     grid-gap: 0.8rem;
@@ -130,21 +129,22 @@
 
     &.order-status {
         display: block;
-        i.kejar-belum-mengerjakan1::before{
+        i.kejar-belum-mengerjakan1::before {
             color: $red-2;
         }
-        i.kejar-sudah-dikerjakan::before{
+        i.kejar-sudah-dikerjakan::before {
             color: $green-2;
         }
     }
 
-    &.sort-up, &.sort-down {
+    &.sort-up,
+    &.sort-down {
         cursor: pointer;
         display: none;
     }
 }
 
-.btn-add{
+.btn-add {
     @include h5-reg;
     color: $blue;
     text-align: left;
@@ -165,7 +165,7 @@
         font-size: 2rem;
         line-height: 2rem;
 
-        &:before{
+        &:before {
             color: $blue;
         }
     }
@@ -174,14 +174,14 @@
         color: $blue-2 !important;
         text-decoration: none;
         i {
-            &:before{
+            &:before {
                 color: $blue-2;
             }
         }
     }
 }
 
-.btn-revise{
+.btn-revise {
     @include h5-reg;
     color: $blue;
     text-align: left;
@@ -194,12 +194,12 @@
     padding: 1rem 1.2rem !important;
     margin: 0;
 
-    &:hover{
+    &:hover {
         color: $blue-2;
     }
 }
 
-.btn-publish{
+.btn-publish {
     @include h5-reg;
     color: $white;
     text-align: left;
@@ -212,7 +212,36 @@
     padding: 1rem 1.2rem !important;
     margin: 0;
 
-    &:hover{
+    &:hover {
         background-color: $blue-2;
     }
 }
+
+.play-button{
+    display: flex;
+    justify-content: flex-end;
+
+    .btn-next{
+        @include h5;
+        display: flex;
+        align-items: center;
+        border-radius: 0;
+        color: $white;
+        padding: 4px !important;
+        background: $purple;
+
+        i{
+            margin-left: 0.5rem;
+            margin-top: -0.5rem;
+            &:before{
+                color: $white;
+                font-size: 2rem;
+            }
+        }
+
+        &:hover{
+            background: $purple-2;
+        }
+    }
+}
+

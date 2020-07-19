@@ -30,4 +30,11 @@ class User extends Service
 
         return $this->showResponse($response);
     }
+
+    public function meTask($filter)
+    {
+        $response = $this->get('/me/tasks', $filter);
+
+        return $this->showResponse($response);
+    }
 }
