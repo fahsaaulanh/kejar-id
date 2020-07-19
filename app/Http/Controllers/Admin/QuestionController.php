@@ -94,11 +94,17 @@ class QuestionController extends Controller
                     'choices'=> null,
                     'answer'=> (string)$data[$sheetIndex][$row][$answerIndex],
                     'level'=> 'LEVEL_1',
-                    'status' => '2',
+                    'status' => '1',
                     'created_by'=> session('user.id'),
                 ];
 
+
+
                 $question = $questionApi->store($collection);
+
+                // update status to Valid
+                $questionApi->update($question['data']['id'], ['status' => '2']);
+
                 $roundQuestionMeta = $roundQuestionApi
                                 ->getAll($data[$sheetIndex][$row][$roundIdIndex], $request->page ?? 1)['meta'] ?? [];
                 $questionTotal = $roundQuestionMeta['total'] ?? 0;
@@ -145,6 +151,9 @@ class QuestionController extends Controller
                     ];
 
                     $question = $questionApi->store($collection);
+                    // update status to Valid
+                    $questionApi->update($question['data']['id'], ['status' => '2']);
+
                     $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
                     $questionTotal = $roundQuestionMeta['total'] ?? 0;
 

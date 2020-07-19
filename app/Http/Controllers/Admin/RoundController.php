@@ -65,8 +65,9 @@ class RoundController extends Controller
         return response()->json(['status' => $request->status]);
     }
 
-    public function uploadRoundsFile(Request $req)
+    public function uploadRoundsFile(Request $req, $game, $stageId)
     {
+        $game;
         $file = $req->file('excel_file');
 
         if (is_null($file)) {
@@ -84,8 +85,12 @@ class RoundController extends Controller
         }
 
         $total_array = count($theArray[0]);
+        $filter = [
+            'filter[stage_id]' => $stageId,
+            'per_page' => 99,
+        ];
         $takeLastOrder = new RoundApi;
-        $response = $takeLastOrder->index();
+        $response = $takeLastOrder->index($filter);
         $rounds = $response['data'];
 
         if ($rounds !== null) {
@@ -201,6 +206,12 @@ class RoundController extends Controller
         ]);
 
         $roundApi = new RoundApi;
+
+        $filter = [
+            'filter[stage_id]' => $stageId,
+            'per_page' => 99,
+        ];
+
         $data = [
             'stage_id' => $stageId,
             'title' => $request->title,
@@ -209,7 +220,7 @@ class RoundController extends Controller
             'material' => 'Buat Materi', // database tidak nullable
             'total_question' => $request->question_showed,
             'question_timespan' => $request->timespan,
-            'order' => count($roundApi->index()['data'] ?? []) + 1,
+            'order' => count($roundApi->index($filter)['data'] ?? []) + 1,
             'status' => 'NOT_PUBLISHED', // status unknown
         ];
 
