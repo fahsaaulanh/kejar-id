@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Services\Round as RoundApi;
 use App\Services\Stage as StageApi;
+use App\Services\user as UserApi;
 
 class RoundController extends Controller
 {
@@ -17,12 +18,45 @@ class RoundController extends Controller
         $roundApi = new RoundApi;
         $filter = [
             'filter[stage_id]' => $stageId,
+            'filter[status]' => 'PUBLISHED',
             'per_page' => 99,
         ];
         $response = $roundApi->index($filter);
 
-        $rounds = $response['data'] ?? [];
+        $data = $response['data'] ?? [];
 
+        $rounds = [];
+        if ($data !== []) {
+            foreach ($data as $key => $round) {
+                $userApi = new UserApi;
+                $responseMe = $userApi->me();
+                $filter = [
+                    'filter[student_id]' => $responseMe['data']['userable_id'],
+                    'filter[taskable_id]' => $round['id'],
+                    'filter[taskable_type]' => 'MATRIKULASI',
+                    'per_page' => 99,
+                ];
+                $result = $userApi->meTask($filter);
+                $score = null;
+
+                if ($result['data'] !== null) {
+                    $score = $result['data']['0']['score'];
+                }
+
+                $rounds[$key]['id'] = $round['id'];
+                $rounds[$key]['stage_id'] = $round['stage_id'];
+                $rounds[$key]['description'] = $round['description'];
+                $rounds[$key]['direction'] = $round['direction'];
+                $rounds[$key]['material'] = $round['material'];
+                $rounds[$key]['total_question'] = $round['total_question'];
+                $rounds[$key]['question_timespan'] = $round['question_timespan'];
+                $rounds[$key]['order'] = $round['order'];
+                $rounds[$key]['status'] = $round['status'];
+                $rounds[$key]['title'] = $round['title'];
+                $rounds[$key]['score'] = $score;
+            }
+        }
+        
         if ($rounds !== '') {
             $round = [];
             foreach ($rounds as $key => $row) {
