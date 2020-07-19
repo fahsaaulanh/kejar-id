@@ -23,6 +23,7 @@ class RoundController extends Controller
         ];
         $response = $roundApi->index($filter);
 
+
         $data = $response['data'] ?? [];
 
         $rounds = [];
@@ -31,13 +32,14 @@ class RoundController extends Controller
                 $userApi = new UserApi;
                 $filter = [
                     'filter[taskable_id]' => $round['id'],
+                    'filter[finished]' => 'true',
                     'filter[taskable_type]' => 'MATRIKULASI',
                     'per_page' => 99,
                 ];
                 $result = $userApi->meTask($filter);
                 $score = null;
 
-                if ($result['data'] !== null) {
+                if ($result['error'] === false) {
                     $score = $result['data']['0']['score'];
                 }
 
@@ -54,7 +56,7 @@ class RoundController extends Controller
                 $rounds[$key]['score'] = $score;
             }
         }
-        
+
         if ($rounds !== '') {
             $round = [];
             foreach ($rounds as $key => $row) {
