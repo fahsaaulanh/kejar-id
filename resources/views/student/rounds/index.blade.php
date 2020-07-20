@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Ronde Permainan')
+@section('title', 'Daftar Ronde - ' . $stage['title'])
 
 @section('content')
 
@@ -12,8 +12,8 @@
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
         <a class="breadcrumb-item" href="{{ url('students/games') }}">Beranda</a>
-        <a class="breadcrumb-item" href="{{ url('/students/games/' . $game['uri'] . '/stages') }}">{{ $game['uri'] }}</a>
-        <span class="breadcrumb-item active">{{ $stage['title'] }}</span>
+        <a class="breadcrumb-item" href="{{ url('/students/games/' . $game['uri'] . '/stages') }}">{{ $game['short'] }}</a>
+        <span class="breadcrumb-item active">Babak {{ $stage['order'] }}</span>
     </nav>
     <!-- Title -->
     <div class="page-title">
