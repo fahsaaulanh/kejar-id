@@ -2,6 +2,10 @@
     font-family: 'Roboto Mono';
 }
 
+.container-fluid{
+    padding: 0 1.5rem !important;
+}
+
 /* Timer Stick */
 .timer-stick{
     background: #EBF1F6;
