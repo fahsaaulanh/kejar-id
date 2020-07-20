@@ -39,7 +39,7 @@ class RoundController extends Controller
                 $result = $userApi->meTask($filter);
                 $score = null;
 
-                if ($result['error'] === false) {
+                if ($result['error'] === false && $result['data'] !== null) {
                     $score = $result['data']['0']['score'];
                 }
 
