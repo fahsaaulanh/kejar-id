@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Selamat Datang</title>
         <!-- Styles -->
-        <link rel="shortcut icon" href="https://kejar.id/assets/img/logo/fackejar.png" type="image/x-icon">
+        <link rel="icon" href="{{ url('assets/icon/fackejar.png') }}" type="image/gif">
         <link href="{{ url('/assets/css/layout.css') }}" rel="stylesheet">
         <link href="{{ url('/assets/css/bootstrap.css') }}" rel="stylesheet">
         <!-- Fonts -->
