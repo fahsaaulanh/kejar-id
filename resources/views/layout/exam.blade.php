@@ -10,6 +10,9 @@
         <link href="{{ url('/assets/css/layout.css') }}" rel="stylesheet">
         <link href="{{ url('/assets/css/bootstrap.css') }}" rel="stylesheet">
         <link href="{{ url('/assets/css/matrikulasi_exam/style.css') }}" rel="stylesheet">
+        @if($game == 'obr')
+            <script src="{{ url('js/check-for-tex.js') }}" defer></script>
+        @endif
     </head>
     <body>
         <div class="container-fluid">
