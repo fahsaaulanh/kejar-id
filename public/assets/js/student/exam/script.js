@@ -41,7 +41,7 @@ $(document).ready(function(){
             type: "POST",
             url: urlCheck,
             data: {
-                '_token' : $('meta[name="_token"]').attr('content'),
+                '_token' : $('input[name="_token"]').val(),
                 'id' : $(el).data('id'),
                 'task_id' : $('.question-list').data('task'),
                 'answer' : $(el).find('.answer-input').val(),
@@ -129,6 +129,7 @@ $(document).ready(function(){
     });
 
     $('body').on('keyup', '.answer-input', function(e){
+        forceLower($(this));
         if (e.which === 13) {
             $(this).parents('.question-item').find('.btn-next').click();
             $(this).parents('.question-item').find('.btn-next').prop('disabled', true);
@@ -182,9 +183,13 @@ $(document).ready(function(){
 
     function finish() {
         var form = $('#question-list');
-        $(form).prepend('<input class="d-none" name="_token" value="' + $('meta[name="_token"]').attr('content') +'">');
+        $(form).prepend('<input class="d-none" name="_token" value="' + $('input[name="_token"]').val() +'">');
         console.log(form.html());
         $(form).submit();
     }
 
+    function forceLower(strInput) 
+    {
+        $(strInput).val($(strInput).val().toLocaleLowerCase());
+    }    
 });
