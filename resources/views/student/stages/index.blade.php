@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Babak Permainan')
+@section('title', 'Daftar Babak - ' . $game['title'])
 
 @section('content')
 <div class="container">
@@ -15,7 +15,7 @@
         </nav>
         <!-- Title -->
         <div class="page-title">
-            <h2 class="mb-08rem">Ini Judul Babak atau Ronde</h2>
+            <h2 class="mb-08rem">{{ $game['title'] }}</h2>
         </div>
 
         <!-- List of Stages (Student)-->
@@ -28,7 +28,7 @@
                 </a>
                 <!-- <div class="hover-only"> -->
                     <div class="stage-order-buttons">
-                        @if($stage['status'] == 'done')
+                        @if($stage['status'] == 'DONE')
                         <button class="btn-icon">
                             <i class="kejar-sudah-dikerjakan"></i>
                         </button>
