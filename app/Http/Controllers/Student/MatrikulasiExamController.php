@@ -14,15 +14,22 @@ class MatrikulasiExamController extends Controller
     {
 
         $taskApi = new TaskApi;
-        $task = $taskApi->start($stageId, $roundId)['data'];
+        $task = $taskApi->start($stageId, $roundId)['data'] ?? [];
 
         $taskId = $task['id'];
 
         $questions = $taskApi->question($taskId)['data'] ?? abort(404);
 
+        $roundApi = new RoundApi;
+
+        $round = $roundApi->getDetail($roundId)['data'] ?? [];
+
         $timespan = $this->getTimer($roundId);
 
-        return view('student.exams.index', compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan'));
+        return view(
+            'student.exams.index',
+            compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan', 'round'),
+        );
     }
 
     public function checkAnswer(Request $request)

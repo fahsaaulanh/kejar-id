@@ -284,6 +284,10 @@ input[type=number] {
     font-weight: normal;
 }
 
+#exitExamModal .modal-body p{
+    padding: 0px 15px;
+}
+
 #exitExamModal .close{
     outline: none;
 }
