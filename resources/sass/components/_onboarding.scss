@@ -36,6 +36,7 @@
             pre{
                 @include h5-reg;
                 color: $black-1;
+                line-height: 2.4rem;
                 margin-top: 1rem;
                 white-space: pre-wrap;       /* Since CSS 2.1 */
                 white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */

@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Onboarding Exam - Siswa')
+@section('title', 'Permainan - ' . $round['title'])
 
 @section('content')
 
@@ -24,7 +24,7 @@
         <!-- On Boarding -->
         <div class="onboarding-page">
             <div class="onboarding-page-description">
-                <h4>{{ $round['total_question'] }}</h4>
+                <h4>{{ $round['total_question'] }} soal</h4>
                 <p>{{ $round['description'] }}</p>
             </div>
 
