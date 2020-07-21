@@ -47,11 +47,9 @@ class StageController extends Controller
 
                 $totalTaskCount += 1;
             }
-            
+
             if ($taskCompletedCount === $totalTaskCount) {
-                if ($totalTaskCount !== 0) {
-                    $stage['status'] = 'DONE';
-                }
+                $stage['status'] = $totalTaskCount !== 0 ? 'DONE' : 'NOT FINISHED';
             } else {
                 $stage['status'] = 'NOT FINISHED';
             }
