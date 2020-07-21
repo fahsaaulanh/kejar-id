@@ -77,3 +77,151 @@
         }
     }
 }
+
+.container{
+    width: 100%;
+}
+
+.card-result{
+    background: $white;
+    min-width: 50.4rem;
+
+    a{
+        text-decoration: none !important;
+    }
+
+    @media screen and (max-width: 38.4rem) {
+        min-width: 100%;
+    }
+
+    .card-header{
+        border: 0;
+        background: $white;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-top: 20px;
+
+        .close-icon{
+            font-size: 4rem;
+
+            &:before{
+                color: $grey-3;
+            }
+        }
+    }
+
+    .card-body{
+        padding: 4rem 3.2rem;
+        padding-top: 2rem;
+        
+        .score-result{
+            text-align: center;
+        }
+        
+        .side-stars{
+            font-size: 8rem;
+            color: $deep-yellow;
+        }
+    
+        .middle-star{
+            font-size: 12rem;
+            color: $deep-yellow;
+        }
+    
+        .middle-star-border{
+            font-size: 12rem;
+            color: #EBF1F6 !important;
+        }
+        .side-stars-border{
+            font-size: 8rem;
+            color: #EBF1F6 !important;
+        }
+
+        .score-title{
+            @include h2;
+            margin-top: 2rem;
+            color: $black;
+        }
+
+        .score-description{
+            @include h5-reg;
+            color: $black;
+        }
+
+        .btn-restart{
+            @include h3;
+            background: $purple-tp;
+            color: $purple;
+            padding: 1.2rem 1.6rem;
+            box-sizing: border-box;
+            
+            &:hover{
+                color: $purple-2;
+                background: $purple-tp;
+            }
+        }
+    
+        .btn-next{
+            @include h3;
+            background: $purple;
+            color: $purple;
+            padding: 1.2rem 1.6rem;
+            box-sizing: border-box;
+            color: $white;
+            border: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            i:before{
+                @include h3;
+                margin-left: 0.4rem;
+                color: $white;
+            }
+
+            &:hover{
+                color: $white;
+                background: $purple-2;
+            }
+        }
+
+        .btn-retry{
+            @include h3;
+            border: 0 !important;
+            background: $purple;
+            color: $white;
+            padding: 1.2rem 1.6rem;
+
+            &:hover{
+                background: $purple-2;
+
+            }
+        }
+
+
+    }
+
+    .res-container{
+        display: flex;
+        justify-content: center;
+
+        .btn{
+            display: block;
+            border-radius: 0;
+            margin: 0px 5px;
+
+            @media screen and (max-width: 38.4rem) {
+                display: block;
+                margin: 5px 0px;
+                width: 100%
+            }
+        }
+    }
+
+
+    .kejar-arsip-asesmen-bold:before {
+        content: "\e905";
+        color: $deep-yellow;
+    }
+}

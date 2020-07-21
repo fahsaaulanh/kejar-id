@@ -9,13 +9,9 @@
     <br>
     <div class="res-container">
         <div class="row">
-            <div class="col p-2">
-                <a href="{{ url('students/games') }}">
-                    <button class="rounded-0 btn-retry">
-                        Coba Lagi
-                    </button>
-                </a>
-            </div>
+            <a href="{{ url('students/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/onboardings') }}" class="btn btn-retry">
+                Coba Lagi
+            </a>
         </div>
     </div>
 </div>
