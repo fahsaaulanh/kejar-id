@@ -6,8 +6,7 @@
         <title>Selamat Datang</title>
         <!-- Styles -->
         <link rel="icon" href="{{ url('assets/icon/fackejar.png') }}" type="image/gif">
-        <link href="{{ url('/assets/css/layout.css') }}" rel="stylesheet">
-        <link href="{{ url('/assets/css/bootstrap.css') }}" rel="stylesheet">
+        <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
         <script src="{{ url('js/check-for-tex.js') }}" defer></script>
@@ -29,7 +28,6 @@
         </nav>
         @yield('content')
     </body>
-    <script src="{{ url('assets/js/jquery.js') }}"></script>
-    <script src="{{ url('assets/js/bootstrap.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
     @yield('scripts')
 </html>
