@@ -50,8 +50,26 @@ class MatrikulasiExamController extends Controller
         $roundId;
         $taskApi = new TaskApi;
         $task = $taskApi->finish($taskId)['data'];
-
-        return view('student.results.index', compact('task'));
+        
+        $roundApi = new RoundApi;
+        $filter = [
+            'filter[stage_id]' => $stageId,
+        ];
+    
+        $rounds = $roundApi->index($filter);
+        $roundCurrent = $roundApi->getDetail($roundId)['data'];
+    
+        $roundsContainer = [];
+    
+        foreach ($rounds['data'] as $round) {
+            if ($round['id'] !== $roundId && $round['order'] > $roundCurrent['order']) {
+                $roundsContainer[] = $round;
+            }
+        }
+        
+        $nextRound = $roundsContainer[0] ?? [];
+    
+        return view('student.results.index', compact('task', 'nextRound', 'stageId', 'roundId', 'game'));
     }
 
     private function getTimer($roundId)
