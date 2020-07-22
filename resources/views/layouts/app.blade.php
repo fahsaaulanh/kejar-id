@@ -9,7 +9,7 @@
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-        <script src="{{ url('js/check-for-tex.js') }}" defer></script>
+        <script src="{{ mix('/js/check-for-tex.js') }}" defer></script>
         <!-- Custom -->
         @yield('styles')
     </head>
@@ -30,4 +30,12 @@
     </body>
     <script src="{{ mix('/js/app.js') }}"></script>
     @yield('scripts')
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-117909356-4');
+    </script>
 </html>

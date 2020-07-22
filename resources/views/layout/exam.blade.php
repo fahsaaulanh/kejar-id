@@ -18,5 +18,13 @@
     <!-- Modal -->
     @include('student.exams._exit_confirmation')
     <script src="{{ mix('/js/app.js') }}"></script>
-    <script src="{{ url('assets/js/student/exam/script.js') }}"></script>
+    <script src="{{ mix('/js/student/exam/script.js') }}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-117909356-4');
+    </script>
 </html>

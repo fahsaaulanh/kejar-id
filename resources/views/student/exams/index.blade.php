@@ -77,10 +77,10 @@
 @endsection
 
 @push('script')
-<script src="{{ secure_url('assets/js/student/exam/script.js') }}"></script>
+<script src="{{ mix('/js/student/exam/script.js') }}"></script>
 
 @if($game == 'obr')
-    <script src="{{ secure_url('js/check-for-tex.js') }}" defer></script>
+    <script src="{{ mix('/js/check-for-tex.js') }}" defer></script>
 @endif
 
 @endpush
