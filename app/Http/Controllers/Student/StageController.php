@@ -49,12 +49,16 @@ class StageController extends Controller
             }
 
             if ($taskCompletedCount === $totalTaskCount) {
-                $stage['status'] = $totalTaskCount !== 0 ? 'DONE' : 'NOT FINISHED';
+                if ($totalTaskCount !== 0) {
+                    $stage['status'] = 'DONE';
+                    $modStages[] = $stage;
+                } else {
+                    $stage['status'] = 'NOT FINISHED';
+                }
             } else {
                 $stage['status'] = 'NOT FINISHED';
+                $modStages[] = $stage;
             }
-
-            $modStages[] = $stage;
         }
 
         $stages = $modStages;
