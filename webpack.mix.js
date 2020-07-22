@@ -12,6 +12,8 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .js('resources/js/student/exam/script.js', 'public/js/student/exam/script.js')
+    .js('resources/js/check-for-tex.js', 'public/js/check-for-tex.js')
     .sass('resources/sass/app.scss', 'public/css');
 
 if (mix.inProduction()) {

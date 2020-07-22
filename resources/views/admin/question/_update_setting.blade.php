@@ -38,8 +38,6 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('assets/js/jquery.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
 <script type="text/javascript">
     (function($) {
       $.fn.inputFilter = function(inputFilter) {
@@ -59,7 +57,7 @@
     }(jQuery));
 
     $(".number-input").inputFilter(function(value) {
-      return /^-?\d*$/.test(value); 
+      return /^-?\d*$/.test(value);
     });
 
     $(document).on('input propertychange paste', '.input-not-zero', function(e){

@@ -21,12 +21,10 @@
                         <button type="submit" class="btn-save">Simpan</button>
                     </div>
                 </form>
-            </div> 
+            </div>
         </div>
     </div>
 </form>
-<script src="{{ asset('assets/js/jquery.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
 <script type="text/javascript">
     $(document).on('dblclick', '.text-title', function () {
       $('#updateRoundTitle').modal('show');

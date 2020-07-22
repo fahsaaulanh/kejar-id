@@ -32,8 +32,6 @@
         </div>
     </div>
 </div>
-<script src="{{ asset('assets/js/jquery.js') }}"></script>
-<script src="{{ asset('assets/js/bootstrap.js') }}"></script>
 <script type="text/javascript">
     $(document).on('dblclick', '.round-detail:nth-child(2) h5', function () {
       $('#descriptionEditModal').modal('show');
