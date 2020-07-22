@@ -85,8 +85,8 @@
 
             <div class="stage-order-buttons">
                 <div class="play-button">
-                    <a href="{{ url('students/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}" class="btn btn-next">
-                        Mulai <i class="kejar-next"></i>
+                    <a href="{{ url('students/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}" class="btn-next">
+                        Main <i class="kejar-next"></i>
                     </a>
                 </div>
             </div>

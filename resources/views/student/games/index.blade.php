@@ -1,9 +1,8 @@
-@extends('layout.index')
+@extends('layout.main')
 
 @section('title', 'Permainan')
 
 @section('content')
-
 <div class="container-fluid">
     <div class="row dashboard">
         <div class="col-12">
@@ -38,5 +37,4 @@
         </div>
     </div>
 </div>
-
 @endsection

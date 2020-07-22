@@ -222,17 +222,25 @@
     justify-content: flex-end;
 
     .btn-next{
-        @include h5;
-        display: flex;
+        display: inline-block;
+        width: 7.5rem !important;
+        height: 2rem;
+        padding: 0.2rem 0.6rem !important;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        text-transform: uppercase;
+        text-align: center;
         align-items: center;
         border-radius: 0;
         color: $white;
-        padding: 4px !important;
         background: $purple;
 
         i{
-            margin-left: 0.5rem;
-            margin-top: -0.5rem;
+            display: block !important;
+            margin-left: 0.5rem !important;
+            margin-top: -0.6rem !important;
             &:before{
                 color: $white;
                 font-size: 2rem;

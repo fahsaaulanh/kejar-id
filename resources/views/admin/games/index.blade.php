@@ -1,9 +1,12 @@
-@extends('layout.index')
+@extends('layout.main')
 
 @section('title', 'Selamat Datang!')
 
-@section('content')
+@section('style')
+<link href="{{ asset('assets/css/color.css') }}" rel="stylesheet">
+@endsection
 
+@section('content')
 <div class="container-fluid">
     <div class="row dashboard">
         <div class="col-12">
@@ -38,5 +41,4 @@
         </div>
     </div>
 </div>
-
 @endsection

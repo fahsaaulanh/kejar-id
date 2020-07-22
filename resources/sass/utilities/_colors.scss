@@ -14,6 +14,7 @@ $white: #FFFFFF;
 $blue: #3167F6;
 $blue-2: #1888FF;
 $blue-4: #A6D1FF;
+$blue-5: #F4F8FF;
 $blue-tp: #E9F2FF;
 
 // purple magenta
@@ -30,3 +31,7 @@ $deep-yellow: #FFD600;
 
 // background
 $teal-bg: #98D3E0;
+
+.bg-blue {
+    background-color: $blue-5 !important;
+}

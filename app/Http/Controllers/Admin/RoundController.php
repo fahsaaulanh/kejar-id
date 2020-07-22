@@ -277,6 +277,8 @@ class RoundController extends Controller
                 ];
 
                 $question = $questionApi->store($collection);
+                $questionApi->update($question['data']['id'], ['status' => '2']);
+
                 $roundQuestionMeta = $roundQuestionApi
                                 ->getAll($data[$sheetIndex][$row][$roundIdIndex], $req->page ?? 1)['meta'] ?? [];
                 $questionTotal = $roundQuestionMeta['total'] ?? 0;

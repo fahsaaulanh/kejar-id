@@ -43,6 +43,8 @@
 
         .card-deck{
             justify-content: center;
+            display: flex;
+            flex-flow: row wrap;
 
             .card{
                 border: 0rem;
