@@ -13,6 +13,10 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/student/exam/script.js', 'public/js/student/exam/script.js')
+    .js('resources/js/student/result/script.js', 'public/js/student/result/script.js')
+    .js('resources/js/admin/stage/script.js', 'public/js/admin/stage/script.js')
+    .js('resources/js/admin/round/script.js', 'public/js/admin/round/script.js')
+    .js('resources/js/admin/question/script.js', 'public/js/admin/question/script.js')
     .js('resources/js/check-for-tex.js', 'public/js/check-for-tex.js')
     .sass('resources/sass/app.scss', 'public/css');
 

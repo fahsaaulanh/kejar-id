@@ -43,14 +43,14 @@ class RoundController extends Controller
         if ($game === 'OBR') {
             $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
         } elseif ($game === 'VOCABULARY') {
-            $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'VOCABULARY'];
+            $game = ['short' => 'Vocab', 'title' => 'Vocabulary', 'uri' => 'VOCABULARY'];
         } elseif ($game === 'KATABAKU') {
-            $game = ['short' => 'Kata Baku', 'title' => 'KATA BAKU', 'uri' => 'KATABAKU'];
+            $game = ['short' => 'Kata Baku', 'title' => 'Kata Baku', 'uri' => 'KATABAKU'];
         } else {
             abort(404);
         }
 
-        return view('admin/round/index', compact('game', 'stage', 'rounds'));
+        return view('admin/rounds/index', compact('game', 'stage', 'rounds'));
     }
 
     public function updateStatus(Request $request, $game, $stageId, $roundId)
@@ -72,7 +72,7 @@ class RoundController extends Controller
 
         if (is_null($file)) {
             return redirect()->back()->withErrors([
-                'error' => ['Silakan pilih file terlebih dahulu'],
+                'error' => ['Silakan pilih file terlebih dahulu.'],
             ]);
         }
 
@@ -80,7 +80,7 @@ class RoundController extends Controller
 
         if ($theArray[0][3][0] !== 'ID Babak') {
             return redirect()->back()->withErrors([
-                'error' => ['Data tidak berhasil diunggah! Silakan download format data yang tersedia!'],
+                'error' => ['Data tidak berhasil diunggah. Silakan download format data yang tersedia.'],
             ]);
         }
 
@@ -123,7 +123,7 @@ class RoundController extends Controller
                 $store = $store->store($data);
             }
 
-            return redirect()->back()->with('success', 'Data berhasil diunggah!');
+            return redirect()->back()->with('success', 'Data berhasil diunggah.');
         } catch (Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => [$e],
@@ -215,9 +215,9 @@ class RoundController extends Controller
         $data = [
             'stage_id' => $stageId,
             'title' => $request->title,
-            'description' => $request->description ?? 'tambahkan deskripsi', // database tidak nullable
-            'direction' => $request->direction ?? 'tambahkan petunjuk', // database tidak nullable
-            'material' => 'Buat Materi', // database tidak nullable
+            'description' => $request->description ?? 'Tambahkan deskripsi', // database tidak nullable
+            'direction' => $request->direction ?? 'Tambahkan petunjuk', // database tidak nullable
+            'material' => 'Buat materi', // database tidak nullable
             'total_question' => $request->question_showed,
             'question_timespan' => $request->timespan,
             'order' => count($roundApi->index($filter)['data'] ?? []) + 1,
@@ -226,7 +226,7 @@ class RoundController extends Controller
 
         $roundApi->store($data);
 
-        return redirect()->back()->with(['message' => 'Success!']);
+        return redirect()->back()->with(['message' => 'Berhasil!']);
     }
 
     public function uploadQuestionFile($game, $stageId, Request $req)
@@ -238,7 +238,7 @@ class RoundController extends Controller
 
         if (is_null($file) === true) {
             return redirect()->back()->withErrors([
-                'error' => ['Silakan pilih file terlebih dahulu'],
+                'error' => ['Silakan pilih file terlebih dahulu.'],
             ]);
         }
 
@@ -247,7 +247,7 @@ class RoundController extends Controller
         try {
             if ($data[0][3][0] !== 'ID Ronde') {
                 return redirect()->back()->withErrors([
-                    'error' => ['Data tidak berhasil diunggah! Silakan download format data yang tersedia!'],
+                    'error' => ['Data tidak berhasil diunggah. Silakan download format data yang tersedia.'],
                 ]);
             }
 
@@ -300,7 +300,7 @@ class RoundController extends Controller
             return $th;
         }
 
-        return redirect()->back()->with('success', 'Soal berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Soal berhasil ditambahkan.');
     }
 
     private function gameDefault($game)

@@ -14,11 +14,7 @@ class LoginController extends Controller
             $responseMe = $userApi->me();
 
             if ($responseMe['data']['role'] === 'STUDENT') {
-                return redirect('/students/games');
-            }
-            
-            if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin/games');
+                return redirect('/student/games');
             }
             
             if ($responseMe['data']['role'] === 'ADMIN') {
@@ -53,19 +49,11 @@ class LoginController extends Controller
             $request->session()->put('user', $responseMe['data']);
 
             if ($responseMe['data']['role'] === 'STUDENT') {
-                return redirect('/students/games');
+                return redirect('/student/games');
             }
             
             if ($responseMe['data']['role'] === 'ADMIN') {
                 return redirect('/admin/games');
-            }
-            
-            if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin/games');
-            }
-
-            if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin');
             }
         }
 
