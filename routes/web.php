@@ -74,7 +74,7 @@ Route::middleware('session')->group(function () {
 
         // Khusus route student disini
 
-        Route::prefix('students')->group(function () {
+        Route::prefix('student')->group(function () {
 
             Route::get('/result', 'Student\ResultController@index'); //TODO EXAM
 

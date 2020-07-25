@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>@yield('title')</title>
-        <link rel="icon" href="{{ url('assets/icon/fackejar.png') }}" type="image/gif">
+        <link rel="icon" href="{{ url('assets/logo/favicon.png') }}" type="image/gif">
         <!-- Styles -->
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
 
@@ -13,7 +13,7 @@
         @section('header')
             <nav class="navbar">
                 <a class="navbar-brand" href="#">
-                    <img src="{{ asset('assets/icons/kejarid.svg') }}" alt="" loading="lazy">
+                    <img src="{{ asset('assets/logo/kejarid.svg') }}" alt="" loading="lazy">
                     {{ session('user.username') }}
                 </a>
                 <a class="btn-logout" href="{{ url('/logout') }}">Logout</a>

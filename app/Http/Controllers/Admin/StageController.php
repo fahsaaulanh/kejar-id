@@ -55,7 +55,7 @@ class StageController extends Controller
 
             if ($data[0][3][0] !== 'Judul Babak') {
                 return redirect()->back()->withErrors([
-                    'stage_file' => ['Data tidak berhasil diunggah! Silakan download format data yang tersedia!'],
+                    'stage_file' => ['Data tidak berhasil diunggah. Silakan download format data yang tersedia.'],
                 ]);
             }
 
@@ -83,7 +83,7 @@ class StageController extends Controller
             return $e;
         }
 
-        return redirect()->back()->with('success', 'Babak berhasil ditambahkan!');
+        return redirect()->back()->with('success', 'Babak berhasil ditambahkan.');
     }
 
     public function uploadRounds(Request $request, $game)
@@ -104,7 +104,7 @@ class StageController extends Controller
 
             if ($data[0][3][0] !== 'ID Babak') {
                 return redirect()->back()->withErrors([
-                    'round_file' => ['Data tidak berhasil diunggah! Silakan download format data yang tersedia!'],
+                    'round_file' => ['Data tidak berhasil diunggah. Silakan download format data yang tersedia.'],
                 ]);
             }
 
@@ -127,7 +127,7 @@ class StageController extends Controller
                     'total_question' => $data[$sheetIndex][$row][2],
                     'question_timespan' => $data[$sheetIndex][$row][3],
                     'description' => $data[$sheetIndex][$row][4],
-                    'material' => $data[$sheetIndex][$row][5] ?? 'Buat Materi',
+                    'material' => $data[$sheetIndex][$row][5] ?? 'Buat materi',
                     'direction' => $data[$sheetIndex][$row][6],
                     'order' => $roundsSum + 1,
                     'status' => 'NOT_PUBLISHED',
@@ -179,7 +179,7 @@ class StageController extends Controller
 
         $stageApi->store($game, $payload);
 
-        return redirect()->back()->with(['message' => 'Success!']);
+        return redirect()->back()->with(['message' => 'Berhasil!']);
     }
 
     // Update Stage Modal
@@ -210,14 +210,14 @@ class StageController extends Controller
             ];
         } elseif ($game === 'VOCABULARY') {
             $game = [
-                'short' => 'Vocabulary',
-                'title' => 'VOCABULARY',
+                'short' => 'Vocab',
+                'title' => 'Vocabulary',
                 'uri' => 'VOCABULARY',
             ];
         } elseif ($game === 'KATABAKU') {
             $game = [
                 'short' => 'Kata Baku',
-                'title' => 'KATA BAKU',
+                'title' => 'Kata Baku',
                 'uri' => 'KATABAKU',
             ];
         } else {

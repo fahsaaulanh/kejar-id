@@ -15,19 +15,11 @@ class HomeController extends Controller
             $responseMe = $userApi->me();
             
             if ($responseMe['data']['role'] === 'STUDENT') {
-                return redirect('/students/games');
+                return redirect('/student/games');
             }
             
             if ($responseMe['data']['role'] === 'ADMIN') {
                 return redirect('/admin/games');
-            }
-            
-            if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin/games');
-            }
-
-            if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin');
             }
 
             if ($responseMe['error']) {
