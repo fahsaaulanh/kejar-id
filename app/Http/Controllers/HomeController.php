@@ -51,7 +51,16 @@ class HomeController extends Controller
 
     public function teacher()
     {
-        echo 'Example Teacher';
+        $userApi = new UserApi;
+        $response = $userApi->me();
+
+        if ($response['error']) {
+            return redirect('/login');
+        }
+
+        session(['user' => $response['data']]);
+
+        return view('teacher/games/index', $response['data']);
     }
 
     public function admin()
