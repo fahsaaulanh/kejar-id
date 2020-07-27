@@ -22,6 +22,10 @@ class HomeController extends Controller
                 return redirect('/teachers/games');
             }
 
+            if ($responseMe['data']['role'] === 'ADMIN') {
+                return redirect('/admin/games');
+            }
+
             if ($responseMe['error']) {
                 return redirect('/login');
             }

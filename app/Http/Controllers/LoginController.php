@@ -59,6 +59,10 @@ class LoginController extends Controller
             if ($responseMe['data']['role'] === 'TEACHER') {
                 return redirect('/teachers/games');
             }
+
+            if ($responseMe['data']['role'] === 'ADMIN') {
+                return redirect('/admin/games');
+            }
         }
 
         $request->session()->flash('message', $response['message']);
