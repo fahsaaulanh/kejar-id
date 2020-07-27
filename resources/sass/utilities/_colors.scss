@@ -33,6 +33,13 @@ $deep-yellow: #FFD600;
 // background
 $teal-bg: #98D3E0;
 
-.bg-blue {
+.bg-blue-tp {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
     background-color: $blue-5 !important;
+    z-index: -1 !important;
 }

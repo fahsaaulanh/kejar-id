@@ -17,6 +17,10 @@ class LoginController extends Controller
                 return redirect('/student/games');
             }
             
+            if ($responseMe['data']['role'] === 'TEACHER') {
+                return redirect('/teachers/games');
+            }
+            
             if ($responseMe['data']['role'] === 'ADMIN') {
                 return redirect('/admin/games');
             }
@@ -52,8 +56,8 @@ class LoginController extends Controller
                 return redirect('/student/games');
             }
             
-            if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin/games');
+            if ($responseMe['data']['role'] === 'TEACHER') {
+                return redirect('/teachers/games');
             }
         }
 
