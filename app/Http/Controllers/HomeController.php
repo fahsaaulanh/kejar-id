@@ -18,8 +18,8 @@ class HomeController extends Controller
                 return redirect('/student/games');
             }
             
-            if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin/games');
+            if ($responseMe['data']['role'] === 'TEACHER') {
+                return redirect('/teachers/games');
             }
 
             if ($responseMe['error']) {
@@ -52,7 +52,7 @@ class HomeController extends Controller
 
         session(['user' => $response['data']]);
 
-        return view('teacher/games/index', $response['data']);
+        return view('teacher.games.index', $response['data']);
     }
 
     public function admin()

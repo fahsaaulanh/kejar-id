@@ -64,10 +64,23 @@ Route::middleware('session')->group(function () {
             });
         });
     });
-
+    
     Route::middleware('teacher')->group(function () {
+
         // Khusus route teacher disini
-        Route::get('/teacher', 'HomeController@teacher');
+
+        Route::prefix('teachers')->group(function () {
+
+            Route::prefix('/games')->group(function () {
+
+                Route::get('/', 'HomeController@teacher');
+                
+                Route::prefix('/{game}/class')->group(function () {
+
+                    Route::get('/', 'Teacher\StageController@index');
+                });
+            });
+        });
     });
 
     Route::middleware('student')->group(function () {
