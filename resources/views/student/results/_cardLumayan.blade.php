@@ -9,11 +9,11 @@
     <br>
     <div class="res-container">
         <div class="row">
-            <a href="{{ url('students/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/onboardings') }}" class="btn btn-restart">
+            <a href="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/onboardings') }}" class="btn btn-restart">
                 Ulangi
             </a>
             @if(count($nextRound) > 0)
-            <a href="{{ url('students/games/' . $game . '/stages/' . $stageId . '/rounds/' . $nextRound['id'] . '/onboardings') }}" class="btn btn-next">
+            <a href="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $nextRound['id'] . '/onboardings') }}" class="btn btn-next">
                 Ronde Berikutnya
                 <i class="kejar-arrow-right" aria-hidden="true"></i>
             </a>

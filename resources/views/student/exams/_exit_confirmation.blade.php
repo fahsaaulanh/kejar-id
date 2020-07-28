@@ -14,7 +14,7 @@
             <div class="modal-footer border-0 justify-content-end">
                 <div>
                     <button type="button" class="btn btn-transparent rounded-0" data-dismiss="modal">Batal</button>
-                    <a href="{{ url('students/games/' . $game . '/stages/' . $stageId . '/rounds') }}" class="btn btn-danger text-white rounded-0">Keluar</a>
+                    <a href="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds') }}" class="btn btn-danger text-white rounded-0">Keluar</a>
                 </div>
             </div>
         </div>

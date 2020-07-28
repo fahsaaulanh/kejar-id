@@ -6,13 +6,13 @@
 
 <div class="container">
     <!-- Link Back -->
-    <a class="btn-back" href="{{ url('/students/games/' . $game['uri'] . '/stages') }}">
+    <a class="btn-back" href="{{ url('student/games/' . $game['uri'] . '/stages') }}">
         <i class="kejar-back"></i>Kembali
     </a>
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="{{ url('students/games') }}">Beranda</a>
-        <a class="breadcrumb-item" href="{{ url('/students/games/' . $game['uri'] . '/stages') }}">{{ $game['short'] }}</a>
+        <a class="breadcrumb-item" href="{{ url('student/games') }}">Beranda</a>
+        <a class="breadcrumb-item" href="{{ url('student/games/' . $game['uri'] . '/stages') }}">{{ $game['short'] }}</a>
         <span class="breadcrumb-item active">Babak {{ $stage['order'] }}</span>
     </nav>
     <!-- Title -->
@@ -26,9 +26,9 @@
         <p class="description">{{ $stage['description'] }}</p>
         @forelse ($rounds as $key => $round)
         <div class="list-group-item">
-            <a href="{{ url('students/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}">
+            <a href="{{ url('student/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}">
                 <i class="kejar-round"></i>
-                <span>Ronde {{ ++$key }} : </span><span class="question-round"> {{ $round['title'] }}</span>
+                <span>Ronde {{ $round['order'] }} : </span><span class="question-round"> {{ $round['title'] }}</span>
             </a>
             @if($round['score'] !== null)
                 @if ($round['score'] == 100.00)
@@ -85,7 +85,7 @@
 
             <div class="stage-order-buttons">
                 <div class="play-button">
-                    <a href="{{ url('students/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}" class="btn-next">
+                    <a href="{{ url('student/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}" class="btn-next">
                         Main <i class="kejar-next"></i>
                     </a>
                 </div>

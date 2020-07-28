@@ -13,7 +13,7 @@ $(document).ready(function(){
 
         $('.timer-length').css({'background' : '#4DC978', 'width' : '100%'});
         $(el).find('.btn-next').addClass('btn-next-disabled').prop('disabled', true);
-        $(el).find('.answer-input').css({'border-bottom-color': '#A6D1FF'}).focus().val('').removeAttr('readonly');
+        $(el).find('.answer-input').css({'border-bottom-color': '#A6D1FF'}).val('').removeAttr('readonly').focus();
         $(el).find('.notification-success').css({'display' : 'none'})
         $(el).find('.notification-failed').css({'display' : 'none'});
 
@@ -129,7 +129,6 @@ $(document).ready(function(){
     });
 
     $('body').on('keyup', '.answer-input', function(e){
-        forceLower($(this));
         if (e.which === 13) {
             $(this).parents('.question-item').find('.btn-next').click();
             $(this).parents('.question-item').find('.btn-next').prop('disabled', true);
@@ -187,9 +186,4 @@ $(document).ready(function(){
         console.log(form.html());
         $(form).submit();
     }
-
-    function forceLower(strInput) 
-    {
-        $(strInput).val($(strInput).val().toLocaleLowerCase());
-    }    
 });

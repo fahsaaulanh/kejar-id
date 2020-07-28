@@ -9,7 +9,7 @@
     <br>
     <div class="res-container">
         <div class="row">
-            <a href="{{ url('students/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/onboardings') }}" class="btn btn-retry">
+            <a href="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/onboardings') }}" class="btn btn-retry">
                 Coba Lagi
             </a>
         </div>

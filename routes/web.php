@@ -109,6 +109,7 @@ Route::middleware('session')->group(function () {
                             Route::get('/exams', 'Student\MatrikulasiExamController@index');
                             Route::post('/check', 'Student\MatrikulasiExamController@checkAnswer');
                             Route::post('/{taskId}/finishes', 'Student\MatrikulasiExamController@finish');
+                            Route::get('/{taskId}/finishes', 'Student\MatrikulasiExamController@getFinish');
                         });
                     });
                 });

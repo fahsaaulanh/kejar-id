@@ -15,7 +15,7 @@
             <span class="breadcrumb-item active" href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/') }}">Babak {{ $stage['order'] }}</span>
         </nav>
         <h2 class="mb-08rem">{{ $stage['title'] }}</h2>
-        <span class="copy-id" data-id="{{ $stage['id'] }}">Salid ID Babak</span>
+        <span class="copy-id" data-id="{{ $stage['id'] }}"  data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salid ID Babak</span>
     </div>
 
     <h5 class="mb-08rem">Deskripsi Babak</h5>
@@ -38,7 +38,7 @@
             <i class="kejar-upload"></i>Unggah Soal
         </button>
     </div>
-    <div class="list-group">
+    <div class="list-group" data-url="{{ secure_url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/order/update') }}" data-token="{{ csrf_token() }}">
         @forelse($rounds as $round)
         <div class="list-group-item" data-id="{{ $round['id'] }}">
             <a href="{{ url()->current() . '/' . $round['id'] }}">

@@ -32,7 +32,7 @@
     <!-- Title -->
     <div class="page-title">
         <h2 class="mb-08rem">{{ $round['title'] }}</h2>
-        <span class="copy-id" onclick="textToClipboard('{{ $round['id'] }}')" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salin ID Ronde</span>
+        <span class="copy-id" data-id="{{ $round['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salin ID Ronde</span>
     </div>
 
     <!-- Description -->
@@ -82,7 +82,7 @@
             </thead>
             <tbody>
                 @forelse($roundQuestionsData as $question)
-                <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}">
+                <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}" data-url="{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                     <td>{{ $question['question']['question'] }}</td>
                     <td>{{ $question['question']['answer'] }}</td>
                 </tr>
