@@ -1,0 +1,47 @@
+.class-dropdown{
+    position: relative;
+
+    button{
+        cursor: pointer;
+        display: inline-block;
+        border: 0;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 2.5rem;
+        line-height: 2.8rem;
+        padding: 0;
+        background-color: transparent;
+        color: $black-1;
+
+        &.dropdown-toggle::after{
+            display: none;
+        }
+
+        i{
+            font-size: 2rem;
+            font-weight: bold;
+            vertical-align: 20%;
+
+            &:before{
+                color: $black-1;
+            }
+        }
+    }
+
+    .dropdown-menu{
+        border: 0.2rem solid $grey-13 !important;
+        border-radius: 0.4rem;
+        color: $grey-2;
+        min-width: 25.5rem;
+
+        a{
+            font-size: 1.5rem;
+            line-height: 3rem;
+            
+            &:hover{
+                color: $purple;
+                background: $blue-6;
+            }
+        }
+    }
+}

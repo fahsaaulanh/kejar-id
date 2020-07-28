@@ -8,12 +8,46 @@
 
     thead{
         border: 0rem;
-        th{
-            @include h5;
-            background-color: $grey-15;
-            padding: 1rem;
-            border: 0rem;
-            width: 50%;
+        tr{       
+            text-align: center;
+            th{
+                @include h5;
+                background-color: $grey-15;
+                padding: 1rem;
+                border: 0rem;
+                width: 7.2rem;
+
+                &.th-name{
+                    table-layout: fixed;
+                    min-width: 24rem !important;
+                    vertical-align: middle;
+                    text-align: center;
+                }
+            }
+
+            &:nth-child(1) th{
+                &:nth-child(1){
+                    position: sticky !important;
+                    left: 0 !important;
+                    min-width: 24rem !important;
+                    background-color: $grey-15 !important;
+                    z-index: 2;
+                }
+
+                &:nth-child(2){
+                    text-align: center !important;
+                    position: sticky !important;
+                }
+            }
+
+
+            &.numbr{
+                th{
+                    position: sticky !important;
+                    table-layout: fixed;
+                    min-width: 7.2rem !important;
+                }
+            }
         }
     }
 
@@ -24,11 +58,36 @@
                 padding: 1.4rem 1.2rem;
                 border-top: 0.2rem solid $grey-15;
                 border-bottom: 0.2rem solid $grey-15;
+                position: sticky;
+
+                i.kejar-sudah-dikerjakan::before{
+                    color: $green-2;
+                }
+                i.kejar-latihan-to-bold::before{
+                    color: $deep-yellow;
+                }
+                i.kejar-belum-mengerjakan-2::before{
+                    color: $red-2;
+                }
+
+                &:nth-child(1){
+                    background-color: $white !important;
+                    position: sticky !important;
+                    left: 0rem;
+                    z-index: 1;
+                    border-top: none;
+            }
             }
 
-            &:first-child{
+            &.result-icon{
                 td{
-                    border-top: none;
+                    width: fit-content !important;
+                    vertical-align: middle;
+                    text-align: center !important;
+
+                    &.td-name{
+                        text-align: left !important;
+                    }
                 }
             }
         }
@@ -67,5 +126,25 @@
             padding: 0 !important;
         }
     }
+}
 
+.paginate{
+    float: right !important;
+
+    .page-item.active .page-link {
+        z-index: 3;
+        color: #007bff;
+        background-color: $blue-tp;
+        border-color: $grey-13;
+    }
+    .page-link {
+        position: relative;
+        display: block;
+        padding: 0.5rem 0.75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color:$grey-6;
+        background-color: #fff;
+        border: 1px solid $grey-13;
+    }
 }

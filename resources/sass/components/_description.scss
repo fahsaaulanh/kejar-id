@@ -21,3 +21,18 @@
 .material-default{
     color: $grey-6;
 }
+
+.icon-description{
+    margin: 1rem auto;
+        .align-items-center{    
+            i.kejar-sudah-dikerjakan::before{
+                color: $green-2;
+            }
+            i.kejar-latihan-to-bold::before{
+                color: $deep-yellow;
+            }
+            i.kejar-belum-mengerjakan-2::before{
+                color: $red-2;
+            }
+        }
+}

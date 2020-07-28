@@ -1,0 +1,23 @@
+.alert-info{
+    font-size: 1.3rem;
+    color: $black-1;
+    background-color: $purple-tp !important;
+    border: none;
+    width: 100%;
+    height: 4rem;
+    border-radius: 0;
+    p.add-text{
+        display: none;
+    }
+
+        i.kejar-info::before{
+            color: $purple;
+        }
+
+        @media (max-width: 27.8rem){
+                height: 12rem;
+                p.add-text{
+                    display: block;
+                }
+        }
+}

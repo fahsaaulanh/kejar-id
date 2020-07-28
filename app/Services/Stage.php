@@ -32,4 +32,11 @@ class Stage extends Service
 
         return $this->showResponse($response);
     }
+
+    public function getResult($studentGroupId, $filter = [])
+    {
+        $response = $this->get("/reports/matrikulasi/student-groups/$studentGroupId/stages", $filter);
+
+        return $this->showResponse($response);
+    }
 }
