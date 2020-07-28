@@ -66,7 +66,7 @@ Route::middleware('session')->group(function () {
     });
     
     Route::middleware('teacher')->group(function () {
-
+        
         // Khusus route teacher disini
 
         Route::prefix('teachers')->group(function () {
@@ -78,9 +78,16 @@ Route::middleware('session')->group(function () {
                 Route::prefix('/{game}/class')->group(function () {
 
                     Route::get('/', 'Teacher\StageController@index');
+
+                    Route::prefix('{batchId}/{studentGroupId}/stages')->group(function () {
+
+                        Route::get('/', 'Teacher\StageController@resultStage');
+                    });
                 });
             });
         });
+
+        Route::get('/teacher', 'HomeController@teacher');
     });
 
     Route::middleware('student')->group(function () {

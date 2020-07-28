@@ -84,4 +84,9 @@ class HomeController extends Controller
 
         return redirect('/login');
     }
+
+    public function example()
+    {
+        return view('example.withHeader');
+    }
 }

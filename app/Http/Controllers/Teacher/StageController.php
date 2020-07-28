@@ -4,11 +4,16 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Services\Batch as BatchApi;
+use App\Services\Stage as StageApi;
 use App\Services\StudentGroup as StudentApi;
 use Carbon\Carbon;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
 
 class StageController extends Controller
 {
+    
     public function index($game)
     {
         $schoolId = session('user')['userable']['school_id'];
@@ -81,8 +86,39 @@ class StageController extends Controller
                 }
             }
         }
-
+        
         return view('teacher.stages.index', compact('game', 'classList', 'classCount'));
+    }
+
+    public function resultStage($game, $batchId, $studentGroupId)
+    {
+        $stageApi = new StageApi;
+        $linkGame = $game;
+        $game = $this->getGame($game);
+
+        //Get Student and result
+        $filter = [
+            'filter[game]' => strtoupper($game['uri']),
+        ];
+        $data = $stageApi->getResult($studentGroupId, $filter)['data'] ?? [];
+        $cn = count($data[0]['progress']);
+
+        //get data studentGroup
+        $studentGroupApi = new StudentApi;
+        $schoolId = $data[0]['school_id'];
+        $dataStudentGroups = $studentGroupApi->index($schoolId, $batchId);
+
+        $responses = $this->myPaginate($data)->withPath('/teacher/games/'.$linkGame.'/class/'.$studentGroupId.'/stage');
+        
+        return view('teacher/result/stage/index', compact('game', 'responses', 'cn', 'dataStudentGroups'));
+    }
+
+    private function myPaginate($data, $perPage = 10, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $data = $data instanceof Collection ? $data : Collection::make($data);
+
+        return new LengthAwarePaginator($data->forPage($page, $perPage), $data->count(), $perPage, $page, $options);
     }
 
     private function getGame($game)
@@ -94,16 +130,19 @@ class StageController extends Controller
             $game['uri'] = 'obr';
             $game['short'] = 'OBR';
             $game['title'] = 'Operasi Bilangan Rill';
+            $game['result'] = 'ronde';
         } elseif ($game === 'vocabulary') {
             $game = [];
             $game['uri'] = 'vocabulary';
             $game['short'] = 'Vocabulary';
             $game['title'] = 'VOCABULARY';
+            $game['result'] = 'words';
         } elseif ($game === 'katabaku') {
             $game = [];
             $game['uri'] = 'katabaku';
             $game['short'] = 'Kata Baku';
             $game['title'] = 'KATA BAKU';
+            $game['result'] = 'kata';
         } else {
             abort(404);
         }
