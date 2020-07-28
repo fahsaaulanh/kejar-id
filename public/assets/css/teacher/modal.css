@@ -1,0 +1,97 @@
+.modal .modal-content{
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.modal .modal-content .modal-header{
+    padding: 25px 22px 0px 22px;
+    border: 0 !important;
+}
+
+.modal .modal-content .modal-body, .modal .modal-content .modal-footer{
+    padding: 25px 22px;
+    border: 0 !important;
+}
+
+.modal .modal-content .modal-body{
+    margin-top: -2.1rem;
+}
+
+.modal .modal-content .modal-header h4{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 17px;
+    line-height: 20px;
+    margin-bottom: 4px;
+    color: #202020;
+}
+
+.modal .modal-content .modal-header p{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: 12px;
+    color: #334E68;
+}
+
+.close{
+    font-size: 20px;
+    padding: 0 !important;
+}
+
+.close i::before{
+    color: #334E68;
+}
+
+.list-group{
+    width: 100%;
+}
+
+.list-group-item{
+    border: 0;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+}
+
+.list-item-text{
+    margin-left: 1.1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.list-item-text h6{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    line-height: 16px;
+    color: #202020;
+    margin: 0;
+}
+
+.list-item-text p{
+    font-style: normal;
+    font-size: 11px;
+    line-height: 12px;
+    color: #ABBED4;
+    margin: 2px 0 0 0;
+}
+
+.list-item-text p span{
+    font-weight: bold;
+    color: #373737;
+}
+
+.kejar-sudah-dikerjakan:before{
+    color: #4DC978 !important;
+}
+
+@media (max-width: 576px){
+    .modal .modal-dialog{
+        margin: 0;
+        margin-top: 3rem !important;
+    }
+}

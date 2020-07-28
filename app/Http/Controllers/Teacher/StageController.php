@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 
 class StageController extends Controller
 {
-    
+
     public function index($game)
     {
         $schoolId = session('user')['userable']['school_id'];
@@ -86,7 +86,7 @@ class StageController extends Controller
                 }
             }
         }
-        
+
         return view('teacher.stages.index', compact('game', 'classList', 'classCount'));
     }
 
@@ -108,8 +108,9 @@ class StageController extends Controller
         $schoolId = $data[0]['school_id'];
         $dataStudentGroups = $studentGroupApi->index($schoolId, $batchId);
 
-        $responses = $this->myPaginate($data)->withPath('/teacher/games/'.$linkGame.'/class/'.$studentGroupId.'/stage');
-        
+        $responses = $this->myPaginate($data)
+        ->withPath('/teacher/games/'.$linkGame.'/class/'.$batchId.'/'.$studentGroupId.'/stages');
+
         return view('teacher/result/stage/index', compact('game', 'responses', 'cn', 'dataStudentGroups'));
     }
 

@@ -13,13 +13,13 @@ class HomeController extends Controller
         if ($request->session()->has('token') === true) {
             $userApi = new UserApi;
             $responseMe = $userApi->me();
-            
+
             if ($responseMe['data']['role'] === 'STUDENT') {
                 return redirect('/student/games');
             }
-            
+
             if ($responseMe['data']['role'] === 'TEACHER') {
-                return redirect('/teachers/games');
+                return redirect('/teacher/games');
             }
 
             if ($responseMe['data']['role'] === 'ADMIN') {

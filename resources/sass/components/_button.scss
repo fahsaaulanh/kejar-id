@@ -253,3 +253,52 @@
     }
 }
 
+.btn-group-between{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .btn-page-management{
+        text-align: right;
+        width: 30rem;
+        height: 3.5rem;
+        line-height: 3.5rem;
+        a{
+            display: inline-block;
+            width: 14rem;
+            height: 100%;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 1.5rem;
+            text-decoration: none;
+            line-height: 2rem;
+            color: $grey-8;
+
+            i:before{
+                color: $grey-8;
+            }
+
+            &:hover{
+                text-decoration: none;
+                color: $grey-8;
+                i:before{
+                    color: $grey-8;
+                }
+            }
+
+            &.active{
+                color: $grey-3;
+                i:before{
+                    color: $grey-3;
+                }
+                &:hover{
+                    color: $blue-2;
+                    i:before{
+                        color: $blue-2;
+                    }
+                }
+            }
+        }
+    }
+}
+
