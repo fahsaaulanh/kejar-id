@@ -31,7 +31,7 @@
             <div class="command">
                 <p class="command-text">{{ $round['direction'] }}</p>
             </div>
-            <form class="question-list" id="question-list" method="POST" action="{{ secure_url('students/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/' . $taskId . '/finishes') }}" id="process" data-total="{{ count($questions) }}" data-task="{{ $taskId }}" data-check="{{ secure_url('students/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/check') }}" data-timer="{{ $timespan }}">
+            <form class="question-list" id="question-list" method="POST" action="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/' . $taskId . '/finishes') }}" id="process" data-total="{{ count($questions) }}" data-task="{{ $taskId }}" data-check="{{ secure_url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/check') }}" data-timer="{{ $timespan }}">
                 @foreach($questions as $key => $question)
                 <div class="question-item" data-index="{{ $key }}" data-number="{{ ++$key }}" data-repeatance="0" data-id="{{ $question['id'] }}">
                     <!-- Notification -->

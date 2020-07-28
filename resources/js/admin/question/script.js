@@ -2,6 +2,10 @@ $('#upload-questions').on('show.bs.modal', event => {
     $('#create-question').modal('hide');
 });
 
+$(function () {
+    $('[data-toggle="popover"]').popover();
+});
+
 $('#create-question').on('show.bs.modal', event => {
     $('#upload-questions').modal('hide');
 });
@@ -18,21 +22,6 @@ $(document).on('change', 'input[type=file]', function(){
     filename = filename == '' ? 'Pilih file' : filename;
     $(this).parents('.custom-upload').find('input[type=text]').val(filename);
 });
-
-$('[data-toggle="popover"]').popover();
-
-function textToClipboard (text) {
-    event.preventDefault();
-    setTimeout(() => {
-        $('[data-toggle="popover"]').popover('hide');
-    }, 1000);
-    var dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = text;
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
-}
 
 // Editing
 
@@ -61,9 +50,27 @@ $('.table-questions tbody tr').on('dblclick', 'td', function() {
     var id = $(this).parent().data('id');
     var question = $(this).parent().data('question');
     var answer = $(this).parent().data('answer');
-    url = "{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/') }}/" + id;
+    var url = $(this).parent().data('url');
     $(modal).find('form').attr('action', url);
     $(modal).find('input[name="question"]').val(question);
     $(modal).find('input[name="answer"]').val(answer);
     $(modal).modal('show');
 });
+
+$('.copy-id').click(function (e) { 
+    e.preventDefault();
+    textToClipboard($(this).data('id'));
+});
+
+function textToClipboard (text) {
+    event.preventDefault();
+    setTimeout(() => {
+        $('[data-toggle="popover"]').popover('hide');
+    }, 1000);
+    var dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+}

@@ -61,22 +61,22 @@ class StageController extends Controller
 
             $stageApi = new StageApi;
             $stages = $stageApi->getAll($game)['data'] ?? [];
-            $stagesSum = $stages === null ? 0 : count($stages);
+            $stagesSum = $stages[count($stages) - 1]['order'] ?? 0;
 
             for ($i=4; $i < count($data[0]); $i++) {
                 $sheetIndex = 0;
                 $row = $i;
                 $title = 0;
                 $description = 1;
-                // $game = $data[$sheetIndex][0][1];
+                $stagesSum += 1;
 
                 $collection = [
                     'title' => $data[$sheetIndex][$row][$title],
                     'game' => $game,
                     'description' => $data[$sheetIndex][$row][$description],
-                    'order' => $stagesSum + 1,
+                    'order' => $stagesSum,
                 ];
-
+                
                 $stageApi->store($game, $collection);
             }
         } catch (Exception $e) {
@@ -116,7 +116,17 @@ class StageController extends Controller
                 ];
 
                 $rounds = $roundApi->index($filter)['data'] ?? [];
-                $roundsSum = $rounds === null ? 0 : count($rounds);
+                if ($rounds !== null) {
+                    $round = [];
+                    foreach ($rounds as $key => $row) {
+                        $round[$key] = $row['order'];
+                    }
+        
+                    array_multisort($round, SORT_DESC, $rounds);
+                    $roundsSum = $rounds[0]['order'];
+                } else {
+                    $roundsSum = 0;
+                }
 
                 $sheetIndex = 0;
                 $row = $i;
@@ -129,7 +139,7 @@ class StageController extends Controller
                     'description' => $data[$sheetIndex][$row][4],
                     'material' => $data[$sheetIndex][$row][5] ?? 'Buat materi',
                     'direction' => $data[$sheetIndex][$row][6],
-                    'order' => $roundsSum + 1,
+                    'order' => $roundsSum += 1,
                     'status' => 'NOT_PUBLISHED',
                 ];
 
@@ -170,11 +180,13 @@ class StageController extends Controller
 
         $game = strtoupper($game);
         $stageApi = new StageApi;
+        $stages = $stageApi->getAll($game)['data'] ?? [];
+        $stageOrder = $stages[count($stages) - 1]['order'] ?? 0;
         $payload = [
             'title' => $request->title,
             'description' => $request->description,
             'game' => $game,
-            'order' => count($stageApi->getAll($game)['data'] ?? []) + 1,
+            'order' => $stageOrder += 1,
         ];
 
         $stageApi->store($game, $payload);

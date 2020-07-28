@@ -217,7 +217,7 @@ class RoundController extends Controller
             'title' => $request->title,
             'description' => $request->description ?? 'Tambahkan deskripsi', // database tidak nullable
             'direction' => $request->direction ?? 'Tambahkan petunjuk', // database tidak nullable
-            'material' => 'Buat materi', // database tidak nullable
+            'material' => 'Buat Materi', // database tidak nullable
             'total_question' => $request->question_showed,
             'question_timespan' => $request->timespan,
             'order' => count($roundApi->index($filter)['data'] ?? []) + 1,
@@ -253,7 +253,6 @@ class RoundController extends Controller
 
             $questionApi = new QuestionApi;
             $roundQuestionApi = new RoundQuestion;
-            $roundApi = new RoundApi;
 
             for ($i=4; $i < count($data[0]); $i++) {
                 $sheetIndex = 0;
@@ -290,11 +289,6 @@ class RoundController extends Controller
                 ];
 
                 $roundQuestionApi->store($question['data']['id'], $payloadQS);
-
-                $roundData = [
-                    'status' => 'PUBLISHED',
-                ];
-                $roundApi->update($roundData, $data[$sheetIndex][$row][$roundIdIndex]);
             }
         } catch (Throwable $th) {
             return $th;

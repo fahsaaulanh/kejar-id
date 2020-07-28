@@ -120,6 +120,10 @@
             color: $purple;
         }
     }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+        padding: 3rem 1.6rem !important;
+    }
 }
 
 .list-group-student {

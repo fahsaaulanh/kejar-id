@@ -5,12 +5,12 @@
 @section('content')
 <div class="container">
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('students/games') }}">
+        <a class ="btn-back" href="{{ url('student/games') }}">
             <i class="kejar-back"></i>Kembali
         </a>
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ url('students/games') }}">Beranda</a>
+            <a class="breadcrumb-item" href="{{ url('student/games') }}">Beranda</a>
             <span class="breadcrumb-item active">{{ $game['short'] }}</span>
         </nav>
         <!-- Title -->
@@ -22,9 +22,9 @@
         <div class="list-group list-group-student">
             @forelse($stages as $stage)
             <div class="list-group-item">
-                <a href="{{ url('students/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}">
+                <a href="{{ url('student/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}">
                     <i class="kejar-right"></i>
-                    <span>Babak {{ $loop->iteration }} : </span> <span>{{ $stage['title'] }}</span>
+                    <span>Babak {{ $stage['order'] }} : </span> <span>{{ $stage['title'] }}</span>
                 </a>
                 <!-- <div class="hover-only"> -->
                     <div class="stage-order-buttons">

@@ -6,14 +6,14 @@
 
 <div class="container">
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('students/games/' . strtolower(str_replace(' ', '', $game)) . '/stages/' . $stage['id'] . '/rounds') }}">
+        <a class ="btn-back" href="{{ url('student/games/' . strtolower(str_replace(' ', '', $game)) . '/stages/' . $stage['id'] . '/rounds') }}">
             <i class="kejar-back"></i>Kembali
         </a>
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ url('students/games') }}">Beranda</a>
-            <a class="breadcrumb-item" href="{{ url('students/games/' . strtolower(str_replace(' ', '', $game)) . '/stages') }}">{{ $game }}</a>
-            <a class="breadcrumb-item" href="{{ url('students/games/' . strtolower(str_replace(' ', '', $game)) . '/stages/' . $stage['id'] . '/rounds') }}">Babak {{ $stage['order'] }}</a>
+            <a class="breadcrumb-item" href="{{ url('student/games') }}">Beranda</a>
+            <a class="breadcrumb-item" href="{{ url('student/games/' . strtolower(str_replace(' ', '', $game)) . '/stages') }}">{{ $game }}</a>
+            <a class="breadcrumb-item" href="{{ url('student/games/' . strtolower(str_replace(' ', '', $game)) . '/stages/' . $stage['id'] . '/rounds') }}">Babak {{ $stage['order'] }}</a>
             <span class="breadcrumb-item active">Ronde {{ $round['order'] }}</span>
         </nav>
         <!-- Title -->
@@ -38,7 +38,7 @@
 
         <!-- Button Next -->
         <div class="onboarding-button">
-            <a href="{{ url('students/games/' . strtolower(str_replace(' ', '', $game)) . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/exams') }}" class="btn btn-next">
+            <a href="{{ url('student/games/' . strtolower(str_replace(' ', '', $game)) . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/exams') }}" class="btn btn-next">
                 Mulai <i class="kejar-next"></i>
             </a>
         </div>

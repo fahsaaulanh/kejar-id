@@ -56,7 +56,11 @@ class MatrikulasiExamController extends Controller
         $stageId;
         $roundId;
         $taskApi = new TaskApi;
-        $task = $taskApi->finish($taskId)['data'];
+        $task = $taskApi->finish($taskId)['data'] ?? [];
+        
+        if (count($task) < 1) {
+            return redirect('/student/games/' . $game . '/stages/' . $stageId . '/rounds');
+        }
         
         $roundApi = new RoundApi;
         $filter = [
@@ -65,11 +69,13 @@ class MatrikulasiExamController extends Controller
     
         $rounds = $roundApi->index($filter);
         $roundCurrent = $roundApi->getDetail($roundId)['data'];
-    
+
         $roundsContainer = [];
     
         foreach ($rounds['data'] as $round) {
-            if ($round['id'] !== $roundId && $round['order'] > $roundCurrent['order']) {
+            if ($round['id'] !== $roundId &&
+                $round['order'] > $roundCurrent['order'] &&
+                $round['status'] === 'PUBLISHED') {
                 $roundsContainer[] = $round;
             }
         }
@@ -77,6 +83,14 @@ class MatrikulasiExamController extends Controller
         $nextRound = $roundsContainer[0] ?? [];
     
         return view('student.results.index', compact('task', 'nextRound', 'stageId', 'roundId', 'game'));
+    }
+
+    public function getFinish($game, $stageId, $roundId, $taskId)
+    {
+        $roundId;
+        $taskId;
+
+        return redirect('/student/games/' . $game . '/stages/' . $stageId . '/rounds');
     }
 
     private function getTimer($roundId)

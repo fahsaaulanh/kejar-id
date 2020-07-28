@@ -85,19 +85,24 @@
         });
     }
 
+    $('.kejar-ink').click(function (e) { 
+        e.preventDefault();
+        textToClipboard($(this).data('id'));
+    });
+
     // AJAX Ordering
     function orderUpdate(id, order){
         $.ajax({
             type: "POST",
-            url: "{{ url('admin/'. $game['uri'] . '/') }}/stages/" + id + "/order",
+            url: $('.list-group').data('url') + '/' + id + '/order',
             data: {
                 "_method": "PATCH",
-                "_token": "{{ csrf_token() }}",
+                "_token": $('.list-group').data('token'),
                 "order": order
             },
             dataType: "JSON",
             success: function (response) {
-                console.log(response);
+                
             }
         });
     }

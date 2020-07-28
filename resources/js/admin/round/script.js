@@ -23,6 +23,10 @@
     $(document).on('click', '.copy-id', function() {
         var stageId = $(this).attr('data-id');
         textToClipboard(stageId);
+        var thisElement = $(this);
+        setTimeout( function() {
+            thisElement.popover('hide');
+        }, 1000);
     });
 
     $(document).on('change', 'input[name=excel_file]', function() {
@@ -42,9 +46,9 @@
         var to_element = $(this).parents('.list-group-item').prev();
         $.ajax({
             type: "POST",
-            url: "{{ secure_url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/order/update') }}",
+            url: $('.list-group').data('url'),
             data: {
-                '_token' : '{{ csrf_token() }}',
+                '_token' : $('.list-group').data('token'),
                 'this_id' : this_id,
                 'to_id' : to_id
             },
@@ -63,9 +67,9 @@
         var to_element = $(this).parents('.list-group-item').next();
         $.ajax({
             type: "POST",
-            url: "{{ secure_url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/order/update') }}",
+            url: $('.list-group').data('url'),
             data: {
-                '_token' : '{{ csrf_token() }}',
+                '_token' : $('.list-group').data('token'),
                 'this_id' : this_id,
                 'to_id' : to_id
             },
