@@ -18,9 +18,8 @@
         }
 
         i{
-            font-size: 2rem;
+            font-size: 1.4rem;
             font-weight: bold;
-            vertical-align: 20%;
 
             &:before{
                 color: $black-1;
@@ -33,11 +32,11 @@
         border-radius: 0.4rem;
         color: $grey-2;
         min-width: 25.5rem;
+        z-index: 1 !important;
 
         a{
             font-size: 1.5rem;
             line-height: 3rem;
-            
             &:hover{
                 color: $purple;
                 background: $blue-6;

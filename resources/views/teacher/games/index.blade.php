@@ -12,21 +12,21 @@
                 </div>
                 <div class="content-body">
                     <div class="card-deck">
-                        <a href="{{ url('/teachers/games/obr/class') }}" class="card">
+                        <a href="{{ url('/teacher/games/obr/class') }}" class="card">
                             <img src="{{ asset('assets/images/home/obr.png') }}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Operasi Bilangan Riil</h5>
                                 <p class="card-text">Berhitung lebih cepat dan tepat agar belajar Matematika mudah dan lancar.</p>
                             </div>
                         </a>
-                        <a href="{{ url('/teachers/games/katabaku/class') }}" class="card">
+                        <a href="{{ url('/teacher/games/katabaku/class') }}" class="card">
                             <img src="{{ asset('assets/images/home/kata-baku.png') }}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Kata Baku</h5>
                                 <p class="card-text">Menulis lebih profesional dengan Bahasa Indonesia yang baik dan benar.</p>
                             </div>
                         </a>
-                        <a href="{{ url('/teachers/games/vocabulary/class') }}" class="card">
+                        <a href="{{ url('/teacher/games/vocabulary/class') }}" class="card">
                             <img src="{{ asset('assets/images/home/vocab.png') }}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Vocabulary</h5>

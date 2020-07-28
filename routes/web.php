@@ -64,17 +64,17 @@ Route::middleware('session')->group(function () {
             });
         });
     });
-    
+
     Route::middleware('teacher')->group(function () {
-        
+
         // Khusus route teacher disini
 
-        Route::prefix('teachers')->group(function () {
+        Route::prefix('teacher')->group(function () {
 
             Route::prefix('/games')->group(function () {
 
                 Route::get('/', 'HomeController@teacher');
-                
+
                 Route::prefix('/{game}/class')->group(function () {
 
                     Route::get('/', 'Teacher\StageController@index');
@@ -82,12 +82,17 @@ Route::middleware('session')->group(function () {
                     Route::prefix('{batchId}/{studentGroupId}/stages')->group(function () {
 
                         Route::get('/', 'Teacher\StageController@resultStage');
+
+                        Route::get('/{studentId}/detail', 'Teacher\RoundController@modal');
+
+                        Route::prefix('/{stageId}/rounds')->group(function () {
+
+                            Route::get('/', 'Teacher\RoundController@index');
+                        });
                     });
                 });
             });
         });
-
-        Route::get('/teacher', 'HomeController@teacher');
     });
 
     Route::middleware('student')->group(function () {

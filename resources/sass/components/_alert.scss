@@ -21,3 +21,27 @@
                 }
         }
 }
+.information-alert{
+    padding: 1.33rem 1.73rem !important;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.3rem !important;
+    line-height: 1.6rem;
+    color: $black-1;
+    background-color: $purple-tp;
+
+    i{
+        font-family: Arial, Helvetica, sans-serif !important;
+        display: inline-block;
+        min-width: 1.4rem;
+        margin-right: 1.3rem;
+        height: 1.4rem;
+        border: 0.13rem solid $purple;
+        border-radius: 50%;
+        font-size: 1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+        text-align: center;
+        color: $purple;
+    }
+}

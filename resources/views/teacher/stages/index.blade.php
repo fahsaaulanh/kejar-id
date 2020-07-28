@@ -6,12 +6,12 @@
 
     <div class="container">
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teachers/games') }}">
+        <a class ="btn-back" href="{{ url('/teacher/games') }}">
             <i class="kejar-back"></i>Kembali
         </a>
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ url('/teachers/games') }}">Beranda</a>
+            <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
             <span class="breadcrumb-item active">Daftar Rombel</span>
         </nav>
         <!-- Title -->
@@ -26,7 +26,7 @@
                 @foreach ($classList as $class)
                 @if ($class['class_grade'] === 'X')
                 <div class="list-group-item">
-                    <a href="{{ url('/teachers/games/' . $game['uri'] . '/class/' . $class['class_batch_id'] . '/' . $class['class_id'] . '/stages') }}">
+                    <a href="{{ url('/teacher/games/' . $game['uri'] . '/class/' . $class['class_batch_id'] . '/' . $class['class_id'] . '/stages') }}">
                         <i class="kejar-right"></i>
                         {{ $class['class_name'] }}
                     </a>
@@ -41,7 +41,7 @@
                 @foreach ($classList as $class)
                 @if ($class['class_grade'] === 'XI')
                 <div class="list-group-item">
-                    <a href="{{ url('/teachers/games/' . $game['uri'] . '/class/' . $class['class_batch_id'] . '/' . $class['class_id'] . '/stages') }}">
+                    <a href="{{ url('/teacher/games/' . $game['uri'] . '/class/' . $class['class_batch_id'] . '/' . $class['class_id'] . '/stages') }}">
                         <i class="kejar-right"></i>
                         {{ $class['class_name'] }}
                     </a>
@@ -56,7 +56,7 @@
                 @forelse ($classList as $class)
                 @if ($class['class_grade'] === 'XII')
                 <div class="list-group-item">
-                    <a href="{{ url('/teachers/games/' . $game['uri'] . '/class/' . $class['class_batch_id'] . '/' . $class['class_id'] . '/stages') }}">
+                    <a href="{{ url('/teacher/games/' . $game['uri'] . '/class/' . $class['class_batch_id'] . '/' . $class['class_id'] . '/stages') }}">
                         <i class="kejar-right"></i>
                         {{ $class['class_name'] }}
                     </a>

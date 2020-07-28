@@ -1,0 +1,50 @@
+.result-pagination{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .data-result{
+        margin: 0;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 1.5rem;
+        line-height: 2rem;
+        color: $grey-3;
+    }
+    
+    .page-item{
+        border: 0.2rem solid $grey-13 !important;
+        border-radius: 0 !important;
+        width: 3.2rem;
+        height: 3.2rem;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 1.3rem;
+        line-height: 3.2rem;
+        text-align: center;
+
+        .page-link{
+            border: 0.1rem solid $grey-13 !important;
+            border-radius: 0 !important;
+            color: $grey-6;
+            height: 100%;
+
+            &:hover{
+                color: $blue;
+            }
+
+            i{
+                top: -0.2rem;
+                font-weight: bold !important;
+                color: $grey-3 !important;
+            }
+        }
+
+        &.active{
+            .page-link{
+                color: $blue;
+                background: $blue-tp !important;
+            }
+        }
+    }
+}

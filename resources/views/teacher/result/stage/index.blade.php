@@ -5,13 +5,13 @@
 @section('content')
     <div class="container-fluid">
             <!-- Link Back -->
-            <a class="btn-back" href="{{ url('/teachers/games/') }}">
+            <a class="btn-back" href="{{ url('/teacher/games/') }}">
                 <i class="kejar-back"></i>Kembali
             </a>
             <!-- Breadcrumb -->
             <nav class="breadcrumb">
-                <a class="breadcrumb-item" href="{{ url('/teachers/games/') }}">Beranda</a>
-                <a class="breadcrumb-item" href="{{ url('/teachers/games/'. $game['uri'] .'/class') }}">Daftar Rombel</a>
+                <a class="breadcrumb-item" href="{{ url('/teacher/games/') }}">Beranda</a>
+                <a class="breadcrumb-item" href="{{ url('/teacher/games/'. $game['uri'] .'/class') }}">Daftar Rombel</a>
                 <span class="breadcrumb-item active">Daftar Babak</span>
             </nav>
             <!-- Title -->
@@ -24,7 +24,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="classDropdown">
                                 @foreach ($dataStudentGroups['data'] as $item)
-                                    <a class="dropdown-item" href="{{ url( '/teachers/games/'.$game['uri'].'/class/'.$item['batch_id'].'/'.$item['id'].'/stages' )}}"> {{$item['name']}}</a>                                    
+                                    <a class="dropdown-item" href="{{ url( '/teacher/games/'.$game['uri'].'/class/'.$item['batch_id'].'/'.$item['id'].'/stages' )}}"> {{$item['name']}}</a>
                                 @endforeach
                             </div>
                         </div>
@@ -39,8 +39,8 @@
                 </div>
                 <!-- Alert -->
                 <div class="alert alert-info">
-                    <i class="kejar-info"></i><p class="full-text">Klik nomor ronde untuk melihat deskripsi ronde.</p>
-                    <p class="add-text">Gunakan tampilan desktop untuk melihat laporan lengkap. </p>                    
+                    <i class="kejar-info"></i><p class="full-text">Klik nomor babak untuk melihat capaian per ronde.</p>
+                    <p class="add-text">Gunakan tampilan desktop untuk melihat laporan lengkap. </p>
                 </div>
                 <table class="table table-responsive table-bordered" id="table-kejar">
                     <thead>
@@ -50,11 +50,16 @@
                             <th colspan="99"></th>
                         </tr>
                         <tr class="numbr">
-                            @php
-                                for ($i=1; $i <=$cn ; $i++) { 
-                                    echo '<th class="kejar-done">'.$i.'</th>';
-                                }
-                            @endphp
+                            @for($i=1; $i <=$cn ; $i++)
+                                <th class="kejar-done">
+                                    <a
+                                        class="text-reset text-decoration-none"
+                                        href="{{ url()->current() .'/'. $responses->first()['progress'][$i-1]['stage_id'] .'/rounds' }}"
+                                    >
+                                        {{$i}}
+                                    </a>
+                                </th>
+                            @endfor
                         </tr>
                     </thead>
                     <tbody>
@@ -69,7 +74,7 @@
                                     @if ($pro['undone'] = 0 && $pro['done'] > 0 )
                                         $jum++;
                                     @endif
-                                @endforeach       
+                                @endforeach
                                 <strong>{{$jum}}</strong> {{$game['result']}}
                             </td>
                             @foreach ($item['progress'] as $prog)
@@ -91,7 +96,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                20 dari {{$cn}} siswa
+                {{count($responses->items())}} dari {{$responses->total()}} siswa
                     <div class="paginate">
                         {{ $responses->render() }}
                     </div>
