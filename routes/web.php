@@ -88,6 +88,11 @@ Route::middleware('session')->group(function () {
                         Route::prefix('/{stageId}/rounds')->group(function () {
 
                             Route::get('/', 'Teacher\RoundController@index');
+
+                            Route::prefix('/{roundId}')->group(function () {
+
+                                Route::get('/description', 'DescriptionRoundController@index');
+                            });
                         });
                     });
                 });
