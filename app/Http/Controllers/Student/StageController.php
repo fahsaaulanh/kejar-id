@@ -63,25 +63,35 @@ class StageController extends Controller
 
         $stages = $modStages;
 
+        $game = $this->getGame($game);
+
+        return view('student.stages.index', compact('game', 'stages'));
+    }
+
+    private function getGame($game)
+    {
         if ($game === 'obr') {
-            $game = [];
-            $game['uri'] = 'obr';
-            $game['short'] = 'OBR';
-            $game['title'] = 'Operasi Bilangan Rill';
+            $game = [
+                'short' => 'OBR',
+                'title' => 'Operasi Bilangan Rill',
+                'uri' => 'obr',
+            ];
         } elseif ($game === 'vocabulary') {
-            $game = [];
-            $game['uri'] = 'vocabulary';
-            $game['short'] = 'Vocabulary';
-            $game['title'] = 'VOCABULARY';
+            $game = [
+                'short' => 'Vocabulary',
+                'title' => 'Vocabulary',
+                'uri' => 'vocabulary',
+            ];
         } elseif ($game === 'katabaku') {
-            $game = [];
-            $game['uri'] = 'katabaku';
-            $game['short'] = 'Kata Baku';
-            $game['title'] = 'KATA BAKU';
+            $game = [
+                'short' => 'Kata Baku',
+                'title' => 'Kata Baku',
+                'uri' => 'katabaku',
+            ];
         } else {
             abort(404);
         }
 
-        return view('student.stages.index', compact('game', 'stages'));
+        return $game;
     }
 }

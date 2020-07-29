@@ -12,12 +12,10 @@
             <a href="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/onboardings') }}" class="btn btn-restart">
                 Ulangi
             </a>
-            @if(count($nextRound) > 0)
-            <a href="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $nextRound['id'] . '/onboardings') }}" class="btn btn-next">
+            <a href="{{ count($nextRound) > 0 ? url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $nextRound['id'] . '/onboardings') : url('student/games/' . $game . '/stages/' . $stageId . '/rounds') }}" class="btn btn-next">
                 Ronde Berikutnya
                 <i class="kejar-arrow-right" aria-hidden="true"></i>
             </a>
-            @endif
         </div>
     </div>
 </div>

@@ -125,6 +125,10 @@
         }
     }
 
+    .modal-md{
+        width: 38.4rem;
+    }
+
     .modal-content{
         border-radius: 0rem;
         border: 0rem;
@@ -140,6 +144,10 @@
     
         .modal-body{
             padding-bottom: 3rem;
+
+            p{
+                @include h6-reg;
+            }
 
             .form-group{
                 input[type="text"], input[type="number"], textarea{
