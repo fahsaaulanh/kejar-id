@@ -168,6 +168,11 @@
                     position: sticky !important;
                     table-layout: fixed;
                     min-width: 7.2rem !important;
+
+                    &:hover{
+                        background-color: $blue-tp;
+                        color: $purple;
+                    }
                 }
             }
         }

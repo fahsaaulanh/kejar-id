@@ -35,4 +35,8 @@
                 color: $red-2;
             }
         }
+
+        @media screen and (max-width: $mobile-breakpoint) {
+            display: none;
+        }
 }
