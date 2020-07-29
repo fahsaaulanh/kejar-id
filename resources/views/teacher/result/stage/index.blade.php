@@ -1,11 +1,14 @@
 @extends('./layout/index')
-
-@section('title', 'Result Stages')
+@php
+    $titleResult = 'Daftar Babak - ' . $game['title']
+@endphp
+@section('title', $titleResult)
 
 @section('content')
     <div class="container-fluid">
+        <div class="cont-mv">
             <!-- Link Back -->
-            <a class="btn-back" href="{{ url('/teacher/games/') }}">
+            <a class="btn-back" href="{{ url('/teacher/games/'. $game['uri'] .'/class') }}">
                 <i class="kejar-back"></i>Kembali
             </a>
             <!-- Breadcrumb -->
@@ -18,7 +21,7 @@
             <div class="page-title">
                     <div class="class-dropdown">
                         <div class="row" style="padding-left: 1.5rem">
-                            <h1 class="mb-08rem">Ringkasan {{$game['uri']}} - Kelas 10 -&nbsp;</h1>
+                            <h1 class="mb-08rem">Ringkasan {{$game['short']}} - Kelas 10 -&nbsp;</h1>
                             <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <h1 class="mb-08rem">  RPL X-1 <i class="kejar-show"></i></h1>
                             </button>
@@ -38,16 +41,22 @@
                     <div class="align-items-center"><i class="kejar-belum-mengerjakan-2"></i> Belum ada ronde dikerjakan</div> <br>
                 </div>
                 <!-- Alert -->
-                <div class="alert alert-info">
-                    <i class="kejar-info"></i><p class="full-text">Klik nomor babak untuk melihat capaian per ronde.</p>
-                    <p class="add-text">Gunakan tampilan desktop untuk melihat laporan lengkap. </p>
+                <div class="alert information-alert">
+                    <div class="full-text">
+                        <i class="kejar-info">i</i>Klik nomor babak untuk melihat capaian per ronde.
+                    </div>
+                    <div class="add-text">
+                        <i>i</i>Klik nama siswa untuk melihat rincian.<br>
+                            <div class="add-text-2">
+                                <p>Gunakan tampilan desktop untuk melihat laporan lengkap.</p>    
+                            </div>
+                    </div>
                 </div>
                 <table class="table table-responsive table-bordered" id="table-kejar">
                     <thead>
                         <tr class="kejar-done">
                             <th class="th-name" rowspan="2">Nama Siswa</th>
-                            <th colspan="12" class="text-center">Babak</th>
-                            <th colspan="99"></th>
+                            <th colspan="{{$cn}}" class="text-center">Babak</th>
                         </tr>
                         <tr class="numbr">
                             @for($i=1; $i <=$cn ; $i++)
@@ -101,6 +110,7 @@
                         {{ $responses->render() }}
                     </div>
             </div>
+        </div>    
     </div>
     @push('script')
     <script>

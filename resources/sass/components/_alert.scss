@@ -16,6 +16,9 @@
 
         @media (max-width: 27.8rem){
                 height: 12rem;
+                p.full-text{
+                    display: none;
+                }
                 p.add-text{
                     display: block;
                 }
@@ -44,4 +47,33 @@
         text-align: center;
         color: $purple;
     }
+
+    p{
+        font-style: normal;
+        font-weight: normal;
+        font-size: 1.3rem !important;
+        line-height: 1.6rem;
+        color: $black-1;
+    }
+
+    .add-text{
+        display: none;
+    }
+
+    @media (max-width: 27.8rem){
+        &:not(:first-line){
+            padding-left: 3rem;
+        }
+
+        .full-text{
+            display: none;
+        }
+        .add-text{
+            display: block;
+    
+            .add-text-2{
+                padding-left: 2.8rem;
+            }
+        }
+}
 }
