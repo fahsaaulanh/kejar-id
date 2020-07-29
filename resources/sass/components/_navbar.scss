@@ -26,3 +26,31 @@
         margin-right: 0.8rem;
     }
 }
+
+.navbar-nav{
+
+
+    .nav-link{
+        @include h6-reg;
+
+        &:hover{
+            color: $grey-15 !important;
+        }
+    }
+
+    .dropdown-menu{
+        color: $grey-3;
+        border-radius: 8px;
+
+        .dropdown-item{
+
+            i{
+                &:before{
+                    @include h5-reg;
+                }
+            }
+            @include h5-reg;
+            padding: 1.2rem 1.6rem;
+        }
+    }
+}

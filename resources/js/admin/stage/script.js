@@ -10,18 +10,14 @@
     checkElements();
     function checkElements(){
         var elements = $('.list-group .list-group-item');
+        $(elements).find('.btn-icon').each(function() {
+            $(this).prop('hidden', false);
+        });
+
+        $(elements).find('.btn-icon:first').first().prop('hidden', true);
+        $(elements).find('.btn-icon:last').last().prop('hidden', true);
+
         $.each(elements, function(key, value) {
-            if (key == 0 && elements.length > 1) {
-                $(value).find('.btn-icon:first').css('display', 'none');
-                $(value).find('.btn-icon:last').css('display', 'grid');
-            } else if (key == (elements.length - 1) && elements.length > 1) {
-                $(value).find('.btn-icon:first').css('display', 'grid');
-                $(value).find('.btn-icon:last').css('display', 'none');
-            } else if (elements.length > 1) {
-                $(value).find('.stage-order-buttons button').css('display', 'grid');
-            } else{
-                $(value).find('.stage-order-buttons button').css('display', 'none');
-            }
             $(value).find('.stage-number').text('Babak ' + (key + 1));
         });
     }

@@ -32,6 +32,8 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('/admin')->group(function () {
 
+            Route::patch('/change-password', 'Shared\ChangePasswordController@update');
+
             Route::prefix('{game}/stages')->group(function () {
                 Route::get('/', 'Admin\StageController@index');
                 Route::post('/', 'Admin\StageController@create');

@@ -11,7 +11,7 @@
         </a>
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="{{ url('admin/games') }}">Beranda</a>
-            <a class="breadcrumb-item" href="{{ url('admin/' . $game['uri'] . '/stages') }}">OBR</a>
+            <a class="breadcrumb-item" href="{{ url('admin/' . $game['uri'] . '/stages') }}">{{ $game['short'] }}</a>
             <span class="breadcrumb-item active" href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/') }}">Babak {{ $stage['order'] }}</span>
         </nav>
         <h2 class="mb-08rem">{{ $stage['title'] }}</h2>
@@ -43,7 +43,7 @@
         <div class="list-group-item" data-id="{{ $round['id'] }}">
             <a href="{{ url()->current() . '/' . $round['id'] }}">
                 <i class="kejar-ink" data-id="{{ $round['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
-                <span></span> : {{ $round['title'] }}
+                <span class="order-number"></span> : {{ $round['title'] }}
             </a>
             <div class="round-order-buttons">
                 @if($round['status'] == 'PUBLISHED')
@@ -64,9 +64,7 @@
             </div>
         </div>
         @empty
-        <div class="list-group-item">
-            Tidak ada data
-        </div>
+        <h5 class="text-center">Tidak ada data</h5>
         @endforelse
     </div>
 </div>

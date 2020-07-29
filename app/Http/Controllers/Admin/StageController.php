@@ -222,7 +222,7 @@ class StageController extends Controller
             ];
         } elseif ($game === 'VOCABULARY') {
             $game = [
-                'short' => 'Vocab',
+                'short' => 'Vocabulary',
                 'title' => 'Vocabulary',
                 'uri' => 'VOCABULARY',
             ];

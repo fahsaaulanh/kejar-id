@@ -43,7 +43,7 @@ class RoundController extends Controller
         if ($game === 'OBR') {
             $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
         } elseif ($game === 'VOCABULARY') {
-            $game = ['short' => 'Vocab', 'title' => 'Vocabulary', 'uri' => 'VOCABULARY'];
+            $game = ['short' => 'Vocabulary', 'title' => 'Vocabulary', 'uri' => 'VOCABULARY'];
         } elseif ($game === 'KATABAKU') {
             $game = ['short' => 'Kata Baku', 'title' => 'Kata Baku', 'uri' => 'KATABAKU'];
         } else {
@@ -141,25 +141,15 @@ class RoundController extends Controller
 
     public function updateOrder(Request $request)
     {
-        $this_id = $request->this_id;
-        $to_id = $request->to_id;
-
         $roundApi = new RoundApi;
 
-        $this_data = $roundApi->getDetail($this_id);
-        $to_data = $roundApi->getDetail($to_id);
-
-        $this_data_change = [
-            'order' => $to_data['data']['order'],
-        ];
-        $to_data_change = [
-            'order' => $this_data['data']['order'],
+        $payload = [
+            'order' => $request->order,
         ];
 
-        $roundApi->update($this_data_change, $this_id);
-        $roundApi->update($to_data_change, $to_id);
+        $roundApi->update($payload, $request->id);
 
-        echo 'success';
+        return 'success';
     }
 
     public function updateTitle(Request $request, $roundId)
