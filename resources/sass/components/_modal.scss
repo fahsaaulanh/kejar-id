@@ -264,22 +264,215 @@
 
         }
     }
-    
-}
 
+    .content{
+        margin: 40px, 40px;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb{
+        font-size: 15px !important;
+    }
+    
+    a.breadcrumb-item{
+        color: #9daebd !important;
+        cursor: pointer !important;
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active{
+        color: #202020 !important;
+    }
+    
+    /* Title */
+    .text-title{
+        font-weight: bold;
+        font-style: 25px;
+        color: #202020;
+    }
+    
+    /* Detail */
+    .task-detail{
+        margin-top: 0px;
+        font-style: 15px;
+    }
+    
+    .title-group{
+        font-style: 15px;
+        font-weight: bold;
+    }
+    
+    .task-detail .task-detail-amount{
+        font-size: 15px;
+        color: #7c92a7;
+        font-weight: normal;
+    }
+    .task-detail .task-detail-amount span{
+        font-size: 15px;
+        color: #334E68;
+        font-weight: bold;
+    }
+    
+    .task-detail .task-detail-description{
+        font-size: 15px;
+        color: #202020;
+    }
+    
+    /* Taks Detail Card */
+    
+    .detail-card{
+        margin-top: 8px;
+        background: #F7F4FB;
+        padding: 24px;
+    }
+    
+    .detail-card .detail-card-icon .kejar-open-book::before{
+        color: #7233DA !important;
+    }
+    
+    .detail-card .detail-card-text{
+        color: #202020;
+        font-size: 15px;
+        line-height: 24px;
+        padding-top: 16px;
+    }
+    
+    /* Btn Start */
+    .btn-start-group{
+        margin-top: 56px;
+    }
+    
+    .btn-start-group .btn-start{
+        border-radius: 0px;
+        background: #7233DA;
+        font-size: 19px;
+        border: 0;
+    }
+    
+    .btn-start-group .btn-start .kejar-next::before{
+        color: #FFFFFF;
+        font-size: 19px;
+        margin-left: 7px;
+    }
+    
+    /* Btn start hover */
+    .btn-start-group .btn-start:hover{
+        background: #986CE0;
+    }
+    
+    .kotak{
+        border-radius: 0px;
+        border: 0px;
+    }
+    
+    .judul{
+        margin-top: 0px;
+    }
+}
 @media (max-width: 576px){
     #detailResultModal{
         .modal-dialog{
             margin: 0 !important;
         }
     }
-}
-
-@media (min-width: 576px){
-    #detailResultModal{
-        .modal-dialog{
-            max-width: 100% !important;
-            margin: 0 !important;
-        }
+    
+    /* Breadcrumb */
+    .breadcrumb{
+        font-size: 15px !important;
+    }
+    
+    a.breadcrumb-item{
+        color: #9daebd !important;
+        cursor: pointer !important;
+        text-decoration: none;
+    }
+    
+    .breadcrumb-item.active{
+        color: #202020 !important;
+    }
+    
+    /* Title */
+    .text-title{
+        font-weight: bold;
+        font-style: 25px;
+        color: #202020;
+    }
+    
+    /* Detail */
+    .task-detail{
+        margin-top: 0px;
+        font-style: 15px;
+    }
+    
+    .title-group{
+        font-style: 15px;
+        font-weight: bold;
+    }
+    
+    .task-detail .task-detail-amount{
+        font-size: 15px;
+        color: #7c92a7;
+        font-weight: normal;
+    }
+    .task-detail .task-detail-amount span{
+        font-size: 15px;
+        color: #334E68;
+        font-weight: bold;
+    }
+    
+    .task-detail .task-detail-description{
+        font-size: 15px;
+        color: #202020;
+    }
+    
+    /* Taks Detail Card */
+    
+    .detail-card{
+        margin-top: 8px;
+        background: #F7F4FB;
+        padding: 24px;
+    }
+    
+    .detail-card .detail-card-icon .kejar-open-book::before{
+        color: #7233DA !important;
+    }
+    
+    .detail-card .detail-card-text{
+        color: #202020;
+        font-size: 15px;
+        line-height: 24px;
+        padding-top: 16px;
+    }
+    
+    /* Btn Start */
+    .btn-start-group{
+        margin-top: 56px;
+    }
+    
+    .btn-start-group .btn-start{
+        border-radius: 0px;
+        background: #7233DA;
+        font-size: 19px;
+        border: 0;
+    }
+    
+    .btn-start-group .btn-start .kejar-next::before{
+        color: #FFFFFF;
+        font-size: 19px;
+        margin-left: 7px;
+    }
+    
+    /* Btn start hover */
+    .btn-start-group .btn-start:hover{
+        background: #986CE0;
+    }
+    
+    .kotak{
+        border-radius: 0px;
+        border: 0px;
+    }
+    
+    .judul{
+        margin-top: 0px;
     }
 }
