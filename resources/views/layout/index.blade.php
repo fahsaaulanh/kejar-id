@@ -152,6 +152,19 @@
             if (checkPicture == 'Null') {
                 $('.avatar-group .profile-pict').attr('src', $('.nav-link img').attr('src'));
             }
+            $('#editProfile').modal('hide');
+            $('#updateProfile').modal('show');
+            setInterval(function(){
+                $('.profile-pict-crop').rcrop({
+                    minSize : [200,200],
+                    preserveAspectRatio : true,
+                    grid : true
+                });
+            }, 200);
+        });
+
+        $(document).on('click', '.save-btn-1', function(){
+
         });
 
         $(document).on('click', '.save-btn-2', function(){
