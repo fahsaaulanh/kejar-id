@@ -19,7 +19,7 @@ class ChangeProfileController extends Controller
 
         $img = Image::make($req->photo);
         $image = (string) $img->stream('data-url');
-        
+
         $payload = [
             'photo' => $image,
         ];

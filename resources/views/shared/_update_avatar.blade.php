@@ -24,7 +24,7 @@
                                 @endif
                                 <button type="button" class="edit-pict-btn">
                                     <i class="kejar-play"></i>
-                                </button>   
+                                </button>
                             </div>
                             @if (session('user.role') === 'STUDENT')
                                 @if (!is_null(session('user.userable.photo')))

@@ -50,7 +50,7 @@
 
         @include('shared._update_avatar')
         @include('shared._update_password')
-        
+
         <!-- Modal -->
         <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logout" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -129,7 +129,7 @@
                     });
                 }, 200);
             } else {
-                $('input[name=photo]').click();    
+                $('input[name=photo]').click();
             }
         });
 
@@ -152,6 +152,19 @@
             if (checkPicture == 'Null') {
                 $('.avatar-group .profile-pict').attr('src', $('.nav-link img').attr('src'));
             }
+            $('#editProfile').modal('hide');
+            $('#updateProfile').modal('show');
+            setInterval(function(){
+                $('.profile-pict-crop').rcrop({
+                    minSize : [200,200],
+                    preserveAspectRatio : true,
+                    grid : true
+                });
+            }, 200);
+        });
+
+        $(document).on('click', '.save-btn-1', function(){
+
         });
 
         $(document).on('click', '.save-btn-2', function(){
