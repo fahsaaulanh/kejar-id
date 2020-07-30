@@ -136,13 +136,13 @@ class StageController extends Controller
             $game = [];
             $game['uri'] = 'vocabulary';
             $game['short'] = 'Vocabulary';
-            $game['title'] = 'VOCABULARY';
+            $game['title'] = 'Vocabulary';
             $game['result'] = 'words';
         } elseif ($game === 'katabaku') {
             $game = [];
             $game['uri'] = 'katabaku';
             $game['short'] = 'Kata Baku';
-            $game['title'] = 'KATA BAKU';
+            $game['title'] = 'Kata Baku';
             $game['result'] = 'kata';
         } else {
             abort(404);
