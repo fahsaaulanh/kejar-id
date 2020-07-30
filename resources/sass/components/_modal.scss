@@ -1,4 +1,61 @@
 .modal{
+    &#updateProfile{
+        .save-btn{
+            &:hover{
+                color: $white !important;
+            }
+        }
+
+        .crop-area{
+            width: 100%;
+            margin: 2.4rem 0;
+
+            .profile-pict-crop{
+                width: 100%;
+            }
+        }
+    }
+    &#editProfile{
+        .save-btn{
+            &:hover{
+                color: $white !important;
+            }
+        }
+
+        .avatar-group{
+            margin: 2.4rem 0;
+            position: relative;
+            width: 11.2rem;
+
+            .profile-pict{
+                width: 11.2rem;
+                height: 11.2rem;
+                object-fit: cover;
+                border-radius: 50%;
+            }
+
+            .edit-pict-btn{
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                display: inline-block;
+                width: 3.2rem;
+                height: 3.2rem;
+                border: 0;
+                border-radius: 50%;
+                font-size: 1.8rem;
+                text-align: center;
+                line-height: 3.2rem;
+                background-color: $grey-13;
+                z-index: 1;
+
+                i:before{
+                    color: $blue;
+                }
+            }
+        }
+    }
+
     top: initial !important;
     bottom: 0 !important;
 

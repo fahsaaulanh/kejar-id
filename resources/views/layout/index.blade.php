@@ -23,9 +23,20 @@
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ session('user.username') }}
+                            {{ session('user.userable.name') }}
+                            @if (session('user.role') === 'STUDENT')
+                                @if (!is_null(session('user.userable.photo')))
+                                <img src="" class="profile-pict" alt="">
+                                @else
+                                <img src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg" class="profile-pict" alt="">
+                                @endif
+                            @endif
+                            <i class="kejar-dropdown"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            @if (session('user.role') === 'STUDENT')
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
+                            @endif
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
                         </div>
@@ -37,6 +48,7 @@
 
         @yield('content')
 
+        @include('shared._update_avatar')
         @include('shared._update_password')
         
         <!-- Modal -->
@@ -64,6 +76,7 @@
     </body>
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}"></script>
+    <script src="https://www.jqueryscript.net/demo/Responsive-Mobile-friendly-Image-Cropper-With-jQuery-rcrop/dist/rcrop.min.js"></script>
 
     @stack('script')
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script>
@@ -94,6 +107,35 @@
                     $(input).attr('type', 'password');
                 }
             });
+        });
+
+        $(document).on('click', '.edit-pict-btn', function(){
+            $('#editProfile').modal('hide');
+            $('#updateProfile').modal('show');
+            setInterval(function(){
+                $('.profile-pict-crop').rcrop({
+                    minSize : [200,200],
+                    preserveAspectRatio : true,
+                    grid : true
+                });
+            }, 200);
+        });
+
+        $(document).on('click', '.save-btn-1', function(){
+            
+        });
+
+        $(document).on('click', '.save-btn-2', function(){
+            var srcResized = $('.profile-pict-crop').rcrop('getDataURL');
+            $('.avatar-group .profile-pict').attr('src', srcResized);
+            $('input[name=photo]').val(srcResized);
+            $('#editProfile').modal('show');
+            $('#updateProfile').modal('hide');
+        });
+
+        $(document).on('click', '.cancel-edit', function(){
+            $('#editProfile').modal('show');
+            $('#updateProfile').modal('hide');
         });
     </script>
 </html>
