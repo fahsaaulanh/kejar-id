@@ -16,9 +16,9 @@
                     <div class="form-group">
                         <label for="passwordBaru">Password Baru</label>
                         <div class="input-group input-group-password @error('password_baru') is-invalid @enderror">
-                            <input type="password" name="password_baru" id="passwordBaru" class="form-control" placeholder="Buat password">
+                            <input type="password" name="password_baru" id="passwordBaru" class="form-control" placeholder="Buat password" value="{{ old('password_baru') }}">
                             <div class="input-group-append">
-                                <button tabindex="-1" class="btn btn-outline-light" type="button">lihat</button>
+                                <button tabindex="-1" class="btn btn-outline-light" type="button"><i class="kejar-hide-password"></i></button>
                             </div>
                             @if($errors->has('password_baru'))
                             <div class="invalid-feedback text-right">
@@ -29,11 +29,16 @@
                     </div>
                     <div class="form-group">
                         <label for="konfirmasiPassword">Konfirmasi Password</label>
-                        <div class="input-group input-group-password">
-                            <input type="password" name="confirm_password" id="konfirmasiPassword" class="form-control" placeholder="Konfirmasi password baru">
+                        <div class="input-group input-group-password @error('konfirmasi_password') is-invalid @enderror">
+                            <input type="password" name="konfirmasi_password" id="konfirmasiPassword" class="form-control" placeholder="Konfirmasi password baru" value="{{ old('konfirmasi_password') }}">
                             <div class="input-group-append">
-                                <button tabindex="-1" class="btn btn-outline-light" type="button">lihat</button>
+                                <button tabindex="-1" class="btn btn-outline-light" type="button"><i class="kejar-hide-password"></i></button>
                             </div>
+                            @if($errors->has('konfirmasi_password'))
+                            <div class="invalid-feedback text-right">
+                                {{ $errors->first('konfirmasi_password') }}
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

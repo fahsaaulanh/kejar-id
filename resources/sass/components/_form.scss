@@ -29,7 +29,7 @@ form {
             opacity: 1;
           }
 
-        &:active, &:focus {
+        &:active, &:focus, &:visited {
             border: 0.2rem solid $blue-4;
             box-shadow: none !important;
         }
@@ -77,6 +77,16 @@ form {
         }
     }
 
+    input[type="password"]{
+        &:visited,
+        &:focus,
+        &:active{
+            border: 0.2rem solid $grey-13 !important;
+            border-right: none !important;
+            box-shadow: none !important;
+        }
+    }
+
     button{
         border: 0.2rem solid $grey-13;
         border-left: none !important;
@@ -96,9 +106,27 @@ form {
     background-image: none;
 }
 
+.input-active{
+    border: 0.2rem solid $blue-4 !important;
+}
+
+.input-group-password{
+    .input-group-append {
+        i:before{
+            @include h5-reg;
+            color: $grey-3;
+        }
+    }
+}
+
 .input-group-password.is-invalid{
     input, .input-group-append{
         border: 2px solid $red-2 !important;
+    }
+    
+    input:focus{
+        border: 2px solid $red-2 !important;
+        border-right: none !important;
     }
 
     input{

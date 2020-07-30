@@ -11,18 +11,56 @@
     </head>
     <body>
         @section('header')
-        <nav class="navbar">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-black">
             <a class="navbar-brand" href="#">
-                <img src="{{ asset('assets/logo/kejarid.svg') }}" alt="" loading="lazy">
-                {{ session('user.username') }}
+                <img src="{{ asset('assets/logo/kejarid.svg') }}" alt=""> Kejar.id
             </a>
-            <a class="btn-logout" href="{{ url('/logout') }}">Logout</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ session('user.username') }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </nav>
         @show
 
         @yield('content')
 
         @include('shared._update_password')
+        
+        <!-- Modal -->
+        <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logout" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Log Out</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        Apakah yakin akan keluar?
+                    </div>
+                    <div class="modal-footer justify-content-end">
+                        <div>
+                            <a href="#" class="btn btn-cancel" data-dismiss="modal">Batal</a>
+                            <a href="{{ url('/logout') }}" class="btn btn-primary btn-logout">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}"></script>
@@ -36,22 +74,23 @@
 
         gtag('config', 'UA-117909356-4');
     </script>
-    @if($errors->has('password_baru'))
+
+    @if($errors->has('password_baru') OR $errors->has('konfirmasi_password') )
     <script>
         $('#updatePassword').modal('show');
     </script>
     @endif
-    <script>
 
+    <script>
         $(document).ready(function() {
             $(".input-group-password").on('click', 'button', function(event) {
                 event.preventDefault();
                 var input = $(this).parents('.input-group-password').find('input');
                 if ($(input).attr('type') == 'password'){
                     $(input).attr('type', 'text');
-                    $(this).text('tutup');
+                    $(this).html('<i class="kejar-show-password"></i>');
                 } else{
-                    $(this).text('lihat');
+                    $(this).html('<i class="kejar-hide-password"></i>');
                     $(input).attr('type', 'password');
                 }
             });
