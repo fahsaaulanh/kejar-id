@@ -94,6 +94,12 @@
     </script>
     @endif
 
+    @if(Session::has('message'))
+    <script>
+        alert("{{ Session::get('message') }}");
+    </script>
+    @endif
+
     <script>
         $(document).ready(function() {
             $(".input-group-password").on('click', 'button', function(event) {

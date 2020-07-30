@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shared;
 use App\Http\Controllers\Controller;
 use App\Services\Me as MeApi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ChangePasswordController extends Controller
 {
@@ -15,7 +16,7 @@ class ChangePasswordController extends Controller
             'konfirmasi_password' => 'required|min:6',
         ]);
 
-        $confirm = $request->password_baru_confirmation;
+        $confirm = $request->konfirmasi_password;
 
         if ($request->password_baru !== $confirm) {
             return redirect()->back()
@@ -30,6 +31,8 @@ class ChangePasswordController extends Controller
         $meApi = new MeApi;
         $meApi->update($payload);
 
-        return redirect()->back()->with('message', 'Ubah password berhasil!');
+        Session::flash('message', 'Ubah password berhasil!');
+
+        return redirect()->back();
     }
 }
