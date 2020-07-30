@@ -33,6 +33,8 @@
                                 <input type="file" name="photo" hidden>
                                 @endif
                             @endif
+                            <input type="hidden" name="student" value="{{ session('user.id') }}">
+                            <input type="hidden" name="photo" value="{{ session('user.userable.photo') }}">
                         </div>
                         <div class="col-12">
                             <h3>{{ session('user.userable.name') }}</h3>
