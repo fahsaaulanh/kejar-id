@@ -302,3 +302,10 @@
     }
 }
 
+#logout{
+    .btn-logout{
+        &:hover{
+            color: $white !important;
+        }
+    }
+}
