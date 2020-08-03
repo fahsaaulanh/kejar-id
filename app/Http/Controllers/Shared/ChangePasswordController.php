@@ -56,4 +56,10 @@ class ChangePasswordController extends Controller
 
         return redirect()->back();
     }
+
+    public function skip()
+    {
+        session()->put('PasswordMustBeChanged', FALSE);
+        return redirect()->back();
+    }
 }

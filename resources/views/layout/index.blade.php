@@ -11,7 +11,7 @@
     </head>
     <body>
         @section('header')
-            @if(!Session::get('checkPasswordDefault'))
+            @if(!Session::get('PasswordMustBeChanged'))
                 <nav class="navbar navbar-expand-sm navbar-dark bg-black">
                     <a class="navbar-brand" href="#">
                         <img src="{{ asset('assets/logo/kejarid.svg') }}" alt=""> Kejar.id

@@ -17,7 +17,7 @@ class GameController extends Controller
         }
 
         //get session password default status
-        $response['data']['passwordDefault'] = session()->get('checkPasswordDefault');
+        $response['data']['PasswordMustBeChanged'] = session()->get('PasswordMustBeChanged');
         
         session(['user' => $response['data']]);
 

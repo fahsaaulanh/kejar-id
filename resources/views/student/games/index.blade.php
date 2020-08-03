@@ -4,14 +4,17 @@
 
 @section('content')
 
-    @if($data['passwordDefault'])
+    @if($data['PasswordMustBeChanged'])
         <!-- form ganti password -->
         <div class="bg-lego">
             <div class="container-center">
                 <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
                     @csrf
                     @method('PATCH')
-                    <h3>Ganti Password</h3>
+                    <h3>Ganti Password <a href="{{ url('/student/skip-change-password') }}" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="kejar kejar-close"></i>
+                    </a></h3>
+                    
                     <div>
                         <p><strong>Password belum diganti, ganti dulu agar lebih aman.</strong></p>
                         <p>Password harus terdiri dari minimal 6 karakter, kombinasi huruf dan angka.</p>

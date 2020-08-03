@@ -57,9 +57,9 @@ class LoginController extends Controller
 
                 $response = $userApi->login($responseMe['data']['username'], $responseMe['data']['username']);
                 if ($response['status'] == 200) {
-                    session(['checkPasswordDefault' => TRUE]);
+                    session(['PasswordMustBeChanged' => TRUE]);
                 }else{
-                    session(['checkPasswordDefault' => FALSE]);
+                    session(['PasswordMustBeChanged' => FALSE]);
                 }
 
                 return redirect('/student/games');
