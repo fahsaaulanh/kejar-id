@@ -14,7 +14,7 @@
                     <h3>Ganti Password <a href="{{ url('/student/skip-change-password') }}" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </a></h3>
-                    
+
                     <div>
                         <p><strong>Password belum diganti, ganti dulu agar lebih aman.</strong></p>
                         <p>Password harus terdiri dari minimal 6 karakter, kombinasi huruf dan angka.</p>
@@ -86,22 +86,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="card-deck">
-                        <a href="{{ url('/student/games/toeicwords/stages') }}" class="card">
-                            <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">TOEIC Words</h5>
-                                <p class="card-text">Kuasi 4000 kosakata yang sering muncul pada TOEIC.</p>
-                            </div>
-                        </a>
-                        <a href="{{ url('/student/games/menulisefektif/stages') }}" class="card">
-                            <img src="{{ asset('assets/images/home/menulis-efektif.jpg') }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Menulis Efektif</h5>
-                                <p class="card-text">Menulis kata yang tepat agar menjadi kalimat yang efektif.</p>
-                            </div>
-                        </a>
-                    </div> -->
                 </div>
             </div>
         </div>
