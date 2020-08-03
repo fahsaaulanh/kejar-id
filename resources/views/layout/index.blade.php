@@ -54,31 +54,32 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ session('user.userable.name') }}
-                            @if (session('user.role') === 'STUDENT')
-                                @if (!is_null(session('user.userable.photo')))
-                                <img src="" class="profile-pict" alt="">
-                                @else
-                                <img src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg" class="profile-pict" alt="">
-                                @endif
-                            @endif
-                            <i class="kejar-dropdown"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            @if (session('user.role') === 'STUDENT')
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
-                            @endif
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ session('user.userable.name') }}
+                                    @if (session('user.role') === 'STUDENT')
+                                        @if (!is_null(session('user.userable.photo')))
+                                        <img src="" class="profile-pict" alt="">
+                                        @else
+                                        <img src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg" class="profile-pict" alt="">
+                                        @endif
+                                    @endif
+                                    <i class="kejar-dropdown"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @if (session('user.role') === 'STUDENT')
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
+                                    @endif
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            @endif
         @show
 
         @yield('content')
