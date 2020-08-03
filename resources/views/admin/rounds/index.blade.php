@@ -42,7 +42,7 @@
         @forelse($rounds as $round)
         <div class="list-group-item" data-id="{{ $round['id'] }}">
             <a href="{{ url()->current() . '/' . $round['id'] }}">
-                <i class="kejar-ink" data-id="{{ $round['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
+                <i class="kejar-link" data-id="{{ $round['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
                 <span class="order-number"></span> : {{ $round['title'] }}
             </a>
             <div class="round-order-buttons">

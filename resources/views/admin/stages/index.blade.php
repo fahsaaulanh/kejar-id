@@ -51,7 +51,7 @@
             @forelse ($stages as $stage)
             <div class="list-group-item" data-id="{{ $stage['id'] }}">
                 <a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id']) }}/rounds">
-                    <i class="kejar-ink" data-id="{{ $stage['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
+                    <i class="kejar-link" data-id="{{ $stage['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
                     <span class="stage-number">Babak </span> : {{ $stage['title'] }}
                 </a>
                 @if ($stagesCount > 1)

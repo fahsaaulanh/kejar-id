@@ -77,8 +77,8 @@
     <div class="table-responsive">
         <table class="table table-stripped table-questions">
             <thead>
-                <th>Soal</th>
-                <th>Jawaban</th>
+                <th class="w-50">Soal</th>
+                <th class="w-50">Jawaban</th>
             </thead>
             <tbody>
                 @forelse($roundQuestionsData as $question)
