@@ -127,10 +127,6 @@
             }, 200);
         });
 
-        $(document).on('click', '.save-btn-1', function(){
-            
-        });
-
         $(document).on('click', '.save-btn-2', function(){
             var srcResized = $('.profile-pict-crop').rcrop('getDataURL');
             $('.avatar-group .profile-pict').attr('src', srcResized);
