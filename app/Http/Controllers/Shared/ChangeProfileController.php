@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Shared;
 use App\Http\Controllers\Controller;
 use App\Services\Me as MeApi;
 use Illuminate\Http\Request;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class ChangeProfileController extends Controller
 {
