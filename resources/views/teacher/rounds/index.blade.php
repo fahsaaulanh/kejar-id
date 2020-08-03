@@ -1,12 +1,12 @@
 @extends('layout.index')
 
-@section('title', 'Result - Daftar Ronde')
+@section('title', 'Daftar Ronde - ' . $game['title'])
 
 @section('content')
     <div class="container-fluid">
         <!-- Link Back, Previous and Next -->
         <div class="btn-group-between">
-            <a class ="btn-back" href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $thisClass[1]['id'] .'/stages') }}">
+            <a class="btn-back" href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $thisClass[1]['id'] .'/stages') }}">
                 <i class="kejar-back"></i>Kembali
             </a>
             <div class="btn-page-management">
@@ -39,9 +39,10 @@
         <!-- Title -->
         <div class="page-title">
             <div class="class-dropdown">
+                <span>Kelas {{ $thisClass[0] }} - </span>
                 <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     @if ($thisClass[0] !== '')
-                    Kelas {{ $thisClass[0] }} - {{ $thisClass[1]['name'] }}
+                    {{ $thisClass[1]['name'] }}
                     @else
                     Tidak ada kelas
                     @endif
@@ -56,7 +57,7 @@
         </div>
 
         <!-- Description -->
-        <h5 class="mb-08rem">{{ $stage['title'] }}</h5>
+        <h5 class="mb-08rem">Babak {{ $stage['order'] . ' : ' . $stage['title'] }}</h5>
         <p class="mb-4rem">{{ $stage['description'] }}</p>
 
         <!-- Information Alert -->
@@ -71,13 +72,13 @@
                 <thead>
                     <tr>
                         <th rowspan="2">Nama Siswa</th>
-                        <th colspan="{{ count($students['data'][0]['progress']) }}">Babak 1, Ronde ke-</th>
+                        <th colspan="{{ count($students['data'][0]['progress']) }}">Babak {{ $stage['order'] }}, Ronde ke-</th>
                     </tr>
                     <tr>
-                        @forelse($students['data'][0]['progress'] as $no => $round)
-                        <th>{{ $no + 1 }}</th>
+                        @forelse($students['data'][0]['progress'] as $round)
+                        <th class="round-btn" data-url="{{ url()->current() . '/' .  $round['round_id'] . '/description' }}">{{ $round['round_order'] }}</th>
                         @empty
-                        <th colspan="13">Tidak ada data</th>
+                        <th colspan="10">Tidak ada data</th>
                         @endforelse
                     </tr>
                 </thead>
@@ -182,9 +183,8 @@
                 </ul>
             </nav>
         </div>
-
     </div>
-
+    <div class="modal-group"></div>
 @endsection
 
 @push('script')
@@ -198,12 +198,23 @@
     thisWidth();
 
     function thisWidth() {
-        var game = "{{ $game['uri'] }}";
-        var studentGroupId = "{{ $thisClass[1]['id'] }}";
+        var backUrl = $('.btn-back').attr('href');
         var windowWidth = $(window).width();
         if (windowWidth < 768) {
-            window.open("{{ url('/teacher/games') }}/" + game + "/class/" + studentGroupId + "/stages", "_self");
+            window.open(backUrl, '_self');
         }
     }
+
+    $(document).on('click', '.round-btn', function(){
+        var urlDetail = $(this).attr('data-url');
+        $.ajax({
+            url: urlDetail,
+            method: "GET",
+            success:function(data){
+                $('.modal-group').html(data);
+                $('#detailDescriptionModal').modal('show');
+            }
+        })
+    });
 </script>
 @endpush

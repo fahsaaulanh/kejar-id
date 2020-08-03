@@ -1,5 +1,5 @@
 {{-- Modal Deskripsi Ronde --}}
-<div class="modal fade" id="detailResultModal" tabindex="-1" role="dialog" aria-labelledby="detailResultModalLabel" aria-hidden="true">
+<div class="modal fade" id="detailDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="detailDescriptionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
       <div class="modal-content kotak justify-content-center">
           <div class="content">
@@ -7,9 +7,8 @@
                   <div class="judul">
                       <!-- Breadcrumbs -->
                       <nav class="breadcrumb bg-transparent p-0">
-                          <span class="breadcrumb-item active">{{ $game['title'] }}</span>
-                          <span class="breadcrumb-item active">{{ $stage['title'] }}</span>
-                          <span class="breadcrumb-item active">{{ $round['title'] }}</span>
+                          <span class="breadcrumb-item active">{{ 'Babak ' . $stage['order'] }}</span>
+                          <span class="breadcrumb-item active">{{ 'Ronde ' . $round['order'] }}</span>
                       </nav>
                       <!-- Title -->
                       <h1 class="text-title">{{ $round['title'] }}</h1>

@@ -4,6 +4,12 @@ namespace App\Services;
 
 class Task extends Service
 {
+    public function index()
+    {
+        $response = $this->get('/tasks/matrikulasi');
+
+        return $this->showResponse($response);
+    }
 
     public function getAll($game)
     {
