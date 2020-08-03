@@ -14,7 +14,6 @@
                     <h3>Ganti Password <a href="{{ url('/student/skip-change-password') }}" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </a></h3>
-
                     <div>
                         <p><strong>Password belum diganti, ganti dulu agar lebih aman.</strong></p>
                         <p>Password harus terdiri dari minimal 6 karakter, kombinasi huruf dan angka.</p>
