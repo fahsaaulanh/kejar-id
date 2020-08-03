@@ -21,7 +21,6 @@ class GameController extends Controller
 
         //get session password default status
         $response['data']['PasswordMustBeChanged'] = session()->get('PasswordMustBeChanged');
-
         session(['user' => $response['data']]);
 
         return view('student.games.index', ['data'=>$response['data']]);
