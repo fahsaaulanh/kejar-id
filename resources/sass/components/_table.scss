@@ -176,6 +176,7 @@
                 }
             }
         }
+
     }
 
     tbody{
@@ -273,5 +274,28 @@
         color:$grey-6;
         background-color: #fff;
         border: 1px solid $grey-13;
+    }
+}
+
+.table-toeic{
+    width: 100%;
+    border: 0rem !important;
+    max-width: 68rem;
+    
+    thead{
+        border: 0rem;
+        th{
+            @include h5;
+            background-color: $grey-15;
+            padding: 1rem;
+            border: 0rem;
+            
+            &.a{
+                width: 66.7%;
+            }
+            &.b{
+                width: 33.4%;
+            }
+        }
     }
 }
