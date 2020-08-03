@@ -93,7 +93,7 @@ Route::middleware('session')->group(function () {
 
                             Route::prefix('/{roundId}')->group(function () {
 
-                                Route::get('/description', 'DescriptionRoundController@index');
+                                Route::get('/description', 'Teacher\RoundController@description');
                             });
                         });
                     });

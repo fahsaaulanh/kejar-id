@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Services\Batch as BatchApi;
 use App\Services\Report as ReportApi;
-use App\Services\RoundQuestion;
+use App\Services\Round as RondeApi;
 use App\Services\Stage as StageApi;
 use App\Services\StudentGroup as StudentApi;
-// use App\Services\Question as QuestionApi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -26,7 +25,6 @@ class RoundController extends Controller
         $stageFilter = [
             'per_page' => 99,
         ];
-
         $stageDetailResponse = $stageApi->getDetail($game, $stageId);
         $stageAllResponse = $stageApi->getAll($game, $stageFilter);
         $stage = $stageDetailResponse['data'] ?? [];
@@ -100,7 +98,6 @@ class RoundController extends Controller
             }
 
             $thisGrade = substr(explode(' ', $classThis['name'])[1], 0, strlen(explode(' ', $classThis['name'])[1])-2);
-
             foreach ($classList as $class) {
                 if ($class['class_grade'] === $thisGrade) {
                     $classGroup[] = $class;
@@ -124,7 +121,7 @@ class RoundController extends Controller
         $current = $stageData[$index] ?? null;
         $after = $stageData[$index + 1] ?? null;
         $pages = [$before, $current, $after];
-
+        
         return view('teacher/rounds/index', compact(
             'game',
             'batchId',
@@ -136,17 +133,10 @@ class RoundController extends Controller
         ));
     }
 
-    // TO DO Delete this if not being used
-    // public function modalView($game, $studentGroupId)
-    // {
-    //     $game = strtolower($game);
-    //     $game = $this->getGame($game);
-
-    //     return view('teacher/rounds/modal', compact('game', 'studentGroupId'));
-    // }
-
-    public function modal($game, $studentGroupId, $studentId)
+    public function modal($game, $batchId, $studentGroupId, $studentId)
     {
+        $batchId;
+
         $reportStageApi = new ReportApi;
         $game = strtoupper($game);
         $gameFilter = [
@@ -161,39 +151,21 @@ class RoundController extends Controller
             }
         }
 
-        // $stages = $student['progress'];
-
-        foreach ($student['progress'] as $key1 => $stage) {
-            $reportRoundApi = new ReportApi;
-            $studentRoundData = $reportRoundApi->roundReport($studentGroupId, $stage['stage_id'])['data'] ?? [];
-
-            foreach ($studentRoundData as $round) {
-                if ($round['id'] === $studentId) {
-                    $finishedRound = 0;
-                    $student['progress'][$key1]['rounds'] = $round['progress'];
-
-                    foreach ($round['progress'] as $key2 => $roundQuestion) {
-                        $roundQuestionApi = new RoundQuestion;
-                        $questions = $roundQuestionApi->getAll($roundQuestion['round_id'])['data'] ?? [];
-                        $student['progress'][$key1]['rounds'][$key2]['round_question'] = $questions;
-                        $finishedRound += $roundQuestion['is_done'] === true ? 1 : 0;
-
-                        // foreach ($questions as $key3 => $question) {
-                        //     $taskApi = new QuestionApi;
-                        //     $tasks = $taskApi->getDetail($question['question_id']);
-                        //     $student['progress'][$key1]['rounds'][$key2]['questions'][$key3]['tasks'] = $tasks;
-                        // }
-                    }
-
-                    $student['progress'][$key1]['finished_round'] = $finishedRound;
-                    $student['progress'][$key1]['total_round'] = count($round['progress']);
-                }
-            }
-        }
-
-        // Only take question data for counting finished question
-
         return response()->json(['student' => $student]);
+    }
+
+    public function description($game, $batchId, $studentGroupId, $stageId, $roundId)
+    {
+        $batchId;
+        $studentGroupId;
+        
+        $game = $this->getGame($game);
+        $stageApi = new StageApi;
+        $stage = $stageApi->getDetail($game['uri'], $stageId)['data'] ?? [];
+        $roundApi = new RondeApi;
+        $round = $roundApi->getDetail($roundId)['data'] ?? [];
+        
+        return view('teacher/rounds/_detail_round', compact('stage', 'round', 'game'));
     }
 
     private function getGame($game)
