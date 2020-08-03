@@ -29,25 +29,27 @@ class ChangePasswordController extends Controller
         ];
 
         //chek password sama dengan username
-        if($request->password_baru == session()->get('user.username')){
+        if ($request->password_baru === session()->get('user.username')) {
             Session::flash('message', 'Ubah password gagal!, password tidak boleh dengan username');
+
             return redirect()->back();
         }
         
         $meApi = new MeApi;
         $result = $meApi->update($payload);
         
-        if($result['status'] == 200){
+        if ($result['status'] === 200) {
             //update session password sudah diperbarui
-            $request->session()->put('checkPasswordDefault', FALSE);
+            $request->session()->put('checkPasswordDefault', false);
     
             Session::flash('message', 'Ubah password berhasil!');
-        }else{    
-            $error = "";
-            foreach($result['errors'] as $key => $v){
-                if($key != 0){
-                    $error .= ",";
+        } else {
+            $error = '';
+            foreach ($result['errors'] as $key => $v) {
+                if ($key !== 0) {
+                    $error .= ',';
                 }
+
                 $error .= $v['message'];
             }
 
@@ -59,7 +61,8 @@ class ChangePasswordController extends Controller
 
     public function skip()
     {
-        session()->put('PasswordMustBeChanged', FALSE);
+        session()->put('PasswordMustBeChanged', false);
+
         return redirect()->back();
     }
 }

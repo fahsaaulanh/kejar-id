@@ -113,7 +113,6 @@ Route::middleware('session')->group(function () {
             Route::get('/result', 'Student\ResultController@index'); //TODO EXAM
             Route::get('/skip-change-password', 'Shared\ChangePasswordController@skip'); //TODO EXAM
 
-
             Route::prefix('/games')->group(function () {
 
                 Route::get('/', 'Student\GameController@index');

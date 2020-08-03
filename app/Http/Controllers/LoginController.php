@@ -52,14 +52,13 @@ class LoginController extends Controller
             $request->session()->put('user', $responseMe['data']);
 
             if ($responseMe['data']['role'] === 'STUDENT') {
-
                 //check password sudah diganti
 
                 $response = $userApi->login($responseMe['data']['username'], $responseMe['data']['username']);
-                if ($response['status'] == 200) {
-                    session(['PasswordMustBeChanged' => TRUE]);
-                }else{
-                    session(['PasswordMustBeChanged' => FALSE]);
+                if ($response['status'] === 200) {
+                    session(['PasswordMustBeChanged' => true]);
+                } else {
+                    session(['PasswordMustBeChanged' => false]);
                 }
 
                 return redirect('/student/games');
