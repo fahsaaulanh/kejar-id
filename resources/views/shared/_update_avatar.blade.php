@@ -17,7 +17,7 @@ Modal
                             <div class="avatar-group">
                                 @if (session('user.role') === 'STUDENT')
                                     @if (!is_null(session('user.userable.photo')))
-                                    <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
+                                    <img src="{{ sessi  on('user.userable.photo') }}" class="profile-pict" alt="">
                                     @else
                                     <img src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg" class="profile-pict" alt="">
                                     @endif

@@ -198,10 +198,11 @@
     thisWidth();
 
     function thisWidth() {
-        var urlBack = "{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $thisClass[1]['id'] .'/stages') }}";
+        var game = "{{ $game['uri'] }}";
+        var studentGroupId = "{{ $thisClass[1]['id'] }}";
         var windowWidth = $(window).width();
         if (windowWidth < 768) {
-            window.open(urlBack, "_self");
+            window.open("{{ url('/teacher/games') }}/" + game + "/class/" + studentGroupId + "/stages", "_self");
         }
     }
 </script>

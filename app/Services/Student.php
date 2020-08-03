@@ -11,5 +11,4 @@ class Student extends Service
         
         return $this->showResponse($response);
     }
-
 }
