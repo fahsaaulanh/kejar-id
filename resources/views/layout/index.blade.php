@@ -11,6 +11,7 @@
     </head>
     <body>
         @section('header')
+            @if(!Session::get('checkPasswordDefault'))
                 <nav class="navbar navbar-expand-sm navbar-dark bg-black">
                     <a class="navbar-brand" href="#">
                         <img src="{{ asset('assets/logo/kejarid.svg') }}" alt=""> Kejar.id
@@ -44,6 +45,7 @@
                         </ul>
                     </div>
                 </nav>
+            @endif
         @show
 
         @yield('content')
