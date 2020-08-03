@@ -27,11 +27,32 @@ class ChangePasswordController extends Controller
         $payload = [
             'password' => $request->password_baru,
         ];
+
+        //chek password sama dengan username
+        if($request->password_baru == session()->get('user.username')){
+            Session::flash('message', 'Ubah password gagal!, password tidak boleh dengan username');
+            return redirect()->back();
+        }
         
         $meApi = new MeApi;
-        $meApi->update($payload);
+        $result = $meApi->update($payload);
+        
+        if($result['status'] == 200){
+            //update session password sudah diperbarui
+            $request->session()->put('checkPasswordDefault', FALSE);
+    
+            Session::flash('message', 'Ubah password berhasil!');
+        }else{    
+            $error = "";
+            foreach($result['errors'] as $key => $v){
+                if($key != 0){
+                    $error .= ",";
+                }
+                $error .= $v['message'];
+            }
 
-        Session::flash('message', 'Ubah password berhasil!');
+            Session::flash('message', 'Ubah password gagal! '.$error);
+        }
 
         return redirect()->back();
     }

@@ -49,10 +49,19 @@ class LoginController extends Controller
             $userApiMe = new UserApi;
             $responseMe = $userApiMe->me();
 
-
             $request->session()->put('user', $responseMe['data']);
 
             if ($responseMe['data']['role'] === 'STUDENT') {
+
+                //check password sudah diganti
+
+                $response = $userApi->login($responseMe['data']['username'], $responseMe['data']['username']);
+                if ($response['status'] == 200) {
+                    session(['checkPasswordDefault' => TRUE]);
+                }else{
+                    session(['checkPasswordDefault' => FALSE]);
+                }
+
                 return redirect('/student/games');
             }
 
