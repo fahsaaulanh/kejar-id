@@ -65,7 +65,6 @@
                     <h3>Pasang Foto Profil <a href="{{ url('/student/skip-change-info?type=photo') }}" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </a></h3>
-
                     <div class="mt-5">
                         <p>Jadikan profilmu lebih keren dengan memasang foto. Gunakan foto yang baik, guru-gurumu akan melihat foto profil ini.</p>
                         <div class="form-group">
@@ -142,7 +141,6 @@
             $('#profile-pict-crop').attr('src',base64Img);
 
             console.log(base64Img);
-
             $('.profile-pict-crop').rcrop({
                 minSize : [200,200],
                 maxSize : [2000,2000],
