@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Services\Batch as BatchApi;
+use App\Services\Game;
 use App\Services\Stage as StageApi;
 use App\Services\StudentGroup as StudentApi;
 use Carbon\Carbon;
@@ -24,8 +25,8 @@ class StageController extends Controller
         ];
         $batchResponse = $batchApi->index($schoolId, $batchFilter);
         $batchId = $batchResponse['data'][0]['id'];
-
-        $game = $this->getGame($game);
+        $gameService = new Game;
+        $game = $gameService->parse($game);
         $classApi = new StudentApi;
         $classResponse = $classApi->index($schoolId, $batchId);
         $classData = $classResponse['data'] ?? [];
@@ -94,7 +95,8 @@ class StageController extends Controller
     {
         $stageApi = new StageApi;
         $linkGame = $game;
-        $game = $this->getGame($game);
+        $gameService = new Game;
+        $game = $gameService->parse($game);
 
         //Get Student and result
         $filter = [
@@ -109,7 +111,7 @@ class StageController extends Controller
         $dataStudentGroups = $studentGroupApi->index($schoolId, $batchId);
         $classData = $dataStudentGroups['data'] ?? [];
         $classThis = [];
-        
+
         foreach ($classData as $class) {
             if ($class['id'] === $studentGroupId) {
                 $classThis = $class;
@@ -117,14 +119,14 @@ class StageController extends Controller
         }
 
         $thisGrade = substr(explode(' ', $classThis['name'])[1], 0, strlen(explode(' ', $classThis['name'])[1])-2);
-        
+
         $thisClass = [];
         $thisClass[0] = $thisGrade;
         $thisClass[1] = $classThis;
-        
+
         $responses = $this->myPaginate($data)
         ->withPath('/teacher/games/'.$linkGame.'/class/'.$batchId.'/'.$studentGroupId.'/stages');
-        
+
         return view('teacher/result/stage/index', compact(
             'game',
             'responses',
@@ -142,34 +144,5 @@ class StageController extends Controller
         $data = $data instanceof Collection ? $data : Collection::make($data);
 
         return new LengthAwarePaginator($data->forPage($page, $perPage), $data->count(), $perPage, $page, $options);
-    }
-
-    private function getGame($game)
-    {
-        $game = strtolower($game);
-
-        if ($game === 'obr') {
-            $game = [];
-            $game['uri'] = 'obr';
-            $game['short'] = 'OBR';
-            $game['title'] = 'Operasi Bilangan Rill';
-            $game['result'] = 'ronde';
-        } elseif ($game === 'vocabulary') {
-            $game = [];
-            $game['uri'] = 'vocabulary';
-            $game['short'] = 'Vocabulary';
-            $game['title'] = 'Vocabulary';
-            $game['result'] = 'words';
-        } elseif ($game === 'katabaku') {
-            $game = [];
-            $game['uri'] = 'katabaku';
-            $game['short'] = 'Kata Baku';
-            $game['title'] = 'Kata Baku';
-            $game['result'] = 'kata';
-        } else {
-            abort(404);
-        }
-
-        return $game;
     }
 }

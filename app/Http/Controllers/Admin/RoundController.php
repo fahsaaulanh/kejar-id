@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Game;
 use App\Services\Question as QuestionApi;
 use App\Services\Round as RoundApi;
 use App\Services\RoundQuestion;
@@ -17,7 +18,7 @@ class RoundController extends Controller
     public function index($game, $stageId)
     {
         $stageApi = new StageApi;
-        $response = $stageApi->getDetail($game, $stageId);
+        $response = $stageApi->getDetail(strtoupper($game), $stageId);
         $stage = $response['data'];
 
         $roundApi = new RoundApi;
@@ -40,15 +41,8 @@ class RoundController extends Controller
             $rounds = '';
         }
 
-        if ($game === 'OBR') {
-            $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
-        } elseif ($game === 'VOCABULARY') {
-            $game = ['short' => 'Vocabulary', 'title' => 'Vocabulary', 'uri' => 'VOCABULARY'];
-        } elseif ($game === 'KATABAKU') {
-            $game = ['short' => 'Kata Baku', 'title' => 'Kata Baku', 'uri' => 'KATABAKU'];
-        } else {
-            abort(404);
-        }
+        $gameService = new Game;
+        $game = $gameService->parse($game);
 
         return view('admin/rounds/index', compact('game', 'stage', 'rounds'));
     }
@@ -244,6 +238,9 @@ class RoundController extends Controller
             $questionApi = new QuestionApi;
             $roundQuestionApi = new RoundQuestion;
 
+            $gameService = new Game;
+            $gameParsed = $gameService->parse($game);
+
             for ($i=4; $i < count($data[0]); $i++) {
                 $sheetIndex = 0;
                 $row = $i;
@@ -255,7 +252,7 @@ class RoundController extends Controller
                     'owner' => 'KEJAR',
                     'subject_id'=> null,
                     'topic_id'=> null,
-                    'bank'=> $this->gameDefault($game),
+                    'bank'=> $gameParsed['short'],
                     'type'=> 'MCQSA',
                     'question'=> (string)$data[$sheetIndex][$row][$questionIndex],
                     'choices'=> null,
@@ -285,27 +282,5 @@ class RoundController extends Controller
         }
 
         return redirect()->back()->with('success', 'Soal berhasil ditambahkan.');
-    }
-
-    private function gameDefault($game)
-    {
-        switch ($game) {
-            case 'OBR':
-                return 'OBR';
-
-                break;
-            case 'KATABAKU':
-                return 'Kata Baku';
-
-                break;
-            case 'VOCABULARY':
-                return 'Vocabulary';
-
-                break;
-            default:
-                return $game;
-
-                break;
-        }
     }
 }

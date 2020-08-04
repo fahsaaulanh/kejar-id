@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Game;
 use App\Services\Round as RoundApi;
 use App\Services\Stage as StageApi;
 use Exception;
@@ -19,16 +20,15 @@ class StageController extends Controller
     public function index($game)
     {
         $stage = new StageApi;
-
         $game = strtoupper($game);
-
         $filter = [
             'per_page' => 99,
         ];
 
         $stages = $stage->getAll($game, $filter)['data'] ?? [];
 
-        $game = $this->getGame($game);
+        $gameService = new Game;
+        $game = $gameService->parse($game);
 
         $stagesCount = count($stages);
 
@@ -76,7 +76,7 @@ class StageController extends Controller
                     'description' => $data[$sheetIndex][$row][$description],
                     'order' => $stagesSum,
                 ];
-                
+
                 $stageApi->store($game, $collection);
             }
         } catch (Exception $e) {
@@ -121,7 +121,7 @@ class StageController extends Controller
                     foreach ($rounds as $key => $row) {
                         $round[$key] = $row['order'];
                     }
-        
+
                     array_multisort($round, SORT_DESC, $rounds);
                     $roundsSum = $rounds[0]['order'];
                 } else {
@@ -198,6 +198,7 @@ class StageController extends Controller
     public function updateStageModal(Request $req, $game, $stageId)
     {
         $stageApi = new StageApi;
+        $game = strtoupper($game);
         $editData = $stageApi->getDetail($game, $stageId)['data'] ?? [];
 
         $payload = [
@@ -210,32 +211,5 @@ class StageController extends Controller
         $stageApi->reorder($game, $stageId, $payload);
 
         return redirect()->back();
-    }
-
-    private function getGame($game)
-    {
-        if ($game === 'OBR') {
-            $game = [
-                'short' => 'OBR',
-                'title' => 'Operasi Bilangan Rill',
-                'uri' => 'OBR',
-            ];
-        } elseif ($game === 'VOCABULARY') {
-            $game = [
-                'short' => 'Vocabulary',
-                'title' => 'Vocabulary',
-                'uri' => 'VOCABULARY',
-            ];
-        } elseif ($game === 'KATABAKU') {
-            $game = [
-                'short' => 'Kata Baku',
-                'title' => 'Kata Baku',
-                'uri' => 'KATABAKU',
-            ];
-        } else {
-            abort(404);
-        }
-
-        return $game;
     }
 }
