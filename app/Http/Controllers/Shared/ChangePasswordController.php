@@ -40,7 +40,13 @@ class ChangePasswordController extends Controller
         
         if ($result['status'] === 200) {
             //update session password sudah diperbarui
-            $request->session()->put('checkPasswordDefault', false);
+            $request->session()->put('PasswordMustBeChanged', false);
+            
+            $checkPhoto = session()->get('user.userable.photo');
+
+            if (!$checkPhoto) {
+                Session::flash('changePhotoOnBoarding', true);
+            }
     
             Session::flash('message', 'Ubah password berhasil!');
         } else {
@@ -59,9 +65,19 @@ class ChangePasswordController extends Controller
         return redirect()->back();
     }
 
-    public function skip()
+    public function skipInfo(Request $request)
     {
-        session()->put('PasswordMustBeChanged', false);
+        if ($request->type === 'password') {
+            $checkPhoto = session()->get('user.userable.photo');
+            
+            if (!$checkPhoto) {
+                Session::flash('changePhotoOnBoarding', true);
+            }
+
+            $request->session()->put('PasswordMustBeChanged', false);
+        } elseif ($request->type === 'photo') {
+            Session::flash('changePhotoOnBoarding', false);
+        }
 
         return redirect()->back();
     }

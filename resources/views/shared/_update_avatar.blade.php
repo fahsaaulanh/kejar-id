@@ -17,9 +17,9 @@
                             <div class="avatar-group">
                                 @if (session('user.role') === 'STUDENT')
                                     @if (!is_null(session('user.userable.photo')))
-                                    <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
+                                        <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
                                     @else
-                                    <img src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg" class="profile-pict" alt="">
+                                        <img src="{{ asset('assets/images/general/photo-profile-default.svg') }}" class="profile-pict" alt="">
                                     @endif
                                 @endif
                                 <button type="button" class="edit-pict-btn">
@@ -79,7 +79,7 @@
                                 @if (!is_null(session('user.userable.photo')))
                                 <img src="" class="profile-pict-crop" alt="">
                                 @else
-                                <img src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg" class="profile-pict-crop" alt="">
+                                <img src="{{ asset('assets/images/general/photo-profile-default.svg') }}" id="profile-pict-crop" class="profile-pict-crop" alt="">
                                 @endif
                             @endif
                         </div>

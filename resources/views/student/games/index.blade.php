@@ -2,16 +2,20 @@
 
 @section('title', 'Permainan')
 
-@section('content')
+@section('css')
+  <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.css')}}">
+@endsection
 
-    @if($data['PasswordMustBeChanged'])
+@section('content')
+    
+    @if(Session::get('PasswordMustBeChanged') == true)
         <!-- form ganti password -->
         <div class="bg-lego">
             <div class="container-center">
                 <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
                     @csrf
                     @method('PATCH')
-                    <h3>Ganti Password <a href="{{ url('/student/skip-change-password') }}" class="close" data-dismiss="modal" aria-label="Close">
+                    <h3>Ganti Password <a href="{{ url('/student/skip-change-info?type=password') }}" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </a></h3>
                     
@@ -48,6 +52,28 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-lg btn-primary btn-block">Simpan</button>
+                </form>
+            </div>
+        </div>
+        <div class="bg-lego-mobile"></div>
+    @elseif(Session::get('changePhotoOnBoarding') == true)
+        <!-- form ganti foto -->
+        <div class="bg-lego">
+            <div class="container-center">
+                <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
+                    @csrf
+                    @method('PATCH')
+                    <h3>Pasang Foto Profil <a href="{{ url('/student/skip-change-info?type=photo') }}" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="kejar kejar-close"></i>
+                    </a></h3>
+                    
+                    <div class="mt-5">
+                        <p>Jadikan profilmu lebih keren dengan memasang foto. Gunakan foto yang baik, guru-gurumu akan melihat foto profil ini.</p>
+                        <div class="form-group">
+                            <input type="file" id="drop-photo" onchange="changeDrop()" name="excel_file" class="dropify" data-allowed-file-extensions="jpg jpeg png"/>
+                        </div>
+                    </div>
+                    <a href="{{ url('/student/skip-change-info?type=photo') }}" class="text-muted float-right mt-5">Lewati ></a>
                 </form>
             </div>
         </div>
@@ -90,4 +116,41 @@
             </div>
         </div>
     @endif
+@endsection
+
+@section('script')
+  <script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
+  <script type="text/javascript">
+    $('.dropify').dropify({
+        messages: {
+            'default': 'Pilih Foto',
+            'replace': 'Ubah Foto',
+            'remove':  'Hapus Foto',
+            'error':   'Error'
+        }
+    });
+
+    function changeDrop() {
+        $("#updateProfile").modal('toggle');
+
+
+        setInterval(function(){
+            var base64Img = $(".dropify-render").html()
+                                            .toString()
+                                            .replace('<img src="', '')
+                                            .replace('">', '');
+
+            $('#profile-pict-crop').attr('src',base64Img);
+
+            console.log(base64Img);
+            
+            $('.profile-pict-crop').rcrop({
+                minSize : [200,200],
+                maxSize : [2000,2000],
+                preserveAspectRatio : true,
+                grid : true
+            });
+        }, 200);
+    }
+  </script>
 @endsection

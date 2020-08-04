@@ -16,11 +16,13 @@ class GameController extends Controller
             return redirect('/login');
         }
 
-        //get session password default status
-        $response['data']['PasswordMustBeChanged'] = session()->get('PasswordMustBeChanged');
-        
         session(['user' => $response['data']]);
 
         return view('student.games.index', ['data'=>$response['data']]);
+    }
+
+    public function dashboard()
+    {
+        return redirect('student/game');
     }
 }

@@ -7,11 +7,12 @@
         <link rel="icon" href="{{ url('assets/logo/favicon.png') }}" type="image/gif">
         <!-- Styles -->
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet">
-
+        <!-- Import CSS -->
+        @yield('css')
     </head>
     <body>
         @section('header')
-            @if(!Session::get('PasswordMustBeChanged'))
+            @if(!Session::get('PasswordMustBeChanged') && !Session::get('changePhotoOnBoarding'))
                 <nav class="navbar navbar-expand-sm navbar-dark bg-black">
                     <a class="navbar-brand" href="#">
                         <img src="{{ asset('assets/logo/kejarid.svg') }}" alt=""> Kejar.id
@@ -29,7 +30,7 @@
                                         @if (!is_null(session('user.userable.photo')))
                                         <img src="" class="profile-pict" alt="">
                                         @else
-                                        <img src="https://jgi.doe.gov/wp-content/uploads/2014/04/Steven_Hallam-slide.jpg" class="profile-pict" alt="">
+                                        <img src="{{ asset('assets/images/general/photo-profile-default-circle.svg') }}" class="profile-pict" alt="">
                                         @endif
                                     @endif
                                     <i class="kejar-dropdown"></i>
@@ -101,6 +102,8 @@
         alert("{{ Session::get('message') }}");
     </script>
     @endif
+    <!-- Import JS Script -->
+    @yield('script')
 
     <script>
         $(document).ready(function() {
