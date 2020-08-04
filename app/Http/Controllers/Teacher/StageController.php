@@ -107,10 +107,24 @@ class StageController extends Controller
         $studentGroupApi = new StudentApi;
         $schoolId = $data[0]['school_id'];
         $dataStudentGroups = $studentGroupApi->index($schoolId, $batchId);
+        $classData = $dataStudentGroups['data'] ?? [];
+        $classThis = [];
+        
+        foreach ($classData as $class) {
+            if ($class['id'] === $studentGroupId) {
+                $classThis = $class;
+            }
+        }
+
+        $thisGrade = substr(explode(' ', $classThis['name'])[1], 0, strlen(explode(' ', $classThis['name'])[1])-2);
+        
+        $thisClass = [];
+        $thisClass[0] = $thisGrade;
+        $thisClass[1] = $classThis;
         
         $responses = $this->myPaginate($data)
         ->withPath('/teacher/games/'.$linkGame.'/class/'.$batchId.'/'.$studentGroupId.'/stages');
-
+        
         return view('teacher/result/stage/index', compact(
             'game',
             'responses',
@@ -118,10 +132,11 @@ class StageController extends Controller
             'dataStudentGroups',
             'studentGroupId',
             'batchId',
+            'thisClass',
         ));
     }
 
-    private function myPaginate($data, $perPage = 10, $page = null, $options = [])
+    private function myPaginate($data, $perPage = 20, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $data = $data instanceof Collection ? $data : Collection::make($data);

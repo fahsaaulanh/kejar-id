@@ -2,7 +2,152 @@
     width: 100%;
     position: relative;
 
-    &.table-result{
+    &.table-result-stage{
+        margin-top: 1.6rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0;
+
+        table{
+            position: relative;
+
+            thead{
+                @media screen and (max-width: $mobile-breakpoint) {
+                    display: none;
+                }
+
+                tr{
+                    &.number{
+                        th{
+                            position: sticky !important;
+                            table-layout: fixed;
+                            min-width: 7.2rem !important;
+        
+                            &:hover{
+                                background-color: $blue-tp;
+                                color: $purple;
+                            }
+                        }
+                    }
+    
+                    th{
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 1.3rem;
+                        line-height: 1.6rem;
+                        height: 4rem !important;
+                        vertical-align: middle !important;
+                        background-color: $grey-15;
+                        border: 0.2rem solid $grey-13 !important;
+                    }
+    
+                    &:nth-child(1) th{
+                        &:nth-child(1){
+                            position: sticky !important;
+                            left: 0 !important;
+                            min-width: 24rem !important;
+                            background-color: $grey-15 !important;
+                        }
+    
+                        &:nth-child(2){
+                            text-align: center !important;
+                        }
+                    }
+    
+                    &:nth-child(2) th{
+                        cursor: pointer !important;
+                        min-width: 7.2rem !important;
+                        width: 20rem !important;
+                        text-align: center;
+            
+                        &:hover{
+                            color: $purple !important;
+                            background-color: $blue-tp !important;
+                        }
+                    }
+                }
+            }
+
+            tbody tr {
+                &.result-icon{
+                    td{
+                        width: fit-content !important;
+                        vertical-align: middle;
+                        text-align: center !important;
+    
+                        &.td-name{
+                            text-align: left !important;
+
+                            span{
+                                display: block;
+                                margin-top: 0.5rem;
+                                color: $grey-6;
+
+                                strong{
+                                    color: $grey-3;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                td{
+                    &:not(:nth-child(1)){
+                        @media screen and (max-width: $mobile-breakpoint) {
+                            display: none;
+                        }
+                    }
+
+                    i.kejar-sudah-dikerjakan::before{
+                        color: $green-2;
+                    }
+
+                    i.kejar-latihan-to-bold::before{
+                        color: $deep-yellow;
+                    }
+
+                    i.kejar-belum-mengerjakan-2::before{
+                        color: $red-2;
+                    }
+
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 1.3rem;
+                    line-height: 1.6rem;
+                    text-align: left;
+                    min-width: 7.2rem !important;
+                    height: 4rem !important;
+                    vertical-align: middle !important;
+                    border: 0.2rem solid $grey-13 !important;
+        
+                    &:nth-child(1){
+                        position: sticky !important;
+                        left: 0 !important;
+                        background-color: $white !important;
+                        z-index: 1 !important;
+                    }
+
+                    @media screen and (max-width: $mobile-breakpoint) {
+                        padding: 0.75rem 0;
+                        border: 0 !important;
+                    }
+                }
+            }
+        }
+
+        &::-webkit-scrollbar {
+            height: 0.8rem;
+            background-color: transparent;
+            &-track {
+                background-color: transparent;
+            }
+            &-thumb {
+                background-color: $grey-9;
+                border-radius: 30rem;
+            }
+        }
+    }
+
+    &.table-result-round{
         margin-top: 1.6rem;
         margin-bottom: 1.5rem;
         padding-bottom: 0;
@@ -38,7 +183,7 @@
                 &:nth-child(2) th{
                     cursor: pointer !important;
                     min-width: 7.2rem !important;
-                    width: 7.2rem !important;
+                    width: 20rem !important;
                     text-align: center;
         
                     &:hover{
@@ -121,105 +266,6 @@
                 border-radius: 30rem;
             }
         }
-    }
-}
-
-.table{
-    width: 100%;
-    border: 0rem !important;
-
-    thead{
-        border: 0rem;
-        tr{       
-            text-align: center;
-            th{
-                @include h5;
-                background-color: $grey-15;
-                padding: 1rem;
-                border: 0rem;
-                width: 7.2rem;
-
-                &.th-name{
-                    table-layout: fixed;
-                    min-width: 24rem !important;
-                    vertical-align: middle;
-                    text-align: center;
-                }
-            }
-
-            &:nth-child(1) th{
-                &:nth-child(1){
-                    position: sticky !important;
-                    left: 0 !important;
-                    min-width: 24rem !important;
-                    background-color: $grey-15 !important;
-                    z-index: 2;
-                }
-
-                &:nth-child(2){
-                    text-align: center !important;
-                    position: sticky !important;
-                }
-            }
-
-
-            &.numbr{
-                th{
-                    position: sticky !important;
-                    table-layout: fixed;
-                    min-width: 7.2rem !important;
-
-                    &:hover{
-                        background-color: $blue-tp;
-                        color: $purple;
-                    }
-                }
-            }
-        }
-
-    }
-
-    tbody{
-        tr{
-            td{
-                @include h5-reg;
-                padding: 1.4rem 1.2rem;
-                border-top: 0.2rem solid $grey-15;
-                border-bottom: 0.2rem solid $grey-15;
-                position: sticky;
-
-                i.kejar-sudah-dikerjakan::before{
-                    color: $green-2;
-                }
-                i.kejar-latihan-to-bold::before{
-                    color: $deep-yellow;
-                }
-                i.kejar-belum-mengerjakan-2::before{
-                    color: $red-2;
-                }
-
-                &:nth-child(1){
-                    background-color: $white !important;
-                    position: sticky !important;
-                    left: 0rem;
-                    z-index: 1;
-                    border-top: none;
-            }
-            }
-
-            &.result-icon{
-                td{
-                    width: fit-content !important;
-                    vertical-align: middle;
-                    text-align: center !important;
-
-                    &.td-name{
-                        text-align: left !important;
-                    }
-                }
-            }
-        }
-
     }
 }
 

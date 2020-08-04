@@ -39,7 +39,16 @@
         <!-- Title -->
         <div class="page-title">
             <div class="class-dropdown">
-                <span>Kelas {{ $thisClass[0] }} - </span>
+                @php
+                if ($thisClass[0] == 'X') {
+                    $gradeLatin = 10;
+                } elseif ($thisClass[0] == 'XI') {
+                    $gradeLatin = 11;
+                } else {
+                    $gradeLatin = 12;
+                }
+                @endphp
+                <span>Kelas {{ $gradeLatin }} - </span>
                 <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     @if ($thisClass[0] !== '')
                     {{ $thisClass[1]['name'] }}
@@ -62,12 +71,11 @@
 
         <!-- Information Alert -->
         <div class="alert information-alert" role="alert">
-            <i>i</i>
-            Klik nomor ronde untuk melihat deskripsi ronde
+            <i>i</i>Klik nomor ronde untuk melihat deskripsi ronde
         </div>
 
         <!-- Table -->
-        <div class="table-responsive table-result">
+        <div class="table-responsive table-result-round">
             <table class="table table-bordered">
                 <thead>
                     <tr>

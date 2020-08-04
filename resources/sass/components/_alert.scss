@@ -15,13 +15,13 @@
         }
 
         @media (max-width: 27.8rem){
-                height: 12rem;
-                p.full-text{
-                    display: none;
-                }
-                p.add-text{
-                    display: block;
-                }
+            height: 12rem;
+            p.full-text{
+                display: none;
+            }
+            p.add-text{
+                display: block;
+            }
         }
 }
 .information-alert{
@@ -60,7 +60,7 @@
         display: none;
     }
 
-    @media (max-width: 27.8rem){
+    @media screen and (max-width: $mobile-breakpoint) {
         &:not(:first-line){
             padding-left: 3rem;
         }
@@ -68,12 +68,11 @@
         .full-text{
             display: none;
         }
+
         .add-text{
-            display: block;
-    
-            .add-text-2{
-                padding-left: 2.8rem;
-            }
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
         }
     }
 }
