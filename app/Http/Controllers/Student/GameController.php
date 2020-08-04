@@ -15,6 +15,8 @@ class GameController extends Controller
 
         $user = $request->session()->get('user', null);
 
+        $user = $request->session()->get('user', null);
+
         if ($user === null) {
             return redirect('/login');
         }
