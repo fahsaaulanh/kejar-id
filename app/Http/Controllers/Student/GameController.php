@@ -25,4 +25,9 @@ class GameController extends Controller
 
         return view('student.games.index', ['data'=>$response['data']]);
     }
+
+    public function dashboard()
+    {
+        return redirect('student/game');
+    }
 }

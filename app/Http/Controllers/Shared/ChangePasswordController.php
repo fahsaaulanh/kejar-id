@@ -65,7 +65,7 @@ class ChangePasswordController extends Controller
         return redirect()->back();
     }
 
-    public function skip()
+    public function skipInfo(Request $request)
     {
         if (request()->type === 'password') {
             $checkPhoto = session()->get('user.userable.photo');
