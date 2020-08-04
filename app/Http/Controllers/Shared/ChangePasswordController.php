@@ -30,7 +30,7 @@ class ChangePasswordController extends Controller
 
         //chek password sama dengan username
         if ($request->password_baru === session()->get('user.username')) {
-            Session::flash('message', 'Ubah password gagal!, password tidak boleh dengan username');
+            Session::flash('message', 'Ubah password gagal!, password tidak boleh sama dengan username');
 
             return redirect()->back();
         }
