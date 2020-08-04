@@ -17,7 +17,6 @@ class ToeicQuestionController extends Controller
 
     public function index($game, $stageId, $roundId, Request $request)
     {
-        $game = strtoupper($game);
         $roundApi = new RoundApi;
         $round = $roundApi->getDetail($roundId)['data'] ?? null;
         if ($round === null) {
