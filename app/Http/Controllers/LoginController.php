@@ -10,23 +10,22 @@ class LoginController extends Controller
     public function index(Request $request)
     {
         if ($request->session()->has('token')) {
-            $userApi = new UserApi;
-            $responseMe = $userApi->me();
+            $user = $request->session()->get('user', null);
 
-            if ($responseMe['data']['role'] === 'STUDENT') {
+            if ($user === null) {
+                return redirect('/login');
+            }
+
+            if ($user['role'] === 'STUDENT') {
                 return redirect('/student/games');
             }
 
-            if ($responseMe['data']['role'] === 'TEACHER') {
+            if ($user['role'] === 'TEACHER') {
                 return redirect('/teacher/games');
             }
 
-            if ($responseMe['data']['role'] === 'ADMIN') {
+            if ($user['role'] === 'ADMIN') {
                 return redirect('/admin/games');
-            }
-
-            if ($responseMe['error']) {
-                return redirect('/login');
             }
         }
 
@@ -44,11 +43,10 @@ class LoginController extends Controller
         $response = $userApi->login($data['username'], $data['password']);
 
         if (!$response['error']) {
-            session(['token' => $response['data']['token']]);
+            $request->session()->put('token', $response['data']['token']);
 
-            $userApiMe = new UserApi;
-            $responseMe = $userApiMe->me();
-
+            $userApi = new UserApi;
+            $responseMe = $userApi->me();
             $request->session()->put('user', $responseMe['data']);
 
             if ($responseMe['data']['role'] === 'STUDENT') {
@@ -70,6 +68,10 @@ class LoginController extends Controller
 
             if ($responseMe['data']['role'] === 'ADMIN') {
                 return redirect('/admin/games');
+            }
+
+            if ($responseMe['data']['role'] === 'TEACHER') {
+                return redirect('/teacher/games');
             }
         }
 

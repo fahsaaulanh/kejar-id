@@ -101,17 +101,24 @@ class StageController extends Controller
             'filter[game]' => strtoupper($game['uri']),
         ];
         $data = $stageApi->getResult($studentGroupId, $filter)['data'] ?? [];
-        $cn = count($data[0]['progress']);
+        $cn = $data[0]['progress'];
 
         //get data studentGroup
         $studentGroupApi = new StudentApi;
         $schoolId = $data[0]['school_id'];
         $dataStudentGroups = $studentGroupApi->index($schoolId, $batchId);
-
+        
         $responses = $this->myPaginate($data)
         ->withPath('/teacher/games/'.$linkGame.'/class/'.$batchId.'/'.$studentGroupId.'/stages');
 
-        return view('teacher/result/stage/index', compact('game', 'responses', 'cn', 'dataStudentGroups'));
+        return view('teacher/result/stage/index', compact(
+            'game',
+            'responses',
+            'cn',
+            'dataStudentGroups',
+            'studentGroupId',
+            'batchId',
+        ));
     }
 
     private function myPaginate($data, $perPage = 10, $page = null, $options = [])

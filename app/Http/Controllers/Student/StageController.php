@@ -12,6 +12,9 @@ class StageController extends Controller
     public function index($game)
     {
         $stagesApi = new StageApi;
+        $userApi = new UserApi;
+        $roundApi = new RoundApi;
+
         $filter = [
             'per_page' => 99,
         ];
@@ -19,7 +22,6 @@ class StageController extends Controller
 
         $modStages = [];
         foreach ($stages as $stage) {
-            $roundApi = new RoundApi;
             $filter = [
                 'filter[stage_id]' => $stage['id'],
                 'filter[status]' => 'PUBLISHED',
@@ -32,7 +34,6 @@ class StageController extends Controller
             $totalTaskCount = 0;
 
             foreach ($data as $round) {
-                $userApi = new UserApi;
                 $filter = [
                     'filter[taskable_id]' => $round['id'],
                     'filter[finished]' => 'true',

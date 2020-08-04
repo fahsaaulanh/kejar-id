@@ -28,8 +28,8 @@ class RoundController extends Controller
 
         $rounds = [];
         if ($data !== []) {
+            $userApi = new UserApi;
             foreach ($data as $key => $round) {
-                $userApi = new UserApi;
                 $filter = [
                     'filter[taskable_id]' => $round['id'],
                     'filter[finished]' => 'true',

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 // User Service
-use App\Services\User as UserApi;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -11,23 +10,22 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         if ($request->session()->has('token') === true) {
-            $userApi = new UserApi;
-            $responseMe = $userApi->me();
+            $user = $request->session()->get('user', null);
 
-            if ($responseMe['data']['role'] === 'STUDENT') {
+            if ($user === null) {
+                return redirect('/login');
+            }
+
+            if ($user['role'] === 'STUDENT') {
                 return redirect('/student/games');
             }
 
-            if ($responseMe['data']['role'] === 'TEACHER') {
-                return redirect('/teacher/games');
-            }
-
-            if ($responseMe['data']['role'] === 'ADMIN') {
+            if ($user['role'] === 'ADMIN') {
                 return redirect('/admin/games');
             }
 
-            if ($responseMe['error']) {
-                return redirect('/login');
+            if ($user['teacher'] === 'TEACHER') {
+                return redirect('/teacher/games');
             }
         }
 
@@ -45,37 +43,26 @@ class HomeController extends Controller
         return view('home.dashboard', $user);
     }
 
-    public function teacher()
+    public function admin(Request $request)
     {
-        $userApi = new UserApi;
-        $response = $userApi->me();
+        $user = $request->session()->get('user', null);
 
-        if ($response['error']) {
+        if ($user === null) {
             return redirect('/login');
         }
 
-        session(['user' => $response['data']]);
-
-        return view('teacher.games.index', $response['data']);
+        return view('admin.games.index', $user);
     }
 
-    public function admin()
+    public function teacher(Request $request)
     {
-        $userApi = new UserApi;
-        $response = $userApi->me();
+        $user = $request->session()->get('user', null);
 
-        if ($response['error']) {
+        if ($user === null) {
             return redirect('/login');
         }
 
-        session(['user' => $response['data']]);
-
-        return view('admin.games.index', $response['data']);
-    }
-
-    public function student()
-    {
-        echo 'Example Student';
+        return view('teacher.games.index', $user);
     }
 
     public function logout(Request $request)

@@ -10,10 +10,6 @@ class ChangeProfileController extends Controller
 {
     public function update(Request $req)
     {
-        // $img = Image::make($req->photo);
-        // $img->save('example.png', 20);
-        // $image = $img->encode('jpg', 0);
-        // $dataUrl = (string) $image->stream('data-url');
         $payload = [
             'photo' => $req->photo,
         ];
