@@ -23,20 +23,21 @@
 }
 
 .icon-description{
-    margin: 1rem auto;
-        .align-items-center{    
-            i.kejar-sudah-dikerjakan::before{
-                color: $green-2;
-            }
-            i.kejar-latihan-to-bold::before{
-                color: $deep-yellow;
-            }
-            i.kejar-belum-mengerjakan-2::before{
-                color: $red-2;
-            }
+    padding: 0.5rem 1.5rem;
+    
+    .align-items-center{    
+        i.kejar-sudah-dikerjakan::before{
+            color: $green-2;
         }
+        i.kejar-latihan-to-bold::before{
+            color: $deep-yellow;
+        }
+        i.kejar-belum-mengerjakan-2::before{
+            color: $red-2;
+        }
+    }
 
-        @media screen and (max-width: $mobile-breakpoint) {
-            display: none;
-        }
+    @media screen and (max-width: $mobile-breakpoint) {
+        display: none;
+    }
 }
