@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Game;
 use App\Services\Question as QuestionApi;
 use App\Services\Round as RoundApi;
 use App\Services\RoundQuestion;
@@ -16,7 +17,7 @@ class QuestionController extends Controller
 
     public function index($game, $stageId, $roundId, Request $request)
     {
-
+        $game = strtoupper($game);
         $roundApi = new RoundApi;
         $round = $roundApi->getDetail($roundId)['data'] ?? null;
         if ($round === null) {
@@ -45,7 +46,8 @@ class QuestionController extends Controller
             $roundQuestionsData[$i]['question'] = $question['data'];
         }
 
-        $game = $this->getGame($game);
+        $gameService = new Game;
+        $game = $gameService->parse($game);
 
         return view(
             'admin.questions.index',
@@ -76,6 +78,9 @@ class QuestionController extends Controller
 
             $questionApi = new QuestionApi;
             $roundQuestionApi = new RoundQuestion;
+            $gameService = new Game;
+            $gameParsed = $gameService->parse($game);
+
             for ($i=4; $i < count($data[0]); $i++) {
                 $sheetIndex = 0;
                 $row = $i;
@@ -88,7 +93,7 @@ class QuestionController extends Controller
                     'owner' => 'KEJAR',
                     'subject_id'=> null,
                     'topic_id'=> null,
-                    'bank'=> $this->gameDefault($game),
+                    'bank'=> $gameParsed['short'],
                     'type'=> 'MCQSA',
                     'question'=> (string)$data[$sheetIndex][$row][$questionIndex],
                     'choices'=> null,
@@ -133,6 +138,8 @@ class QuestionController extends Controller
         try {
             $questionApi = new QuestionApi;
             $roundQuestionApi = new RoundQuestion;
+            $gameService = new Game;
+            $gameParsed = $gameService->parse($game);
 
             foreach ($request->input('question') as $question) {
                 if ($question['question'] !== null && $question['answer'] !== null) {
@@ -140,7 +147,7 @@ class QuestionController extends Controller
                         'owner' => 'KEJAR',
                         'subject_id'=> null,
                         'topic_id'=> null,
-                        'bank'=> $this->gameDefault($game),
+                        'bank'=> $gameParsed['short'],
                         'type'=> 'MCQSA',
                         'question'=> (string)$question['question'],
                         'choices'=> null,
@@ -230,42 +237,5 @@ class QuestionController extends Controller
         }
 
         return redirect()->back()->with('message', 'Berhasil mengubah soal!');
-    }
-
-    private function getGame($game)
-    {
-        if ($game === 'OBR') {
-            $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'OBR'];
-        } elseif ($game === 'VOCABULARY') {
-            $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'VOCABULARY'];
-        } elseif ($game === 'KATABAKU') {
-            $game = ['short' => 'Kata Baku', 'title' => 'KATA BAKU', 'uri' => 'KATABAKU'];
-        } else {
-            abort(404);
-        }
-
-        return $game;
-    }
-
-    private function gameDefault($game)
-    {
-        switch ($game) {
-            case 'OBR':
-                return 'OBR';
-
-                break;
-            case 'KATABAKU':
-                return 'Kata Baku';
-
-                break;
-            case 'VOCABULARY':
-                return 'Vocabulary';
-
-                break;
-            default:
-                return $game;
-
-                break;
-        }
     }
 }

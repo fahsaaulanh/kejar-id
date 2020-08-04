@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Services\Game;
 use App\Services\Round as RoundApi;
 use App\Services\Stage as StageApi;
 use App\Services\User as UserApi;
@@ -14,6 +15,7 @@ class StageController extends Controller
         $stagesApi = new StageApi;
         $userApi = new UserApi;
         $roundApi = new RoundApi;
+        $gameService = new Game;
 
         $filter = [
             'per_page' => 99,
@@ -62,37 +64,9 @@ class StageController extends Controller
             }
         }
 
+        $game = $gameService->parse($game);
         $stages = $modStages;
 
-        $game = $this->getGame($game);
-
         return view('student.stages.index', compact('game', 'stages'));
-    }
-
-    private function getGame($game)
-    {
-        if ($game === 'obr') {
-            $game = [
-                'short' => 'OBR',
-                'title' => 'Operasi Bilangan Rill',
-                'uri' => 'obr',
-            ];
-        } elseif ($game === 'vocabulary') {
-            $game = [
-                'short' => 'Vocabulary',
-                'title' => 'Vocabulary',
-                'uri' => 'vocabulary',
-            ];
-        } elseif ($game === 'katabaku') {
-            $game = [
-                'short' => 'Kata Baku',
-                'title' => 'Kata Baku',
-                'uri' => 'katabaku',
-            ];
-        } else {
-            abort(404);
-        }
-
-        return $game;
     }
 }

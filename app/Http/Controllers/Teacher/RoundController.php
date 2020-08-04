@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Services\Batch as BatchApi;
+use App\Services\Game;
 use App\Services\Report as ReportApi;
 use App\Services\Round as RondeApi;
 use App\Services\Stage as StageApi;
@@ -21,16 +22,17 @@ class RoundController extends Controller
         $students = $reportRoundApi->roundReport($studentGroupId, $stageId, $request->page ?? 1);
 
         $stageApi = new StageApi;
-        $game = strtoupper($game);
         $stageFilter = [
             'per_page' => 99,
         ];
-        $stageDetailResponse = $stageApi->getDetail($game, $stageId);
+
+        $stageDetailResponse = $stageApi->getDetail(strtoupper($game), $stageId);
         $stageAllResponse = $stageApi->getAll($game, $stageFilter);
         $stage = $stageDetailResponse['data'] ?? [];
-        $stageData = $stageAllResponse['data'] ?? [];
-        $game = strtolower($game);
-        $game = $this->getGame($game);
+        $stageData = $stageAllResponse['data'] ??
+
+        $gameService = new Game;
+        $game = $gameService->parse($game);
 
         $schoolId = session('user')['userable']['school_id'];
         $entryYear = Carbon::now()->year . '/' . Carbon::now()->add(1, 'year')->year;
@@ -121,7 +123,7 @@ class RoundController extends Controller
         $current = $stageData[$index] ?? null;
         $after = $stageData[$index + 1] ?? null;
         $pages = [$before, $current, $after];
-        
+
         return view('teacher/rounds/index', compact(
             'game',
             'batchId',
@@ -158,39 +160,13 @@ class RoundController extends Controller
     {
         $batchId;
         $studentGroupId;
-        
-        $game = $this->getGame($game);
+        $gameService = new Game;
+        $game = $gameService->parse($game);
         $stageApi = new StageApi;
-        $stage = $stageApi->getDetail($game['uri'], $stageId)['data'] ?? [];
+        $stage = $stageApi->getDetail(strtoupper($game['uri']), $stageId)['data'] ?? [];
         $roundApi = new RondeApi;
         $round = $roundApi->getDetail($roundId)['data'] ?? [];
-        
+
         return view('teacher/rounds/_detail_round', compact('stage', 'round', 'game'));
-    }
-
-    private function getGame($game)
-    {
-        $game = strtolower($game);
-
-        if ($game === 'obr') {
-            $game = [];
-            $game['uri'] = 'obr';
-            $game['short'] = 'OBR';
-            $game['title'] = 'Operasi Bilangan Rill';
-        } elseif ($game === 'vocabulary') {
-            $game = [];
-            $game['uri'] = 'vocabulary';
-            $game['short'] = 'Vocabulary';
-            $game['title'] = 'VOCABULARY';
-        } elseif ($game === 'katabaku') {
-            $game = [];
-            $game['uri'] = 'katabaku';
-            $game['short'] = 'Kata Baku';
-            $game['title'] = 'KATA BAKU';
-        } else {
-            abort(404);
-        }
-
-        return $game;
     }
 }
