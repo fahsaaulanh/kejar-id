@@ -51,3 +51,58 @@
         }
     }
 }
+
+#navbarSupportedContent{
+    .profile-pict{
+        width: 3.2rem;
+        height: 3.2rem;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .nav-item{
+        .nav-link{
+            line-height: 2;
+
+            i{
+                font-size: 2rem;
+                top: 0.35rem;
+            }
+        }
+    }
+    .dropdown-menu{
+        border: 0.2rem solid $grey-13 !important;
+        border-radius: 0.4rem;
+        color: $grey-2;
+        min-width: 25.5rem;
+        z-index: 1 !important;
+
+        a{
+            font-size: 1.5rem;
+            line-height: 3rem;
+            i{
+                top: 0.35rem;
+                margin-right: 0.4rem;
+                &:before{
+                    font-size: 2rem !important;
+                }
+            }
+
+            &:hover{
+                color: $purple;
+                background: $blue-6;
+                i:before{
+                    color: $purple;
+                }
+            }
+        }
+    }
+
+    .nav-link{
+        i:before{
+            color: $white;
+        }
+    }
+    .dropdown-toggle::after{
+        display: none;
+    }
+}
