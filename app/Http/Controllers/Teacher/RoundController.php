@@ -123,7 +123,7 @@ class RoundController extends Controller
         $current = $stageData[$index] ?? null;
         $after = $stageData[$index + 1] ?? null;
         $pages = [$before, $current, $after];
-
+        
         return view('teacher/rounds/index', compact(
             'game',
             'batchId',
