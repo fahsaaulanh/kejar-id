@@ -27,7 +27,7 @@
                     <span>Babak {{ $stage['order'] }} : </span> <span>{{ $stage['title'] }}</span>
                 </a>
                 <!-- <div class="hover-only"> -->
-                    <div class="stage-order-buttons">
+                    <div class="stage-order-buttons done-status">
                         @if($stage['status'] == 'DONE')
                         <button class="btn-icon">
                             <i class="kejar-sudah-dikerjakan"></i>
