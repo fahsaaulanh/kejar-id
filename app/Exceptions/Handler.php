@@ -48,6 +48,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception->getStatusCode() === 408) {
+            return redirect('/login')->with('message', 'Waktu koneksi habis, silahkan coba lagi.');
+        }
+
         return parent::render($request, $exception);
     }
 }

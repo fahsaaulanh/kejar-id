@@ -50,7 +50,7 @@
 
         @include('shared._update_avatar')
         @include('shared._update_password')
-        
+
         <!-- Modal -->
         <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logout" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -128,7 +128,7 @@
                     });
                 }, 200);
             } else {
-                $('input[name=photo]').click();    
+                $('input[name=photo]').click();
             }
         });
 
