@@ -11,6 +11,7 @@ class OnBoardingController extends Controller
 {
     public function index($game, $stageId, $roundId)
     {
+        $game = strtoupper($game);
         $stageId;
         $roundApi = new RoundApi;
         $round = $roundApi->getDetail($roundId)['data'] ?? [];

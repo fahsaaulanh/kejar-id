@@ -215,7 +215,7 @@ class RoundController extends Controller
 
     public function uploadQuestionFile($game, $stageId, Request $req)
     {
-        $game;
+        $game = strtoupper($game);
         $stageId;
 
         $file = $req->file('question_file');
@@ -254,9 +254,9 @@ class RoundController extends Controller
                     'topic_id'=> null,
                     'bank'=> $gameParsed['short'],
                     'type'=> 'MCQSA',
-                    'question'=> (string)$data[$sheetIndex][$row][$questionIndex],
+                    'question'=> (string)strtolower($data[$sheetIndex][$row][$questionIndex]),
                     'choices'=> null,
-                    'answer'=> (string)$data[$sheetIndex][$row][$answerIndex],
+                    'answer'=> (string)strtolower($data[$sheetIndex][$row][$answerIndex]),
                     'level'=> 'LEVEL_1',
                     'status' => '2',
                     'created_by'=> session('user.id'),

@@ -55,7 +55,7 @@
                     <div class="modal-footer justify-content-end">
                         <div>
                             <a href="#" class="btn btn-cancel" data-dismiss="modal">Batal</a>
-                            <a href="{{ url('/logout') }}" class="btn btn-primary btn-logout">Log Out</a>
+                            <a href="{{ url('/logout') }}" class="btn btn-danger btn-logout">Keluar</a>
                         </div>
                     </div>
                 </div>

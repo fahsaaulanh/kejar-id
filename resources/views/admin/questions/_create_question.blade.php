@@ -13,8 +13,8 @@
                     <div class="table-responsive-md">
                         <table class="table table-borderless table-form">
                             <thead>
-                                <th>Soal</th>
-                                <th>Jawaban</th>
+                                <th class="w-50">Soal</th>
+                                <th class="w-50">Jawaban</th>
                             </thead>
                             <tbody>
                                 <tr>

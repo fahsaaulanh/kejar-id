@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Services\Game;
 use App\Services\Round as RoundApi;
 use App\Services\Stage as StageApi;
 use App\Services\User as UserApi;
@@ -11,9 +12,11 @@ class RoundController extends Controller
 {
     public function index($game, $stageId)
     {
+        $game = strtoupper($game);
         $stageApi = new StageApi;
-        $response = $stageApi->getDetail(strtoupper($game), $stageId);
+        $response = $stageApi->getDetail($game, $stageId);
         $stage = $response['data'];
+        $gameService = new Game;
 
         $roundApi = new RoundApi;
         $filter = [
@@ -68,15 +71,7 @@ class RoundController extends Controller
             $rounds = '';
         }
 
-        if ($game === 'obr') {
-            $game = ['short' => 'OBR', 'title' => 'Operasi Bilangan Rill', 'uri' => 'obr'];
-        } elseif ($game === 'vocabulary') {
-            $game = ['short' => 'Vocabulary', 'title' => 'VOCABULARY', 'uri' => 'vocabulary'];
-        } elseif ($game === 'katabaku') {
-            $game = ['short' => 'Kata Baku', 'title' => 'KATA BAKU', 'uri' => 'katabaku'];
-        } else {
-            abort(404);
-        }
+        $game = $gameService->parse($game);
 
         return view('student.rounds.index', compact('game', 'stage', 'rounds'));
     }

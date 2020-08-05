@@ -12,6 +12,7 @@ class StageController extends Controller
 {
     public function index($game)
     {
+        $game = strtoupper($game);
         $stagesApi = new StageApi;
         $userApi = new UserApi;
         $roundApi = new RoundApi;
@@ -20,7 +21,7 @@ class StageController extends Controller
         $filter = [
             'per_page' => 99,
         ];
-        $stages = $stagesApi->getAll(strtoupper($game), $filter)['data'] ?? [];
+        $stages = $stagesApi->getAll($game, $filter)['data'] ?? [];
 
         $modStages = [];
         foreach ($stages as $stage) {

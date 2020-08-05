@@ -36,7 +36,8 @@ class MatrikulasiExamController extends Controller
     {
         $taskApi = new TaskApi;
 
-        $task = $taskApi->answer($request->task_id, $request->id, $request->answer ?? 'empty')['data'] ?? [];
+        $task = $taskApi
+                ->answer($request->task_id, $request->id, strtolower($request->answer) ?? 'empty')['data'] ?? [];
         $status = $task['is_correct'] ?? false;
         $answer = $task['correct_answer'] ?? '';
         if ($request->repeatance === 'true') {

@@ -81,7 +81,7 @@
         });
     }
 
-    $('.kejar-ink').click(function (e) { 
+    $('.kejar-link').click(function (e) { 
         e.preventDefault();
         textToClipboard($(this).data('id'));
     });
