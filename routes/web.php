@@ -108,6 +108,8 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('student')->group(function () {
 
+            Route::patch('/change-password', 'Shared\ChangePasswordController@update');
+            Route::patch('/change-profile', 'Shared\ChangeProfileController@update');
             Route::get('/result', 'Student\ResultController@index'); //TODO EXAM
 
             Route::prefix('/games')->group(function () {
