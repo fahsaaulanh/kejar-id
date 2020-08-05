@@ -2,7 +2,89 @@
 
 @section('title', 'Permainan')
 
+@section('css')
+  <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.min.css')}}">
+@endsection
+
+@if(Session::get('PaswordMustBeChanged') || Session::get('changePhotoOnBoarding'))
+@section('header')
+@endsection
+@endif
+
 @section('content')
+@if(Session::get('PasswordMustBeChanged'))
+<!-- form ganti password -->
+<div class="bg-lego">
+    <div class="container-center">
+        <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
+            @csrf
+            @method('PATCH')
+            <h3>Ganti Password
+                <a href="{{ url('/teacher/skip-change-info?type=password') }}" class="close">
+                    <i class="kejar kejar-close"></i>
+                </a>
+            </h3>
+            
+            <div>
+                <p><strong>Password belum diganti, ganti dulu agar lebih aman.</strong></p>
+                <p>Password harus terdiri dari minimal 6 karakter, kombinasi huruf dan angka.</p>
+                <div class="form-group">
+                    <label for="passwordBaru">Password Baru</label>
+                    <div class="input-group input-group-password @error('password_baru') is-invalid @enderror">
+                        <input type="password" name="password_baru" id="passwordBaru" class="form-control" placeholder="Buat password" value="{{ old('password_baru') }}">
+                        <div class="input-group-append">
+                            <button tabindex="-1" class="btn btn-outline-light" type="button"><i class="kejar-hide-password"></i></button>
+                        </div>
+                        @if($errors->has('password_baru'))
+                        <div class="invalid-feedback text-right">
+                            {{ $errors->first('password_baru') }}
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="konfirmasiPassword">Konfirmasi Password</label>
+                    <div class="input-group input-group-password @error('konfirmasi_password') is-invalid @enderror">
+                        <input type="password" name="konfirmasi_password" id="konfirmasiPassword" class="form-control" placeholder="Konfirmasi password baru" value="{{ old('konfirmasi_password') }}">
+                        <div class="input-group-append">
+                            <button tabindex="-1" class="btn btn-outline-light" type="button"><i class="kejar-hide-password"></i></button>
+                        </div>
+                        @if($errors->has('konfirmasi_password'))
+                        <div class="invalid-feedback text-right">
+                            {{ $errors->first('konfirmasi_password') }}
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">Simpan</button>
+        </form>
+    </div>
+</div>
+<div class="bg-lego-mobile"></div>
+@elseif(Session::get('changePhotoOnBoarding'))
+<!-- form ganti foto -->
+<div class="bg-lego">
+    <div class="container-center">
+        <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
+            @csrf
+            @method('PATCH')
+            <h3>Pasang Foto Profil <a href="{{ url('/teacher/skip-change-info?type=photo') }}" class="close" data-dismiss="modal" aria-label="Close">
+                <i class="kejar kejar-close"></i>
+            </a></h3>
+            
+            <div class="mt-5">
+                <p>Pasang foto profil untuk memudahkan siswa dan sejawat guru mengenali profil Bapak/Ibu.</p>
+                <div class="form-group">
+                    <input type="file" id="drop-photo" onchange="changeDrop()" name="excel_file" class="dropify" data-allowed-file-extensions="jpg jpeg png"/>
+                </div>
+            </div>
+            <a href="{{ url('/teacher/skip-change-info?type=photo') }}" class="text-muted text-decoration-none float-right mt-5">Lewati ></a>
+        </form>
+    </div>
+</div>
+<div class="bg-lego-mobile"></div>
+@else
 <div class="bg-blue-tp">
     <div class="container-fluid">
         <div class="row dashboard">
@@ -55,4 +137,46 @@
         </div>
     </div>
 </div>
+@endif
 @endsection
+
+@push('script')
+<script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
+<script type="text/javascript">
+$('.dropify').dropify({
+    messages: {
+        'default': 'Pilih Foto',
+        'replace': 'Ubah Foto',
+        'remove':  'Hapus Foto',
+        'error':   'Error'
+    }
+});
+
+function changeDrop() {
+    $("#updateProfile").modal('toggle');
+
+
+    setInterval(function(){
+        var base64Img = $(".dropify-render").html()
+                                        .toString()
+                                        .replace('<img src="', '')
+                                        .replace('">', '');
+
+        $('.profile-pict-crop').attr('src',base64Img);
+        
+        $('.profile-pict-crop').rcrop({
+            minSize : [200,200],
+            maxSize : [2000,2000],
+            preserveAspectRatio : true,
+            grid : true
+        });
+    }, 200);
+}
+</script>
+
+@if(Session::get('PasswordMustBeChanged') || Session::get('changePhotoOnBoarding'))
+    <script>
+        $('#updatePassword').remove();
+    </script>
+@endif
+@endpush

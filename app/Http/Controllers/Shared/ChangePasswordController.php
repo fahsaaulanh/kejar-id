@@ -27,11 +27,57 @@ class ChangePasswordController extends Controller
         $payload = [
             'password' => $request->password_baru,
         ];
+
+        //chek password sama dengan username
+        if ($request->password_baru === session()->get('user.username')) {
+            return redirect()->back()->withErrors(
+                ['password_baru' => 'Password baru tidak boleh sama dengan username.'],
+            )->withInput(['password_baru' => $request->password_baru]);
+        }
         
         $meApi = new MeApi;
-        $meApi->update($payload);
+        $result = $meApi->update($payload);
+        
+        if ($result['status'] === 200) {
+            //update session password sudah diperbarui
+            $request->session()->put('PasswordMustBeChanged', false);
+            
+            $checkPhoto = session()->get('user.userable.photo');
 
-        Session::flash('message', 'Ubah password berhasil!');
+            if (!$checkPhoto) {
+                Session::put('changePhotoOnBoarding', true);
+            }
+    
+            Session::flash('message', 'Ubah password berhasil!');
+        } else {
+            $error = '';
+            foreach ($result['errors'] as $key => $v) {
+                if ($key !== 0) {
+                    $error .= ',';
+                }
+
+                $error .= $v['message'];
+            }
+
+            Session::flash('message', 'Ubah password gagal! '.$error);
+        }
+
+        return redirect()->back();
+    }
+
+    public function skip()
+    {
+        if (request()->type === 'password') {
+            $checkPhoto = session()->get('user.userable.photo');
+            
+            if (!$checkPhoto) {
+                session(['changePhotoOnBoarding' => true]);
+            }
+
+            request()->session()->put('PasswordMustBeChanged', false);
+        } elseif (request()->type === 'photo') {
+            session(['changePhotoOnBoarding' => false]);
+        }
 
         return redirect()->back();
     }

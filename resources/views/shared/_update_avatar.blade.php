@@ -2,7 +2,7 @@
 <div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="{{ url('student/change-profile') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ url( strtolower(session('user.role')) . '/change-profile') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <div class="modal-header">
@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="avatar-group">
-                                @if (session('user.role') === 'STUDENT')
+                                @if (session('user.role') === 'STUDENT' || 'TEACHER')
                                     @if (!is_null(session('user.userable.photo')))
                                     <img src="{{ session('user.userable.photo') }}" data-pict="notNull" class="profile-pict" alt="">
                                     @else
@@ -37,6 +37,7 @@
                         <div class="col-12">
                             <h3>{{ session('user.userable.name') }}</h3>
                             <table class="profile-table">
+                                @if (session('user.role') == 'STUDENT')
                                 <tr>
                                     <td>NIS</td>
                                     <td>{{ session('user.userable.nis') }}</td>
@@ -53,6 +54,16 @@
                                     <td>Sekolah</td>
                                     <td>{{ session('user.userable.gender') }}</td>
                                 </tr>
+                                @elseif(session('user.role') == 'TEACHER')
+                                <tr>
+                                    <td>NIP</td>
+                                    <td>{{ session('user.userable.nip') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Sekolah</td>
+                                    <td>{{ session('user.userable.gender') }}</td>
+                                </tr>
+                                @endif
                             </table>
                         </div>
                     </div>
