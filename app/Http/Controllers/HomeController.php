@@ -24,7 +24,7 @@ class HomeController extends Controller
                 return redirect('/admin/games');
             }
 
-            if ($user['teacher'] === 'TEACHER') {
+            if ($user['role'] === 'TEACHER') {
                 return redirect('/teacher/games');
             }
         }
