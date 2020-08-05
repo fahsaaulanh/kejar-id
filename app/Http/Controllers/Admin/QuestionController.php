@@ -57,7 +57,7 @@ class QuestionController extends Controller
 
     public function upload($game, $stageId, $roundId, Request $request)
     {
-        $game;
+        $game = strtoupper($game);
         $stageId;
         $roundId;
 
@@ -95,9 +95,9 @@ class QuestionController extends Controller
                     'topic_id'=> null,
                     'bank'=> $gameParsed['short'],
                     'type'=> 'MCQSA',
-                    'question'=> (string)$data[$sheetIndex][$row][$questionIndex],
+                    'question'=> (string)strtolower($data[$sheetIndex][$row][$questionIndex]),
                     'choices'=> null,
-                    'answer'=> (string)$data[$sheetIndex][$row][$answerIndex],
+                    'answer'=> (string)strtolower($data[$sheetIndex][$row][$answerIndex]),
                     'level'=> 'LEVEL_1',
                     'status' => '1',
                     'created_by'=> session('user.id'),
@@ -131,7 +131,7 @@ class QuestionController extends Controller
 
     public function create($game, $stageId, $roundId, Request $request)
     {
-        $game;
+        $game = strtoupper($game);
         $stageId;
         $roundId;
 
@@ -149,9 +149,9 @@ class QuestionController extends Controller
                         'topic_id'=> null,
                         'bank'=> $gameParsed['short'],
                         'type'=> 'MCQSA',
-                        'question'=> (string)$question['question'],
+                        'question'=> (string)strtolower($question['question']),
                         'choices'=> null,
-                        'answer'=> (string)$question['answer'],
+                        'answer'=> (string)strtolower($question['answer']),
                         'level'=> 'LEVEL_1',
                         'status' => '2',
                         'created_by'=> session('user.id'),
@@ -225,8 +225,8 @@ class QuestionController extends Controller
 
 
             $payload = [
-                'question'=> (string)$request->question,
-                'answer'=> (string)$request->answer,
+                'question'=> (string)strtolower($request->question),
+                'answer'=> (string)strtolower($request->answer),
                 'tags' => ['answer', 'question'],
                 'created_by' => session('user.id'),
             ];

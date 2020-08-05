@@ -10,7 +10,7 @@
         $('#editDescription').modal('show');
     });
 
-    $(document).on('click', '.kejar-ink', function(e) {
+    $(document).on('click', '.kejar-link', function(e) {
         e.preventDefault();
         var thisElement = $(this);
         var roundId = $(this).attr('data-id');
