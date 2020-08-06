@@ -11,7 +11,7 @@
             </a>
             <div class="btn-page-management">
                 @if(!is_null($pages[0]))
-                <a href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $thisClass[1]['id'] .'/stages/'. $pages[0]['id']) . '/rounds' }}" class="active">
+                <a href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $thisClass[1]['id'] .'/stages/'. $pages[0]['stage_id']) . '/rounds' }}" class="active">
                 @else
                 <a href="#">
                 @endif
@@ -19,7 +19,7 @@
                     Sebelumnya
                 </a>
                 @if(!is_null($pages[2]))
-                <a href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $thisClass[1]['id'] .'/stages/'. $pages[2]['id']) . '/rounds' }}" class="active">
+                <a href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $thisClass[1]['id'] .'/stages/'. $pages[2]['stage_id']) . '/rounds' }}" class="active">
                 @else
                 <a href="#">
                 @endif
@@ -59,7 +59,7 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="classDropdown">
                     @foreach($classGroup as $class)
-                    <a class="dropdown-item" href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $class['class_id'] .'/stages/'. $pages[1]['id'] . '/rounds') }}">{{ $class['class_name'] }}</a>
+                    <a class="dropdown-item" href="{{ url('/teacher/games/'. $game['uri'] .'/class/'.$batchId.'/'. $class['class_id'] .'/stages/'. $pages[1]['stage_id'] . '/rounds') }}">{{ $class['class_name'] }}</a>
                     @endforeach
                 </div>
             </div>
