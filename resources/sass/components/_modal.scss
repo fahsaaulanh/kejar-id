@@ -57,30 +57,20 @@
     }
 
     &#detailResultModal {
-        top: initial !important;
-        bottom: 0 !important;
-    }
-
-    .modal-dialog{
-        max-height: 50.4rem !important;
-        height: auto !important;
-        width: 100% !important;
-        position: absolute !important;
-        right: 0 !important;
-        left: 0 !important;
-        bottom: 0 !important;
-
         .modal-dialog{
+            top: initial !important;
+            bottom: 0 !important;
             max-height: 50.4rem !important;
             height: auto !important;
             width: 100% !important;
             position: absolute !important;
             right: 0 !important;
             left: 0 !important;
-            bottom: 0 !important;
-            margin: 0 !important;
         }
-    
+    }
+
+    .modal-dialog{
+        
         .modal-content{
             border: 0 !important;
             border-radius: 0 !important;
@@ -157,9 +147,6 @@
     
                             .list-item-text{
                                 margin-left: 1.1rem !important;
-                                overflow: hidden !important;
-                                white-space: nowrap !important;
-                                text-overflow: ellipsis !important;
     
                                 h6{
                                     font-weight: bold;
