@@ -112,7 +112,6 @@
     </body>
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}"></script>
-    <script src="https://www.jqueryscript.net/demo/Responsive-Mobile-friendly-Image-Cropper-With-jQuery-rcrop/dist/rcrop.min.js"></script>
 
     @stack('script')
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script>

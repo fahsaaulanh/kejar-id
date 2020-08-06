@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Shared;
 use App\Http\Controllers\Controller;
 use App\Services\Me as MeApi;
 use Illuminate\Http\Request;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ChangeProfileController extends Controller
 {
     public function update(Request $req)
     {
+
+        dd(session()->all(), $req->all());
+
         if (session()->get('changePhotoOnBoarding') === true && $req->photo === null) {
             session()->put('changePhotoOnBoarding', false);
 
