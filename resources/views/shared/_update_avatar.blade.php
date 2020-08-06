@@ -28,9 +28,9 @@
                             </div>
                             @if (session('user.role') === 'STUDENT')
                                 @if (!is_null(session('user.userable.photo')))
-                                <input type="hidden" name="photo" value="{{ session('user.userable.photo') }}">
+                                <input type="text" name="photo" value="{{ session('user.userable.photo') }}" hidden>
                                 @else
-                                <input type="file" name="photo" hidden>
+                                <input type="text" name="photo" hidden>
                                 @endif
                             @endif
                         </div>
