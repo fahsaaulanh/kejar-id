@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
 class Service
 {
     protected $token;
-    private $timeout = 10;
+    private $timeout = 15;
 
     public function __construct()
     {
@@ -17,27 +18,47 @@ class Service
 
     public function get($url, $queryParams = [])
     {
-        return Http::withToken($this->token)->timeout($this->timeout)->get(env('API_HOST').$url, $queryParams);
+        try {
+            return Http::withToken($this->token)->timeout($this->timeout)->get(env('API_HOST').$url, $queryParams);
+        } catch (Exception $error) {
+            abort(408, 'Connection Timeout.');
+        }
     }
 
     public function post($url, $data = [])
     {
-        return Http::withToken($this->token)->timeout($this->timeout)->post(env('API_HOST').$url, $data);
+        try {
+            return Http::withToken($this->token)->timeout($this->timeout)->post(env('API_HOST').$url, $data);
+        } catch (Exception $error) {
+            abort(408, 'Connection Timeout.');
+        }
     }
 
     public function put($url, $data = [])
     {
-        return Http::withToken($this->token)->timeout($this->timeout)->put(env('API_HOST').$url, $data);
+        try {
+            return Http::withToken($this->token)->timeout($this->timeout)->put(env('API_HOST').$url, $data);
+        } catch (Exception $error) {
+            abort(408, 'Connection Timeout.');
+        }
     }
 
     public function patch($url, $data = [])
     {
-        return Http::withToken($this->token)->timeout($this->timeout)->patch(env('API_HOST').$url, $data);
+        try {
+            return Http::withToken($this->token)->timeout($this->timeout)->patch(env('API_HOST').$url, $data);
+        } catch (Exception $error) {
+            abort(408, 'Connection Timeout.');
+        }
     }
 
     public function delete($url, $data = [])
     {
-        return Http::withToken($this->token)->timeout($this->timeout)->delete(env('API_HOST').$url, $data);
+        try {
+            return Http::withToken($this->token)->timeout($this->timeout)->delete(env('API_HOST').$url, $data);
+        } catch (Exception $error) {
+            abort(408, 'Connection Timeout.');
+        }
     }
 
     public function showResponse(Response $response)

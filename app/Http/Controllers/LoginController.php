@@ -11,21 +11,22 @@ class LoginController extends Controller
     {
         if ($request->session()->has('token')) {
             $user = $request->session()->get('user', null);
+            $message = $request->session()->get('message', null);
 
             if ($user === null) {
                 return redirect('/login');
             }
 
             if ($user['role'] === 'STUDENT') {
-                return redirect('/student/games');
+                return redirect('/student/games')->with('message', $message);
             }
 
             if ($user['role'] === 'TEACHER') {
-                return redirect('/teacher/games');
+                return redirect('/teacher/games')->with('message', $message);
             }
 
             if ($user['role'] === 'ADMIN') {
-                return redirect('/admin/games');
+                return redirect('/admin/games')->with('message', $message);
             }
         }
 
