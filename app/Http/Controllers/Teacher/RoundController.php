@@ -18,19 +18,16 @@ class RoundController extends Controller
     public function index(Request $request, $game, $batchId, $studentGroupId, $stageId)
     {
         $batchId;
-        $game = strtoupper($game);
-        $reportRoundApi = new ReportApi;
-        $students = $reportRoundApi->roundReport($studentGroupId, $stageId, $request->page ?? 1);
-
-        $stageApi = new StageApi;
-        $stageFilter = [
-            'per_page' => 99,
+        $reportApi = new ReportApi;
+        $students = $reportApi->roundReport($studentGroupId, $stageId, $request->page ?? 1);
+        $gameFilter = [
+            'filter[game]' => strtoupper($game),
         ];
-
-        $stageDetailResponse = $stageApi->getDetail($game, $stageId);
-        $stageAllResponse = $stageApi->getAll($game, $stageFilter);
+        $stageData = $reportApi->stageReport($studentGroupId, $gameFilter)['data'][0]['progress'];
+        
+        $stageApi = new StageApi;
+        $stageDetailResponse = $stageApi->getDetail(strtoupper($game), $stageId);
         $stage = $stageDetailResponse['data'] ?? [];
-        $stageData = $stageAllResponse['data'] ?? [];
 
         $gameService = new Game;
         $game = $gameService->parse($game);
@@ -108,7 +105,7 @@ class RoundController extends Controller
             }
 
             foreach ($stageData as $key => $value) {
-                if ($value['id'] === $stage['id']) {
+                if ($value['stage_id'] === $stage['id']) {
                     $index = $key;
 
                     break;
