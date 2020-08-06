@@ -77,7 +77,7 @@
                         <tbody>
                             @foreach ($responses as $item)
                             <tr class="result-icon remove-inherit">
-                                <td class="td-name" data-url="{{ url('/teacher/games/'.$game['uri'].'/class/'.$batchId.'/'.$studentGroupId.'/stages/'.$item['id'].'/detail') }}" data-game="{{ $game['uri'] }}">
+                                <td class="td-name" data-url="{{ secure_url('/teacher/games/'.$game['uri'].'/class/'.$batchId.'/'.$studentGroupId.'/stages/'.$item['id'].'/detail') }}" data-game="{{ $game['uri'] }}">
                                     {{ $item['name'] }}
                                     @php
                                     $countActivity = $game['uri'] === 'obr' ? $item['progress'][0]['done'] : $item['progress'][0]['total_anwers'];
@@ -109,7 +109,7 @@
                     {{ $responses->render() }}
                 </div>
             </div>
-        </div>    
+        </div>
     </div>
 @include('teacher.result.stage._detail_student')
 @endsection
