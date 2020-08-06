@@ -24,7 +24,7 @@ class RoundController extends Controller
             'filter[game]' => strtoupper($game),
         ];
         $stageData = $reportApi->stageReport($studentGroupId, $gameFilter)['data'][0]['progress'];
-        
+
         $stageApi = new StageApi;
         $stageDetailResponse = $stageApi->getDetail(strtoupper($game), $stageId);
         $stage = $stageDetailResponse['data'] ?? [];
@@ -44,7 +44,7 @@ class RoundController extends Controller
         $studentGroupApi = new StudentApi;
         $classResponse = $studentGroupApi->index($schoolId, $batchId);
         $classData = $classResponse['data'] ?? [];
-        $classGrade = ['X', 'XI', 'XII'];
+        $classGrade = ['10', '11', '12'];
         $classGroup = [];
         $classList = [];
         $classThis = [];
@@ -53,17 +53,19 @@ class RoundController extends Controller
         $index = 0;
 
         if (count($classData) !== 0) {
+            $thisYear = date('Y');
             foreach ($classData as $data) {
-                if (stripos($data['name'], $classGrade[2]) !== false) {
+                $thisClassGrade = '1'.($thisYear - substr($data['school_year'], 0, 4));
+                if ($thisClassGrade === $classGrade[0]) {
                     $classList[$number] = [
                         'class_id' => $data['id'],
                         'class_batch_id' => $data['batch_id'],
-                        'class_grade' => $classGrade[2],
+                        'class_grade' => $classGrade[0],
                         'class_name' => $data['name'],
                         'class_school_year' => $data['school_year'],
                     ];
                     $number += 1;
-                } elseif (stripos($data['name'], $classGrade[1]) !== false) {
+                } elseif ($thisClassGrade === $classGrade[1]) {
                     $classList[$number] = [
                         'class_id' => $data['id'],
                         'class_batch_id' => $data['batch_id'],
@@ -76,7 +78,7 @@ class RoundController extends Controller
                     $classList[$number] = [
                         'class_id' => $data['id'],
                         'class_batch_id' => $data['batch_id'],
-                        'class_grade' => $classGrade[0],
+                        'class_grade' => $classGrade[2],
                         'class_name' => $data['name'],
                         'class_school_year' => $data['school_year'],
                     ];
@@ -97,7 +99,11 @@ class RoundController extends Controller
                 }
             }
 
-            $thisGrade = substr(explode(' ', $classThis['name'])[1], 0, strlen(explode(' ', $classThis['name'])[1])-2);
+            $thisGrade ='1'.($thisYear - substr($classThis['school_year'], 0, 4));
+            if ($thisYear < substr($classThis['school_year'], 0, 4)) {
+                $thisGrade = '12';
+            }
+
             foreach ($classList as $class) {
                 if ($class['class_grade'] === $thisGrade) {
                     $classGroup[] = $class;
@@ -121,7 +127,7 @@ class RoundController extends Controller
         $current = $stageData[$index] ?? null;
         $after = $stageData[$index + 1] ?? null;
         $pages = [$before, $current, $after];
-        
+
         return view('teacher/rounds/index', compact(
             'game',
             'batchId',
