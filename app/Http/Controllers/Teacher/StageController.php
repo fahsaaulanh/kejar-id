@@ -118,7 +118,12 @@ class StageController extends Controller
             }
         }
 
-        $thisGrade = substr(explode(' ', $classThis['name'])[1], 0, strlen(explode(' ', $classThis['name'])[1])-2);
+        $thisYear = date('Y');
+        $thisGrade ='1'.($thisYear - substr($classThis['school_year'], 0, 4));
+
+        if ($thisYear < substr($classThis['school_year'], 0, 4)) {
+            $thisGrade = '12';
+        }
 
         $thisClass = [];
         $thisClass[0] = $thisGrade;
