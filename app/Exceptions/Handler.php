@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -48,8 +50,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        if ($exception->getStatusCode() === 408) {
-            return redirect('/login')->with('message', 'Waktu koneksi habis, silahkan coba lagi.');
+        if ($exception instanceof Exception) {
+            if ($exception->getStatusCode() === 408) {
+                Log::error($exception->getMessage());
+
+                return redirect('/login')->with('message', 'Waktu koneksi habis, silahkan coba lagi.');
+            }
         }
 
         return parent::render($request, $exception);
