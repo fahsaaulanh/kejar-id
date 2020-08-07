@@ -28,11 +28,9 @@
                 </a>
                 <!-- <div class="hover-only"> -->
                     <div class="stage-order-buttons done-status">
-                        @if($stage['status'] == 'DONE')
-                        <button class="btn-icon">
+                        <!-- <button class="btn-icon">
                             <i class="kejar-sudah-dikerjakan"></i>
-                        </button>
-                        @endif
+                        </button> -->
                     </div>
                 <!-- </div> -->
             </div>
