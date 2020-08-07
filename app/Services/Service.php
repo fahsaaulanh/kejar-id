@@ -21,7 +21,7 @@ class Service
         try {
             return Http::withToken($this->token)->timeout($this->timeout)->get(env('API_HOST').$url, $queryParams);
         } catch (Exception $error) {
-            abort(408, 'Connection Timeout.');
+            abort(408, "Connection Timeout: $url");
         }
     }
 
@@ -30,7 +30,7 @@ class Service
         try {
             return Http::withToken($this->token)->timeout($this->timeout)->post(env('API_HOST').$url, $data);
         } catch (Exception $error) {
-            abort(408, 'Connection Timeout.');
+            abort(408, "Connection Timeout: $url");
         }
     }
 
@@ -39,7 +39,7 @@ class Service
         try {
             return Http::withToken($this->token)->timeout($this->timeout)->put(env('API_HOST').$url, $data);
         } catch (Exception $error) {
-            abort(408, 'Connection Timeout.');
+            abort(408, "Connection Timeout: $url");
         }
     }
 
@@ -48,7 +48,7 @@ class Service
         try {
             return Http::withToken($this->token)->timeout($this->timeout)->patch(env('API_HOST').$url, $data);
         } catch (Exception $error) {
-            abort(408, 'Connection Timeout.');
+            abort(408, "Connection Timeout: $url");
         }
     }
 
@@ -57,7 +57,7 @@ class Service
         try {
             return Http::withToken($this->token)->timeout($this->timeout)->delete(env('API_HOST').$url, $data);
         } catch (Exception $error) {
-            abort(408, 'Connection Timeout.');
+            abort(408, "Connection Timeout: $url");
         }
     }
 
