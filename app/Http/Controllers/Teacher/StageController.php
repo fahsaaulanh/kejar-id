@@ -101,7 +101,9 @@ class StageController extends Controller
         //Get Student and result
         $filter = [
             'filter[game]' => strtoupper($game['uri']),
+            'per_page' => 99,
         ];
+
         $data = $stageApi->getResult($studentGroupId, $filter)['data'] ?? [];
         $cn = $data[0]['progress'];
 
