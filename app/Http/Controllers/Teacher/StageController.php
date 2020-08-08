@@ -8,6 +8,7 @@ use App\Services\Game;
 use App\Services\Stage as StageApi;
 use App\Services\StudentGroup as StudentApi;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -91,25 +92,31 @@ class StageController extends Controller
         return view('teacher.stages.index', compact('game', 'classList', 'classCount'));
     }
 
-    public function resultStage($game, $batchId, $studentGroupId)
+    public function resultStage(Request $request, $game, $batchId, $studentGroupId)
     {
         $stageApi = new StageApi;
         $linkGame = $game;
         $gameService = new Game;
         $game = $gameService->parse($game);
 
+        $page = $request->input('page', null);
+        if ($page === null) {
+            $page = 1;
+        }
+
         //Get Student and result
         $filter = [
             'filter[game]' => strtoupper($game['uri']),
-            'per_page' => 99,
+            'page' => $page,
+            // 'per_page' => 99,
         ];
 
-        $data = $stageApi->getResult($studentGroupId, $filter)['data'] ?? [];
-        $cn = $data[0]['progress'];
+        $data = $stageApi->getResult($studentGroupId, $filter) ?? [];
+        $cn = $data['data'][0]['progress'];
 
         //get data studentGroup
         $studentGroupApi = new StudentApi;
-        $schoolId = $data[0]['school_id'];
+        $schoolId = $data['data'][0]['school_id'];
         $dataStudentGroups = $studentGroupApi->index($schoolId, $batchId);
         $classData = $dataStudentGroups['data'] ?? [];
         $classThis = [];
@@ -131,8 +138,9 @@ class StageController extends Controller
         $thisClass[0] = $thisGrade;
         $thisClass[1] = $classThis;
 
-        $responses = $this->myPaginate($data)
-        ->withPath('/teacher/games/'.$linkGame.'/class/'.$batchId.'/'.$studentGroupId.'/stages');
+        $responses = $this
+            ->myPaginate($data['data'], $data['meta']['per_page'], $data['meta']['current_page'], $data['meta'])
+            ->withPath('/teacher/games/'.$linkGame.'/class/'.$batchId.'/'.$studentGroupId.'/stages');
 
         return view('teacher/result/stage/index', compact(
             'game',
@@ -150,6 +158,6 @@ class StageController extends Controller
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $data = $data instanceof Collection ? $data : Collection::make($data);
 
-        return new LengthAwarePaginator($data->forPage($page, $perPage), $data->count(), $perPage, $page, $options);
+        return new LengthAwarePaginator($data, $options['total'], $perPage, $page, $options);
     }
 }
