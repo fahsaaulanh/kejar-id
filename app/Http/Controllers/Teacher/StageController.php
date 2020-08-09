@@ -71,12 +71,10 @@ class StageController extends Controller
                 }
             }
 
-            $order = [];
-            foreach ($classList as $key => $row) {
-                $order[$key] = $row['class_name'];
-            }
-
-            array_multisort($order, SORT_ASC, $classList);
+            usort(
+                $classList,
+                fn ($str1, $str2) => strnatcmp($str1['class_name'], $str2['class_name']),
+            );
 
             foreach ($classList as $class) {
                 if ($class['class_grade'] === 'X') {
