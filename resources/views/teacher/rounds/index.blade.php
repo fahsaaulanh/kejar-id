@@ -108,39 +108,11 @@
                         </td>
                         @forelse ($student['progress'] as $progress)
                         @if ($progress['is_done'] === true)
-                            @if ($progress['score'] == 100.00)
-                                <td>
-                                    <div class="icon-group">
-                                        <i class="kejar-arsip-asesmen-bold"></i>
-                                        <i class="kejar-arsip-asesmen-bold"></i>
-                                        <i class="kejar-arsip-asesmen-bold"></i>
-                                    </div>
-                                </td>
-                            @elseif ($progress['score'] >= 75.00)
-                                <td>
-                                    <div class="icon-group">
-                                        <i class="kejar-arsip-asesmen-bold"></i>
-                                        <i class="kejar-arsip-asesmen-bold"></i>
-                                        <i class="kejar-arsip-asesmen"></i>
-                                    </div>
-                                </td>
-                            @elseif ($progress['score'] >= 50.00)
-                                <td>
-                                    <div class="icon-group">
-                                        <i class="kejar-arsip-asesmen-bold"></i>
-                                        <i class="kejar-arsip-asesmen"></i>
-                                        <i class="kejar-arsip-asesmen"></i>
-                                    </div>
-                                </td>
-                            @elseif ($round['score'] < 50.00)
-                                <td>
-                                    <div class="icon-group">
-                                        <i class="kejar-arsip-asesmen"></i>
-                                        <i class="kejar-arsip-asesmen"></i>
-                                        <i class="kejar-arsip-asesmen"></i>
-                                    </div>
-                                </td>
-                            @endif
+                            <td>
+                                <div class="icon-group">
+                                    <h5 class="text-reguler">{{ number_format($progress['score'], 0) }}</h5>
+                                </div>
+                            </td>
                         @else
                             <td>
                                 <div class="icon-group">
