@@ -4,10 +4,11 @@ namespace App\Services;
 
 class Report extends Service
 {
-    
+
     public function roundReport($studentGroupId, $stageId, $page = 1)
     {
-        $response = $this->get("/reports/matrikulasi/student-groups/$studentGroupId/stages/$stageId", "page=$page");
+        $response = $this
+            ->get("/reports/matrikulasi/student-groups/$studentGroupId/stages/$stageId", "page=$page&per_page=15");
 
         return $this->showResponse($response);
     }
