@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
@@ -56,6 +57,12 @@ class Handler extends ExceptionHandler
 
                 return redirect('/login')->with('message', 'Waktu koneksi habis, silahkan coba lagi.');
             }
+        }
+
+        if ($exception instanceof TokenMismatchException) {
+            return redirect()
+                    ->back()
+                    ->with('message', 'Anda sudah terlalu lama diam di halaman ini, silahkan coba lagi.');
         }
 
         return parent::render($request, $exception);
