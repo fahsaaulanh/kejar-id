@@ -24,12 +24,21 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ session('user.userable.name') }}
+                                    @if (session('user.role') === 'STUDENT')
+                                        @if (!is_null(session('user.userable.photo')))
+                                            <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
+                                        @else
+                                            <img src="{{ asset('assets/images/profile/default-picture.jpg') }}" class="profile-pict" alt="">
+                                        @endif
+                                    @endif
                                     <i class="kejar-dropdown"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a> -->
-                                    <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a> -->
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
+                                @if (session('user.role') === 'STUDENT')
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
+                                @endif
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
                                 </div>
                             </li>
                         </ul>
