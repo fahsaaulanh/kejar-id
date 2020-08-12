@@ -64,14 +64,24 @@
             alert("{{ $errors->first('question_file') }}");
         </script>
     @endif
-    <div class="upload-buttons">
-        <button class="btn-upload" data-toggle="modal" data-target="#upload-questions">
-            <i class="kejar-upload"></i>Unggah Soal
-        </button>
-        <button class="btn-upload" data-toggle="modal" data-target="#create-question">
-            <i class="kejar-add"></i>Input Soal
-        </button>
-    </div>
+
+    @if($game['uri'] == 'MENULISEFEKTIF')
+        <div>
+            <button class="btn-upload" data-toggle="modal" data-target="#create-menulis-efektif-question-modal">
+                <i class="kejar-add"></i>Input Soal
+            </button>
+            <hr>
+        </div>
+    @else
+        <div class="upload-buttons">
+            <button class="btn-upload" data-toggle="modal" data-target="#upload-questions">
+                <i class="kejar-upload"></i>Unggah Soal
+            </button>
+            <button class="btn-upload" data-toggle="modal" data-target="#create-question">
+                <i class="kejar-add"></i>Input Soal
+            </button>
+        </div>
+    @endif
 
     <!-- Table of questions -->
     <div class="table-responsive">
@@ -94,6 +104,40 @@
             </tbody>
         </table>
     </div>
+    @if($game['uri'] == 'MENULISEFEKTIF')
+            <strong>Ibu pergi kepasar</strong><br>
+            <strong>ayah juga pergi</strong>
+            <br><br>
+            <i class="kejar-soal-benar"></i> ayah dan ibu kepasar berdua. <hr class="border-0">
+            <i class="kejar-soal-benar"></i> ayah dan ibu kepasar berdua.
+            <br> <br>
+            <strong>Pembahasan :</strong>
+            <p>huruf nya kapital</p>
+            <p>huruf nya kapital</p>
+            <p>huruf nya kapital</p>
+            <hr>
+    @else
+        <div class="table-responsive">
+            <table class="table table-stripped table-questions">
+                <thead>
+                    <th>Soal</th>
+                    <th>Jawaban</th>
+                </thead>
+                <tbody>
+                    @forelse($roundQuestionsData as $question)
+                    <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}" data-url="{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                        <td>{{ $question['question']['question'] }}</td>
+                        <td>{{ $question['question']['answer'] }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="2" class="text-center">Belum ada soal</td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    @endif
     <!-- Pagination -->
     <nav class="navigation">
         <div>
@@ -124,6 +168,7 @@
 @include('admin.questions._update_material')
 @include('admin.questions._update_direction')
 @include('admin.questions._update_question')
+@include('admin.questions._create_menulis_efektif_question')
 @endsection
 
 @push('script')

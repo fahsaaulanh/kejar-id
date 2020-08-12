@@ -16,6 +16,12 @@ $(document).on('click', '.btn-add', function(){
     $('.table-form').find('tbody').append('<tr><td><input type="text" placeholder="Ketik soal" name="question[' + index + '][question]" class="form-control"></td><td><input type="text" placeholder="Ketik jawaban" name="question['+ index +'][answer]" class="form-control"></td></tr>');
 });
 
+$(document).on('click', '#btn-add-alternative-answer', function(){
+    var index = $('.form-group #new_answer textarea').length;
+    
+    $('#new_answer').append('<textarea type="text" style="resize: none; height: 6rem;" name="question[answer][' + index + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (index+1) +'"></textarea><hr class="border-0">');
+});
+
 $(document).on('change', 'input[type=file]', function(){
     var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
 
