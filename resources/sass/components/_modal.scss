@@ -149,6 +149,9 @@
 
                             .list-item-text{
                                 margin-left: 1.1rem !important;
+                                overflow: hidden !important;
+                                white-space: nowrap !important;
+                                text-overflow: ellipsis !important;
 
                                 h6{
                                     font-weight: bold;
