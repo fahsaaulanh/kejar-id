@@ -40,7 +40,13 @@
         <div class="page-title">
             <div class="class-dropdown">
                 @php
-                    $gradeLatin = $thisClass[0];
+                    if ($thisClass[0] == 'X') {
+                        $gradeLatin = 10;
+                    } elseif ($thisClass[0] == 'XI') {
+                        $gradeLatin = 11;
+                    } else {
+                        $gradeLatin = 12;
+                    }
                 @endphp
                 <span>Kelas {{ $gradeLatin }} - </span>
                 <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

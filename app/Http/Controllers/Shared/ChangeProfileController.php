@@ -11,6 +11,9 @@ class ChangeProfileController extends Controller
 {
     public function update(Request $req)
     {
+
+        dd(session()->all(), $req->all());
+
         if (session()->get('changePhotoOnBoarding') === true && $req->photo === null) {
             session()->put('changePhotoOnBoarding', false);
 
@@ -19,7 +22,7 @@ class ChangeProfileController extends Controller
 
         $img = Image::make($req->photo);
         $image = (string) $img->stream('data-url');
-        
+
         $payload = [
             'photo' => $image,
         ];

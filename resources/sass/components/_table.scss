@@ -16,6 +16,19 @@
                 }
 
                 tr{
+                    &.number{
+                        th{
+                            position: sticky !important;
+                            table-layout: fixed;
+                            min-width: 7.2rem !important;
+
+                            &:hover{
+                                background-color: $blue-tp;
+                                color: $purple;
+                            }
+                        }
+                    }
+
                     th{
                         font-style: normal;
                         font-weight: bold;
@@ -26,7 +39,7 @@
                         background-color: $grey-15;
                         border: 0.2rem solid $grey-13 !important;
                     }
-    
+
                     &:nth-child(1) th{
                         &:nth-child(1){
                             position: sticky !important;
@@ -35,17 +48,17 @@
                             max-width: 24rem !important;
                             background-color: $grey-15 !important;
                         }
-    
+
                         &:nth-child(2){
                             text-align: center !important;
                         }
                     }
-    
+
                     &:nth-child(2) th{
                         cursor: pointer !important;
                         min-width: 7.2rem !important;
                         text-align: center;
-            
+
                         &:hover{
                             color: $purple !important;
                             background-color: $blue-tp !important;
@@ -60,7 +73,7 @@
                         width: fit-content !important;
                         vertical-align: middle;
                         text-align: center !important;
-    
+
                         &.td-name{
                             text-align: left !important;
 
@@ -105,7 +118,7 @@
                     height: 4rem !important;
                     vertical-align: middle !important;
                     border: 0.2rem solid $grey-13 !important;
-        
+
                     &:nth-child(1){
                         position: sticky !important;
                         left: 0 !important;
@@ -172,7 +185,7 @@
                     cursor: pointer !important;
                     min-width: 7.2rem !important;
                     text-align: center;
-        
+
                     &:hover{
                         color: $purple !important;
                         background-color: $blue-tp !important;
@@ -190,7 +203,7 @@
                 height: 4rem !important;
                 vertical-align: middle !important;
                 border: 0.2rem solid $grey-13 !important;
-    
+
                 &:nth-child(1){
                     position: sticky !important;
                     left: 0 !important;
@@ -200,7 +213,7 @@
                     i{
                         font-size: 1.6rem;
                         top: 0.3rem;
-        
+
                         &.kejar-belum-mengerjakan-2:before{
                             color: $red-2;
                         }
@@ -214,22 +227,22 @@
                         }
                     }
                 }
-                
+
                 &:not(:nth-child(1)){
                     text-align: center;
                 }
-                
+
                 .icon-group{
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     font-size: 1.8rem;
-    
+
                     i{
                         margin: 0 0.1rem;
-        
+
                         &.kejar-arsip-asesmen:before{
-                            color: $grey-8; 
+                            color: $grey-8;
                         }
                         &.kejar-arsip-asesmen-bold:before{
                             color: $deep-yellow;
@@ -256,6 +269,105 @@
     }
 }
 
+.table{
+    width: 100%;
+    border: 0rem !important;
+
+    thead{
+        border: 0rem;
+        tr{
+            text-align: center;
+            th{
+                @include h5;
+                background-color: $grey-15;
+                padding: 1rem;
+                border: 0rem;
+                width: 7.2rem;
+
+                &.th-name{
+                    table-layout: fixed;
+                    min-width: 24rem !important;
+                    vertical-align: middle;
+                    text-align: center;
+                }
+            }
+
+            &:nth-child(1) th{
+                &:nth-child(1){
+                    position: sticky !important;
+                    left: 0 !important;
+                    min-width: 24rem !important;
+                    background-color: $grey-15 !important;
+                    z-index: 2;
+                }
+
+                &:nth-child(2){
+                    text-align: center !important;
+                    position: sticky !important;
+                }
+            }
+
+
+            &.numbr{
+                th{
+                    position: sticky !important;
+                    table-layout: fixed;
+                    min-width: 7.2rem !important;
+
+                    &:hover{
+                        background-color: $blue-tp;
+                        color: $purple;
+                    }
+                }
+            }
+        }
+
+    }
+
+    tbody{
+        tr{
+            td{
+                @include h5-reg;
+                padding: 1.4rem 1.2rem;
+                border-top: 0.2rem solid $grey-15;
+                border-bottom: 0.2rem solid $grey-15;
+                position: sticky;
+
+                i.kejar-sudah-dikerjakan::before{
+                    color: $green-2;
+                }
+                i.kejar-latihan-to-bold::before{
+                    color: $deep-yellow;
+                }
+                i.kejar-belum-mengerjakan-2::before{
+                    color: $red-2;
+                }
+
+                &:nth-child(1){
+                    background-color: $white !important;
+                    position: sticky !important;
+                    left: 0rem;
+                    z-index: 1;
+                    border-top: none;
+            }
+            }
+
+            &.result-icon{
+                td{
+                    width: fit-content !important;
+                    vertical-align: middle;
+                    text-align: center !important;
+
+                    &.td-name{
+                        text-align: left !important;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
 .table-form{
     tbody{
 
@@ -277,10 +389,10 @@
 
 .table-form-footer{
     padding: 0;
-    
+
     tr{
         padding: 0;
-        
+
         th{
             border: 0;
             background: none;
@@ -332,7 +444,6 @@
     width: 100%;
     border: 0rem !important;
     max-width: 68rem;
-    
     thead{
         border: 0rem;
         th{
@@ -340,7 +451,6 @@
             background-color: $grey-15;
             padding: 1rem;
             border: 0rem;
-            
             &.a{
                 width: 66.7%;
             }

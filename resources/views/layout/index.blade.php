@@ -11,6 +11,7 @@
     </head>
     <body>
         @section('header')
+            @if(!Session::get('PasswordMustBeChanged') && !Session::get('changePhotoOnBoarding'))
                 <nav class="navbar navbar-expand-sm navbar-dark bg-black">
                     <a class="navbar-brand" href="#">
                         <img src="{{ asset('assets/logo/kejarid.svg') }}" alt=""> Kejar.id
@@ -26,24 +27,25 @@
                                     {{ session('user.userable.name') }}
                                     @if (session('user.role') === 'STUDENT')
                                         @if (!is_null(session('user.userable.photo')))
-                                            <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
+                                        <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
                                         @else
-                                            <img src="{{ asset('assets/images/profile/default-picture.jpg') }}" class="profile-pict" alt="">
+                                        <img src="{{ asset('assets/images/general/photo-profile-default-circle.svg') }}" class="profile-pict" alt="">
                                         @endif
                                     @endif
                                     <i class="kejar-dropdown"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                @if (session('user.role') === 'STUDENT')
+                                    @if (session('user.role') === 'STUDENT')
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
-                                @endif
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
+                                    @endif
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
                                 </div>
                             </li>
                         </ul>
                     </div>
                 </nav>
+            @endif
         @show
 
         @yield('content')
@@ -76,7 +78,6 @@
     </body>
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}"></script>
-    <script src="https://www.jqueryscript.net/demo/Responsive-Mobile-friendly-Image-Cropper-With-jQuery-rcrop/dist/rcrop.min.js"></script>
 
     @stack('script')
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script>
@@ -100,6 +101,8 @@
         alert("{{ Session::get('message') }}");
     </script>
     @endif
+    <!-- Import JS Script -->
+    @yield('script')
 
     <script>
         $(document).ready(function() {
@@ -152,10 +155,19 @@
             if (checkPicture == 'Null') {
                 $('.avatar-group .profile-pict').attr('src', $('.nav-link img').attr('src'));
             }
+            $('#editProfile').modal('hide');
+            $('#updateProfile').modal('show');
+            setInterval(function(){
+                $('.profile-pict-crop').rcrop({
+                    minSize : [200,200],
+                    preserveAspectRatio : true,
+                    grid : true
+                });
+            }, 200);
         });
 
-        $(document).on('click', '.save-btn-2', function(){
-            var srcResized = $('.profile-pict-crop').rcrop('getDataURL');
+        $(document).on('click', '.save-btn-2', async function(){
+            var srcResized = await $('.profile-pict-crop').rcrop('getDataURL');
             $('.avatar-group .profile-pict').attr('src', srcResized);
             $('input[name=photo]').val(srcResized);
             $('#editProfile').modal('show');

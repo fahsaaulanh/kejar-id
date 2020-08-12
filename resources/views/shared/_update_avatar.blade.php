@@ -24,15 +24,17 @@
                                 @endif
                                 <button type="button" class="edit-pict-btn">
                                     <i class="kejar-play"></i>
-                                </button>   
+                                </button>
                             </div>
                             @if (session('user.role') === 'STUDENT')
                                 @if (!is_null(session('user.userable.photo')))
-                                <input type="hidden" name="photo" value="{{ session('user.userable.photo') }}">
+                                <input type="text" name="photo" value="{{ session('user.userable.photo') }}" hidden>
                                 @else
-                                <input type="file" name="photo" hidden>
+                                <input type="text" name="photo" hidden>
                                 @endif
                             @endif
+                            <input type="hidden" name="student" value="{{ session('user.id') }}">
+                            <input type="hidden" name="photo" value="{{ session('user.userable.photo') }}">
                         </div>
                         <div class="col-12">
                             <h3>{{ session('user.userable.name') }}</h3>

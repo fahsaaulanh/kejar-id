@@ -112,10 +112,11 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('student')->group(function () {
 
+            Route::get('/', 'Student\GameController@dashboard');
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
             Route::patch('/change-profile', 'Shared\ChangeProfileController@update');
             Route::get('/result', 'Student\ResultController@index'); //TODO EXAM
-            Route::get('/skip-change-password', 'Shared\ChangePasswordController@skip'); //TODO EXAM
+            Route::get('/skip-change-info', 'Shared\ChangePasswordController@skipInfo');
 
             Route::prefix('/games')->group(function () {
 
