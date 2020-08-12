@@ -152,6 +152,7 @@ class QuestionController extends Controller
                         'question'=> (string)strtolower($question['question']),
                         'choices'=> null,
                         'answer'=> (string)strtolower($question['answer']),
+                        'explanation'=> (string)$question['explanation'],
                         'level'=> 'LEVEL_1',
                         'status' => '2',
                         'created_by'=> session('user.id'),
