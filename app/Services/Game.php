@@ -33,7 +33,7 @@ class Game
             'short' => 'Menulis Efektif',
             'title' => 'Menulis Efektif',
             'uri' => 'menulisefektif',
-            'result' => 'kata',
+            'result' => 'ronde',
         ],
     ];
 
