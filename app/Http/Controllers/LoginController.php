@@ -89,7 +89,8 @@ class LoginController extends Controller
             }
         }
 
-        $request->session()->flash('message', $response['message']);
+        $request->session()
+            ->flash('message', 'Login gagal, mohon periksa kembali username dan password yang digunakan.');
 
         return redirect('/login');
     }
