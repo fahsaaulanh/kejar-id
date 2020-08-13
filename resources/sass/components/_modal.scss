@@ -544,3 +544,13 @@
         margin-top: 0px;
     }
 }
+
+.toast{
+    position: fixed;
+    top: 2rem;
+    width: 100%;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%);
+    z-index: 100;
+}
