@@ -74,7 +74,7 @@
                                 <td class="td-name" data-url="{{ secure_url('/teacher/games/'.$game['uri'].'/class/'.$batchId.'/'.$studentGroupId.'/stages/'.$item['id'].'/detail') }}" data-game="{{ $game['uri'] }}">
                                     {{ $item['name'] }}
                                     @php
-                                    $countActivity = $game['uri'] === 'obr' ? $item['progress'][0]['done'] : $item['progress'][0]['total_anwers'];
+                                    $countActivity = $game['uri'] === 'obr' || $game['uri'] === 'menulisefektif' ? $item['progress'][0]['done'] : $item['progress'][0]['total_anwers'];
                                     @endphp
                                     <span><strong>{{ $countActivity }}</strong> {{ $game['result'] }}</span>
                                 </td>
@@ -132,7 +132,7 @@
                             else if (finishedRound !== 0) { information[0] = 'kejar-latihan-to-bold'; }
                             else { information[0] = 'kejar-belum-mengerjakan-2'; }
 
-                            if (game === 'obr') { information[1] = '<span>' + finishedRound + '/' + totalRound + '</span> ronde'; }
+                            if (game === 'obr' || game == 'menulisefektif') { information[1] = '<span>' + finishedRound + '/' + totalRound + '</span> ronde'; }
                             else if (game === 'katabaku') { information[1] = '<span>'+ totalAnswer +'</span> kata sudah dipelajari'; }
                             else { information[1] = '<span>'+ totalAnswer +'</span> words have been learned'; }
                             listGroup += '<li class="list-group-item"><i class="'+ information[0] +'"></i><div class="list-item-text"><h6>Babak '+ response.student.progress[num].stage_order +': '+ response.student.progress[num].stage_title +'</h6><p>'+ information[1] +'</p></div></li>';
