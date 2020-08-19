@@ -79,7 +79,11 @@ class LoginController extends Controller
                 // Check foto tersedia dalam directory
                 $photo = $responseMe['data']['userable']['photo'];
                 $ss = 'HTTP/1.1 200 OK';
-                $photoCheck = get_headers($photo);
+                $photoCheck = false;
+                if ($photo) {
+                    $photoCheck = get_headers($photo);
+                }
+
                 $photoExist = $photoCheck !== false ? $photoCheck[0] === $ss : false;
                 $responseMe['data']['photoExistCheck'] = $photoExist;
 
@@ -104,7 +108,11 @@ class LoginController extends Controller
                 // Check foto tersedia dalam directory
                 $photo = $responseMe['data']['userable']['photo'];
                 $ss = 'HTTP/1.1 200 OK';
-                $photoCheck = get_headers($photo);
+                $photoCheck = false;
+                if ($photo) {
+                    $photoCheck = get_headers($photo);
+                }
+
                 $photoExist = $photoCheck !== false ? $photoCheck[0] === $ss : false;
                 $responseMe['data']['photoExistCheck'] = $photoExist;
 
