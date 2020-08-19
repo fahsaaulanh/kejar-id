@@ -57,6 +57,14 @@ class Handler extends ExceptionHandler
 
                 return redirect('/login')->with('message', 'Waktu koneksi habis, silahkan coba lagi.');
             }
+
+            if ($exception->getStatusCode() === 404) {
+                return response()->view('error.404', [], 404);
+            }
+
+            if ($exception->getStatusCode() >= 500) {
+                return response()->view('error.505', [], 505);
+            }
         }
 
         if ($exception instanceof TokenMismatchException) {
