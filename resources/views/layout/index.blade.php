@@ -11,45 +11,46 @@
     </head>
     <body>
         @section('header')
-            <nav class="navbar navbar-expand-sm navbar-dark bg-black">
-                <a class="navbar-brand" href="#">
-                    <img src="{{ asset('assets/logo/kejarid.svg') }}" alt=""> Kejar.id
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            @if(!Session::get('PasswordMustBeChanged') && !Session::get('changePhotoOnBoarding'))
+                <nav class="navbar navbar-expand-sm navbar-dark bg-black">
+                    <a class="navbar-brand" href="#">
+                        <img src="{{ asset('assets/logo/kejarid.svg') }}" alt=""> Kejar.id
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ session('user.userable.name') }}
-                                @if (session('user.role') !== 'ADMIN')
-                                    @if (session('user.photoExistCheck') === true)
-                                    <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
-                                    @else
-                                    <img src="{{ asset('assets/images/profile/default-picture.jpg') }}" class="profile-pict" alt="">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ session('user.userable.name') }}
+                                    @if (session('user.role') === 'STUDENT')
+                                        @if (!is_null(session('user.userable.photo')))
+                                        <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
+                                        @else
+                                        <img src="{{ asset('assets/images/general/photo-profile-default-circle.svg') }}" class="profile-pict" alt="">
+                                        @endif
                                     @endif
-                                @endif
-
-                                <i class="kejar-dropdown"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                @if (session('user.role') !== 'ADMIN')
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
-                                @endif
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+                                    <i class="kejar-dropdown"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @if (session('user.role') === 'STUDENT')
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
+                                    @endif
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            @endif
         @show
 
         @yield('content')
 
-        @if (session('user.role') !== 'ADMIN')
+        @if (!is_null(session('user')))
         @include('shared._update_avatar')
         @include('shared._update_password')
         @endif
@@ -90,14 +91,14 @@
                 <h6>{{ Session::get('message') }}</h6>
             </div>
         </div>
-
+        
     </body>
     <!-- Scripts -->
     <script src="{{ mix('/js/app.js') }}"></script>
 
     @stack('script')
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.js" integrity="sha512-giNJUOlLO0dY67uM6egCyoEHV/pBZ048SNOoPH4d6zJNnPcrRkZcxpo3gsNnsy+MI8hjKk/NRAOTFVE/u0HtCQ==" crossorigin="anonymous"></script>
+    <script src="https://www.jqueryscript.net/demo/Responsive-Mobile-friendly-Image-Cropper-With-jQuery-rcrop/dist/rcrop.min.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -119,19 +120,10 @@
         $('.toast').toast('show');
     </script>
     @endif
-
-    @if(Session::has('profile_updated'))
-    <script>
-        $('#editProfile').modal('show');
-        alert("{{ Session::get('profile_updated') }}");
-    </script>
-    @endif
+    <!-- Import JS Script -->
+    @yield('script')
 
     <script>
-        var image = document.getElementsByClassName("profile-pict-crop")[0];
-        var cropper;
-        var photo;
-
         $(document).ready(function() {
             $(".input-group-password").on('click', 'button', function(event) {
                 event.preventDefault();
@@ -146,74 +138,64 @@
             });
         });
 
-        $(document).on('click', '#updateProfile .btn-cancel', function(){
-            modalProfileManagement('cancelUpdate');
-        });
-
         $(document).on('click', '.edit-pict-btn', function(){
-            $('input[name=select_photo]').click();
-        });
-
-        $('input[name=select_photo]').change(function(){
-            readURL(this);
-        });
-
-        $(document).on('click', '#save-btn', function(){
-            photo = cropper.getCroppedCanvas().toDataURL();
-            modalProfileManagement('saveProfile');
-        });
-
-        $('#updateProfile').on('shown.bs.modal', function(){
-            cropper = new Cropper(image, {
-                aspectRatio: 1,
-                viewMode: 3,
-            });
-        }).on('hidden.bs.modal', function(){
-            modalProfileManagement('cancelUpdate');
-            cropper.destroy();
-            cropper = null;
+            var checkPicture = $('.avatar-group .profile-pict').attr('data-pict');
+            if (checkPicture == 'notNull') {
+                $('#editProfile').modal('hide');
+                $('#updateProfile').modal('show');
+                setInterval(function(){
+                    $('.profile-pict-crop').rcrop({
+                        minSize : [200,200],
+                        preserveAspectRatio : true,
+                        grid : true
+                    });
+                }, 200);
+            } else {
+                $('input[name=photo]').click();
+            }
         });
 
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $('.profile-pict-crop').attr('src', e.target.result);
-                    modalProfileManagement('selectPicture');
+                    $('.avatar-group .profile-pict').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         }
-    </script>
 
-    @if(session('user.changePhotoOnBoarding') === true)
-    <script>
-        function modalProfileManagement(status) {
-            if (status == 'saveProfile'){
-                $('input[name=photo_onboarding]').val(photo);
-                $('form[name=change_profile_onboarding]').submit();
-            } else if (status == 'cancelUpdate') {
-                $('.dropify-clear').click();
-                $('#updateProfile').modal('hide');
-            } else if (status == 'selectPicture') {
-                $('#updateProfile').modal('show');
+        $("input[name=photo][type=file]").change(function(){
+            readURL(this);
+        });
+
+        $('#editProfile').on('hidden.bs.modal', function (e) {
+            var checkPicture = $('.avatar-group .profile-pict').attr('data-pict');
+            if (checkPicture == 'Null') {
+                $('.avatar-group .profile-pict').attr('src', $('.nav-link img').attr('src'));
             }
-        }
+            $('#editProfile').modal('hide');
+            $('#updateProfile').modal('show');
+            setInterval(function(){
+                $('.profile-pict-crop').rcrop({
+                    minSize : [200,200],
+                    preserveAspectRatio : true,
+                    grid : true
+                });
+            }, 200);
+        });
+
+        $(document).on('click', '.save-btn-2', async function(){
+            var srcResized = await $('.profile-pict-crop').rcrop('getDataURL');
+            $('.avatar-group .profile-pict').attr('src', srcResized);
+            $('input[name=photo]').val(srcResized);
+            $('#editProfile').modal('show');
+            $('#updateProfile').modal('hide');
+        });
+
+        $(document).on('click', '.cancel-edit', function(){
+            $('#editProfile').modal('show');
+            $('#updateProfile').modal('hide');
+        });
     </script>
-    @else
-    <script>
-        function modalProfileManagement(status) {
-            if (status == 'saveProfile'){
-                $('input[name=photo]').val(photo);
-                $('form[name=change_profile]').submit();
-            } else if (status == 'cancelUpdate') {
-                $('#editProfile').modal('show');
-                $('#updateProfile').modal('hide');
-            } else if (status == 'selectPicture') {
-                $('#editProfile').modal('hide');
-                $('#updateProfile').modal('show');
-            }
-        }
-    </script>
-    @endif
 </html>

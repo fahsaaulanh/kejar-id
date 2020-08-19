@@ -2,7 +2,7 @@
 <div class="modal fade" id="editProfile" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form action="{{ url( strtolower(session('user.role')) . '/change-profile') }}" method="post" name="change_profile">
+            <form action="{{ url( strtolower(session('user.role')) . '/change-profile') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
                 <div class="modal-header">
@@ -15,26 +15,31 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="avatar-group">
-                                @if (session('user.role') !== 'ADMIN')
-                                    @if (session('user.photoExistCheck') === true)
-                                    <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
+                                @if (session('user.role') === 'STUDENT' || 'TEACHER')
+                                    @if (!is_null(session('user.userable.photo')))
+                                    <img src="{{ session('user.userable.photo') }}" data-pict="notNull" class="profile-pict" alt="">
                                     @else
-                                    <img src="{{ asset('assets/images/profile/default-picture.jpg') }}" class="profile-pict" alt="">
+                                    <img src="{{ asset('assets/images/profile/default-picture.jpg') }}" data-pict="Null" class="profile-pict" alt="">
                                     @endif
                                 @endif
                                 <button type="button" class="edit-pict-btn">
-                                    <i class="kejar-edit"></i>
-                                </button>   
+                                    <i class="kejar-play"></i>
+                                </button>
                             </div>
-                            @if (session('user.role') !== 'ADMIN')
-                                <input type="file" name="select_photo" hidden>
-                                <input type="hidden" name="photo">
+                            @if (session('user.role') === 'STUDENT')
+                                @if (!is_null(session('user.userable.photo')))
+                                <input type="text" name="photo" value="{{ session('user.userable.photo') }}" hidden>
+                                @else
+                                <input type="text" name="photo" hidden>
+                                @endif
                             @endif
+                            <input type="hidden" name="student" value="{{ session('user.id') }}">
+                            <input type="hidden" name="photo" value="{{ session('user.userable.photo') }}">
                         </div>
                         <div class="col-12">
                             <h3>{{ session('user.userable.name') }}</h3>
                             <table class="profile-table">
-                                @if (session('user.role') === 'STUDENT')
+                                @if (session('user.role') == 'STUDENT')
                                 <tr>
                                     <td>NIS</td>
                                     <td>{{ session('user.userable.nis') }}</td>
@@ -45,20 +50,20 @@
                                 </tr>
                                 <tr>
                                     <td>Rombel</td>
-                                    <td>{{ session('user.userable.class_name') }}</td>
+                                    <td>{{ session('user.userable.gender') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Sekolah</td>
-                                    <td>{{ session('user.userable.school_name') }}</td>
+                                    <td>{{ session('user.userable.gender') }}</td>
                                 </tr>
-                                @elseif(session('user.role') === 'TEACHER')
+                                @elseif(session('user.role') == 'TEACHER')
                                 <tr>
                                     <td>NIP</td>
                                     <td>{{ session('user.userable.nip') }}</td>
                                 </tr>
                                 <tr>
                                     <td>Sekolah</td>
-                                    <td>{{ session('user.userable.school_name') }}</td>
+                                    <td>{{ session('user.userable.gender') }}</td>
                                 </tr>
                                 @endif
                             </table>
@@ -67,7 +72,8 @@
                 </div>
                 <div class="modal-footer justify-content-end">
                     <div>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary save-btn-1">Simpan</button>
                     </div>
                 </div>
             </form>
@@ -75,7 +81,7 @@
     </div>
 </div>
 <div class="modal fade" id="updateProfile" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Atur Foto</h5>
@@ -87,15 +93,15 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="crop-area">
-                            <img src="#" class="profile-pict-crop" alt="">
+                            <img src="{{ session('user.userable.photo') }}" class="profile-pict-crop" alt="">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer justify-content-end">
                 <div>
-                    <button type="button" class="btn btn-cancel">Batal</button>
-                    <button type="button" class="btn btn-primary" id="save-btn">Simpan</button>
+                    <button type="button" class="btn btn-cancel cancel-edit">Batal</button>
+                    <button type="button" class="btn btn-primary save-btn-2">Simpan</button>
                 </div>
             </div>
         </div>

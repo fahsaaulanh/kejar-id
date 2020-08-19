@@ -11,15 +11,18 @@ class ChangeProfileController extends Controller
 {
     public function update(Request $req)
     {
-        $pc = session()->get('user.changePhotoOnBoarding');
-        if ((is_null($req->photo) && $pc === false) || (is_null($req->photo_onboarding) && $pc === true)) {
+
+        dd(session()->all(), $req->all());
+
+        if (session()->get('changePhotoOnBoarding') === true && $req->photo === null) {
+            session()->put('changePhotoOnBoarding', false);
+
             return redirect()->back();
         }
 
-        $photo = !is_null($req->photo) ? $req->photo : $req->photo_onboarding;
-        $img = Image::make($photo);
+        $img = Image::make($req->photo);
         $image = (string) $img->stream('data-url');
-        
+
         $payload = [
             'photo' => $image,
         ];
@@ -27,10 +30,9 @@ class ChangeProfileController extends Controller
         $meApi = new MeApi;
         $response = $meApi->update($payload);
 
-        session()->put('user.userable.photo', $response['data']['userable']['photo']);
-        session()->put('user.photoExistCheck', true);
-        session()->put('user.changePhotoOnBoarding', false);
+        session()->put('changePhotoOnBoarding', false);
+        session()->put('user', $response['data']);
 
-        return redirect()->back()->with('profile_updated', 'Foto profil berhasil diubah!');
+        return redirect()->back()->with('message', 'Foto profil berhasil diubah!');
     }
 }
