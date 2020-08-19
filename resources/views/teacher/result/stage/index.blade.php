@@ -74,7 +74,7 @@
                                 <td class="td-name" data-url="{{ secure_url('/teacher/games/'.$game['uri'].'/class/'.$batchId.'/'.$studentGroupId.'/stages/'.$item['id'].'/detail') }}" data-game="{{ $game['uri'] }}">
                                     {{ $item['name'] }}
                                     @php
-                                    $countActivity = $game['uri'] === 'obr' || $game['uri'] === 'menulisefektif' ? $item['progress'][0]['done'] : $item['progress'][0]['total_anwers'];
+                                        $countActivity = $game['uri'] === 'obr' ? collect($item['progress'])->sum('done') : collect($item['progress'])->sum('total_anwers');
                                     @endphp
                                     <span><strong>{{ $countActivity }}</strong> {{ $game['result'] }}</span>
                                 </td>
