@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
             }
 
             if ($exception->getStatusCode() >= 500) {
-                return response()->view('error.505', [], 505);
+                return response()->view('error.505', [], $exception->getStatusCode());
             }
         }
 
