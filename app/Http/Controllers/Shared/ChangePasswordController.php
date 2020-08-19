@@ -34,20 +34,20 @@ class ChangePasswordController extends Controller
                 ['password_baru' => 'Password baru tidak boleh sama dengan username.'],
             )->withInput(['password_baru' => $request->password_baru]);
         }
-
+        
         $meApi = new MeApi;
         $result = $meApi->update($payload);
-
+        
         if ($result['status'] === 200) {
             //update session password sudah diperbarui
-            $request->session()->put('PasswordMustBeChanged', false);
-
+            $request->session()->put('user.PasswordMustBeChanged', false);
+            
             $checkPhoto = session()->get('user.userable.photo');
 
             if (!$checkPhoto) {
-                Session::put('changePhotoOnBoarding', true);
+                $request->session()->put('user.changePhotoOnBoarding', true);
             }
-
+    
             Session::flash('message', 'Ubah password berhasil!');
         } else {
             $error = '';
@@ -65,18 +65,18 @@ class ChangePasswordController extends Controller
         return redirect()->back();
     }
 
-    public function skipInfo()
+    public function skip()
     {
         if (request()->type === 'password') {
             $checkPhoto = session()->get('user.userable.photo');
-
+            
             if (!$checkPhoto) {
-                session(['changePhotoOnBoarding' => true]);
+                request()->session()->put('user.changePhotoOnBoarding', true);
             }
 
-            request()->session()->put('PasswordMustBeChanged', false);
+            request()->session()->put('user.PasswordMustBeChanged', false);
         } elseif (request()->type === 'photo') {
-            session(['changePhotoOnBoarding' => false]);
+            request()->session()->put('user.changePhotoOnBoarding', false);
         }
 
         return redirect()->back();

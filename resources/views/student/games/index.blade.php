@@ -3,21 +3,28 @@
 @section('title', 'Permainan')
 
 @section('css')
-  <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.css')}}">
+  <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.min.css')}}">
 @endsection
 
-@section('content')
+@if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)
+@section('header')
+@endsection
+@endif
 
-    @if(Session::get('PasswordMustBeChanged') == true)
+@section('content')
+    @if(session('user.PasswordMustBeChanged') === true)
         <!-- form ganti password -->
         <div class="bg-lego">
             <div class="container-center">
                 <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
                     @csrf
                     @method('PATCH')
-                    <h3>Ganti Password <a href="{{ url('/student/skip-change-info?type=password') }}" class="close" data-dismiss="modal" aria-label="Close">
-                        <i class="kejar kejar-close"></i>
-                    </a></h3>
+                    <h3>Ganti Password 
+                        <a href="{{ url('/student/skip-change-info?type=password') }}" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="kejar kejar-close"></i>
+                        </a>
+                    </h3>
+                    
                     <div>
                         <p><strong>Password belum diganti, ganti dulu agar lebih aman.</strong></p>
                         <p>Password harus terdiri dari minimal 6 karakter, kombinasi huruf dan angka.</p>
@@ -55,23 +62,25 @@
             </div>
         </div>
         <div class="bg-lego-mobile"></div>
-    @elseif(Session::get('changePhotoOnBoarding') == true)
+    @elseif(session('user.changePhotoOnBoarding') === true)
         <!-- form ganti foto -->
         <div class="bg-lego">
             <div class="container-center">
-                <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
+                <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-profile')) }}" method="post" name="change_profile_onboarding">
                     @csrf
                     @method('PATCH')
                     <h3>Pasang Foto Profil <a href="{{ url('/student/skip-change-info?type=photo') }}" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </a></h3>
+                    
                     <div class="mt-5">
                         <p>Jadikan profilmu lebih keren dengan memasang foto. Gunakan foto yang baik, guru-gurumu akan melihat foto profil ini.</p>
                         <div class="form-group">
-                            <input type="file" id="drop-photo" onchange="changeDrop()" name="excel_file" class="dropify" data-allowed-file-extensions="jpg jpeg png"/>
+                            <input type="file" id="drop-photo" name="select_photo_onboarding" class="dropify" data-allowed-file-extensions="jpg jpeg png"/>
+                            <input type="hidden" name="photo_onboarding">
                         </div>
                     </div>
-                    <a href="{{ url('/student/skip-change-info?type=photo') }}" class="text-muted float-right mt-5">Lewati ></a>
+                    <a href="{{ url('/student/skip-change-info?type=photo') }}" class="text-muted text-decoration-none float-right mt-5">Lewati ></a>
                 </form>
             </div>
         </div>
@@ -116,37 +125,26 @@
     @endif
 @endsection
 
-@section('script')
-  <script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
-  <script type="text/javascript">
-    $('.dropify').dropify({
-        messages: {
-            'default': 'Pilih Foto',
-            'replace': 'Ubah Foto',
-            'remove':  'Hapus Foto',
-            'error':   'Error'
-        }
-    });
-
-    function changeDrop() {
-        $("#updateProfile").modal('toggle');
-
-
-        setInterval(function(){
-            var base64Img = $(".dropify-render").html()
-                                            .toString()
-                                            .replace('<img src="', '')
-                                            .replace('">', '');
-
-            $('.profile-pict-crop').attr('src',base64Img);
-
-            $('.profile-pict-crop').rcrop({
-                minSize : [200,200],
-                maxSize : [2000,2000],
-                preserveAspectRatio : true,
-                grid : true
-            });
-        }, 200);
+@push('script')
+<script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
+<script type="text/javascript">
+$('.dropify').dropify({
+    messages: {
+        'default': 'Pilih Foto',
+        'replace': 'Ubah Foto',
+        'remove':  'Hapus Foto',
+        'error':   'Error'
     }
-  </script>
-@endsection
+});
+
+$('input[name=select_photo_onboarding]').change(function(){
+    readURL(this);
+});
+</script>
+
+@if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)
+    <script>
+        $('#updatePassword').remove();
+    </script>
+@endif
+@endpush
