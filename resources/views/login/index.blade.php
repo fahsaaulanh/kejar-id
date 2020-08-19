@@ -19,9 +19,17 @@
                     </div>
                     <div class="form-group-last">
                         <label for="password">Password</label>
-                        <input type="password" name="password" class="form-control" id="password" autocomplete="off" placeholder="Ketik password">
+                        <div class="input-group input-group-password">
+                            <input type="password" name="password" class="form-control" id="password" autocomplete="off" placeholder="Ketik password">
+                            <div class="input-group-append">
+                                <button tabindex="-1" class="btn btn-outline-light" type="button"><i class="kejar-hide-password"></i></button>
+                            </div>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-login">MASUK</button>
+                    <div class="col-12 text-center">
+                        <label class="label">Untuk bantuan, hubungi CS Kejar.id <a href="https://wa.me/6282261997532" target="_blank">di sini</a></label>
+                    </div>
                 </form>
             </div>
         </div>
