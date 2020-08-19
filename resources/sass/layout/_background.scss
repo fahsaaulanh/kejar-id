@@ -23,8 +23,27 @@
 }
 
 .bg-blue-tp {
-    width: 100vw;
-    height: 100vh;
-    background: $blue-tp2;
-    background-size: cover;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    background-color: $blue-5 !important;
+    z-index: -1 !important;
+    overflow-y: auto !important;
+}
+
+.bg-grey {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    background: $grey-10 !important;
+    z-index: -1 !important;
+    overflow-y: auto !important;
 }

@@ -6,6 +6,7 @@ $grey-3: #334E68;
 $grey-6: #7C92A7;
 $grey-8:#ABBED4;
 $grey-9: #B7CCE4;
+$grey-10: #EDEDF6;
 $grey-13: #EBF1F6;
 $grey-15: #F4F6F9;;
 $white-2: #FBFBFB;
@@ -35,16 +36,3 @@ $deep-yellow: #FFD600;
 
 // background
 $teal-bg: #98D3E0;
-
-.bg-blue-tp {
-    position: fixed !important;
-    left: 0 !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0 !important;
-    background-color: $blue-5 !important;
-    z-index: -1 !important;
-    overflow-y: auto !important;
-}

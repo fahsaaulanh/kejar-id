@@ -50,8 +50,10 @@
 
         @yield('content')
 
+        @if (!is_null(session('user')))
         @include('shared._update_avatar')
         @include('shared._update_password')
+        @endif
 
         <!-- Modal -->
         <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logout" aria-hidden="true">
@@ -105,10 +107,12 @@
         gtag('config', 'UA-117909356-4');
     </script>
 
+    @if(!empty($errors))
     @if($errors->has('password_baru') OR $errors->has('konfirmasi_password') )
     <script>
         $('#updatePassword').modal('show');
     </script>
+    @endif
     @endif
 
     @if(Session::has('message'))
