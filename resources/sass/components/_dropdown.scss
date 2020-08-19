@@ -106,3 +106,12 @@
         display: none;
     }
 }
+
+	
+#rombelDropdown{
+    .dropdown-menu{
+        max-height: 385px; 
+        overflow: auto; 
+        z-index: 99 !important;
+    }
+}

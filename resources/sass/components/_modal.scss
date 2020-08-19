@@ -73,17 +73,28 @@
         }
     }
 
-    &#detailResultModal {
+    #detailResultModal{
         .modal-dialog{
-            top: initial !important;
-            bottom: 0 !important;
-            max-height: 50.4rem !important;
-            height: auto !important;
-            width: 100% !important;
-            position: absolute !important;
-            right: 0 !important;
-            left: 0 !important;
-        }
+            margin: 0 !important;
+            max-height: 100vh;
+            
+            .modal-content{
+                bottom: 0px;
+                max-height: 504px;
+                overflow: hidden;
+                
+                .modal-header{
+                    background: white !important;
+                    z-index: 1;
+                    padding: 1rem !important;
+                }
+
+                .modal-body{
+                    max-height: 504px;
+                    overflow: auto;
+                }
+            }
+        }   
     }
 
     .modal-dialog{
