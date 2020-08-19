@@ -6,13 +6,13 @@
   <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.min.css')}}">
 @endsection
 
-@if(Session::get('PaswordMustBeChanged') || Session::get('changePhotoOnBoarding'))
+@if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)
 @section('header')
 @endsection
 @endif
 
 @section('content')
-@if(Session::get('PasswordMustBeChanged'))
+@if(session('user.PasswordMustBeChanged') === true)
 <!-- form ganti password -->
 <div class="bg-lego">
     <div class="container-center">
@@ -62,11 +62,11 @@
     </div>
 </div>
 <div class="bg-lego-mobile"></div>
-@elseif(Session::get('changePhotoOnBoarding'))
+@elseif(session('user.changePhotoOnBoarding') === true)
 <!-- form ganti foto -->
 <div class="bg-lego">
     <div class="container-center">
-        <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
+        <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-profile')) }}" method="post" name="change_profile_onboarding">
             @csrf
             @method('PATCH')
             <h3>Pasang Foto Profil <a href="{{ url('/teacher/skip-change-info?type=photo') }}" class="close" data-dismiss="modal" aria-label="Close">
@@ -76,7 +76,8 @@
             <div class="mt-5">
                 <p>Pasang foto profil untuk memudahkan siswa dan sejawat guru mengenali profil Bapak/Ibu.</p>
                 <div class="form-group">
-                    <input type="file" id="drop-photo" onchange="changeDrop()" name="excel_file" class="dropify" data-allowed-file-extensions="jpg jpeg png"/>
+                    <input type="file" id="drop-photo" name="select_photo_onboarding" class="dropify" data-allowed-file-extensions="jpg jpeg png"/>
+                    <input type="hidden" name="photo_onboarding">
                 </div>
             </div>
             <a href="{{ url('/teacher/skip-change-info?type=photo') }}" class="text-muted text-decoration-none float-right mt-5">Lewati ></a>
@@ -116,22 +117,6 @@
                             </div>
                         </a>
                     </div>
-                    <!-- <div class="card-deck">
-                        <a href="{{ url('/teacher/games/toeicwords/class') }}" class="card">
-                            <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">TOEIC Words</h5>
-                                <p class="card-text">Kuasi 4000 kosakata yang sering muncul pada TOEIC.</p>
-                            </div>
-                        </a>
-                        <a href="{{ url('/teacher/games/menulisefektif/class') }}" class="card">
-                            <img src="{{ asset('assets/images/home/menulis-efektif.jpg') }}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Menulis Efektif</h5>
-                                <p class="card-text">Menulis kata yang tepat agar menjadi kalimat yang efektif.</p>
-                            </div>
-                        </a>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -152,29 +137,12 @@ $('.dropify').dropify({
     }
 });
 
-function changeDrop() {
-    $("#updateProfile").modal('toggle');
-
-
-    setInterval(function(){
-        var base64Img = $(".dropify-render").html()
-                                        .toString()
-                                        .replace('<img src="', '')
-                                        .replace('">', '');
-
-        $('.profile-pict-crop').attr('src',base64Img);
-        
-        $('.profile-pict-crop').rcrop({
-            minSize : [200,200],
-            maxSize : [2000,2000],
-            preserveAspectRatio : true,
-            grid : true
-        });
-    }, 200);
-}
+$('input[name=select_photo_onboarding]').change(function(){
+    readURL(this);
+});
 </script>
 
-@if(Session::get('PasswordMustBeChanged') || Session::get('changePhotoOnBoarding'))
+@if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)
     <script>
         $('#updatePassword').remove();
     </script>
