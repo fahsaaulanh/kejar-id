@@ -65,17 +65,6 @@ class HomeController extends Controller
         return view('teacher.games.index', $user);
     }
 
-    public function student(Request $request)
-    {
-        $user = $request->session()->get('user', null);
-
-        if ($user === null) {
-            return redirect('/login');
-        }
-
-        return view('student.games.index', $user);
-    }
-
     public function logout(Request $request)
     {
         $request->session()->flush();
