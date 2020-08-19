@@ -38,7 +38,7 @@
         </nav>
         <!-- Title -->
         <div class="page-title">
-            <div class="class-dropdown">
+            <div class="class-dropdown" id="rombelDropdown">
                 @php
                     if ($thisClass[0] == 'X') {
                         $gradeLatin = 10;
@@ -49,7 +49,7 @@
                     }
                 @endphp
                 <span>Kelas {{ $gradeLatin }} - </span>
-                <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-flip="false">
                     @if ($thisClass[0] !== '')
                     {{ $thisClass[1]['name'] }}
                     @else
@@ -103,14 +103,16 @@
                     @endforeach
                     <tr>
                         <td>
-                            @if ($totalTask === $taskCompeleted && $taskCompeleted !== 0)
-                            <i class="kejar-sudah-dikerjakan"></i>
-                            @elseif ($taskCompeleted !== 0)
-                            <i class="kejar-latihan-to-bold"></i>
-                            @else
-                            <i class="kejar-belum-mengerjakan-2"></i>
-                            @endif
-                            {{ $student['name'] }}
+                            <div class="text-elipsis">
+                                @if ($totalTask === $taskCompeleted && $taskCompeleted !== 0)
+                                <i class="kejar-sudah-dikerjakan"></i>
+                                @elseif ($taskCompeleted !== 0)
+                                <i class="kejar-latihan-to-bold"></i>
+                                @else
+                                <i class="kejar-belum-mengerjakan-2"></i>
+                                @endif
+                                {{ $student['name'] }}
+                            </div>
                         </td>
                         @forelse ($student['progress'] as $progress)
                         @if ($progress['is_done'] === true)

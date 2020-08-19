@@ -19,12 +19,12 @@
             </nav>
             <!-- Title -->
             <div class="page-title">
-                <div class="class-dropdown">
+                <div class="class-dropdown" id="rombelDropdown">
                     @php
                         $gradeLatin = $thisClass[0];
                     @endphp
                     <span class="mb-08rem">Ringkasan {{ $game['short'] }} - Kelas {{ $gradeLatin }} - </span>
-                    <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="dropdown-toggle" type="button" id="classDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-flip="false">
                         {{ $thisClass[1]['name'] }} <i class="kejar-show"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="classDropdown">
@@ -56,7 +56,7 @@
                         <thead>
                             <tr>
                                 <th class="th-name" rowspan="2">Nama Siswa</th>
-                                <th colspan="{{ count($cn) }}" class="text-center">Babak</th>
+                                <th colspan="{{ count($cn) }}" class="text-center stage-title-table"><div>Babak</div></th>
                             </tr>
                             <tr>
                                 @forelse ($cn as $i => $data)
@@ -72,7 +72,7 @@
                             @foreach ($responses as $item)
                             <tr class="result-icon remove-inherit">
                                 <td class="td-name" data-url="{{ secure_url('/teacher/games/'.$game['uri'].'/class/'.$batchId.'/'.$studentGroupId.'/stages/'.$item['id'].'/detail') }}" data-game="{{ $game['uri'] }}">
-                                    {{ $item['name'] }}
+                                    <div class="text-elipsis">{{ $item['name'] }}</div>
                                     @php
                                         $countActivity = $game['uri'] === 'obr' ? collect($item['progress'])->sum('done') : collect($item['progress'])->sum('total_anwers');
                                     @endphp
@@ -147,5 +147,18 @@
             });
         }
     });
+
+    resizingTableTitle();
+
+    $(window).resize(function(){
+        resizingTableTitle();
+    });
+
+    function resizingTableTitle() {
+        var tWidth = $('.table-responsive').width();
+        tWidth = (tWidth - 257);
+        $('.stage-title-table div').css({'width': tWidth + 'px' });
+    }
+
 </script>
 @endpush

@@ -1,6 +1,6 @@
 {{-- Modal Deskripsi Ronde --}}
 <div class="modal fade" id="detailDescriptionModal" tabindex="-1" role="dialog" aria-labelledby="detailDescriptionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content kotak justify-content-center">
           <div class="content">
               <div class="modal-header border-0">

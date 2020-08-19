@@ -460,3 +460,21 @@
         }
     }
 }
+
+.text-elipsis{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 24rem;
+    overflow: hidden;
+}
+
+.stage-title-table{
+    padding: 0px !important;
+    
+    div{
+        display: block;
+        position: sticky;
+        left: 24rem;
+        z-index: 1;
+    }
+}
