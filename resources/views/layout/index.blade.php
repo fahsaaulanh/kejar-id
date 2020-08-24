@@ -78,7 +78,7 @@
         </div>
 
         <!-- Alert Notification -->
-        <div class="toast p-3 border-0 shadow rounded bg-white" data-delay="5000">
+        <div class="toast p-3 border-0 shadow rounded bg-white hide" data-delay="5000">
             <div class="toast-header border-0">
                 <img src="{{ asset('assets/logo/favicon.png') }}" class="rounded mr-2" alt="...">
                 <strong class="mr-auto">Kejar.id</strong>
