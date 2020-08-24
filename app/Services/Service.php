@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 class Service
 {
     protected $token;
-    private $timeout = 15;
+    private $timeout = 25;
 
     public function __construct()
     {
