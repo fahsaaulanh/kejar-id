@@ -36,7 +36,7 @@
                 @foreach($questions as $key => $question)
                 <div class="question-item" data-index="{{ $key }}" data-number="{{ ++$key }}" data-repeatance="0" data-id="{{ $question['id'] }}">
                     <!-- Notification -->
-                    <div class="notification">
+                    <div class="notification @if($game === 'toeicwords') toeic-notification @endif">
                         <p class="notification-text notification-success">
                             <i class="kejar kejar-soal-benar"></i> Benar!
                         </p>
@@ -50,8 +50,16 @@
                         </p>
                         @endif
                     </div>
+                    <!-- Description For TOEIC Words Exam -->
+                    @if ($game == 'toeicwords')
+                    <div class="toeic-description">
+                        <h2 class="toeic-description-text">
+                            {{ $round['description'] }}
+                        </h2>
+                    </div>
+                    @endif
                     <!-- Question -->
-                    <div class="question">
+                    <div class="question @if($game == 'toeicwords') toeic-question @endif">
                         <h1 class="question-text">
                             @if($game == 'obr')
                                 {{ '$'. $question['question'] . '$' }}
@@ -66,7 +74,7 @@
                     </div>
                     <!-- Next Button -->
                     <div class="next-button">
-                        <button class="btn btn-next btn-next-disabled" disabled>Lanjut <i class="kejar kejar-next"></i></button>
+                        <button class="btn btn-next btn-next-disabled" disabled>LANJUT <i class="kejar kejar-next"></i></button>
                     </div>
                 </div>
                 @endforeach
