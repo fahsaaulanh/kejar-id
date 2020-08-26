@@ -140,19 +140,18 @@ class QuestionController extends Controller
             $roundQuestionApi = new RoundQuestion;
             $gameService = new Game;
             $gameParsed = $gameService->parse($game);
-
-            foreach ($request->input('question') as $question) {
-                if ($question['question'] !== null && $question['answer'] !== null) {
+            if ($game === 'MENULISEFEKTIF') {
+                if ($request['question.question'] !== null && $request['question.answer'] !== null) {
                     $collection = [
                         'owner' => 'KEJAR',
                         'subject_id'=> null,
                         'topic_id'=> null,
                         'bank'=> $gameParsed['short'],
-                        'type'=> 'MCQSA',
-                        'question'=> (string)strtolower($question['question']),
+                        'type'=> 'QSAT',
+                        'question'=> (string)strtolower($request['question.question']),
                         'choices'=> null,
-                        'answer'=> (string)strtolower($question['answer']),
-                        'explanation'=> (string)$question['explanation'],
+                        'answer'=> $request['question.answer'],
+                        'explanation'=> (string)$request['question.explanation'],
                         'level'=> 'LEVEL_1',
                         'status' => '2',
                         'created_by'=> session('user.id'),
@@ -161,7 +160,6 @@ class QuestionController extends Controller
                     $question = $questionApi->store($collection);
                     // update status to Valid
                     $questionApi->update($question['data']['id'], ['status' => '2']);
-
                     $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
                     $questionTotal = $roundQuestionMeta['total'] ?? 0;
 
@@ -172,6 +170,39 @@ class QuestionController extends Controller
                     ];
 
                     $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                }
+            } else {
+                foreach ($request->input('question') as $question) {
+                    if ($question['question'] !== null && $question['answer'] !== null) {
+                        $collection = [
+                            'owner' => 'KEJAR',
+                            'subject_id'=> null,
+                            'topic_id'=> null,
+                            'bank'=> $gameParsed['short'],
+                            'type'=> 'MCQSA',
+                            'question'=> (string)strtolower($question['question']),
+                            'choices'=> null,
+                            'answer'=> (string)strtolower($question['answer']),
+                            'level'=> 'LEVEL_1',
+                            'status' => '2',
+                            'created_by'=> session('user.id'),
+                        ];
+
+                        $question = $questionApi->store($collection);
+                        // update status to Valid
+                        $questionApi->update($question['data']['id'], ['status' => '2']);
+
+                        $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                        $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                        $payloadQS = [
+                            'question_id' => $question['data']['id'],
+                            'round_id' => $roundId,
+                            'order' => $questionTotal + 1,
+                        ];
+
+                        $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                    }
                 }
             }
         } catch (Throwable $th) {

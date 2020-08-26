@@ -58,7 +58,7 @@ class LoginController extends Controller
                 $schoolApi = new SchoolApi;
                 $responseSchool = $schoolApi->detail($responseMe['data']['userable']['school_id']);
                 $responseMe['data']['userable']['school_name'] = $responseSchool['data']['name'];
-                
+
                 // Mengambil nama kelas
                 $schoolId = $responseMe['data']['userable']['school_id'];
                 $studentGroupId = $responseMe['data']['userable']['student_group_id'];
@@ -119,7 +119,7 @@ class LoginController extends Controller
                 // Check password sudah diganti
                 $response = $userApi->login($responseMe['data']['username'], $responseMe['data']['username']);
                 $status = $response['status'] === 200;
-                
+
                 $responseMe['data']['PasswordMustBeChanged'] = $status;
                 $responseMe['data']['changePhotoOnBoarding'] = !$photoExist;
 
@@ -129,11 +129,9 @@ class LoginController extends Controller
             }
 
             if ($responseMe['data']['role'] === 'ADMIN') {
-                return redirect('/admin/games');
-            }
+                $request->session()->put('user', $responseMe['data']);
 
-            if ($responseMe['data']['role'] === 'TEACHER') {
-                return redirect('/teacher/games');
+                return redirect('/admin/games');
             }
         }
 

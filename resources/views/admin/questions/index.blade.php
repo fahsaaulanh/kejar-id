@@ -65,7 +65,7 @@
         </script>
     @endif
 
-    @if($game['uri'] == 'MENULISEFEKTIF')
+    @if($game['uri'] == 'menulisefektif')
         <div>
             <button class="btn-upload" data-toggle="modal" data-target="#create-menulis-efektif-question-modal">
                 <i class="kejar-add"></i>Input Soal
@@ -84,38 +84,26 @@
     @endif
 
     <!-- Table of questions -->
-    <div class="table-responsive">
-        <table class="table table-stripped table-questions">
-            <thead>
-                <th class="w-50">Soal</th>
-                <th class="w-50">Jawaban</th>
-            </thead>
-            <tbody>
-                @forelse($roundQuestionsData as $question)
-                <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}" data-url="{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                    <td>{{ $question['question']['question'] }}</td>
-                    <td>{{ $question['question']['answer'] }}</td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="2" class="text-center">Belum ada soal</td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-    @if($game['uri'] == 'MENULISEFEKTIF')
-            <strong>Ibu pergi kepasar</strong><br>
-            <strong>ayah juga pergi</strong>
+    @if($game['uri'] === 'menulisefektif')
+        @forelse($roundQuestionsData as $question)
+            <strong>{{ $question['question']['question'] }}</strong>
             <br><br>
-            <i class="kejar-soal-benar"></i> ayah dan ibu kepasar berdua. <hr class="border-0">
-            <i class="kejar-soal-benar"></i> ayah dan ibu kepasar berdua.
+            @if(is_array($question['question']['answer']) === true)
+                @forelse($question['question']['answer'] as $answer)
+                    <i class="kejar-soal-benar"></i> {!! $answer !!} <hr class="border-0">
+                @empty
+                    Belum ada jawaban
+                @endforelse
+            @else
+                <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
+            @endif
             <br> <br>
             <strong>Pembahasan :</strong>
-            <p>huruf nya kapital</p>
-            <p>huruf nya kapital</p>
-            <p>huruf nya kapital</p>
+            {!! $question['question']['explanation'] !!}
             <hr>
+        @empty
+            <strong>Belum ada soal</strong><br>
+        @endforelse
     @else
         <div class="table-responsive">
             <table class="table table-stripped table-questions">
