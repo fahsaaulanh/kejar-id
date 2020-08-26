@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Round as RoundApi;
 use App\Services\Task as TaskApi;
 use Illuminate\Http\Request;
+use Throwable;
 
 class MatrikulasiExamController extends Controller
 {
@@ -32,12 +33,19 @@ class MatrikulasiExamController extends Controller
         );
     }
 
-    public function checkAnswer(Request $request)
+    public function checkAnswer($game, Request $request)
     {
         $taskApi = new TaskApi;
 
+        $answer = $request->answer;
+
+        if ($game !== 'menulisefektif') {
+            $answer = strtolower($request->answer);
+        }
+
         $task = $taskApi
-                ->answer($request->task_id, $request->id, strtolower($request->answer) ?? 'empty')['data'] ?? [];
+                ->answer($request->task_id, $request->id, $answer ?? 'empty')['data'] ?? [];
+        
         $status = $task['is_correct'] ?? false;
         $answer = $task['correct_answer'] ?? '';
         if ($request->repeatance === 'true') {
@@ -48,6 +56,7 @@ class MatrikulasiExamController extends Controller
             'status' => $status,
             'answer' => $answer,
             'repeatance' => $request->repeatance === 'true',
+            'explanation' => $task['explanation'],
         ]);
     }
 
@@ -60,7 +69,7 @@ class MatrikulasiExamController extends Controller
         $task = $taskApi->finish($taskId)['data'] ?? [];
         
         if (count($task) < 1) {
-            return redirect('/student/games/' . $game . '/stages/' . $stageId . '/rounds');
+            return redirect("/student/games/$game/stages/$stageId/rounds");
         }
         
         $roundApi = new RoundApi;
@@ -82,16 +91,32 @@ class MatrikulasiExamController extends Controller
         }
         
         $nextRound = $roundsContainer[0] ?? [];
-    
-        return view('student.results.index', compact('task', 'nextRound', 'stageId', 'roundId', 'game'));
+
+        session()->flash('result', [
+            'task' => $task,
+            'nextRound' => $nextRound,
+            'stageId' => $stageId,
+            'roundId' => $roundId,
+            'game' => $game,
+        ]);
+
+        return redirect("/student/games/$game/stages/$stageId/rounds/$roundId/$taskId/result");
     }
 
-    public function getFinish($game, $stageId, $roundId, $taskId)
+    public function result($game, $stageId)
     {
-        $roundId;
-        $taskId;
-
-        return redirect('/student/games/' . $game . '/stages/' . $stageId . '/rounds');
+        try {
+            $result = session()->get('result');
+            $task = $result['task'];
+            $nextRound = $result['nextRound'];
+            $stageId = $result['stageId'];
+            $roundId = $result['roundId'];
+            $game = $result['game'];
+    
+            return view('student.results.index', compact('task', 'nextRound', 'stageId', 'roundId', 'game'));
+        } catch (Throwable $th) {
+            return redirect("/student/games/$game/stages/$stageId/rounds");
+        }
     }
 
     private function getTimer($roundId)

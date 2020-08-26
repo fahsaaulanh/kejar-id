@@ -276,41 +276,302 @@
     input[type=number] {
       -moz-appearance: textfield;
     }
-    /* Modal Exit */
-    #exitExamModal{
 
-        .modal-content{
-            padding: 32px !important;
+
+    .menulis-efektif{
+        .question{
+            margin-top: 6.4rem !important;
             
-            .modal-header{
+            .question-text{
+                font-size: 2rem !important;
+                font-weight: 500 !important;
+                line-height: 180% !important;
+                text-align: left;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                -o-user-select: none;
+                user-select: none;
+            }
 
-                .modal-title{
-                    @include h3;
-                    padding: 0px 15px;
+        }
+
+        .answer{
+            margin-top: 2.4rem !important;
+            
+            .answer-input{
+                height: 14.8rem !important;
+                width: 100% !important;
+                font-size: 2rem !important;
+                padding: 1.2rem 1.6rem !important;
+                box-shadow: inset 0px 1.5px 2px rgba(0, 0, 0, 0.1), inset 0px 2px 0px rgba(255, 255, 255, 0.15) !important;
+                border-radius: 0.4rem !important;
+                resize: none !important;
+                background: $blue-tp2;
+                border: 0 !important;
+                line-height: 180% !important;
+                text-align: left;
+                outline: none !important;
+                color: $black-1 !important;
+
+                &.benar{
+                    background: $green-tp;
                 }
 
-                .close{
-                    outline: none;
+                &.salah{
+                    background: $red-tp;
+                }
+            }
+        }
+
+        .exam-button{
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            margin: 5.6rem auto;
+
+            .answer-status{
+                font-weight: bold;
+                line-height: 112%;
+                font-size: 2.5rem;
+                display: flex;
+                align-items: center;
+
+                i{
+                    margin-right: 0.8rem;
+                    &::before{
+                        font-size: 2.5rem;
+                    }
+                }
+
+                &.benar{
+                    color: $green;
+                    i::before{
+                        color: $green;
+                    }
+                }
+
+                &.salah{
+                    color: $red-2;
+                    i{
+                        &::before{
+                            color: $red-2;
+                        }
+                    }
                 }
             }
 
-            .modal-body{
-                p{
-                    @include h5-reg;
+            .btn{
+                display: none;
+                background: $magenta;
+                padding: 2rem 2.4rem !important;
+                font-size: 2.5rem !important;
+                border: none !important;
+                color: $white !important;
+                display: flex !important;
+                align-items: center !important;
+
+                i{
+                    margin-left: 1.6rem !important;
+                    &::before{
+                        font-size: 2.5rem !important;
+                        color: $white !important;
+                    }
+                }
+
+                &:disabled{
+                    background: $grey-13 !important;
+                }
+
+                &:hover{
+                    background: $magenta-2;
+                }
+            }
+        }
+
+        .pembahasan {
+            display: none;
+            margin-bottom: 5.6rem;
+
+            h5{
+                display: block;
+                font-weight: bold;
+                font-size: 2rem;
+                line-height: 180%;
+                color: $grey-3;
+            }
+
+            pre{
+                white-space: pre-wrap;
+                font-size: 2rem;
+                font-weight: normal;
+                line-height: 180%;
+                color: $black-1;
+
+                ul{
+                    padding: 0px;
+                    list-style: none;
+
+                    li:before{
+                        content: '- ';
+                    }
                 }
             }
 
-            .modal-footer{
+            .alternative-answers {
+                margin-top: 2.4rem; 
+                position: relative; 
+                font-size: 2rem; 
+                line-height: 180%;
+
+                ul{
+                    padding: 0px;
+                    list-style: none;
+
+                    li{
+                        padding-left: 2rem;
+                        margin: 1.2rem;;
+
+                        i{
+                            position: absolute;
+                            left: 0;
+                            line-height: 180%;
+
+                            &::before{
+                                font-size: 2.5rem;
+                                color: $green;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: $mobile-breakpoint){
+            .question{
+                margin-top: 4.4rem !important;
+
+                .question-text{
+                    font-size: 1.5rem !important;
+                    line-height: 200% !important;
+                }
+            }
+
+            .answer{
+                .answer-input {
+                    font-size: 1.5rem !important;
+                    line-height: 200% !important;
+                }
+            }
+
+            .exam-button{
+                margin-top: 4rem;
+                margin-bottom: 2.4rem;
+
+                .answer-status{
+                    font-size: 1.7rem;
+                    line-height: 118%;
+                    
+                    i::before{
+                        line-height: 118%;
+                        font-size: 1.7rem;
+                    }
+
+                }
+
                 .btn{
-                    padding: 10px 12px;
-                    font-size: 15px;
+                    font-size: 1.9rem !important;
+                    padding: 1.6rem 2rem !important;
+
+                    i{
+                        &::before{
+                            font-size: 1.9rem !important;
+                        }
+                    }
                 }
-                
-                .btn-transparent{
-                    background-color: transparent !important;
+            }
+
+            .pembahasan{
+                margin-bottom: 4rem;
+
+                h5{
+                    font-size: 1.7rem;
+                    line-height: 141%;
+                }
+
+                pre{
+                    font-size: 1.7rem;
+                    line-height: 141%;
+                }
+
+                .alternative-answers{
+                    font-size: 1.7rem;
+                    line-height: 141%;
+
+                    ul li {
+                        line-height: 141%;
+                        padding-left: 1.5rem; 
+
+                        i{  
+                            line-height: 141%;
+                            &::before{
+                                font-size: 1.7rem !important;
+                            }
+
+                        }
+                    }
+
                 }
             }
         }
     }
 }
 
+/* Modal Exit */
+#exitExamModal{
+
+    .modal-content{
+        padding: 0rem;
+        .modal-header{
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3.2rem !important;
+
+            .modal-title{
+                margin: 0rem;
+                @include h3;
+            }
+
+            .close{
+                margin: 0rem;
+                outline: none;
+            }
+        }
+
+        .modal-body{
+            position: relative;
+            margin: 0rem;
+            padding: 3.2rem !important;
+            p{
+                font-size: 1.5rem;
+                font-weight: normal;
+                color: $grey-2;
+                line-height: 160%;
+            }
+        }
+
+        .modal-footer{
+            padding: 2.5rem 3.2rem !important;
+            .btn{
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+            
+            .btn-transparent{
+                background-color: transparent !important;
+            }
+        }
+    }
+}

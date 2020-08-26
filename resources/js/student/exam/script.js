@@ -55,6 +55,10 @@ $(document).ready(function(){
                 } else{
                     wrongAnswer(response.answer);
                 }
+            },
+            error: function () {
+                alert('Ups! Sepertinya ada yang salah.');
+                location.reload();
             }
         });
     }
