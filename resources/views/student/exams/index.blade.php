@@ -62,7 +62,7 @@
                     </div>
                     <!-- Answer Input -->
                     <div class="answer">
-                        <input type="text" class="answer-input" name="answer[{{ $key }}]" data-status="false" autocomplete="off">
+                        <input type="text" class="answer-input" name="answer[{{ $key }}]" data-status="false" autocomplete="off" @if($game==="obr") inputmode="tel" @endif>
                     </div>
                     <!-- Next Button -->
                     <div class="next-button">
