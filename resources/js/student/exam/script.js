@@ -14,8 +14,10 @@ $(document).ready(function(){
         $('.timer-length').css({'background' : '#4DC978', 'width' : '100%'});
         $(el).find('.btn-next').addClass('btn-next-disabled').prop('disabled', true);
         $(el).find('.answer-input').css({'border-bottom-color': '#A6D1FF'}).val('').removeAttr('readonly').focus();
-        $(el).find('.notification-success').css({'display' : 'none'})
+        $(el).find('.notification-success').css({'display' : 'none'});
         $(el).find('.notification-failed').css({'display' : 'none'});
+        $(el).find('.toeic-description').css('display', 'block');
+        $(el).find('.toeic-notification').css({'display' : 'none'});
 
         countDown();
     }
@@ -69,6 +71,8 @@ $(document).ready(function(){
 
         $('.timer-length').css({'background': '#FF4343'});
         $(el).find('.answer-input').css({'border-bottom-color': '#FF4343'});
+        $(el).find('.toeic-description').css('display', 'none');
+        $(el).find('.toeic-notification').css({'display' : 'block'});
         $(el).find('.notification-failed').css({'display': 'block'});
         $(el).find('.seharusnya').css({'display': 'block'}).text(answer);
         setTimeout(() => {
@@ -94,6 +98,8 @@ $(document).ready(function(){
     function rightAnswer() {
         var questions = $('.question-list .question-item');
 
+        $(questions[i]).find('.toeic-description').css('display', 'none');
+        $(questions[i]).find('.toeic-notification').css({'display' : 'block'});
         $(questions[i]).find('.notification-success').css({'display': 'block'});
         $(questions[i]).find('.answer-input').attr('data-status', 'true');
 

@@ -114,7 +114,7 @@
     }
     .question .question-text{
         text-align: center;
-        font-size: 64px !important;
+        font-size: 64px;
         line-height: initial;
         color: #202020;
     }
@@ -139,8 +139,7 @@
     
     /* Next Button */
     .next-button{
-        margin: 0 auto;
-        margin-top: 56px;
+        margin: 5.6rem auto;
         padding: 12px 16px;
         font-size: 17px;
         text-align: center;
@@ -187,14 +186,14 @@
     }
     
     
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: $mobile-breakpoint) {
         .exam-navbar{
             margin-top: 20px;
         }
 
         /* Question */
         .question .question-text{
-            font-size: 28px !important;
+            font-size: 28px;
         }
         /* Answer Input */
         .answer .answer-input{
@@ -203,6 +202,10 @@
     
         .timer-stick{
             width: 100%;
+        }
+
+        .next-button {
+            margin: 4rem auto;
         }
     
         .next-button .btn-next{
@@ -572,6 +575,47 @@
             .btn-transparent{
                 background-color: transparent !important;
             }
+        }
+    }
+}
+
+.toeic-notification {
+    position: relative !important;
+    margin-top: 6.4rem !important;
+}
+
+.toeic-description {
+    background: $blue-tp2;
+    padding: 2.4rem 3.2rem;
+    margin-top: 6.4rem;
+
+    .toeic-description-text{
+        font-size: 2.2rem !important;
+        text-align: center;
+        font-weight: normal !important;
+    }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+        margin-top: 6rem;
+
+        .toeic-description-text {
+            font-size: 1.7rem !important;
+        }
+    }
+}
+
+.toeic-question {
+    margin-top: 3.2rem !important;
+
+    .question-text {
+        font-size: 2.4rem !important;
+        text-align: left !important;
+        font-weight: 500 !important;
+    }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+        .question-text {
+            font-size: 1.7rem !important;
         }
     }
 }
