@@ -44,12 +44,12 @@ class MatrikulasiExamController extends Controller
         }
 
         $task = $taskApi
-                ->answer($request->task_id, $request->id, $answer ?? 'empty')['data'] ?? [];
+                ->answer($request->task_id, $request->id, $answer ?? 'null')['data'] ?? [];
         
         $status = $task['is_correct'] ?? false;
         $answer = $task['correct_answer'] ?? '';
         if ($request->repeatance === 'true') {
-            $taskApi->answer($request->task_id, $request->id, 'empty')['data'] ?? [];
+            $taskApi->answer($request->task_id, $request->id, 'null')['data'] ?? [];
         }
 
         return response()->json([

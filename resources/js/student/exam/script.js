@@ -38,6 +38,8 @@ $(document).ready(function(){
         var urlCheck = $('.question-list').data('check');
         $(el).find('.answer-input').attr('readonly', true);
         $(el).find('.btn-next').addClass('btn-next-disabled').prop('disabled', true);
+        var answerInput = $(el).find('.answer-input').val();
+        answerInput = answerInput === '' ? 'null' : answerInput;
 
         $.ajax({
             type: "POST",
@@ -46,7 +48,7 @@ $(document).ready(function(){
                 '_token' : $('input[name="_token"]').val(),
                 'id' : $(el).data('id'),
                 'task_id' : $('.question-list').data('task'),
-                'answer' : $(el).find('.answer-input').val(),
+                'answer' : answerInput,
                 'repeatance' : $(el).find('.answer-input').data('status'),
             },
             dataType: "JSON",
