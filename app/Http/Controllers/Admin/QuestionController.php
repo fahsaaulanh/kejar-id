@@ -49,6 +49,13 @@ class QuestionController extends Controller
         $gameService = new Game;
         $game = $gameService->parse($game);
 
+        if ($game['uri'] === 'toeicwords') {
+            return view(
+                'admin.questions.toeic.index',
+                compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
+            );
+        }
+
         return view(
             'admin.questions.index',
             compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
