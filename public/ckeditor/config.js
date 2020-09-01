@@ -27,8 +27,20 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// The default plugins included in the basic setup define some buttons that
 	// are not needed in a basic editor. They are removed here.
-	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript';
+	config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Strike,Subscript,Superscript';
 
 	// Dialog windows are also simplified.
 	config.removeDialogTabs = 'link:advanced';
+	config.extraPlugins = 'confighelper';
+
+	myFonts = ['Roboto Mono'];
+
+	config.font_names = 'monospace;';
+
+	for(var i = 0; i<myFonts.length; i++){
+		config.font_names = config.font_names+';'+myFonts[i];
+		myFonts[i] = 'http://fonts.googleapis.com/css?family='+myFonts[i].replace(' ','+');
+	}
+
+	config.contentsCss = ['/ckeditor/contents.css'].concat(myFonts);
 };

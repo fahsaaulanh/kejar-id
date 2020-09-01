@@ -13,13 +13,13 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="title">Soal</label>
-                        <textarea type="text" style="resize: none; height: 6rem;" name="question[question]" placeholder="Ketik soal" required></textarea>
+                        <textarea class="textarea-question" name="question[question]" placeholder="Ketik soal" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="answer">Jawaban</label>
                         <p>Semua alternatif jawaban dianggap benar.</p>
                         <div id="new_answer">
-                            <textarea type="text" style="resize: none; height: 6rem;" name="question[answer][0]" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban 1"></textarea><hr class="border-0">
+                            <textarea class="textarea-answer" name="question[answer][0]" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban 1"></textarea>
                         </div>
                         <button class="btn btn-add border-0" id="btn-add-alternative-answer" type="button">
                             <i class="kejar-add"></i> Tambah alternatif jawaban
@@ -28,6 +28,23 @@
                     <div class="form-group">
                         <label for="discussion">Pembahasan</label>
                         <textarea name="question[explanation]" id="summary-ckeditor" cols="30" rows="3" placeholder="Ketik Pembahasan"></textarea>
+                        <div class="ckeditor-btn-group">
+                            <button type="button" class="bold-btn">
+                                <i class="kejar-bold"></i>
+                            </button>
+                            <button type="button" class="italic-btn">
+                                <i class="kejar-italic"></i>
+                            </button>
+                            <button type="button" class="underline-btn">
+                                <i class="kejar-underlined"></i>
+                            </button>
+                            <button type="button" class="bullet-list-btn">
+                                <i class="kejar-bullet"></i>
+                            </button>
+                            <button type="button" class="number-list-btn">
+                                <i class="kejar-number"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -42,5 +59,7 @@
 </div>
 <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
 <script>
-CKEDITOR.replace( 'summary-ckeditor' );
+var config = {};
+config.placeholder = 'Ketik Pembahasan';
+CKEDITOR.replace('summary-ckeditor', config);
 </script>

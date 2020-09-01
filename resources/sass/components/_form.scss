@@ -1,6 +1,15 @@
 
 
 form {
+    .textarea-question, .textarea-answer{
+        resize: none;
+        height: 6rem;
+    }
+
+    .textarea-answer{
+        margin-bottom: 1.6rem;
+    }
+
     label {
         @include h5;
         margin-bottom: 0.8rem;

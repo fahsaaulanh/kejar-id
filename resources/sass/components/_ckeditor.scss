@@ -1,0 +1,31 @@
+.cke_chrome{
+    border: 0.2rem solid $grey-13 !important;
+
+    #cke_1_top{
+        display: none !important;
+    }
+}
+
+.cke_editable{
+    font-size: 1.5rem !important;
+    color: $grey-6 !important;
+    font-family: $font-family-monospace !important;
+}
+
+.ckeditor-btn-group{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 0.8rem;
+
+    button{
+        display: inline-block;
+        width: 4rem;
+        height: 4rem;
+        border: 0;
+        margin: 0;
+        text-align: center;
+        font-size: 1.8rem;
+        background-color: $grey-15;
+    }
+}
