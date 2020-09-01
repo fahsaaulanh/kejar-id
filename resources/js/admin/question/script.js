@@ -18,8 +18,7 @@ $(document).on('click', '.btn-add', function(){
 
 $(document).on('click', '#btn-add-alternative-answer', function(){
     var index = $('.form-group #new_answer textarea').length;
-    
-    $('#new_answer').append('<textarea type="text" style="resize: none; height: 6rem;" name="question[answer][' + index + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (index+1) +'"></textarea><hr class="border-0">');
+    $('#new_answer').append('<div class="d-flex justify-content-start align-items-start"><textarea class="textarea-answer" name="question[answer][' + index + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (index+1) +'"></textarea><button class="btn-delete-answer" type="button"><i class="kejar-close"></i></button></div>');
 });
 
 $(document).on('change', 'input[type=file]', function(){
@@ -80,3 +79,27 @@ function textToClipboard (text) {
     document.execCommand("copy");
     document.body.removeChild(dummy);
 }
+
+$(document).on('click', '.bold-btn', function(){
+    $('.cke_button__bold').click();
+});
+
+$(document).on('click', '.italic-btn', function(){
+    $('.cke_button__italic').click();
+});
+
+$(document).on('click', '.underline-btn', function(){
+    $('.cke_button__underline').click();
+});
+
+$(document).on('click', '.number-list-btn', function(){
+    $('.cke_button__numberedlist').click();
+});
+
+$(document).on('click', '.bullet-list-btn', function(){
+    $('.cke_button__bulletedlist').click();
+});
+
+$(document).on('click', '.btn-delete-answer', function(){
+    $(this).parent().remove();
+});

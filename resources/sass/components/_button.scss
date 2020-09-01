@@ -10,6 +10,14 @@
     }
 }
 
+.btn-delete-answer{
+    display: inline-block;
+    border: 0;
+    background-color: transparent;
+    width: 4rem;
+    height: 4rem;
+}
+
 .btn-login {
     background: $magenta;
     padding: 0.8rem 1.6rem;

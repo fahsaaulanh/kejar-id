@@ -148,7 +148,14 @@ class QuestionController extends Controller
             $gameService = new Game;
             $gameParsed = $gameService->parse($game);
             if ($game === 'MENULISEFEKTIF') {
-                if ($request['question.question'] !== null && $request['question.answer'] !== null) {
+                $answers = [];
+                foreach ($request['question.answer'] as $answer) {
+                    if (!is_null($answer)) {
+                        $answers[] = $answer;
+                    }
+                }
+
+                if (!is_null($request['question.question']) && count($answers) !== 0) {
                     $collection = [
                         'owner' => 'KEJAR',
                         'subject_id'=> null,
@@ -157,16 +164,22 @@ class QuestionController extends Controller
                         'type'=> 'QSAT',
                         'question'=> (string)strtolower($request['question.question']),
                         'choices'=> null,
-                        'answer'=> $request['question.answer'],
-                        'explanation'=> (string)$request['question.explanation'],
+                        'answer'=> $answers,
                         'level'=> 'LEVEL_1',
-                        'status' => '2',
-                        'created_by'=> session('user.id'),
+                        'created_by' => session('user.id'),
+                    ];
+  
+                    $question = $questionApi->store($collection);
+
+                    $updateData = [
+                        'explanation' => (string)$request['question.explanation'],
+                        'explained_by' => session('user.id'),
+                        'tags' => ['explanation'],
+                        'note' => 'explanation',
                     ];
 
-                    $question = $questionApi->store($collection);
-                    // update status to Valid
-                    $questionApi->update($question['data']['id'], ['status' => '2']);
+                    $questionApi->update($question['data']['id'], $updateData);
+                    $questionApi->update($question['data']['id'], ['status' => 2]);
                     $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
                     $questionTotal = $roundQuestionMeta['total'] ?? 0;
 
