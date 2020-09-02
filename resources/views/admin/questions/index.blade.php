@@ -97,9 +97,12 @@
             @else
                 <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
             @endif
-            <br> <br>
+            <br><br>
             <strong>Pembahasan :</strong>
-            {!! $question['question']['explanation'] !!}
+            <br><br>
+            <div class="explanation-text">
+                {!! $question['question']['explanation'] !!}
+            </div>
             <hr>
         @empty
             <strong>Belum ada soal</strong><br>

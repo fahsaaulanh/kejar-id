@@ -81,24 +81,73 @@ function textToClipboard (text) {
 }
 
 $(document).on('click', '.bold-btn', function(){
-    $('.cke_button__bold').click();
+    $('.ck-toolbar__items button:eq(0)').click();
+    checkActive();
 });
 
 $(document).on('click', '.italic-btn', function(){
-    $('.cke_button__italic').click();
+    $('.ck-toolbar__items button:eq(1)').click();
+    checkActive();
 });
 
 $(document).on('click', '.underline-btn', function(){
-    $('.cke_button__underline').click();
-});
-
-$(document).on('click', '.number-list-btn', function(){
-    $('.cke_button__numberedlist').click();
+    $('.ck-toolbar__items button:eq(2)').click();
+    checkActive();
 });
 
 $(document).on('click', '.bullet-list-btn', function(){
-    $('.cke_button__bulletedlist').click();
+    $('.ck-toolbar__items button:eq(3)').click();
+    checkActive();
 });
+
+$(document).on('click', '.number-list-btn', function(){
+    $('.ck-toolbar__items button:eq(4)').click();
+    checkActive();
+});
+
+$(document).on('click', '.photo-btn', function(){
+    $('.ck-toolbar__items span button').click();
+});
+
+$(document).on('click', '.ck-content p, .ck-content ul li, .ck-content ol li', function(){
+    checkActive();
+});
+
+$(document).keydown(function(e){
+    checkActive();
+});
+
+function checkActive(){
+    if ($('.ck-toolbar__items button:eq(0)').hasClass('ck-on')) {
+        $('.bold-btn').addClass('active');
+    } else {
+        $('.bold-btn').removeClass('active');
+    }
+
+    if ($('.ck-toolbar__items button:eq(1)').hasClass('ck-on')) {
+        $('.italic-btn').addClass('active');
+    } else {
+        $('.italic-btn').removeClass('active');
+    }
+
+    if ($('.ck-toolbar__items button:eq(2)').hasClass('ck-on')) {
+        $('.underline-btn').addClass('active');
+    } else {
+        $('.underline-btn').removeClass('active');
+    }
+
+    if ($('.ck-toolbar__items button:eq(3)').hasClass('ck-on')) {
+        $('.bullet-list-btn').addClass('active');
+    } else {
+        $('.bullet-list-btn').removeClass('active');
+    }
+
+    if ($('.ck-toolbar__items button:eq(4)').hasClass('ck-on')) {
+        $('.number-list-btn').addClass('active');
+    } else {
+        $('.number-list-btn').removeClass('active');
+    }
+}
 
 $(document).on('click', '.btn-delete-answer', function(){
     $(this).parent().remove();
