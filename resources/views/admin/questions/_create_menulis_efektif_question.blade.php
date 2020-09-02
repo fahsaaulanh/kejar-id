@@ -27,22 +27,25 @@
                     </div>
                     <div class="form-group">
                         <label for="discussion">Pembahasan</label>
-                        <textarea name="question[explanation]" id="summary-ckeditor" cols="30" rows="3" placeholder="Ketik Pembahasan"></textarea>
+                        <textarea name="question[explanation]" id="editor" cols="30" rows="3" placeholder="Ketik Pembahasan"></textarea>
                         <div class="ckeditor-btn-group">
-                            <button type="button" class="bold-btn">
+                            <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
                             </button>
-                            <button type="button" class="italic-btn">
+                            <button type="button" class="italic-btn" title="Italic (Ctrl + I)">
                                 <i class="kejar-italic"></i>
                             </button>
-                            <button type="button" class="underline-btn">
+                            <button type="button" class="underline-btn" title="Underline (Ctrl + U)">
                                 <i class="kejar-underlined"></i>
                             </button>
-                            <button type="button" class="bullet-list-btn">
+                            <button type="button" class="bullet-list-btn" title="Bulleted list">
                                 <i class="kejar-bullet"></i>
                             </button>
-                            <button type="button" class="number-list-btn">
+                            <button type="button" class="number-list-btn" title="Number list">
                                 <i class="kejar-number"></i>
+                            </button>
+                            <button type="button" class="photo-btn" title="Masukkan foto">
+                                <i class="kejar-photo"></i>
                             </button>
                         </div>
                     </div>
@@ -57,9 +60,57 @@
         </form>
     </div>
 </div>
-<script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script>
 <script>
-var config = {};
-config.placeholder = 'Ketik Pembahasan';
-CKEDITOR.replace('summary-ckeditor', config);
+    ClassicEditor
+        .create( document.querySelector( '#editor' ), {
+            toolbar: {
+                items: [
+                    'bold',
+                    'italic',
+                    'underline',
+                    'bulletedList',
+                    'numberedList',
+                    'imageUpload'
+                ]
+            },
+            language: 'en',
+            image: {
+                styles: [
+                    'alignLeft', 'alignCenter', 'alignRight'
+                ],
+                resizeOptions: [
+                    {
+                        name: 'imageResize:original',
+                        label: 'Original',
+                        value: null
+                    },
+                    {
+                        name: 'imageResize:50',
+                        label: '50%',
+                        value: '50'
+                    },
+                    {
+                        name: 'imageResize:75',
+                        label: '75%',
+                        value: '75'
+                    }
+                ],
+                toolbar: [
+                    'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                    '|',
+                    'imageResize',
+                ],
+            },
+            licenseKey: '',
+        } )
+        .then( editor => {
+            window.editor = editor;
+        } )
+        .catch( error => {
+            console.error( 'Oops, something went wrong!' );
+            console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+            console.warn( 'Build id: nekgv7mmfgzn-cehsg6b07p1b' );
+            console.error( error );
+        } );
 </script>

@@ -1,15 +1,48 @@
-.cke_chrome{
+.ck-editor{
     border: 0.2rem solid $grey-13 !important;
 
-    #cke_1_top{
+    .ck-editor__top{
         display: none !important;
     }
 }
 
-.cke_editable{
-    font-size: 1.5rem !important;
-    color: $grey-6 !important;
-    font-family: $font-family-monospace !important;
+.ck.ck-editor__editable_inline{
+    padding: 0rem 1.6rem !important;
+}
+
+.ck-editor__main{
+    min-height: 9.6rem !important;
+}
+
+.ck.ck-editor__main>.ck-editor__editable:not(.ck-focused){
+    border-color: transparent !important;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused{
+    border: 0 !important;
+    box-shadow: 0px 0px transparent !important;
+}
+
+.ck-content {
+    p{
+        font-size: 1.5rem !important;
+        color: $grey-6 !important;
+        font-family: $font-family-monospace !important;
+    }
+
+    i{
+        font-family: $font-family-monospace !important;
+        font-style: italic !important;
+        line-height: 1.6rem !important;
+    }
+
+    ol li, ul li{
+        color: $grey-6 !important;
+    }
+}
+
+.ck.ck-balloon-panel{
+    z-index: 99999 !important;
 }
 
 .ckeditor-btn-group{
@@ -27,5 +60,37 @@
         text-align: center;
         font-size: 1.8rem;
         background-color: $grey-15;
+
+        &.active, &:hover{
+            background-color: $blue-tp;
+
+            i:before{
+                color: $purple;
+            }
+        }
+    }
+}
+
+.explanation-text{
+    display: table-cell;
+
+    i{
+        font-family: $font-family-monospace !important;
+        font-style: italic !important;
+        line-height: 1.6rem !important;
+    }
+
+    .image-style-align-left{
+        float: left;
+        margin-right: 3rem;
+    }
+
+    .image-style-align-right{
+        float: right;
+        margin-left: 3rem;
+    }
+
+    img{
+        width: 100%;
     }
 }
