@@ -374,6 +374,7 @@
                 color: $white !important;
                 display: flex !important;
                 align-items: center !important;
+                line-height: 112%;
 
                 i{
                     margin-left: 1.6rem !important;
@@ -405,8 +406,7 @@
                 color: $grey-3;
             }
 
-            pre{
-                white-space: pre-wrap;
+            .explanation-text{
                 font-size: 2rem;
                 font-weight: normal;
                 line-height: 180%;
@@ -486,6 +486,7 @@
                 .btn{
                     font-size: 1.9rem !important;
                     padding: 1.6rem 2rem !important;
+                    line-height: 126%;
 
                     i{
                         &::before{

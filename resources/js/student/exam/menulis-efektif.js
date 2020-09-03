@@ -22,6 +22,7 @@ $(document).ready(function(){
     function checkAnswer() {
         var questions = $('.question-list .question-item');
         $(questions[i]).find('.answer-input').prop('readonly', true).focus();
+        $(questions[i]).find('.btn-check').text('Mengecek ...');
         $('.timer-length').stop();
 
         var urlCheck = $('.question-list').data('check');
@@ -46,7 +47,7 @@ $(document).ready(function(){
                 }
 
                 $(questions[i]).find('.pembahasan').css('display', 'block');
-                $(questions[i]).find('.pembahasan').find('pre').html(response.explanation);
+                $(questions[i]).find('.pembahasan').find('.explanation-text').html(response.explanation);
 
                 let alternativeAnswers = '';
 
@@ -63,8 +64,8 @@ $(document).ready(function(){
                 $(questions[i]).find('.pembahasan').find('.alternative-answers ul').html(alternativeAnswers);
         
                 if (($('.question-list .question-item').length - 1) !== i) {
-                    $(questions[i]).find('.btn-check').blur();
                     $(questions[i]).find('.btn-check').prop('disabled', false);
+                    $(questions[i]).find('.btn-check').blur();
                     $(questions[i]).find('.btn-check').html('LANJUT <i class="kejar kejar-next"></i>').addClass('btn-lanjut');
                     $(questions[i]).find('.btn-check').removeClass('btn-check');
                 } else {

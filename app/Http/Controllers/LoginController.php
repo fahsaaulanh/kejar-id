@@ -91,6 +91,10 @@ class LoginController extends Controller
                 $response = $userApi->login($responseMe['data']['username'], $responseMe['data']['username']);
                 $status = $response['status'] === 200;
 
+                if ($status === false) {
+                    $photoExist = true;
+                }
+            
                 $responseMe['data']['PasswordMustBeChanged'] = $status;
                 $responseMe['data']['changePhotoOnBoarding'] = !$photoExist;
 
