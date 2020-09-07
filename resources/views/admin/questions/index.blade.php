@@ -70,7 +70,7 @@
             <button class="btn-upload" data-toggle="modal" data-target="#create-menulis-efektif-question-modal">
                 <i class="kejar-add"></i>Input Soal
             </button>
-            <hr>
+            <hr class="border-line">
         </div>
     @else
         <div class="upload-buttons">
@@ -86,24 +86,26 @@
     <!-- Table of questions -->
     @if($game['uri'] === 'menulisefektif')
         @forelse($roundQuestionsData as $question)
-            <strong>{{ $question['question']['question'] }}</strong>
-            <br><br>
-            @if(is_array($question['question']['answer']) === true)
-                @forelse($question['question']['answer'] as $answer)
-                    <i class="kejar-soal-benar"></i> {!! $answer !!} <hr class="border-0">
-                @empty
-                    Belum ada jawaban
-                @endforelse
-            @else
-                <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
-            @endif
-            <br><br>
-            <strong>Pembahasan :</strong>
-            <br><br>
-            <div class="explanation-text">
-                {!! $question['question']['explanation'] !!}
+            <div class="question-list-item" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                <strong>{{ $question['question']['question'] }}</strong>
+                <br><br>
+                @if(is_array($question['question']['answer']) === true)
+                    @forelse($question['question']['answer'] as $answer)
+                        <i class="kejar-soal-benar"></i> {!! $answer !!} <hr class="border-0">
+                    @empty
+                        Belum ada jawaban
+                    @endforelse
+                @else
+                    <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
+                @endif
+                <br><br>
+                <strong class="explanation-title">Pembahasan :</strong>
+                <br><br>
+                <div class="explanation-text">
+                    {!! $question['question']['explanation'] !!}
+                </div>
+                <hr class="border-line">
             </div>
-            <hr>
         @empty
             <strong>Belum ada soal</strong><br>
         @endforelse
@@ -160,8 +162,10 @@
 @include('admin.questions._update_direction')
 @include('admin.questions._update_question')
 @include('admin.questions._create_menulis_efektif_question')
+@include('admin.questions._update_menulis_efektif_question')
 @endsection
 
 @push('script')
+<script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script>
 <script src="{{ mix('/js/admin/question/script.js') }}"></script>
 @endpush

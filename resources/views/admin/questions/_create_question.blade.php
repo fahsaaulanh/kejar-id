@@ -26,13 +26,13 @@
                                     </td>
                                 </tr>
                             </tbody>
-                            <thead class="table-form-footer">
+                            <tfoot class="table-form-footer">
                                 <th colspan="2">
-                                    <button class="btn-add" type="button">
+                                    <button class="btn-add" type="button" data-type="general">
                                         <i class="kejar-add"></i> Tambah Soal
                                     </button>
                                 </th>
-                            </thead>
+                            </tfoot>
                         </table>
                     </div>
                 </form>

@@ -383,6 +383,10 @@
                     padding-left: 0.5rem;
                 }
             }
+
+            &:first-child td{
+                padding-top: 1rem;
+            }
         }
     }
 }
@@ -396,7 +400,7 @@
         th{
             border: 0;
             background: none;
-            padding: 0 !important;
+            padding: 0.8rem 0;
         }
     }
 }
@@ -444,19 +448,47 @@
     width: 100%;
     border: 0rem !important;
     max-width: 68rem;
+
     thead{
         border: 0rem;
+
         th{
             @include h5;
             background-color: $grey-15;
             padding: 1rem;
             border: 0rem;
+
             &.a{
                 width: 66.7%;
             }
             &.b{
                 width: 33.4%;
             }
+        }
+    }
+
+    tbody{
+        &.pointer{
+            tr{
+                cursor: pointer;
+            }
+        }
+
+        td{
+            border: 0;
+            border-bottom: 0.2rem solid $grey-15;
+        }
+    }
+}
+
+.table-borderless tr td{
+    border: 0 !important;
+}
+
+.table-questions{
+    tbody{
+        tr{
+            cursor: pointer;
         }
     }
 }

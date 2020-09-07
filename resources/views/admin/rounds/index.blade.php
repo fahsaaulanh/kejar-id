@@ -30,14 +30,20 @@
             alert("{!! \Session::get('success') !!}");
         </script>
     @endif
-    <div class="upload-buttons">
+    @if ($game['uri'] == 'menulisefektif')
         <button class="btn-upload" data-toggle="modal" data-target="#uploadRoundModal">
             <i class="kejar-upload"></i>Unggah Ronde
         </button>
-        <button class="btn-upload" data-toggle="modal" data-target="#upload_question">
-            <i class="kejar-upload"></i>Unggah Soal
-        </button>
-    </div>
+    @else
+        <div class="upload-buttons">
+            <button class="btn-upload" data-toggle="modal" data-target="#uploadRoundModal">
+                <i class="kejar-upload"></i>Unggah Ronde
+            </button>
+            <button class="btn-upload" data-toggle="modal" data-target="#upload_question">
+                <i class="kejar-upload"></i>Unggah Soal
+            </button>
+        </div>
+    @endif
     <div class="list-group" data-url="{{ secure_url('admin/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/order/update') }}" data-token="{{ csrf_token() }}">
         @forelse($rounds as $round)
         <div class="list-group-item" data-id="{{ $round['id'] }}">

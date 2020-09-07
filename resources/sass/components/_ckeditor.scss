@@ -70,27 +70,3 @@
         }
     }
 }
-
-.explanation-text{
-    display: table-cell;
-
-    i{
-        font-family: $font-family-monospace !important;
-        font-style: italic !important;
-        line-height: 1.6rem !important;
-    }
-
-    .image-style-align-left{
-        float: left;
-        margin-right: 3rem;
-    }
-
-    .image-style-align-right{
-        float: right;
-        margin-left: 3rem;
-    }
-
-    img{
-        width: 100%;
-    }
-}
