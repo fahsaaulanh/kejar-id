@@ -107,7 +107,7 @@
                             <!-- Pebahasan -->
                             <div class="pembahasan">
                                 <h5>Pembahasan</h5>
-                                <pre></pre>
+                                <div class="explanation-text"></div>
                                 <div class="alternative-answers">
                                     <ul>
                                     </ul>
