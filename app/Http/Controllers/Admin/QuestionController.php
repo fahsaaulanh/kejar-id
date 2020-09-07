@@ -162,7 +162,7 @@ class QuestionController extends Controller
                         'topic_id'=> null,
                         'bank'=> $gameParsed['short'],
                         'type'=> 'QSAT',
-                        'question'=> (string)strtolower($request['question.question']),
+                        'question'=> $request['question.question'],
                         'choices'=> null,
                         'answer'=> $answers,
                         'level'=> 'LEVEL_1',
@@ -260,12 +260,59 @@ class QuestionController extends Controller
         return redirect()->back()->with('message', 'Mengubah Data Ronde Berhasil!');
     }
 
+    public function editQuestion($game, $stageId, $roundId, $questionId)
+    {
+        $game;
+        $stageId;
+        $roundId;
+
+        $questionApi = new QuestionApi;
+        $questionDetail = $questionApi->getDetail($questionId)['data'];
+
+        return response()->json($questionDetail);
+    }
+
     public function updateQuestion($game, $stageId, $roundId, $questionId, Request $request)
     {
         $game;
         $stageId;
         $roundId;
         $questionId;
+
+        if ($game === 'menulisefektif') {
+            try {
+                $questionApi = new QuestionApi;
+
+                $answers = [];
+                foreach ($request['question.answer'] as $answer) {
+                    if (!is_null($answer)) {
+                        $answers[] = $answer;
+                    }
+                }
+
+                $payload = [
+                    'question'=> $request['question.question'],
+                    'answer'=> $answers,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => (string)$request['question.explanation'],
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } catch (Throwable $th) {
+                return $th;
+            }
+
+            return redirect()->back()->with('message', 'Berhasil mengubah soal!');
+        }
 
         $this->validate($request, [
             'question' => 'required',

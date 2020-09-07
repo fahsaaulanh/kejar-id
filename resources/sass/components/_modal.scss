@@ -460,6 +460,15 @@
         margin-top: 0px;
     }
 }
+
+@media (min-width: 576px) {
+    #create-question{
+        .modal-dialog{
+            max-width: 704px !important;
+        }
+    }
+}
+
 @media (max-width: 576px){
     #detailResultModal{
         .modal-dialog{

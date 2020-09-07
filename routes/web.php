@@ -59,6 +59,7 @@ Route::middleware('session')->group(function () {
                         Route::prefix('questions')->group(function () {
                             Route::post('/', 'Admin\QuestionController@create');
                             Route::post('/upload', 'Admin\QuestionController@upload');
+                            Route::get('/{questionId}', 'Admin\QuestionController@editQuestion');
                             Route::patch('/{questionId}', 'Admin\QuestionController@updateQuestion');
                         });
                     });

@@ -161,3 +161,45 @@
         }
     }
 }
+
+.question-list-item{
+    cursor: pointer;
+
+    .kejar-soal-benar:before{
+        color: $green;
+    }
+
+    .explanation-title{
+        color: $grey-3 !important;
+    }
+
+    .explanation-text{
+        display: table-cell;
+        color: $grey-3 !important;
+    
+        i{
+            font-family: $font-family-monospace !important;
+            font-style: italic !important;
+            line-height: 1.6rem !important;
+        }
+    
+        .image-style-align-left{
+            float: left;
+            margin-right: 3rem;
+        }
+    
+        .image-style-align-right{
+            float: right;
+            margin-left: 3rem;
+        }
+    
+        img{
+            width: 100%;
+        }
+    }
+}
+
+.border-line{
+    border-top: 0;
+    border-bottom: 0.2rem solid $grey-13;
+}

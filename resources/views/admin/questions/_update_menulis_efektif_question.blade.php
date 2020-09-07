@@ -1,11 +1,12 @@
 <!-- Modal -->
-<div class="modal fade" id="create-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
+<div class="modal fade" id="update-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
     <div class="modal-dialog" role="document">
-        <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="post" id="question-create-form"    >
+        <form method="post" id="question-create-form">
             @csrf
+            @method('PATCH')
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Input Soal</h5>
+                    <h5 class="modal-title">Edit Soal</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </button>
@@ -27,7 +28,7 @@
                     </div>
                     <div class="form-group">
                         <label for="discussion">Pembahasan</label>
-                        <textarea name="question[explanation]" id="create_editor" cols="30" rows="3" placeholder="Ketik Pembahasan"></textarea>
+                        <textarea name="question[explanation]" id="update_editor" cols="30" rows="3" placeholder="Ketik Pembahasan"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
