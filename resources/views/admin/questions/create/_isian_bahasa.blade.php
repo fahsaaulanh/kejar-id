@@ -5,7 +5,13 @@
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Input Soal</h5>
+                    <h5 class="modal-title">
+                        @if ($game['uri'] === 'menulisefektif')
+                        Input Soal
+                        @else
+                        Input Soal Isian Bahasa
+                        @endif
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </button>
@@ -51,6 +57,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <div></div>
                     <div>
                         <button type="button" class="btn btn-cancel" data-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>

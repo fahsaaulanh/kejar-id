@@ -10,6 +10,33 @@
             <div class="modal-body">
                 <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="post" id="question-create-form">
                     @csrf
+                    @if ($game['uri'] === 'toeicwords')
+                    <div class="table-responsive-md">
+                        <table class="table table-borderless table-form table-toeic">
+                            <thead>
+                                <th class="a">Meaning</th>
+                                <th class="b">Word</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="text" placeholder="Ketik meaning" name="question[0][question]" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Ketik word" name="question[0][answer]" class="form-control">
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot class="table-form-footer">
+                                <th colspan="2">
+                                    <button class="btn-add" type="button" data-type="toeic">
+                                        <i class="kejar-add"></i> Tambah Soal
+                                    </button>
+                                </th>
+                            </tfoot>
+                        </table>
+                    </div>
+                    @else
                     <div class="table-responsive-md">
                         <table class="table table-borderless table-form">
                             <thead>
@@ -35,6 +62,7 @@
                             </tfoot>
                         </table>
                     </div>
+                    @endif
                 </form>
             </div>
             <div class="modal-footer">

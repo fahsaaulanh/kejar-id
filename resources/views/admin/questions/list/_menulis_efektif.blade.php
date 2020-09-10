@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'TOEIC')
+@section('title', 'Questions')
 
 @section('content')
 
@@ -32,72 +32,64 @@
     <!-- Title -->
     <div class="page-title">
         <h2 class="mb-08rem">{{ $round['title'] }}</h2>
-        <span class="copy-id" onclick="textToClipboard('{{ $round['id'] }}')" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salin ID Ronde</span>
+        <span class="copy-id" data-id="{{ $round['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salin ID Ronde</span>
     </div>
 
     <!-- Description -->
     <div class="page-description">
-        {{-- Peraturan Ronde --}}
         <div class="page-description-item setting">
             <h5>Pengaturan Ronde</h5>
             <p>{{$round['total_question']}} soal ditampilkan &bullet; {{$round['question_timespan']}} detik/soal</p>
         </div>
-        {{-- Deskripsi Ronde --}}
+
         <div class="page-description-item description">
             <h5>Deskripsi Ronde</h5>
             <p>{{$round['description']}}</p>
         </div>
-        {{-- Materi --}}
+
         <div class="page-description-item material">
             <h5>Materi</h5>
             <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{{$round['material']}}</pre>
         </div>
-        {{-- Petunjuk soal --}}
+
         <div class="page-description-item direction">
             <h5>Petunjuk Soal</h5>
             <p>{{$round['direction']}}</p>
         </div>
     </div>
 
-    <!-- Upload Buttons -->
-    @if($errors->has('question_file'))
-        <script>
-            alert("{{ $errors->first('question_file') }}");
-        </script>
-    @endif
-    <div class="upload-buttons">
-        {{-- button unggah soal --}}
-        <button class="btn-upload" data-toggle="modal" data-target="#upload-questions">
-            <i class="kejar-upload"></i>Unggah Soal
-        </button>
-        {{-- button Input Soal --}}
-        <button class="btn-upload" data-toggle="modal" data-target="#create-question">
+    <div>
+        <button class="btn-upload" data-toggle="modal" data-target="#create-menulis-efektif-question-modal">
             <i class="kejar-add"></i>Input Soal
         </button>
+        <hr class="border-line">
     </div>
 
     <!-- Table of questions -->
-    <div class="table-responsive">
-        <table class="table table-toeic">
-            <thead>
-                <th class="a">Meaning</th>
-                <th class="b">Word</th>
-            </thead>
-            <tbody class="pointer">
-                @forelse($roundQuestionsData as $question)
-                <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}" data-url="{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                    <td>{{ $question['question']['question'] }}</td>
-                    <td>{{ $question['question']['answer'] }}</td>
-                </tr>
+    @forelse($roundQuestionsData as $question)
+        <div class="question-list-item" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+            <strong>{{ $question['question']['question'] }}</strong>
+            <br><br>
+            @if(is_array($question['question']['answer']) === true)
+                @forelse($question['question']['answer'] as $answer)
+                    <i class="kejar-soal-benar"></i> {!! $answer !!} <hr class="border-0">
                 @empty
-                <tr>
-                    <td colspan="2" class="text-center">Belum ada soal</td>
-                </tr>
+                    Belum ada jawaban
                 @endforelse
-            </tbody>
-        </table>
-    </div>
-
+            @else
+                <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
+            @endif
+            <br><br>
+            <strong class="explanation-title">Pembahasan :</strong>
+            <br><br>
+            <div class="explanation-text">
+                {!! $question['question']['explanation'] !!}
+            </div>
+            <hr class="border-line">
+        </div>
+    @empty
+        <strong>Belum ada soal</strong><br>
+    @endforelse
     <!-- Pagination -->
     <nav class="navigation">
         <div>
@@ -120,16 +112,16 @@
 
 </div>
 
-@include('admin.questions.toeic._create_question')
-@include('admin.questions.toeic._upload_questions')
 @include('admin.questions._rename_round')
 @include('admin.questions._update_description')
 @include('admin.questions._update_setting')
 @include('admin.questions._update_material')
 @include('admin.questions._update_direction')
-@include('admin.questions._update_question')
+@include('admin.questions.create._isian_bahasa')
+@include('admin.questions.update._isian_bahasa')
 @endsection
 
 @push('script')
-    <script src="{{ mix('/js/admin/question/script.js') }}"></script>
+<script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script>
+<script src="{{ mix('/js/admin/question/script.js') }}"></script>
 @endpush
