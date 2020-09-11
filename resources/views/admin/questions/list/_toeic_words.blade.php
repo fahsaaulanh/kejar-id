@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Questions')
+@section('title', 'TOEIC')
 
 @section('content')
 
@@ -32,26 +32,27 @@
     <!-- Title -->
     <div class="page-title">
         <h2 class="mb-08rem">{{ $round['title'] }}</h2>
-        <span class="copy-id" data-id="{{ $round['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salin ID Ronde</span>
+        <span class="copy-id" onclick="textToClipboard('{{ $round['id'] }}')" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salin ID Ronde</span>
     </div>
 
     <!-- Description -->
     <div class="page-description">
+        {{-- Peraturan Ronde --}}
         <div class="page-description-item setting">
             <h5>Pengaturan Ronde</h5>
             <p>{{$round['total_question']}} soal ditampilkan &bullet; {{$round['question_timespan']}} detik/soal</p>
         </div>
-
+        {{-- Deskripsi Ronde --}}
         <div class="page-description-item description">
             <h5>Deskripsi Ronde</h5>
             <p>{{$round['description']}}</p>
         </div>
-
+        {{-- Materi --}}
         <div class="page-description-item material">
             <h5>Materi</h5>
             <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{{$round['material']}}</pre>
         </div>
-
+        {{-- Petunjuk soal --}}
         <div class="page-description-item direction">
             <h5>Petunjuk Soal</h5>
             <p>{{$round['direction']}}</p>
@@ -64,11 +65,12 @@
             alert("{{ $errors->first('question_file') }}");
         </script>
     @endif
-
     <div class="upload-buttons">
+        {{-- button unggah soal --}}
         <button class="btn-upload" data-toggle="modal" data-target="#upload-questions">
             <i class="kejar-upload"></i>Unggah Soal
         </button>
+        {{-- button Input Soal --}}
         <button class="btn-upload" data-toggle="modal" data-target="#create-question">
             <i class="kejar-add"></i>Input Soal
         </button>
@@ -76,12 +78,12 @@
 
     <!-- Table of questions -->
     <div class="table-responsive">
-        <table class="table table-stripped table-questions">
+        <table class="table table-toeic">
             <thead>
-                <th>Soal</th>
-                <th>Jawaban</th>
+                <th class="a">Meaning</th>
+                <th class="b">Word</th>
             </thead>
-            <tbody>
+            <tbody class="pointer">
                 @forelse($roundQuestionsData as $question)
                 <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}" data-url="{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                     <td>{{ $question['question']['question'] }}</td>
@@ -129,6 +131,5 @@
 @endsection
 
 @push('script')
-<script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script>
-<script src="{{ mix('/js/admin/question/script.js') }}"></script>
+    <script src="{{ mix('/js/admin/question/script.js') }}"></script>
 @endpush

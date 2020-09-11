@@ -51,7 +51,14 @@ class QuestionController extends Controller
 
         if ($game['uri'] === 'toeicwords') {
             return view(
-                'admin.questions.toeic.index',
+                'admin.questions.list._toeic_words',
+                compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
+            );
+        }
+
+        if ($game['uri'] === 'menulisefektif') {
+            return view(
+                'admin.questions.list._menulis_efektif',
                 compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
             );
         }
