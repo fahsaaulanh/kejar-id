@@ -103,11 +103,17 @@ class RoundController extends Controller
             for ($i = 4; $i < $total_array; $i++) {
                 $lastOrder++;
                 $store = new RoundApi;
+                $direction = $theArray[0][$i][6];
+
+                if ($game === 'soalcerita') {
+                    $direction = 'Petunjuk soal diberikan oleh sistem berdasarkan tipe soal.';
+                }
+
                 $data = [
                     'stage_id' => $theArray[0][$i][0],
                     'title' => $theArray[0][$i][1],
                     'description' => $theArray[0][$i][4],
-                    'direction' => $theArray[0][$i][6],
+                    'direction' => $direction,
                     'material' => $theArray[0][$i][5],
                     'total_question' => $theArray[0][$i][2],
                     'question_timespan' => $theArray[0][$i][3],
@@ -196,11 +202,15 @@ class RoundController extends Controller
             'per_page' => 99,
         ];
 
+
+        $direction = $game !== 'soalcerita' ? $request->direction ??
+                                    'Tambahkan petunjuk' : 'Petunjuk soal diberikan oleh sistem berdasarkan tipe soal.';
+
         $data = [
             'stage_id' => $stageId,
             'title' => $request->title,
             'description' => $request->description ?? 'Tambahkan deskripsi', // database tidak nullable
-            'direction' => $request->direction ?? 'Tambahkan petunjuk', // database tidak nullable
+            'direction' => $direction, // database tidak nullable
             'material' => 'Buat Materi', // database tidak nullable
             'total_question' => $request->question_showed,
             'question_timespan' => $request->timespan,

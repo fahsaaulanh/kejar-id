@@ -1,0 +1,306 @@
+#create-soal-cerita-question-modal {
+
+    .modal-dialog {
+        max-width: 56.8rem;
+    }
+
+    .modal-content {
+        margin: auto auto;
+        max-width: 56.8rem;
+    }
+
+    h6:nth-child(1) {
+        @include h6-reg;
+        color: $grey-3;
+        margin-bottom: 3.2rem;
+    }
+
+    .card {
+        text-decoration: none;
+        display: block;
+        margin: 1.6rem 2rem;
+        border: none;
+        background: $blue-tp;
+
+        @media screen and (min-width: $mobile-breakpoint) {
+            &:nth-child(1) {
+                margin-left: 1.4rem;
+            }
+
+            &:nth-last-child(1) {
+                margin-right: 1.4rem;
+            }
+        }
+
+        @media screen and (max-width: $mobile-breakpoint) {
+            margin-left: 0rem;
+            margin-right: 0rem;
+        }
+
+
+        &:hover {
+            background: $purple-tp;
+        }
+
+
+        .card-body{
+            text-align: center;
+            
+            i::before {
+                font-size: 2rem;
+                color: $black-1;
+            }
+            
+            h6 {
+                -webkit-hyphens: manual !important;
+                -moz-hyphens: auto !important;
+                -ms-hyphens: auto !important;
+                hyphens: auto !important;
+                // @include h6;
+                color: $grey-3;
+                margin-top: 0.5rem;
+            }
+        }
+
+    }
+}
+
+
+.table-questions{
+
+    .card {
+        margin-bottom: 1.6rem;
+        border-radius: 0px;
+        border: 2px solid $grey-13;
+
+        &:hover {
+            .card-header div:nth-child(2) {
+                display: flex;
+            }
+        }
+    }
+
+    .card-header {
+        background: $white;
+        padding: 1.4rem 1.6rem;
+        border-bottom: 2px solid $grey-13;
+        display: flex;
+        justify-content: space-between;
+        
+        div:nth-child(1) {
+            column-gap: 8px;
+            align-items: center;
+            display: flex;
+            align-items: center;
+            height: 2.3rem;
+
+            h5 {
+                display: inline;
+    
+                &:nth-child(1) {
+                    @include h5;
+                }
+    
+                &:nth-last-child(1) {
+                    @include h5-reg;
+                }
+            }
+    
+            i:not(.kejar-dot) {
+                font-size: 2rem;
+                &::before {
+                    color: $black-1;
+                }
+            }
+        }
+
+        div:nth-child(2) {
+            display: none;
+            button {
+                line-height: normal;
+                background: none !important;
+                border: none;
+                display: flex;
+                align-items: center;
+                column-gap: 0.4rem;
+                color: $blue;
+                font-size: 1.3rem;
+
+                i::before {
+                    color: $blue;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+    }
+
+    .answer-text {
+        margin-top: 2.4rem;
+    }
+
+    
+    .explanation-group {
+        margin-top: 2.4rem;
+
+        .explanation-text {
+            margin-top: 0.8rem;
+
+            ul li {
+                &:before{
+                    content: '- ';
+                }
+            }
+        }
+
+    }
+
+
+    // Type Pilihan Ganda
+    .type-pilihan-ganda {
+        ul:nth-child(1) li {
+            display: flex;
+            margin-bottom: 0.8rem;
+            align-items: center;
+
+            i {
+                margin-right: 1rem;
+            }
+        }
+    }
+
+    .type-benar-salah, .type-ya-tidak {
+        .question-answer-table {
+            margin-top: 2.4rem;
+
+            tr {
+                border: 2px solid $grey-13;
+                border-left: none;
+                border-right: none;
+                width: 100%;
+
+                td {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                    width: 100%;
+                    
+                    &:nth-child(1) {
+                        max-width: 52.2rem;
+                    }
+
+                    &:nth-child(2) {
+                        min-width: 9.6rem;
+                        box-sizing: border-box;
+                        padding-left:1.6rem;
+                        padding-right: 1.6rem;
+                    }
+
+                }
+            }
+        }
+    }
+
+    .type-mengurutkan, .type-isian-bahasa {
+        .question-answer-table {
+            margin-top: 2.4rem;
+
+            tr {
+                border: 2px solid $grey-13;
+                border-left: none;
+                border-right: none;
+                width: 100%;
+
+                td {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                    vertical-align: top;
+
+                    &:nth-child(1) {
+                        min-width: 5.6rem;
+                        text-align: center;
+                    }
+
+                    &:nth-child(2) {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    .type-memasangkan {
+        .question-answer-table {
+            margin-top: 2.4rem;
+
+            tr {
+                border: 2px solid $grey-13;
+                border-left: none;
+                border-right: none;
+                width: 100%;
+
+                td {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                    box-sizing: border-box;
+                    vertical-align: middle;
+
+                    &:nth-child(1), &:nth-child(3) {
+                        max-width: 29.8rem;
+                    }
+
+                    &:nth-child(2) {
+                        text-align: center;
+                        width: 5.2rem;
+                        
+                        i::before {
+                            font-size: 2.2rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .type-merinci {
+        .question-answer-table {
+            margin-top: 2.4rem;
+            width: 100%;
+
+            tr {
+                border: 2px solid $grey-13;
+                border-left: none;
+                border-right: none;
+                
+                td {
+                    padding-top: 1rem;
+                    padding-bottom: 1rem;
+                    box-sizing: border-box;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+
+    .type-essai {
+
+        .answer-group {
+            margin: 2.4rem 0rem;
+        }
+    }
+
+    .type-isian-matematika {
+        .answer-group {
+            margin: 2.4rem 0rem;
+            
+            .input-styled {
+                padding: 1rem 1.2rem;
+                border-radius: 0%;
+                text-align: center;
+                border: 2px solid $grey-13;
+                width: 5rem;
+                background: $white;
+                color: $black-1;
+            }
+        }
+    }
+}

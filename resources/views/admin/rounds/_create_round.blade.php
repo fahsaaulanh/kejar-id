@@ -29,10 +29,12 @@
                         <label for="description">Deskripsi</label>
                         <textarea name="description" id="description" cols="30" rows="3" placeholder="Tambahkan deskripsi ronde"></textarea>
                     </div>
+                    @if($game['uri'] !== 'soalcerita')
                     <div class="form-group">
                         <label for="direction">Petunjuk Soal</label>
                         <textarea name="direction" id="direction" cols="30" rows="3" placeholder="Tambahkan petunjuk soal"></textarea>
                     </div>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <a href="#" role="button" data-dismiss="modal">

@@ -35,6 +35,12 @@ class Game
             'uri' => 'menulisefektif',
             'result' => 'ronde',
         ],
+        'SOALCERITA' => [
+            'short' => 'Soal Cerita',
+            'title' => 'Soal Cerita',
+            'uri' => 'soalcerita',
+            'result' => 'soal',
+        ],
     ];
 
     public function parse($game)

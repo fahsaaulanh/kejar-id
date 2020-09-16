@@ -49,22 +49,17 @@ class QuestionController extends Controller
         $gameService = new Game;
         $game = $gameService->parse($game);
 
+        $view = 'admin.questions.index';
         if ($game['uri'] === 'toeicwords') {
-            return view(
-                'admin.questions.list._toeic_words',
-                compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
-            );
-        }
-
-        if ($game['uri'] === 'menulisefektif') {
-            return view(
-                'admin.questions.list._menulis_efektif',
-                compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
-            );
+            $view = 'admin.questions.toeic.index';
+        } elseif ($game['uri'] === 'soalcerita') {
+            $view = 'admin.questions.soalcerita.index';
+        } elseif ($game['uri'] === 'menulisefektif') {
+            $view = 'admin.questions.list._menulis_efektif';
         }
 
         return view(
-            'admin.questions.index',
+            $view,
             compact('game', 'stage', 'round', 'roundQuestionsData', 'roundQuestionsMeta'),
         );
     }
