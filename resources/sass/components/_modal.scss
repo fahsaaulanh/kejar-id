@@ -586,3 +586,24 @@
     transform: translate(-50%);
     z-index: 100;
 }
+
+
+.modal-default {
+    max-width: 54.4rem;
+    min-width: 54.4rem;
+    box-sizing: border-box;
+
+    .modal-content {
+        max-width: 54.4rem;
+        box-sizing: border-box;
+        min-width: 54.4rem;
+
+        .modal-body {
+            margin-top: 0.8rem !important;
+        }
+
+        .modal-footer {
+            padding: 2rem !important;
+        }
+    }
+}

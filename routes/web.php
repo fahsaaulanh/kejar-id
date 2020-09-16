@@ -32,6 +32,8 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('/admin')->group(function () {
 
+            Route::get('/soalcerita', fn () => view('admin.questions.soalcerita.index'));
+
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
 
             Route::prefix('{game}/stages')->group(function () {

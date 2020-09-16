@@ -83,7 +83,7 @@ class StageController extends Controller
             return $e;
         }
 
-        return redirect()->back()->with('success', 'Babak berhasil ditambahkan.');
+        return redirect()->back()->with('message', 'Babak berhasil ditambahkan.');
     }
 
     public function uploadRounds(Request $request, $game)
@@ -95,6 +95,22 @@ class StageController extends Controller
 
         if ($request->file('round_file')->getClientOriginalExtension() !== 'xlsx') {
             return redirect()->back();
+        }
+        
+        $stage = new StageApi;
+        $filter = [
+            'per_page' => 99,
+        ];
+
+        $stages = $stage->getAll(strtoupper($game), $filter)['data'] ?? [];
+
+        if (count($stages) <= 0) {
+            return redirect()->back()->with('message', 'Ronde gagal ditambahkan!!');
+        }
+
+        $stageIds = [];
+        foreach ($stages as $stage) {
+            $stageIds[] = $stage['id'];
         }
 
         $file = $request->file('round_file');
@@ -108,6 +124,8 @@ class StageController extends Controller
                 ]);
             }
 
+            $failedInput = 0;
+
             for ($i=4; $i < count($data[0]); $i++) {
                 $roundApi = new RoundApi;
                 $filter = [
@@ -116,7 +134,7 @@ class StageController extends Controller
                 ];
 
                 $rounds = $roundApi->index($filter)['data'] ?? [];
-                if ($rounds !== null) {
+                if (count($rounds) > 0) {
                     $round = [];
                     foreach ($rounds as $key => $row) {
                         $round[$key] = $row['order'];
@@ -131,6 +149,12 @@ class StageController extends Controller
                 $sheetIndex = 0;
                 $row = $i;
 
+                $direction = $data[$sheetIndex][$row][6];
+
+                if ($game === 'soalcerita') {
+                    $direction = 'Petunjuk soal diberikan oleh sistem berdasarkan tipe soal.';
+                }
+
                 $collection = [
                     'stage_id' => $data[$sheetIndex][$row][0],
                     'title' => $data[$sheetIndex][$row][1],
@@ -138,18 +162,29 @@ class StageController extends Controller
                     'question_timespan' => $data[$sheetIndex][$row][3],
                     'description' => $data[$sheetIndex][$row][4],
                     'material' => $data[$sheetIndex][$row][5] ?? 'Buat materi',
-                    'direction' => $data[$sheetIndex][$row][6],
+                    'direction' => $direction,
                     'order' => $roundsSum += 1,
                     'status' => 'NOT_PUBLISHED',
                 ];
 
-                $roundApi->store($collection);
+                
+                if (in_array($collection['stage_id'], $stageIds, true)) {
+                    $roundApi->store($collection);
+                } else {
+                    $failedInput += 1;
+                }
             }
         } catch (Exception $e) {
             return $e;
         }
 
-        return redirect()->back()->with('success', 'Ronde berhasil ditambahkan!!');
+        $message = 'Ronde Berhasil ditambahkan!';
+
+        if ($failedInput > 0) {
+            $message = 'Ada ' . $failedInput . ' ronde tidak berhasil diinput, sepertinya kode babaknya tidak sesuai!';
+        }
+
+        return redirect()->back()->with('message', $message);
     }
 
     public function order($game, $stageId, Request $request)
