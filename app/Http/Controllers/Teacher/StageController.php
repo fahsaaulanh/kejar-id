@@ -20,17 +20,35 @@ class StageController extends Controller
     {
         $schoolId = session('user')['userable']['school_id'];
         $entryYear = Carbon::now()->year . '/' . Carbon::now()->add(1, 'year')->year;
+        $secondYear = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->year;
+        $thirdYear = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->sub(2, 'year')->year;
+
+        $year = [$entryYear, $secondYear, $thirdYear];
         $batchApi = new BatchApi;
-        $batchFilter = [
-            'filter[entry_year]' => $entryYear,
-        ];
-        $batchResponse = $batchApi->index($schoolId, $batchFilter);
-        $batchId = $batchResponse['data'][0]['id'];
+
+        $batchResult = [];
+        foreach ($year as $data) {
+            $batchFilter = [
+                'filter[entry_year]' => $data,
+            ];
+            $batchResponse = $batchApi->index($schoolId, $batchFilter);
+            
+            $batchResult = array_merge($batchResult, $batchResponse['data'] ?? []);
+        }
+
         $gameService = new Game;
         $game = $gameService->parse($game);
         $classApi = new StudentApi;
-        $classResponse = $classApi->index($schoolId, $batchId);
-        $classData = $classResponse['data'] ?? [];
+
+        $classResult = [];
+        foreach ($batchResult as $key => $data) {
+            if ($key !== 0) {
+                $classResponse = $classApi->index($schoolId, $data['id']);
+                $classResult = array_merge($classResult, $classResponse['data']);
+            }
+        }
+
+        $classData = $classResult ?? [];
         $classGrade = ['X', 'XI', 'XII'];
         $classCount = [
             'count_x' => 0,
@@ -126,7 +144,7 @@ class StageController extends Controller
         }
 
         $thisYear = date('Y');
-        $thisGrade ='1'.($thisYear - substr($classThis['school_year'], 0, 4));
+        $thisGrade = '1' . ($thisYear - substr($classThis['school_year'], 0, 4));
 
         if ($thisYear < substr($classThis['school_year'], 0, 4)) {
             $thisGrade = '12';
@@ -138,7 +156,7 @@ class StageController extends Controller
 
         $responses = $this
             ->myPaginate($data['data'], $data['meta']['per_page'], $data['meta']['current_page'], $data['meta'])
-            ->withPath('/teacher/games/'.$linkGame.'/class/'.$batchId.'/'.$studentGroupId.'/stages');
+            ->withPath('/teacher/games/' . $linkGame . '/class/' . $batchId . '/' . $studentGroupId . '/stages');
 
         return view('teacher/result/stage/index', compact(
             'game',
