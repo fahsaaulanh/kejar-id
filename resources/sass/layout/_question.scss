@@ -304,3 +304,40 @@
         }
     }
 }
+
+.editor-display {
+    i {
+        font-family: "Roboto Mono", monospace !important;
+        font-style: italic !important;
+        line-height: 1.6rem !important;
+    }
+
+    .image-style-align-left {
+        float: left;
+        margin-right: 3rem;
+    }
+    
+    .image-style-align-right {
+        float: right;
+        margin-left: 3rem;
+    }
+    
+    img {
+        width: 100%;
+    }
+}
+
+.question-list-item {
+    .question-text {
+        margin-bottom: 1.6rem;
+    }
+
+    .explanation-title {
+        margin-top: 2.6rem;
+        font-weight: bold;
+    }
+
+    .explanation-text {
+        margin-bottom: 2.4rem;
+    }
+}

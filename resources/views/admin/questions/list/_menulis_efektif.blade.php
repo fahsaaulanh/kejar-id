@@ -47,9 +47,9 @@
             <p>{{$round['description']}}</p>
         </div>
 
-        <div class="page-description-item material">
+        <div class="page-description-item material editor-display">
             <h5>Materi</h5>
-            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{{$round['material']}}</pre>
+            <div class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</div>
         </div>
 
         <div class="page-description-item direction">
@@ -68,8 +68,7 @@
     <!-- Table of questions -->
     @forelse($roundQuestionsData as $question)
         <div class="question-list-item" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-            <strong>{{ $question['question']['question'] }}</strong>
-            <br><br>
+            <div class="editor-display question-text">{!! $question['question']['question'] !!}</div>
             @if(is_array($question['question']['answer']) === true)
                 @forelse($question['question']['answer'] as $answer)
                     <i class="kejar-soal-benar"></i> {!! $answer !!} <hr class="border-0">
@@ -79,9 +78,7 @@
             @else
                 <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
             @endif
-            <br><br>
-            <strong class="explanation-title">Pembahasan :</strong>
-            <br><br>
+            <p class="explanation-title">Pembahasan :</p>
             <div class="explanation-text">
                 {!! $question['question']['explanation'] !!}
             </div>

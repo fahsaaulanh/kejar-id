@@ -307,3 +307,96 @@ $(document).on('dblclick', '.question-list-item', function(){
         }
     });
 });
+
+var editorArray = [];
+
+function generateEditor(index, element) {
+    ClassicEditor
+    .create( element, {
+        toolbar: {
+            items: [
+                'bold',
+                'italic',
+                'underline',
+                'bulletedList',
+                'numberedList',
+                'imageUpload'
+            ]
+        },
+        language: 'en',
+        image: {
+            styles: [
+                'alignLeft', 'alignCenter', 'alignRight'
+            ],
+            resizeOptions: [
+                {
+                    name: 'imageResize:original',
+                    label: 'Original',
+                    value: null
+                },
+                {
+                    name: 'imageResize:50',
+                    label: '50%',
+                    value: '50'
+                },
+                {
+                    name: 'imageResize:75',
+                    label: '75%',
+                    value: '75'
+                }
+            ],
+            toolbar: [
+                'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                '|',
+                'imageResize',
+            ],
+        },
+        licenseKey: '',
+    } )
+    .then( editor => {
+        editorArray[index] = editor;
+    } )
+    .catch( error => {
+        console.error( 'Oops, something went wrong!' );
+        console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+        console.warn( 'Build id: nekgv7mmfgzn-cehsg6b07p1b' );
+        console.error( error );
+    } );
+
+}
+
+$('#update-material').on('show.bs.modal', (e) => {
+    generateEditor(0, $(e.target).find('textarea')[0]);
+});
+
+$('#update-material').on('hide.bs.modal', (e) => {
+    clearTheEditors();
+});
+
+function clearTheEditors() {
+    for (let index = 0; index < editorArray.length; index++) {
+        editorArray[index].destroy();
+    }
+
+    editorArray = [];
+}
+
+$('#create-menulis-efektif-question-modal').on('show.bs.modal', (e) => {
+    $(e.target).find('.textarea-question').each((index, element) => {
+        generateEditor(index, element);
+    });
+});
+
+$('#create-menulis-efektif-question-modal').on('hide.bs.modal', (e) => {
+    clearTheEditors();
+});
+
+$('#update-menulis-efektif-question-modal').on('show.bs.modal', (e) => {
+    $(e.target).find('.textarea-question').each((index, element) => {
+        generateEditor(index, element);
+    });
+});
+
+$('#update-menulis-efektif-question-modal').on('hide.bs.modal', (e) => {
+    clearTheEditors();
+});
