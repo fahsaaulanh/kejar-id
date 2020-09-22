@@ -117,7 +117,8 @@
                                     </div>
                                 </a>
                             </div>
-                            <div class="card-deck">
+                            <!-- hide -->
+                            <!-- <div class="card-deck">
                                 <a href="{{ url('/student/games/toeicwords/stages') }}" class="card">
                                     <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
                                     <div class="card-body">
@@ -132,7 +133,8 @@
                                         <p class="card-text">Menulis kata yang tepat agar menjadi kalimat yang efektif.</p>
                                     </div>
                                 </a>
-                            </div>
+                            </div> -->
+                            <!-- hide -->
                         </div>
                     </div>
                 </div>

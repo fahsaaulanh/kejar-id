@@ -16,14 +16,6 @@ class StageController extends Controller
         $gameService = new Game;
         $roundApi = new Round;
 
-        $rounds = $roundApi->index(['filter[status]' => 'PUBLISHED'])['data'] ?? [];
-        $stageIds = [];
-        foreach ($rounds as $round) {
-            $stageIds[] = $round['stage_id'];
-        }
-
-        $stageIds = array_unique($stageIds);
-
         $filter = [
             'per_page' => 99,
         ];
@@ -31,9 +23,18 @@ class StageController extends Controller
 
         $stages = [];
         foreach ($stagesAll as $stage) {
-            if (in_array($stage['id'], $stageIds, true)) {
-                $stages[] = $stage;
+            $filter = [
+                'per_page' => 1,
+                'filter[status]' => 'PUBLISHED',
+                'filter[stage_id]' => $stage['id'],
+            ];
+            $rounds = $roundApi->index($filter);
+
+            if ($rounds['error'] !== false && $rounds['data'] === null) {
+                continue;
             }
+
+            $stages[] = $stage;
         }
 
         $game = $gameService->parse($game);
