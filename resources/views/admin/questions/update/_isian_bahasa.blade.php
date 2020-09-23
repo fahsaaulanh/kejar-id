@@ -15,6 +15,26 @@
                     <div class="form-group">
                         <label for="title">Soal</label>
                         <textarea class="textarea-question" name="question[question]" placeholder="Ketik soal" required></textarea>
+                        <div class="ckeditor-btn-group ckeditor-btn-1">
+                            <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
+                                <i class="kejar-bold"></i>
+                            </button>
+                            <button type="button" class="italic-btn" title="Italic (Ctrl + I)">
+                                <i class="kejar-italic"></i>
+                            </button>
+                            <button type="button" class="underline-btn" title="Underline (Ctrl + U)">
+                                <i class="kejar-underlined"></i>
+                            </button>
+                            <button type="button" class="bullet-list-btn" title="Bulleted list">
+                                <i class="kejar-bullet"></i>
+                            </button>
+                            <button type="button" class="number-list-btn" title="Number list">
+                                <i class="kejar-number"></i>
+                            </button>
+                            <button type="button" class="photo-btn" title="Masukkan foto">
+                                <i class="kejar-photo"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="answer">Jawaban</label>
