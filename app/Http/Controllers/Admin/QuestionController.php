@@ -51,7 +51,7 @@ class QuestionController extends Controller
 
         $view = 'admin.questions.index';
         if ($game['uri'] === 'toeicwords') {
-            $view = 'admin.questions.toeic.index';
+            $view = 'admin.questions.list._toeic_words';
         } elseif ($game['uri'] === 'soalcerita') {
             $view = 'admin.questions.soalcerita.index';
         } elseif ($game['uri'] === 'menulisefektif') {
