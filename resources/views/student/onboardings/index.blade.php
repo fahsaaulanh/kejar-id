@@ -31,7 +31,7 @@
             <div class="card">
                 <div class="card-body">
                     <i class="kejar-open-book"></i>
-                    <pre>{{ $round['material'] !== 'Buat Materi' ? $round['material'] : 'Tidak ada materi' }}</pre>
+                    <div class="editor-display">{!! $round['material'] !== 'Buat Materi' ? $round['material'] : 'Tidak ada materi' !!}</div>
                 </div>
             </div>
         </div>

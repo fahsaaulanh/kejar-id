@@ -48,9 +48,9 @@
             <p>{{$round['description']}}</p>
         </div>
         {{-- Materi --}}
-        <div class="page-description-item material">
+        <div class="page-description-item material editor-display">
             <h5>Materi</h5>
-            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{{$round['material']}}</pre>
+            <div class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</div>
         </div>
         {{-- Petunjuk soal --}}
         <div class="page-description-item direction">
@@ -131,5 +131,6 @@
 @endsection
 
 @push('script')
+    <script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script>
     <script src="{{ mix('/js/admin/question/script.js') }}"></script>
 @endpush

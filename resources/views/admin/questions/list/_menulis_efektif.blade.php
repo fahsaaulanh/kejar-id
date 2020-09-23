@@ -79,7 +79,7 @@
                 <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
             @endif
             <p class="explanation-title">Pembahasan :</p>
-            <div class="explanation-text">
+            <div class="editor-display">
                 {!! $question['question']['explanation'] !!}
             </div>
             <hr class="border-line">
