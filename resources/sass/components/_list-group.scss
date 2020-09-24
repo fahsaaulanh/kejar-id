@@ -11,12 +11,16 @@
 }
 
 .star-icon{
-    margin-right: -10px;
-    font-size: 20px;
+    margin-right: -0.8rem;
+    font-size: 2rem;
+
+    i::before{
+        color: $grey-8;
+    }
 }
 
-.star-icon i.active::before {
-    color: #FFD600;
+.star-icon.active i::before {
+    color: $deep-yellow;
 }
 
 .list-group-item {
@@ -158,43 +162,6 @@
             a > i {
                 display: none;
             }
-        }
-    }
-}
-
-.question-list-item{
-    cursor: pointer;
-
-    .kejar-soal-benar:before{
-        color: $green;
-    }
-
-    .explanation-title{
-        color: $grey-3 !important;
-    }
-
-    .explanation-text{
-        display: table-cell;
-        color: $grey-3 !important;
-    
-        i{
-            font-family: $font-family-monospace !important;
-            font-style: italic !important;
-            line-height: 1.6rem !important;
-        }
-    
-        .image-style-align-left{
-            float: left;
-            margin-right: 3rem;
-        }
-    
-        .image-style-align-right{
-            float: right;
-            margin-left: 3rem;
-        }
-    
-        img{
-            width: 100%;
         }
     }
 }

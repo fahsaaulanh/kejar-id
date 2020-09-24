@@ -34,49 +34,49 @@
                 @if ($round['score'] == 100.00)
                     <div class="star-item">
                         <span class="star-icon active">
-                            <i class="kejar-arsip-asesmen-bold active"></i>
+                            <i class="kejar-arsip-asesmen-bold"></i>
                         </span>
                         <span class="star-icon active">
-                            <i class="kejar-arsip-asesmen-bold active"></i>
+                            <i class="kejar-arsip-asesmen-bold"></i>
                         </span>
                         <span class="star-icon active">
-                            <i class="kejar-arsip-asesmen-bold active"></i>
+                            <i class="kejar-arsip-asesmen-bold"></i>
                         </span>
                     </div>
                 @elseif ($round['score'] >= 75.00)
                     <div class="star-item">
                         <span class="star-icon active">
-                            <i class="kejar-arsip-asesmen-bold active"></i>
+                            <i class="kejar-arsip-asesmen-bold"></i>
                         </span>
                         <span class="star-icon active">
-                            <i class="kejar-arsip-asesmen-bold active"></i>
+                            <i class="kejar-arsip-asesmen-bold"></i>
                         </span>
-                        <span class="kejar-arsip-asesmen">
-                            <i class="i-star"></i>
+                        <span class="star-icon">
+                            <i class="kejar kejar-arsip-asesmen"></i>
                         </span>
                     </div>
                 @elseif ($round['score'] >= 50.00)
                     <div class="star-item">
-                        <span class="kejar-arsip-asesmen-bold active">
-                            <i class="i-star"></i>
+                        <span class="star-icon active">
+                            <i class="kejar kejar-arsip-asesmen-bold"></i>
                         </span>
-                        <span class="kejar-arsip-asesmen">
-                            <i class="i-star"></i>
+                        <span class="star-icon">
+                            <i class="kejar kejar-arsip-asesmen"></i>
                         </span>
-                        <span class="kejar-arsip-asesmen ">
-                            <i class="i-star"></i>
+                        <span class="star-icon">
+                            <i class="kejar kejar-arsip-asesmen"></i>
                         </span>
                     </div>
                 @elseif ($round['score'] < 50.00)
                     <div class="star-item">
-                        <span class="kejar-arsip-asesmen">
-                            <i class="i-star"></i>
+                        <span class="star-icon">
+                            <i class="kejar kejar-arsip-asesmen"></i>
                         </span>
-                        <span class="kejar-arsip-asesmen">
-                            <i class="i-star"></i>
+                        <span class="star-icon">
+                            <i class="kejar kejar-arsip-asesmen"></i>
                         </span>
-                        <span class="kejar-arsip-asesmen ">
-                            <i class="i-star"></i>
+                        <span class="star-icon">
+                            <i class="kejar kejar-arsip-asesmen"></i>
                         </span>
                     </div>
                 @endif

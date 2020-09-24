@@ -15,20 +15,21 @@ $(document).on('click', '.btn-add', function(){
     var type = $(this).attr('data-type');
     if (type == 'toeic') {
         $('.table-form').find('tbody').append('<tr><td><input type="text" placeholder="Ketik meaning" name="question[' + index + '][question]" class="form-control"></td><td><input type="text" placeholder="Ketik word" name="question['+ index +'][answer]" class="form-control"></td></tr>');
+    } else if (type == 'menulis-efektif'){
+        var textAreaAnswer = $(this).prev().find('tr');
+        var textAreaNum = 0;
+        textAreaAnswer.each(function(){
+            $(this).find('input').attr('name', 'question[answer]['+ textAreaNum +']');
+            $(this).find('.inputgrow-field').attr('placeholder', 'Ketik alternatif jawaban '+ (textAreaNum + 1));
+            textAreaNum++;
+        });
+        var td1 = '<td><input type="hidden" name="question[answer]['+ textAreaNum +']"><div contenteditable="true" class="inputgrow-field" placeholder="Ketik alternatif jawaban '+ parseInt(textAreaNum + 1) +'"></div></td>';
+        var td2 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+        var data = '<tr>'+ td1 + td2 +'</tr>';
+        $(this).prev().append(data);
     } else {
         $('.table-form').find('tbody').append('<tr><td><input type="text" placeholder="Ketik soal" name="question[' + index + '][question]" class="form-control"></td><td><input type="text" placeholder="Ketik jawaban" name="question['+ index +'][answer]" class="form-control"></td></tr>');
     }
-});
-
-$(document).on('click', '.btn-add-alternative-answer', function(){
-    var textAreaAnswer = $(this).prev().find('textarea');
-    var textAreaNum = 0;
-    textAreaAnswer.each(function(){
-        $(this).attr('name', 'question[answer][' + textAreaNum + ']');
-        $(this).attr('placeholder', 'Ketik alternatif jawaban '+ (textAreaNum + 1));
-        textAreaNum++;
-    });
-    $(this).prev().append('<div class="d-flex justify-content-start align-items-start"><textarea class="textarea-answer" name="question[answer][' + textAreaNum + ']" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (textAreaNum + 1) +'" required></textarea><button class="btn-delete-answer" type="button"><i class="kejar-close"></i></button></div>');
 });
 
 $(document).on('change', 'input[type=file]', function(){
@@ -165,147 +166,54 @@ function checkActive(){
     });
 }
 
-$(document).on('click', '.btn-delete-answer', function(){
-    var thisParent1 = $(this).parent();
-    var thisParent2 = thisParent1.parent();
-    thisParent1.remove();
-    var textAreaAnswer = thisParent2.find('textarea');
-    var textAreaNum = 0;
-    textAreaAnswer.each(function(){
-        $(this).attr('name', 'question[answer][' + textAreaNum + ']');
-        $(this).attr('placeholder', 'Ketik alternatif jawaban '+ (textAreaNum + 1));
-        textAreaNum++;
-    });
+$(document).on('click', '.btn-edit', function(){
+    var type = $(this).data('target');
+    var modal = $(type);
+    var url = $(this).data('url');
+    if (type == '#update-menulis-efektif-question-modal') {
+        $.ajax({
+            url: url,
+            method: "GET",
+            success:function(response){
+                modal.find('form').attr('action', url);
+                modal.find('.textarea-question').eq(0).val(response.question);
+                modal.find('.textarea-question').eq(1).val(response.explanation);
+                var answersData = '<colgroup><col class="first-col"/><col class="second-col"/></colgroup>';
+                if (Array.isArray(response.answer)) {
+                    for (var i = 0; i < response.answer.length; i++) {
+                        if (i == 0) {
+                            answersData += '<tr><td colspan="2"><input type="hidden" name="question[answer]['+ i +']" value="'+ response.answer[i] +'"><div contenteditable="true" class="inputgrow-field" placeholder="Ketik alternatif jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td></tr>';
+                        } else {
+                            answersData += '<tr><td><input type="hidden" name="question[answer]['+ i +']" value="'+ response.answer[i] +'"><div contenteditable="true" class="inputgrow-field" placeholder="Ketik alternatif jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
+                        }
+                    }
+                } else {
+                    answersData += '<tr><td colspan="2"><input type="hidden" name="question[answer][0]" value="'+ response.answer +'"><div contenteditable="true" class="inputgrow-field" placeholder="Ketik alternatif jawaban 1">'+ response.answer +'</div></td></tr>';
+                }
+                modal.find('table').html(answersData);
+                modal.modal('show');
+            }
+        });
+    }
 });
 
-ClassicEditor
-.create( document.querySelector( '#create_editor' ), {
-    toolbar: {
-        items: [
-            'bold',
-            'italic',
-            'underline',
-            'bulletedList',
-            'numberedList',
-            'imageUpload'
-        ]
-    },
-    language: 'en',
-    image: {
-        styles: [
-            'alignLeft', 'alignCenter', 'alignRight'
-        ],
-        resizeOptions: [
-            {
-                name: 'imageResize:original',
-                label: 'Original',
-                value: null
-            },
-            {
-                name: 'imageResize:50',
-                label: '50%',
-                value: '50'
-            },
-            {
-                name: 'imageResize:75',
-                label: '75%',
-                value: '75'
-            }
-        ],
-        toolbar: [
-            'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
-            '|',
-            'imageResize',
-        ],
-    },
-    licenseKey: '',
-} )
-.then( editor => {
-    window.editor = editor;
-} )
-.catch( error => {
-    console.error( 'Oops, something went wrong!' );
-    console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-    console.warn( 'Build id: nekgv7mmfgzn-cehsg6b07p1b' );
-    console.error( error );
-} );
+$(document).on('click', '.remove-btn', function(){
+    var type = $(this).parents('table').attr('data-type');
+    if (type == 'menulis-efektif') {
+        var thisParent1 = $(this).parents('tr');
+        var thisParent2 = thisParent1.parent();
+        thisParent1.remove();
+        var textAreaNum = 0;
+        thisParent2.find('tr').each(function(){
+            $(this).find('input').attr('name', 'question[answer]['+ textAreaNum +']');
+            $(this).find('.inputgrow-field').attr('placeholder', 'Ketik alternatif jawaban '+ (textAreaNum + 1));
+            textAreaNum++;
+        });
+    }
+});
 
-let updateEditor;
-
-ClassicEditor
-.create( document.querySelector( '#update_editor' ), {
-    toolbar: {
-        items: [
-            'bold',
-            'italic',
-            'underline',
-            'bulletedList',
-            'numberedList',
-            'imageUpload'
-        ]
-    },
-    language: 'en',
-    image: {
-        styles: [
-            'alignLeft', 'alignCenter', 'alignRight'
-        ],
-        resizeOptions: [
-            {
-                name: 'imageResize:original',
-                label: 'Original',
-                value: null
-            },
-            {
-                name: 'imageResize:50',
-                label: '50%',
-                value: '50'
-            },
-            {
-                name: 'imageResize:75',
-                label: '75%',
-                value: '75'
-            }
-        ],
-        toolbar: [
-            'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
-            '|',
-            'imageResize',
-        ],
-    },
-    licenseKey: '',
-} )
-.then( editor => {
-    updateEditor = editor;
-} )
-.catch( error => {
-    console.error( 'Oops, something went wrong!' );
-    console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-    console.warn( 'Build id: nekgv7mmfgzn-cehsg6b07p1b' );
-    console.error( error );
-} );
-
-$(document).on('dblclick', '.question-list-item', function(){
-    var url = $(this).attr('data-url');
-    $.ajax({
-        method: "GET",
-        url: url,
-        success:function(response){
-            var editModal = $('#update-menulis-efektif-question-modal');
-            editModal.find('.textarea-question').text(response.question);
-            editModal.find('form').attr('action', url);
-            var answerTextArea = '';
-            for (var i = 0; i < response.answer.length; i++) {
-                if (i == 0) {
-                    answerTextArea += '<textarea class="textarea-answer" name="question[answer][' + i + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (i + 1) +'" required>'+ response.answer[i] +'</textarea>';  
-                } else {
-                    answerTextArea += '<div class="d-flex justify-content-start align-items-start"><textarea class="textarea-answer" name="question[answer][' + i + ']" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (i + 1) +'" required>'+ response.answer[i] +'</textarea><button class="btn-delete-answer" type="button"><i class="kejar-close"></i></button></div>';
-                }
-            }
-            editModal.find('.new_answer').html(answerTextArea);
-            updateEditor.setData(response.explanation ?? '<p class="ck-placeholder" data-placeholder="Ketik Pembahasan"><br data-cke-filler="true"></p>');
-            editModal.modal('show');
-        }
-    });
+$(document).on('input', '.inputgrow-field', function(){
+    $(this).prev().val($(this).text());
 });
 
 var editorArray = [];

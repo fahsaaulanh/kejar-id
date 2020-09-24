@@ -87,11 +87,16 @@
                     background: white !important;
                     z-index: 1;
                     padding: 1rem !important;
+
+                    .close{
+                        padding: 0 !important;
+                    }
                 }
 
                 .modal-body{
                     max-height: 504px;
                     overflow: auto;
+                    margin-top: -2.1rem;
                 }
             }
         }   
@@ -105,12 +110,11 @@
     
             .modal{
                 &-header{
-                    padding: 2.5rem 2.2rem 0rem 2.2rem !important;
+                    padding: 1rem 2.2rem 0rem 2.2rem !important;
                     border: 0 !important;
     
                     .close{
                         font-size: 2rem !important;
-                        padding: 0 !important;
     
                         i::before{
                             color: $grey-3 !important;
@@ -135,7 +139,6 @@
                 &-body{
                     padding: 2.5rem 2.2rem !important;
                     border: 0 !important;
-                    margin-top: -2.1rem;
     
                     .list-group{
                         width: 100% !important;
@@ -240,6 +243,11 @@
                     padding: 1rem 1.2rem;
                     color: $grey-6;
                     background-color: $white !important;
+                    
+                    &:focus{
+                        outline: 0;
+                        border: 0.2rem solid $blue-4;
+                    }
                 }
             }
 
@@ -335,11 +343,11 @@
             }
 
             .btn-cancel{
-                color: $grey-6;
+                color: $blue;
                 background: transparent;
 
                 &:hover{
-                    color: $grey-3;
+                    color: $blue-2;
                 }
             }
 
@@ -462,9 +470,9 @@
 }
 
 @media (min-width: 576px) {
-    #create-question{
+    #create-question, .modal-large{
         .modal-dialog{
-            max-width: 704px !important;
+            max-width: 70rem !important;
         }
     }
 }
