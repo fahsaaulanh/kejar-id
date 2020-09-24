@@ -205,6 +205,7 @@
             margin-top: 2.4rem;
 
             tr {
+                cursor: auto !important;
                 border: 2px solid $grey-13;
                 border-left: none;
                 border-right: none;
@@ -309,7 +310,7 @@
     i {
         font-family: "Roboto Mono", monospace !important;
         font-style: italic !important;
-        line-height: 1.6rem !important;
+        line-height: 1.5rem !important;
     }
 
     .image-style-align-left {
@@ -321,34 +322,23 @@
         float: right;
         margin-left: 3rem;
     }
+
+    .image-style-align-center {
+        margin-left: auto;
+        margin-right: auto;
+    }
     
     img {
         width: 100%;
+    }
+
+    ul li:before{
+        display: none;
     }
 
     &::after {
         content: "";
         display: block;
         clear: both;
-    }
-
-    .image-style-align-center {
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-.question-list-item {
-    .question-text {
-        margin-bottom: 1.6rem;
-    }
-
-    .explanation-title {
-        margin-top: 2.6rem;
-        font-weight: bold;
-    }
-
-    .explanation-text {
-        margin-bottom: 2.4rem;
     }
 }

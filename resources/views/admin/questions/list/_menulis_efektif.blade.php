@@ -62,31 +62,60 @@
         <button class="btn-upload" data-toggle="modal" data-target="#create-menulis-efektif-question-modal">
             <i class="kejar-add"></i>Input Soal
         </button>
-        <hr class="border-line">
     </div>
 
     <!-- Table of questions -->
-    @forelse($roundQuestionsData as $question)
-        <div class="question-list-item" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-            <div class="editor-display question-text">{!! $question['question']['question'] !!}</div>
-            @if(is_array($question['question']['answer']) === true)
-                @forelse($question['question']['answer'] as $answer)
-                    <i class="kejar-soal-benar"></i> {!! $answer !!} <hr class="border-0">
-                @empty
-                    Belum ada jawaban
-                @endforelse
-            @else
-                <i class="kejar-soal-benar"></i> {{ $question['question']['answer'] }} <hr class="border-0">
-            @endif
-            <p class="explanation-title">Pembahasan :</p>
-            <div class="editor-display">
-                {!! $question['question']['explanation'] !!}
+    <div class="table-questions border-top-none">
+    @forelse($roundQuestionsData as $key => $question)
+        @php
+        $pageNum = request()->page ?? 1;
+        $questionNum = (($pageNum * 20) - 20) + $key + 1;
+        @endphp
+        <div class="card type-isian-bahasa">
+            <div class="card-header">
+                <div>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-bahasa"></i> <h5>Isian Bahasa</h5>
+                </div>
+                <div>
+                    <button class="btn-edit" data-target="#update-menulis-efektif-question-modal" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                        <i class="kejar-edit"></i> Edit
+                    </button>
+                </div>
             </div>
-            <hr class="border-line">
+            <div class="card-body">
+                <div class="editor-display">
+                    {!! $question['question']['question'] !!}
+                </div>
+                <div class="question-answer-group">
+                    <table class="question-answer-table">
+                        @if(is_array($question['question']['answer']) === true)
+                            @foreach($question['question']['answer'] as $answer)
+                                <tr>
+                                    <td><i class="kejar-soal-benar"></i></td>
+                                    <td>{!! $answer !!}</td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td><i class="kejar-soal-benar"></i></td>
+                                <td>{!! $question['question']['answer'] !!}</td>
+                            </tr>
+                        @endif
+                    </table>
+                </div>
+                <div class="explanation-group">
+                    <strong>Pembahasan</strong>
+                    <div class="editor-display">
+                        {!! $question['question']['explanation'] !!}
+                    </div>
+                </div>
+            </div>
         </div>
     @empty
         <strong>Belum ada soal</strong><br>
     @endforelse
+    </div>
+
     <!-- Pagination -->
     <nav class="navigation">
         <div>
@@ -96,7 +125,7 @@
             <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
                 <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
             </li>
-            @for($i=1; $i <= $roundQuestionsMeta['last_page']; $i++)
+            @for($i = 1; $i <= $roundQuestionsMeta['last_page']; $i++)
             <li class="page-item {{ (request()->page ?? 1) == $i ? 'active disabled' : '' }}">
                 <a class="page-link" href="?page={{ $i }}">{{ $i }}</a>
             </li>

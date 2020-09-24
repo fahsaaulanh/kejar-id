@@ -1,7 +1,7 @@
 <!-- Modal -->
-<div class="modal fade" id="update-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
+<div class="modal fade modal-large" id="update-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
     <div class="modal-dialog" role="document">
-        <form method="post" id="question-create-form">
+        <form method="post">
             @csrf
             @method('PATCH')
             <div class="modal-content">
@@ -12,7 +12,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group ck-height-9">
                         <label for="title">Soal</label>
                         <textarea class="textarea-question" name="question[question]" placeholder="Ketik soal" required></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1">
@@ -37,18 +37,21 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="answer">Jawaban</label>
+                        <label>Jawaban</label>
                         <p>Semua alternatif jawaban dianggap benar.</p>
-                        <div class="new_answer">
-                            <textarea class="textarea-answer" name="question[answer][0]" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban 1" required></textarea>
-                        </div>
-                        <button class="btn btn-add border-0 btn-add-alternative-answer" type="button">
+                        <table class="answer-list-table-me" data-type="menulis-efektif">
+                            <colgroup>
+                                <col class="first-col"/>
+                                <col class="second-col"/>
+                            </colgroup>
+                        </table>
+                        <button class="btn btn-add border-0 pl-0" type="button" data-type="menulis-efektif">
                             <i class="kejar-add"></i> Tambah alternatif jawaban
                         </button>
                     </div>
-                    <div class="form-group">
-                        <label for="discussion">Pembahasan</label>
-                        <textarea name="question[explanation]" id="update_editor" cols="30" rows="3" placeholder="Ketik Pembahasan"></textarea>
+                    <div class="form-group ck-height-9">
+                        <label>Pembahasan</label>
+                        <textarea class="textarea-question" name="question[explanation]" cols="30" rows="3" placeholder="Ketik Pembahasan" ck-type="update-menulis-efektif"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>

@@ -155,3 +155,25 @@ input.input-alternative-answer{
     height: 6rem;
     width: 100%;
 }
+
+.inputgrow-field{
+    width: auto;
+    box-sizing: border-box;
+    border-radius: 0rem;
+    border: 0.2rem solid $grey-13;
+    padding: 1rem 1.2rem 2.5rem 1.2rem;
+    color: $grey-6;
+    background-color: $white !important;
+
+    &:focus{
+        border: 0.2rem solid $blue-4;
+        outline: 0;
+    }
+
+    &[contentEditable=true]:empty:not(:focus):before{
+        cursor: text;
+        content: attr(placeholder);
+        pointer-events: none;
+        color: $grey-6;
+    }
+}

@@ -16,6 +16,7 @@
     background-color: transparent;
     width: 4rem;
     height: 4rem;
+    font-size: 1.8rem;
 }
 
 .btn-login {
@@ -166,7 +167,7 @@
     box-sizing: border-box;
     background: $white;
     outline: none;
-    padding: 0.5rem 1.2rem !important;
+    padding: 0.5rem 1.2rem;
     margin: 0;
 
     i {

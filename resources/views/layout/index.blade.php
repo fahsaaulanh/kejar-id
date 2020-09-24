@@ -37,8 +37,8 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 @if (session('user.role') !== 'ADMIN')
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#editProfile"><i class="kejar-profile"></i> Ganti Foto Profil</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
                                 @endif
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#updatePassword"><i class="kejar-password"></i> Ganti Password</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logout"><i class="kejar-log-out"></i> Log Out</a>
                             </div>
                         </li>
@@ -51,8 +51,8 @@
 
         @if (session('user.role') !== 'ADMIN')
         @include('shared._update_avatar')
-        @include('shared._update_password')
         @endif
+        @include('shared._update_password')
 
         <!-- Modal -->
         <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logout" aria-hidden="true">
@@ -124,6 +124,12 @@
     <script>
         $('#editProfile').modal('show');
         alert("{{ Session::get('profile_updated') }}");
+    </script>
+    @endif
+
+    @if(Session::has('changephoto'))
+    <script>
+        $('#editProfile').modal('show');
     </script>
     @endif
 

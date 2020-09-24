@@ -510,3 +510,39 @@
         z-index: 1;
     }
 }
+
+.answer-list-table-me{
+    table-layout: fixed;
+    width: 100%;
+
+    .first-col{
+        width: auto;
+    }
+
+    .second-col{
+        width: 3rem;
+    }
+
+    tr td {
+        vertical-align: top;
+        padding-bottom: 1.6rem;
+
+        &:nth-child(2){
+            text-align: right;
+            padding-left: 0.5rem;
+        }
+    
+        .remove-btn{
+            display: inline-block;
+            border: 0;
+            height: 4rem;
+            font-size: 2rem;
+            text-align: center;
+            background-color: transparent;
+    
+            &:focus{
+                outline: 0;
+            }
+        }
+    }
+}

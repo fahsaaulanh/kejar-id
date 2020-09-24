@@ -77,6 +77,8 @@ class ChangePasswordController extends Controller
             request()->session()->put('user.PasswordMustBeChanged', false);
         } elseif (request()->type === 'photo') {
             request()->session()->put('user.changePhotoOnBoarding', false);
+
+            Session::flash('changephoto');
         }
 
         return redirect()->back();
