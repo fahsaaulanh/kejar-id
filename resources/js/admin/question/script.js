@@ -213,7 +213,7 @@ $(document).on('click', '.remove-btn', function(){
 });
 
 $(document).on('input', '.inputgrow-field', function(){
-    $(this).prev().val($(this).text());
+    $(this).prev().val($(this).html());
 });
 
 var editorArray = [];
