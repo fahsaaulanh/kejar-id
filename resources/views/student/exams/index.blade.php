@@ -78,16 +78,15 @@
                     </div>
                 </div>
                 @endforeach
-            </form
+            </form>
             @else
                 <form class="menulis-efektif question-list" id="question-list" method="POST" action="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/' . $taskId . '/finishes') }}" id="process" data-total="{{ count($questions) }}" data-task="{{ $taskId }}" data-check="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/check') }}" data-timer="{{ $timespan }}">
                     @foreach($questions as $key => $question)
                         <div class="question-item" data-index="{{ $key }}" data-number="{{ ++$key }}" data-repeatance="0" data-id="{{ $question['id'] }}">
                             <!-- Question -->
                             <div class="question">
-                                <h1 class="question-text">
-                                    {{ $question['question'] }}
-
+                                <h1 class="question-text editor-display">
+                                    {!! $question['question'] !!}
                                 </h1>
                             </div>
                             <!-- Answer Input -->
@@ -107,7 +106,7 @@
                             <!-- Pebahasan -->
                             <div class="pembahasan">
                                 <h5>Pembahasan</h5>
-                                <div class="explanation-text"></div>
+                                <div class="explanation-text editor-display"></div>
                                 <div class="alternative-answers">
                                     <ul>
                                     </ul>
