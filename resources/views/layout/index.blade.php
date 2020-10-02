@@ -129,7 +129,7 @@
 
     @if(Session::has('changephoto'))
     <script>
-        $('#editProfile').modal('show');
+        // $('#editProfile').modal('show');
     </script>
     @endif
 

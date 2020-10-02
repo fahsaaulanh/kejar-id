@@ -24,7 +24,7 @@
                     <i class="kejar kejar-close"></i>
                 </a>
             </h3>
-            
+
             <div>
                 <p><strong>Password belum diganti, ganti dulu agar lebih aman.</strong></p>
                 <p>Password harus terdiri dari minimal 6 karakter, kombinasi huruf dan angka.</p>
@@ -72,7 +72,7 @@
             <h3>Pasang Foto Profil <a href="{{ url('/teacher/skip-change-info?type=photo') }}" class="close" data-dismiss="modal" aria-label="Close">
                 <i class="kejar kejar-close"></i>
             </a></h3>
-            
+
             <div class="mt-5">
                 <p>Pasang foto profil untuk memudahkan siswa dan sejawat guru mengenali profil Bapak/Ibu.</p>
                 <div class="form-group">
@@ -117,6 +117,7 @@
                             </div>
                         </a>
                     </div>
+                    @env(['staging', 'local'])
                     <div class="card-deck">
                         <a href="{{ url('/teacher/games/toeicwords/class') }}" class="card">
                             <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
@@ -133,6 +134,7 @@
                             </div>
                         </a>
                     </div>
+                    @endenv
                 </div>
             </div>
         </div>
