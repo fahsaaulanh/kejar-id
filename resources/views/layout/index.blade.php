@@ -61,7 +61,7 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Log Out</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <i class="kejar kejar-close"></i>
                             </button>
                     </div>
                     <div class="modal-body">

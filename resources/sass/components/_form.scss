@@ -1,9 +1,18 @@
 
 
 form {
+    .textarea-field{
+        resize: none;
+        min-height: 9rem;
+    }
+
     .textarea-question, .textarea-answer{
         resize: none;
         height: 6rem;
+
+        &:focus{
+            outline: 0;
+        }
     }
 
     .textarea-answer{
