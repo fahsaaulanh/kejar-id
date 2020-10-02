@@ -158,13 +158,29 @@
 
     // Type Pilihan Ganda
     .type-pilihan-ganda {
-        ul:nth-child(1) li {
-            display: flex;
-            margin-bottom: 0.8rem;
-            align-items: center;
+        .question-answer-table {
+            margin-top: 2.4rem;
 
-            i {
-                margin-right: 1rem;
+            tr {
+                cursor: auto !important;
+                width: 100%;
+
+                td {
+                    vertical-align: top;
+
+                    &:nth-child(1) {
+                        i{
+                            font-size: 1.8rem;
+                            top: 0.35rem;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        box-sizing: border-box;
+                        padding-left:1.6rem;
+                    }
+
+                }
             }
         }
     }

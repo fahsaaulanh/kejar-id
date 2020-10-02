@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <h6>Pilih tipe soal terlebih dahulu.</h6>
                 <div class="card-deck">
-                        <a class="card" href="#">
+                        <a class="card" href="#create-pilihan-ganda" data-toggle="modal" data-target="#create-pilihan-ganda">
                             <div class="card-body">
                                 <i class="kejar-pilihan-ganda"></i>
                                 <h6>Pilihan Ganda</h6>
