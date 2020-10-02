@@ -1,23 +1,27 @@
+@import "_icon_variables";
+
 @font-face {
-  font-family: 'kejar-matrikulasi';
-  src:  url('/fonts/kejar-matrikulasi.eot?k5hm1f');
-  src:  url('/fonts/kejar-matrikulasi.eot?k5hm1f#iefix') format('embedded-opentype'),
-    url('/fonts/kejar-matrikulasi.ttf?k5hm1f') format('truetype'),
-    url('/fonts/kejar-matrikulasi.woff?k5hm1f') format('woff'),
-    url('/fonts/kejarkulasi.svg?k5hm1f#kejar-matrikulasi') format('svg');
+  font-family: '#{$icomoon-font-family}';
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?kw1utn');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?kw1utn#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?kw1utn') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?kw1utn') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?kw1utn##{$icomoon-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 i, .icomoon-liga {
-  position: relative;
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'kejar-matrikulasi' !important;
+  font-family: '#{$icomoon-font-family}' !important;
   // speak: never;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
   text-transform: none;
-  line-height: 2rem;
-  
+  line-height: 1;
+
   /* Enable Ligatures ================ */
   letter-spacing: 0;
   // -webkit-font-feature-settings: "liga";
@@ -33,389 +37,519 @@ i, .icomoon-liga {
   // -moz-osx-font-smoothing: grayscale;
 }
 
-.kejar-photo:before{
-  content: '\e92f';
-  color: #334e68;
-}
-.kejar-edit:before{
-  content: "\e912";
-  color: #334e68;
-}
-.kejar-play:before {
-  content: "\e91e";
-  color: #334e68;
-}
-.kejar-dropdown:before {
-  content: "\e911";
-  color: #334e68;
-}
-.kejar-hide-password:before {
-  content: "\e914";
-  color: #334e68;
-}
-.kejar-show-password:before {
-  content: "\e922";
-  color: #334e68;
-}
-.kejar-bold:before {
-  content: "\e90b";
-  color: #334e68;
-}
-.kejar-bullet:before {
-  content: "\e90d";
-  color: #334e68;
-}
-.kejar-italic:before {
-  content: "\e916";
-  color: #334e68;
-}
-.kejar-number:before {
-  content: "\e91b";
-  color: #334e68;
-}
-.kejar-underlined:before {
-  content: "\e929";
-  color: #334e68;
-}
-.kejar-log-out:before {
-  content: "\e919";
-  color: #334e68;
-}
-.kejar-password:before {
-  content: "\e91d";
-  color: #334e68;
-}
-.kejar-profile:before {
-  content: "\e91f";
-  color: #334e68;
-}
-.kejar-bottom:before {
-  content: "\e90c";
-  color: #334e68;
-}
-.kejar-top:before {
-  content: "\e928";
-  color: #334e68;
-}
-.kejar-back:before {
-  content: "\e906";
-  color: #334e68;
-}
-.kejar-belum-mengerjakan1:before {
-  content: "\e907";
-  color: #334e68;
-}
-.kejar-belum-mengerjakan-2:before {
-  content: "\e908";
-  color: #334e68;
-}
-.kejar-latihan-to-bold:before {
-  content: "\e917";
-  color: #334e68;
-}
-.kejar-left:before {
-  content: "\e918";
-  color: #334e68;
-}
-.kejar-add:before {
-  content: "\e900";
-  color: #334e68;
-}
-.kejar-application:before {
-  content: "\e901";
-  color: #334e68;
-}
-.kejar-arrow-left:before {
-  content: "\e902";
-  color: #334e68;
-}
-.kejar-arrow-right:before {
-  content: "\e903";
-  color: #334e68;
-}
-.kejar-arsip-asesmen:before {
-  content: "\e905";
-  color: #334e68;
-}
-.kejar-arsip-asesmen-bold:before {
-  content: "\e904";
-  color: #334e68;
-}
-.kejar-belum-mengerjakan:before {
-  content: "\e90a";
-  color: #334e68;
-}
-.kejar-belum-mengerjakan-small:before {
-  content: "\e909";
-  color: #334e68;
-}
-.kejar-close:before {
-  content: "\e90e";
-  color: #334e68;
-}
-.kejar-dot:before {
-  content: "\e90f";
-  color: #334e68;
-}
-.kejar-download:before {
-  content: "\e910";
-  color: #334e68;
-}
-.kejar-exit:before {
-  content: "\e913";
-  color: #334e68;
-}
-.kejar-link:before {
-  content: "\e915";
-}
-.kejar-next:before {
-  content: "\e91a";
-  color: #334e68;
-}
-.kejar-open-book:before {
-  content: "\e91c";
-  color: #334e68;
-}
-.kejar-right:before {
-  content: "\e920";
-  color: #334e68;
-}
-.kejar-round:before {
-  content: "\e921";
-  color: #334e68;
-}
-.kejar-show:before {
-  content: "\e923";
-  color: #334e68;
-}
-.kejar-soal-benar:before {
-  content: "\e924";
-  color: #334e68;
-}
-.kejar-stage:before {
-  content: "\e925";
-  color: #334e68;
-}
-.kejar-sudah-dikerjakan:before {
-  content: "\e927";
-  color: #334e68;
-}
-.kejar-sudah-dikerjakan-small:before {
-  content: "\e926";
-  color: #334e68;
-}
-.kejar-upload:before {
-  content: "\e92a";
-  color: #334e68;
-}
-.kejar-soal-salah::before {
-  content: '\e90e';
-  color: #334e68;
-}
-
-.kejar-pilihan-ganda::before {
-  content: '\e94f';
-  color: #334e68;
-}
-
-.kejar-pilih-centang::before {
-  content: '\e94e';
-  color: #334e68;
-}
-
-.kejar-benar-salah::before {
-  content: '\e948';
-  color: #334e68;
-}
-
-.kejar-ya-tidak::before {
-  content: '\e952';
-  color: #334e68;
-}
-
-.kejar-mengurutkan-vertikal::before {
-  content: '\e94d';
-  color: #334e68;
-}
-
-.kejar-mencocokkan::before {
-  content: '\e94c';
-  color: #334e68;
-}
-
-.kejar-esai::before {
-  content: '\e951';
-  color: #334e68;
-}
-
-
-.kejar-teks-merinci::before {
-  content: '\e949';
-  color: #334e68;
-}
-
-.kejar-isian-bahasa::before {
-  content: '\e94a';
-  color: #334e68;
-}
-
-.kejar-isian-matematika::before {
-  content: '\e94b';
-  color: #334e68;
-}
-
-.kejar-table::before {
-  content: '\e953';
-  color: #334e68;
-}
-
-.kejar-rumpang-pg::before {
-  content: '\e950';
-  color: #334e68;
-}
-
-.kejar-radio-button::before {
-  content: '\e930';
-  color: #334e68;
-}
-
-.kejar-drag-vertical::before {
-  content: '\e92e';
-  color: #334e68;
-}
-
-.kejar-photo::before {
-  content: '\e92f';
-  color: #334e68;
-}
-
-.kejar-belum-dikerjakan::before {
-  content: '\e931';
-  color: #334e68;
-}
-
-.kejar-check-box::before {
-  content: '\e932';
-  color: #334e68;
-}
-
-.kejar-checked-box::before {
-  content: '\e933';
-  color: #334e68;
-}
-
-.kejar-a-bold-ellipse::before {
-  content: '\e934';
-  color: #334e68;
-}
-
-.kejar-a-ellipse::before {
-  content: '\e935';
-  color: #334e68;
-}
-
-.kejar-b-bold-ellipse::before {
-  content: '\e936';
-  color: #334e68;
-}
-
-.kejar-b-ellipse::before {
-  content: '\e937';
-  color: #334e68;
-}
-
-.kejar-c-bold-ellipse::before {
-  content: '\e938';
-  color: #334e68;
-}
-
-.kejar-c-ellipse::before {
-  content: '\e939';
-  color: #334e68;
-}
-
-.kejar-d-bold-ellipse::before {
-  content: '\e93a';
-  color: #334e68;
-}
-
-.kejar-d-ellipse::before {
-  content: '\e93b';
-  color: #334e68;
-}
-
-.kejar-e-bold-ellipse::before {
-  content: '\e93c';
-  color: #334e68;
-}
-
-.kejar-e-ellipse::before {
-  content: '\e93d';
-  color: #334e68;
-}
-
-.kejar-f-bold-ellipse::before {
-  content: '\e93e';
-  color: #334e68;
-}
-
-.kejar-f-ellipse::before {
-  content: '\e93f';
-  color: #334e68;
-}
-
-.kejar-g-bold-ellipse::before {
-  content: '\e940';
-  color: #334e68;
-}
-
-.kejar-g-ellipse::before {
-  content: '\e943';
-  color: #334e68;
-}
-
-.kejar-h-bold-ellipse::before {
-  content: '\e941';
-  color: #334e68;
-}
-
-.kejar-h-ellipse::before {
-  content: '\e942';
-  color: #334e68;
-}
-
-.kejar-i-bold-ellipse::before {
-  content: '\e944';
-  color: #334e68;
-}
-
-.kejar-i-ellipse::before {
-  content: '\e945';
-  color: #334e68;
-}
-
-.kejar-j-bold-ellipse::before {
-  content: '\e946';
-  color: #334e68;
-}
-
-.kejar-j-ellipse::before {
-  content: '\e947';
-  color: #334e68;
-}
-
-.kejar-search::before {
-  content: '\e92d';
-  color: #334e68;
-}
-
-.kejar-info::before {
-  content: '\e92b';
-  color: #334e68;
-}
-
-.kejar-mapel::before {
-  content: '\e92c';
-  color: #334e68;
+.kejar-pdf {
+  &:before {
+    content: $kejar-pdf;
+    color: #334e68;
+  }
+}
+.kejar-penilaian-bold {
+  &:before {
+    content: $kejar-penilaian-bold;
+    color: #334e68;
+  }
+}
+.kejar-penilaian {
+  &:before {
+    content: $kejar-penilaian;
+    color: #334e68;
+  }
+}
+.kejar-a-bold-ellipse {
+  &:before {
+    content: $kejar-a-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-a-ellipse {
+  &:before {
+    content: $kejar-a-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-b-bold-ellipse {
+  &:before {
+    content: $kejar-b-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-b-ellipse {
+  &:before {
+    content: $kejar-b-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-c-bold-ellipse {
+  &:before {
+    content: $kejar-c-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-c-ellipse {
+  &:before {
+    content: $kejar-c-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-d-bold-ellipse {
+  &:before {
+    content: $kejar-d-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-d-ellipse {
+  &:before {
+    content: $kejar-d-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-e-bold-ellipse {
+  &:before {
+    content: $kejar-e-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-e-ellipse {
+  &:before {
+    content: $kejar-e-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-f-bold-ellipse {
+  &:before {
+    content: $kejar-f-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-f-ellipse {
+  &:before {
+    content: $kejar-f-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-g-bold-ellipse {
+  &:before {
+    content: $kejar-g-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-g-ellipse {
+  &:before {
+    content: $kejar-g-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-h-ellipse {
+  &:before {
+    content: $kejar-h-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-i-bold-ellipse {
+  &:before {
+    content: $kejar-i-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-i-ellipse {
+  &:before {
+    content: $kejar-i-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-j-bold-ellipse {
+  &:before {
+    content: $kejar-j-bold-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-j-ellipse {
+  &:before {
+    content: $kejar-j-ellipse;
+    color: #334e68;
+  }
+}
+.kejar-drag-vertical {
+  &:before {
+    content: $kejar-drag-vertical;
+    color: #334e68;
+  }
+}
+.kejar-photo {
+  &:before {
+    content: $kejar-photo;
+    color: #334e68;
+  }
+}
+.kejar-radio-button {
+  &:before {
+    content: $kejar-radio-button;
+    color: #334e68;
+  }
+}
+.kejar-belum-dikerjakan {
+  &:before {
+    content: $kejar-belum-dikerjakan;
+    color: #334e68;
+  }
+}
+.kejar-check-box {
+  &:before {
+    content: $kejar-check-box;
+    color: #334e68;
+  }
+}
+.kejar-checked-box {
+  &:before {
+    content: $kejar-checked-box;
+    color: #334e68;
+  }
+}
+.kejar-search {
+  &:before {
+    content: $kejar-search;
+    color: #334e68;
+  }
+}
+.kejar-info {
+  &:before {
+    content: $kejar-info;
+    color: #334e68;
+  }
+}
+.kejar-mapel {
+  &:before {
+    content: $kejar-mapel;
+    color: #334e68;
+  }
+}
+.kejar-benar-salah {
+  &:before {
+    content: $kejar-benar-salah;
+    color: #334e68;
+  }
+}
+.kejar-esai {
+  &:before {
+    content: $kejar-esai;
+    color: #334e68;
+  }
+}
+.kejar-isian-bahasa {
+  &:before {
+    content: $kejar-isian-bahasa;
+    color: #334e68;
+  }
+}
+.kejar-isian-matematika {
+  &:before {
+    content: $kejar-isian-matematika;
+    color: #334e68;
+  }
+}
+.kejar-mencocokkan {
+  &:before {
+    content: $kejar-mencocokkan;
+    color: #334e68;
+  }
+}
+.kejar-mengurutkan-vertikal {
+  &:before {
+    content: $kejar-mengurutkan-vertikal;
+    color: #334e68;
+  }
+}
+.kejar-pilih-centang {
+  &:before {
+    content: $kejar-pilih-centang;
+    color: #334e68;
+  }
+}
+.kejar-pilihan-ganda {
+  &:before {
+    content: $kejar-pilihan-ganda;
+    color: #334e68;
+  }
+}
+.kejar-rumpang-pg {
+  &:before {
+    content: $kejar-rumpang-pg;
+    color: #334e68;
+  }
+}
+.kejar-teks-merinci {
+  &:before {
+    content: $kejar-teks-merinci;
+    color: #334e68;
+  }
+}
+.kejar-ya-tidak {
+  &:before {
+    content: $kejar-ya-tidak;
+    color: #334e68;
+  }
+}
+.kejar-table {
+  &:before {
+    content: $kejar-table;
+    color: #334e68;
+  }
+}
+.kejar-belum-mengerjakan-small {
+  &:before {
+    content: $kejar-belum-mengerjakan-small;
+    color: #334e68;
+  }
+}
+.kejar-belum-mengerjakan {
+  &:before {
+    content: $kejar-belum-mengerjakan;
+    color: #334e68;
+  }
+}
+.kejar-add {
+  &:before {
+    content: $kejar-add;
+    color: #334e68;
+  }
+}
+.kejar-application {
+  &:before {
+    content: $kejar-application;
+    color: #334e68;
+  }
+}
+.kejar-arrow-left {
+  &:before {
+    content: $kejar-arrow-left;
+    color: #334e68;
+  }
+}
+.kejar-arrow-right {
+  &:before {
+    content: $kejar-arrow-right;
+    color: #334e68;
+  }
+}
+.kejar-arsip-asesmen-bold {
+  &:before {
+    content: $kejar-arsip-asesmen-bold;
+    color: #334e68;
+  }
+}
+.kejar-arsip-asesmen {
+  &:before {
+    content: $kejar-arsip-asesmen;
+    color: #334e68;
+  }
+}
+.kejar-back {
+  &:before {
+    content: $kejar-back;
+    color: #334e68;
+  }
+}
+.kejar-belum-dikerjakan-2 {
+  &:before {
+    content: $kejar-belum-dikerjakan-2;
+    color: #334e68;
+  }
+}
+.kejar-belum-dikerjakan {
+  &:before {
+    content: $kejar-belum-dikerjakan;
+    color: #334e68;
+  }
+}
+.kejar-bold {
+  &:before {
+    content: $kejar-bold;
+    color: #334e68;
+  }
+}
+.kejar-bottom {
+  &:before {
+    content: $kejar-bottom;
+    color: #334e68;
+  }
+}
+.kejar-bullet {
+  &:before {
+    content: $kejar-bullet;
+    color: #334e68;
+  }
+}
+.kejar-close {
+  &:before {
+    content: $kejar-close;
+    color: #334e68;
+  }
+}
+.kejar-dot {
+  &:before {
+    content: $kejar-dot;
+    color: #334e68;
+  }
+}
+.kejar-download {
+  &:before {
+    content: $kejar-download;
+    color: #334e68;
+  }
+}
+.kejar-dropdown {
+  &:before {
+    content: $kejar-dropdown;
+    color: #334e68;
+  }
+}
+.kejar-edit {
+  &:before {
+    content: $kejar-edit;
+    color: #334e68;
+  }
+}
+.kejar-exit {
+  &:before {
+    content: $kejar-exit;
+    color: #334e68;
+  }
+}
+.kejar-hide-password {
+  &:before {
+    content: $kejar-hide-password;
+    color: #334e68;
+  }
+}
+.kejar-link {
+  &:before {
+    content: $kejar-link;
+  }
+}
+.kejar-italic {
+  &:before {
+    content: $kejar-italic;
+    color: #334e68;
+  }
+}
+.kejar-latihan-to-bold {
+  &:before {
+    content: $kejar-latihan-to-bold;
+    color: #334e68;
+  }
+}
+.kejar-left {
+  &:before {
+    content: $kejar-left;
+    color: #334e68;
+  }
+}
+.kejar-log-out {
+  &:before {
+    content: $kejar-log-out;
+    color: #334e68;
+  }
+}
+.kejar-next {
+  &:before {
+    content: $kejar-next;
+    color: #334e68;
+  }
+}
+.kejar-number {
+  &:before {
+    content: $kejar-number;
+    color: #334e68;
+  }
+}
+.kejar-open-book {
+  &:before {
+    content: $kejar-open-book;
+    color: #334e68;
+  }
+}
+.kejar-password {
+  &:before {
+    content: $kejar-password;
+    color: #334e68;
+  }
+}
+.kejar-play {
+  &:before {
+    content: $kejar-play;
+    color: #334e68;
+  }
+}
+.kejar-profile {
+  &:before {
+    content: $kejar-profile;
+    color: #334e68;
+  }
+}
+.kejar-right {
+  &:before {
+    content: $kejar-right;
+    color: #334e68;
+  }
+}
+.kejar-round {
+  &:before {
+    content: $kejar-round;
+    color: #334e68;
+  }
+}
+.kejar-show-password {
+  &:before {
+    content: $kejar-show-password;
+    color: #334e68;
+  }
+}
+.kejar-show {
+  &:before {
+    content: $kejar-show;
+    color: #334e68;
+  }
+}
+.kejar-soal-benar {
+  &:before {
+    content: $kejar-soal-benar;
+    color: #334e68;
+  }
+}
+.kejar-stage {
+  &:before {
+    content: $kejar-stage;
+    color: #334e68;
+  }
+}
+.kejar-sudah-dikerjakan-small {
+  &:before {
+    content: $kejar-sudah-dikerjakan-small;
+    color: #334e68;
+  }
+}
+.kejar-sudah-dikerjakan {
+  &:before {
+    content: $kejar-sudah-dikerjakan;
+    color: #334e68;
+  }
+}
+.kejar-top {
+  &:before {
+    content: $kejar-top;
+    color: #334e68;
+  }
+}
+.kejar-underlined {
+  &:before {
+    content: $kejar-underlined;
+    color: #334e68;
+  }
+}
+.kejar-upload {
+  &:before {
+    content: $kejar-upload;
+    color: #334e68;
+  }
 }
 

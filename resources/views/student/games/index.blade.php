@@ -19,12 +19,12 @@
                 <form class="card-384" action="{{ url('/' . strtolower(session('user.role') . '/change-password')) }}" method="post">
                     @csrf
                     @method('PATCH')
-                    <h3>Ganti Password 
+                    <h3>Ganti Password
                         <a href="{{ url('/student/skip-change-info?type=password') }}" class="close" data-dismiss="modal" aria-label="Close">
                             <i class="kejar kejar-close"></i>
                         </a>
                     </h3>
-                    
+
                     <div>
                         <p><strong>Password belum diganti, ganti dulu agar lebih aman.</strong></p>
                         <p>Password harus terdiri dari minimal 6 karakter, kombinasi huruf dan angka.</p>
@@ -72,7 +72,7 @@
                     <h3>Pasang Foto Profil <a href="{{ url('/student/skip-change-info?type=photo') }}" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </a></h3>
-                    
+
                     <div class="mt-5">
                         <p>Jadikan profilmu lebih keren dengan memasang foto. Gunakan foto yang baik, guru-gurumu akan melihat foto profil ini.</p>
                         <div class="form-group">
@@ -90,6 +90,23 @@
             <div class="container-fluid">
                 <div class="row dashboard">
                     <div class="col-12">
+                        @php
+                            $loweredSchoolName = strtolower(session('user.userable.school_name'));
+                            $isWikrama = strpos($loweredSchoolName, 'wikrama') !== false;
+                        @endphp
+                        @if($isWikrama)
+                        <div class="content-header">
+                            <h1 class="content-title">Pilih penilaian...</h1>
+                        </div>
+                        <div class="content-body mb-144">
+                            <div id="pts"class="card-pts">
+                                <h3>
+                                    <i class="kejar-matrikulasi text-purple mr-4">kejar-penilaian</i>
+                                    PTS Semester Ganjil 2020-2021
+                                </h3>
+                            </div>
+                        </div>
+                        @endif
                         <div class="content-header">
                             <h1 class="content-title">Pilih permainan...</h1>
                         </div>
@@ -117,8 +134,8 @@
                                     </div>
                                 </a>
                             </div>
-                            <!-- hide -->
-                            <!-- <div class="card-deck">
+                            @env(['staging', 'local'])
+                            <div class="card-deck">
                                 <a href="{{ url('/student/games/toeicwords/stages') }}" class="card">
                                     <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
                                     <div class="card-body">
@@ -133,18 +150,21 @@
                                         <p class="card-text">Menulis kata yang tepat agar menjadi kalimat yang efektif.</p>
                                     </div>
                                 </a>
-                            </div> -->
-                            <!-- hide -->
+                            </div>
+                            @endenv
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     @endif
+
+@include('student.games._modal_pts')
 @endsection
 
 @push('script')
 <script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
+<script src="{{ mix('/js/student/games/script.js') }}"></script>
 <script type="text/javascript">
 $('.dropify').dropify({
     messages: {
