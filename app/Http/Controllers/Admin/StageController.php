@@ -96,7 +96,7 @@ class StageController extends Controller
         if ($request->file('round_file')->getClientOriginalExtension() !== 'xlsx') {
             return redirect()->back();
         }
-        
+
         $stage = new StageApi;
         $filter = [
             'per_page' => 99,
@@ -167,7 +167,7 @@ class StageController extends Controller
                     'status' => 'NOT_PUBLISHED',
                 ];
 
-                
+
                 if (in_array($collection['stage_id'], $stageIds, true)) {
                     $roundApi->store($collection);
                 } else {

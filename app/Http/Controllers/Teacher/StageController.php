@@ -32,7 +32,7 @@ class StageController extends Controller
                 'filter[entry_year]' => $data,
             ];
             $batchResponse = $batchApi->index($schoolId, $batchFilter);
-            
+
             $batchResult = array_merge($batchResult, $batchResponse['data'] ?? []);
         }
 

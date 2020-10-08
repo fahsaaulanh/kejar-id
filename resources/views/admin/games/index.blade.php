@@ -11,6 +11,16 @@
                     <h1 class="content-title">Pilih permainan...</h1>
                 </div>
                 <div class="content-body">
+                    @forelse($miniAssesmentGroup as $key => $v)
+                        <div class="card-deck pl-4 pr-4 pb-4">
+                            <div class="list-card-menu-item col-12" data-id="#">
+                                <a href="{{ url('/admin/mini-assessment/'.$key) }}">
+                                    <h3><i class="kejar-penilaian" ></i> {{$v}}</h3>
+                                </a>
+                            </div>
+                        </div>
+                    @empty
+                    @endforelse
                     <div class="card-deck">
                         <a href="{{ url('/admin/obr/stages') }}" class="card">
                             <img src="{{ asset('assets/images/home/obr.jpg') }}" class="card-img-top" alt="...">

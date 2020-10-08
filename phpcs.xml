@@ -37,6 +37,7 @@
         <exclude name="SlevomatCodingStandard.Classes.ClassStructure.IncorrectGroupOrder" />
         <exclude name="SlevomatCodingStandard.Numbers.DisallowNumericLiteralSeparator" />
         <exclude name="SlevomatCodingStandard.Commenting.DisallowCommentAfterCode.DisallowedCommentAfterCode" />
+        <exclude name="SlevomatCodingStandard.Functions.StrictCall.StrictParameterMissing" />
     </rule>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
     <rule ref="Generic.Arrays.ArrayIndent" />

@@ -30,24 +30,24 @@ class ChangePasswordController extends Controller
 
         //chek password sama dengan username
         if ($request->password_baru === session()->get('user.username')) {
-            return redirect()->back()->withErrors(
-                ['password_baru' => 'Password baru tidak boleh sama dengan username.'],
-            )->withInput(['password_baru' => $request->password_baru]);
+            Session::flash('message', 'Ubah password gagal!, password tidak boleh sama dengan username');
+
+            return redirect()->back();
         }
-        
+
         $meApi = new MeApi;
         $result = $meApi->update($payload);
-        
+
         if ($result['status'] === 200) {
             //update session password sudah diperbarui
-            $request->session()->put('user.PasswordMustBeChanged', false);
-            
+            $request->session()->put('PasswordMustBeChanged', false);
+
             $checkPhoto = session()->get('user.userable.photo');
 
             if (!$checkPhoto) {
-                $request->session()->put('user.changePhotoOnBoarding', true);
+                Session::flash('changePhotoOnBoarding', true);
             }
-    
+
             Session::flash('message', 'Ubah password berhasil!');
         } else {
             $error = '';
@@ -65,20 +65,18 @@ class ChangePasswordController extends Controller
         return redirect()->back();
     }
 
-    public function skip()
+    public function skipInfo(Request $request)
     {
-        if (request()->type === 'password') {
+        if ($request->type === 'password') {
             $checkPhoto = session()->get('user.userable.photo');
-            
+
             if (!$checkPhoto) {
-                request()->session()->put('user.changePhotoOnBoarding', true);
+                Session::flash('changePhotoOnBoarding', true);
             }
 
-            request()->session()->put('user.PasswordMustBeChanged', false);
-        } elseif (request()->type === 'photo') {
-            request()->session()->put('user.changePhotoOnBoarding', false);
-
-            Session::flash('changephoto');
+            $request->session()->put('PasswordMustBeChanged', false);
+        } elseif ($request->type === 'photo') {
+            Session::flash('changePhotoOnBoarding', false);
         }
 
         return redirect()->back();

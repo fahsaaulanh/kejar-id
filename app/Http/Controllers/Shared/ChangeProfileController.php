@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Shared;
 use App\Http\Controllers\Controller;
 use App\Services\Me as MeApi;
 use Illuminate\Http\Request;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class ChangeProfileController extends Controller
 {
@@ -19,7 +18,7 @@ class ChangeProfileController extends Controller
         $photo = !is_null($req->photo) ? $req->photo : $req->photo_onboarding;
         $img = Image::make($photo);
         $image = (string) $img->stream('data-url');
-        
+
         $payload = [
             'photo' => $image,
         ];

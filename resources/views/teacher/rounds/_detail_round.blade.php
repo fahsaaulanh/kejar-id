@@ -39,9 +39,9 @@
                       <button class="btn btn-primary btn-start d-flex align-items-center" data-dismiss="modal">
                           Tutup
                       </button>
-                  </div> 
+                  </div>
               </div>
-          </div> 
+          </div>
       </div>
   </div>
 </div>

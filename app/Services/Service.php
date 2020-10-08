@@ -34,6 +34,25 @@ class Service
         }
     }
 
+    public function postWithFile($url, $files = [], $data = [])
+    {
+        try {
+            $result = Http::withToken($this->token)
+                         ->asMultipart();
+
+            foreach ($files as $v) {
+                $result = $result->attach($v['file_extension'], fopen($v['file'], 'r'), $v['file_name']);
+            }
+
+            $result = $result->timeout($this->timeout)
+            ->post(env('API_HOST').$url, $data);
+
+            return $result;
+        } catch (Exception $error) {
+            abort(408, "Connection Timeout: $url");
+        }
+    }
+
     public function put($url, $data = [])
     {
         try {

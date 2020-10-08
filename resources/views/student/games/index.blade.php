@@ -3,16 +3,12 @@
 @section('title', 'Permainan')
 
 @section('css')
-  <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('assets/plugins/dropify/dist/css/dropify.css')}}">
 @endsection
-
-@if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)
-@section('header')
-@endsection
-@endif
 
 @section('content')
-    @if(session('user.PasswordMustBeChanged') === true)
+
+    @if(Session::get('PasswordMustBeChanged') == true)
         <!-- form ganti password -->
         <div class="bg-lego">
             <div class="container-center">
@@ -175,14 +171,27 @@ $('.dropify').dropify({
     }
 });
 
-$('input[name=select_photo_onboarding]').change(function(){
-    readURL(this);
-});
-</script>
+    function changeDrop() {
+        $("#updateProfile").modal('toggle');
 
-@if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)
-    <script>
-        $('#updatePassword').remove();
-    </script>
-@endif
+
+        setInterval(function(){
+            var base64Img = $(".dropify-render").html()
+                                            .toString()
+                                            .replace('<img src="', '')
+                                            .replace('">', '');
+
+            $('#profile-pict-crop').attr('src',base64Img);
+
+            console.log(base64Img);
+
+            $('.profile-pict-crop').rcrop({
+                minSize : [200,200],
+                maxSize : [2000,2000],
+                preserveAspectRatio : true,
+                grid : true
+            });
+        }, 200);
+    }
+  </script>
 @endpush
