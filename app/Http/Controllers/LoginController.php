@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Batch as BatchApi;
 use App\Services\School as SchoolApi;
-use App\Services\StudentGroup as StudentApi;
 use App\Services\User as UserApi;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -52,53 +49,17 @@ class LoginController extends Controller
 
             $userApi = new UserApi;
             $responseMe = $userApi->me();
+            $request->session()->put('user', $responseMe['data']);
 
             if ($responseMe['data']['role'] === 'STUDENT') {
-                // Mengambil nama sekolah
-                $schoolApi = new SchoolApi;
-                $responseSchool = $schoolApi->detail($responseMe['data']['userable']['school_id']);
-                $responseMe['data']['userable']['school_name'] = $responseSchool['data']['name'];
+                //check password sudah diganti
 
-                // Mengambil nama kelas
-                $schoolId = $responseMe['data']['userable']['school_id'];
-                $studentGroupId = $responseMe['data']['userable']['student_group_id'];
-                $entryYear = Carbon::now()->year . '/' . Carbon::now()->add(1, 'year')->year;
-
-                $batchApi = new BatchApi;
-                $batchFilter = [
-                    'filter[entry_year]' => $entryYear,
-                ];
-                $batchResponse = $batchApi->index($schoolId, $batchFilter);
-                $batchId = $batchResponse['data'][0]['id'] ?? 0;
-
-                $studentGroupApi = new StudentApi;
-                $classResponse = $studentGroupApi->detail($schoolId, $batchId, $studentGroupId);
-                $className = $classResponse['data']['name'] ?? '-';
-                $responseMe['data']['userable']['class_name'] = $className;
-
-                // Check foto tersedia dalam directory
-                $photo = $responseMe['data']['userable']['photo'];
-                $ss = 'HTTP/1.1 200 OK';
-                $photoCheck = false;
-                if ($photo) {
-                    $photoCheck = get_headers($photo);
-                }
-
-                $photoExist = $photoCheck !== false ? $photoCheck[0] === $ss : false;
-                $responseMe['data']['photoExistCheck'] = $photoExist;
-
-                // Check password sudah diganti
                 $response = $userApi->login($responseMe['data']['username'], $responseMe['data']['username']);
-                $status = $response['status'] === 200;
-
-                if ($status === false) {
-                    $photoExist = true;
+                if ($response['status'] === 200) {
+                    session(['PasswordMustBeChanged' => true]);
+                } else {
+                    session(['PasswordMustBeChanged' => false]);
                 }
-            
-                $responseMe['data']['PasswordMustBeChanged'] = $status;
-                $responseMe['data']['changePhotoOnBoarding'] = !$photoExist;
-
-                $request->session()->put('user', $responseMe['data']);
 
                 return redirect('/student/games');
             }
@@ -136,6 +97,10 @@ class LoginController extends Controller
                 $request->session()->put('user', $responseMe['data']);
 
                 return redirect('/admin/games');
+            }
+
+            if ($responseMe['data']['role'] === 'TEACHER') {
+                return redirect('/teacher/games');
             }
         }
 

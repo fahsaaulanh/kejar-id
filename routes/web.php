@@ -32,6 +32,21 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('/admin')->group(function () {
 
+            // Mini Assesments
+
+            Route::post('mini-assessment/upload-answers', 'Admin\MiniAssessmentController@uploadAnswers');
+            Route::post('mini-assessment/create-answers', 'Admin\MiniAssessmentController@createAnswers');
+            Route::get('mini-assessment/view/{id}', 'Admin\MiniAssessmentController@view');
+
+            Route::prefix('mini-assessment/{mini_assessment_group}')->group(function () {
+                Route::get('/', 'Admin\MiniAssessmentController@subjects');
+
+                Route::prefix('subject/{subject_id}/{level}')->group(function () {
+                    Route::get('/', 'Admin\MiniAssessmentController@index');
+                    Route::post('/', 'Admin\MiniAssessmentController@create');
+                });
+            });
+
             Route::get('/soalcerita', fn () => view('admin.questions.soalcerita.index'));
 
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
@@ -115,10 +130,11 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('student')->group(function () {
 
+            Route::get('/', 'Student\GameController@dashboard');
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
             Route::patch('/change-profile', 'Shared\ChangeProfileController@update');
             Route::get('/result', 'Student\ResultController@index'); //TODO EXAM
-            Route::get('/skip-change-info', 'Shared\ChangePasswordController@skip');
+            Route::get('/skip-change-info', 'Shared\ChangePasswordController@skipInfo'); //TODO EXAM
 
             Route::prefix('/games')->group(function () {
 

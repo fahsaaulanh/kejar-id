@@ -51,7 +51,12 @@ class HomeController extends Controller
             return redirect('/login');
         }
 
-        return view('admin.games.index', $user);
+        $miniAssesmentGroup = [
+            'PTS-semester-ganjil-2020-2021' => 'PTS Semester Ganjil 2020-2021',
+            'PTS-susulan-semester-ganjil-2020-2021' => 'PTS Susulan Semester Ganjil 2020-2021',
+        ];
+
+        return view('admin.games.index', $user)->with('user', $user)->with('miniAssesmentGroup', $miniAssesmentGroup);
     }
 
     public function teacher(Request $request)

@@ -15,16 +15,16 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="avatar-group">
-                                @if (session('user.role') !== 'ADMIN')
-                                    @if (session('user.photoExistCheck') === true)
-                                    <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
+                                @if (session('user.role') === 'STUDENT')
+                                    @if (!is_null(session('user.userable.photo')))
+                                        <img src="{{ session('user.userable.photo') }}" class="profile-pict" alt="">
                                     @else
-                                    <img src="{{ asset('assets/images/profile/default-picture.jpg') }}" class="profile-pict" alt="">
+                                        <img src="{{ asset('assets/images/general/photo-profile-default.svg') }}" class="profile-pict" alt="">
                                     @endif
                                 @endif
                                 <button type="button" class="edit-pict-btn">
                                     <i class="kejar-edit"></i>
-                                </button>   
+                                </button>
                             </div>
                             @if (session('user.role') !== 'ADMIN')
                                 <input type="file" name="select_photo" hidden>
@@ -87,7 +87,13 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="crop-area">
-                            <img src="#" class="profile-pict-crop" alt="">
+                            @if (session('user.role') === 'STUDENT')
+                                @if (!is_null(session('user.userable.photo')))
+                                <img src="" class="profile-pict-crop" alt="">
+                                @else
+                                <img src="{{ asset('assets/images/general/photo-profile-default.svg') }}" id="profile-pict-crop" class="profile-pict-crop" alt="">
+                                @endif
+                            @endif
                         </div>
                     </div>
                 </div>

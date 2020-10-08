@@ -457,7 +457,6 @@
             background-color: $grey-15;
             padding: 1rem;
             border: 0rem;
-
             &.a{
                 width: 66.7%;
             }
@@ -502,7 +501,7 @@
 
 .stage-title-table{
     padding: 0px !important;
-    
+
     div{
         display: block;
         position: sticky;
@@ -531,7 +530,7 @@
             text-align: right;
             padding-left: 0.5rem;
         }
-    
+
         .remove-btn{
             display: inline-block;
             border: 0;
@@ -539,7 +538,7 @@
             font-size: 2rem;
             text-align: center;
             background-color: transparent;
-    
+
             &:focus{
                 outline: 0;
             }
