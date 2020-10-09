@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Services\miniAssessment as miniAssessmentApi;
+use App\Services\MiniAssessment as miniAssessmentApi;
 use App\Services\School as SchoolApi;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
