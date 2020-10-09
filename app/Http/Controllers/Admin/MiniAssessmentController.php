@@ -12,7 +12,8 @@ class MiniAssessmentController extends Controller
 {
     public function schoolId()
     {
-        return '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b';
+        // return '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b'; // staging
+        return '3da67e44-ca12-4ae8-b784-f066ea605887'; // prod
     }
 
     public function miniAssessmentGroups($val, $type = 'title')
@@ -43,6 +44,9 @@ class MiniAssessmentController extends Controller
 
         $schoolApi = new SchoolApi;
         $subjects = $schoolApi->subjectIndex($schoolId);
+        if (!isset($subjects['data'])) {
+            $subjects['data'] = [];
+        }
 
         return view('admin.mini_assessment_subjects.index')
                ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
@@ -63,7 +67,7 @@ class MiniAssessmentController extends Controller
         ];
         $miniAssessmentIndex = $miniAssessmentApi->index($filter);
         $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
-        if (!$miniAssessmentIndex['data']) {
+        if (!isset($miniAssessmentIndex['data'])) {
             $miniAssessmentIndex['data'] = [];
         }
 
