@@ -45,12 +45,13 @@ class MiniAssessmentController extends Controller
         $schoolApi = new SchoolApi;
         $filter = [
             'page' => ($req->page ?? 1),
-            'per_page' => 20
+            'per_page' => 20,
         ];
         $subjects = $schoolApi->subjectIndex($schoolId, $filter);
         if (!isset($subjects['data'])) {
             $subjects['data'] = [];
         }
+
         if (!isset($subjects['meta'])) {
             $subjects['meta'] = [];
         }
@@ -73,18 +74,22 @@ class MiniAssessmentController extends Controller
             'filter[group]' => $group,
             'filter[grade]' => $grade,
             'page' => ($req->page ?? 1),
-            'per_page' => 20
+            'per_page' => 20,
         ];
         $miniAssessmentIndex = $miniAssessmentApi->index($filter);
         $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
 
 
         if (!isset($subject['data'])) {
-            return redirect('admin/mini-assessment/'.$miniAssessmentGroupValue)->with(['message' => 'Data Tidak Ditemukan!']);
+            return redirect('admin/mini-assessment/'.$miniAssessmentGroupValue)->with(
+                ['message' => 'Data Tidak Ditemukan!'],
+            );
         }
+
         if (!isset($miniAssessmentIndex['data'])) {
             $miniAssessmentIndex['data'] = [];
         }
+
         if (!isset($miniAssessmentIndex['meta'])) {
             $miniAssessmentIndex['meta'] = [];
         }

@@ -6,7 +6,7 @@ class School extends Service
 {
     public function subjectIndex($schoolId, $filter = [])
     {
-        $response = $this->get("/schools/$schoolId/subjects",$filter);
+        $response = $this->get("/schools/$schoolId/subjects", $filter);
 
         return $this->showResponse($response);
     }
