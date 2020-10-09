@@ -4,9 +4,9 @@ namespace App\Services;
 
 class School extends Service
 {
-    public function subjectIndex($schoolId)
+    public function subjectIndex($schoolId, $filter = [])
     {
-        $response = $this->get("/schools/$schoolId/subjects");
+        $response = $this->get("/schools/$schoolId/subjects", $filter);
 
         return $this->showResponse($response);
     }

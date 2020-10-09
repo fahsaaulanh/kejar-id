@@ -49,6 +49,27 @@
 
         </div>
 
+        @if($miniAssessmentMeta && ($miniAssessmentMeta['total'] > 20))
+            <!-- Pagination -->
+            <nav class="navigation mt-5">
+                <div>
+                    <span class="pagination-detail">{{ $miniAssessmentMeta['to'] ?? 0 }} dari {{ $miniAssessmentMeta['total'] }} soal</span>
+                </div>
+                <ul class="pagination">
+                    <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
+                        <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
+                    </li>
+                    @for($i=1; $i <= $miniAssessmentMeta['last_page']; $i++)
+                    <li class="page-item {{ (request()->page ?? 1) == $i ? 'active disabled' : '' }}">
+                        <a class="page-link" href="?page={{ $i }}">{{ $i }}</a>
+                    </li>
+                    @endfor
+                    <li class="page-item {{ ((request()->page ?? 1) + 1) > $miniAssessmentMeta['last_page'] ? 'disabled' : '' }}">
+                        <a class="page-link" href="?page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
+                    </li>
+                </ul>
+            </nav>
+        @endif()
     </div>
 @include('admin.mini_assessment_subjects.mini_assessments._create')
 @include('admin.mini_assessment_subjects.mini_assessments._upload_answer')
