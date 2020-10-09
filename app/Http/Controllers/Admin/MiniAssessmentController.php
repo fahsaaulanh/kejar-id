@@ -36,25 +36,33 @@ class MiniAssessmentController extends Controller
         return $miniAssessmentGroup[$val];
     }
 
-    public function subjects($miniAssessmentGroupValue)
+    public function subjects(Request $req, $miniAssessmentGroupValue)
     {
 
         $schoolId = $this->schoolId();
         $miniAssessmentGroup = $this->miniAssessmentGroups($miniAssessmentGroupValue);
 
         $schoolApi = new SchoolApi;
-        $subjects = $schoolApi->subjectIndex($schoolId);
+        $filter = [
+            'page' => ($req->page ?? 1),
+            'per_page' => 20
+        ];
+        $subjects = $schoolApi->subjectIndex($schoolId, $filter);
         if (!isset($subjects['data'])) {
             $subjects['data'] = [];
+        }
+        if (!isset($subjects['meta'])) {
+            $subjects['meta'] = [];
         }
 
         return view('admin.mini_assessment_subjects.index')
                ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
                ->with('miniAssessmentGroup', $miniAssessmentGroup)
-               ->with('subjects', $subjects['data']);
+               ->with('subjects', $subjects['data'])
+               ->with('subjectMeta', $subjects['meta']);
     }
 
-    public function index($miniAssessmentGroupValue, $subjectId, $grade)
+    public function index(Request $req, $miniAssessmentGroupValue, $subjectId, $grade)
     {
         $schoolId = $this->schoolId();
         $schoolApi = new SchoolApi;
@@ -64,11 +72,21 @@ class MiniAssessmentController extends Controller
             'filter[subject_id]' => $subjectId,
             'filter[group]' => $group,
             'filter[grade]' => $grade,
+            'page' => ($req->page ?? 1),
+            'per_page' => 20
         ];
         $miniAssessmentIndex = $miniAssessmentApi->index($filter);
         $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
+
+
+        if (!isset($subject['data'])) {
+            return redirect('admin/mini-assessment/'.$miniAssessmentGroupValue)->with(['message' => 'Data Tidak Ditemukan!']);
+        }
         if (!isset($miniAssessmentIndex['data'])) {
             $miniAssessmentIndex['data'] = [];
+        }
+        if (!isset($miniAssessmentIndex['meta'])) {
+            $miniAssessmentIndex['meta'] = [];
         }
 
         return view('admin.mini_assessment_subjects.mini_assessments.index')
@@ -77,7 +95,8 @@ class MiniAssessmentController extends Controller
                ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
                ->with('subjectId', $subjectId)
                ->with('grade', $grade)
-               ->with('miniAssessmentIndex', $miniAssessmentIndex['data']);
+               ->with('miniAssessmentIndex', $miniAssessmentIndex['data'])
+               ->with('miniAssessmentMeta', $miniAssessmentIndex['meta']);
     }
 
     public function create(Request $request, $miniAssessmentGroupValue, $subjectId, $grade)

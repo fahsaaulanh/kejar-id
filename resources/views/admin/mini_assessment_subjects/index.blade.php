@@ -64,6 +64,28 @@
             @endforelse
         </div>
 
+        @if($subjectMeta && ($subjectMeta['total'] > 20))
+            <!-- Pagination -->
+            <nav class="navigation mt-5">
+                <div>
+                    <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} soal</span>
+                </div>
+                <ul class="pagination">
+                    <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
+                        <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
+                    </li>
+                    @for($i=1; $i <= $subjectMeta['last_page']; $i++)
+                    <li class="page-item {{ (request()->page ?? 1) == $i ? 'active disabled' : '' }}">
+                        <a class="page-link" href="?page={{ $i }}">{{ $i }}</a>
+                    </li>
+                    @endfor
+                    <li class="page-item {{ ((request()->page ?? 1) + 1) > $subjectMeta['last_page'] ? 'disabled' : '' }}">
+                        <a class="page-link" href="?page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
+                    </li>
+                </ul>
+            </nav>
+        @endif()
+
     </div>
 @endsection
 
