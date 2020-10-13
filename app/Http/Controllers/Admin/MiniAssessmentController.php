@@ -153,7 +153,7 @@ class MiniAssessmentController extends Controller
         $data['detail'] = $detail['data'];
         $data['time'] = $this->dateFormat($detail['data']['start_time'], 'd M Y').
                         ', '.$this->dateFormat($detail['data']['start_time'], 'H.i').
-                        ' - '.$this->dateFormat($detail['data']['start_time'], 'H.i');
+                        ' - '.$this->dateFormat($detail['data']['expiry_time'], 'H.i');
 
         $data['group'] = $this->miniAssessmentGroups($data['detail']['group'], 'header');
         $answersAPI = $miniAssessmentApi->answers($id);
