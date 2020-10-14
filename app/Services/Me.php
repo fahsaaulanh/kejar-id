@@ -17,4 +17,11 @@ class Me extends Service
 
         return $this->showResponse($response);
     }
+
+    public function tasks($filter = [])
+    {
+        $response = $this->get('/me/tasks', $filter);
+
+        return $this->showResponse($response);
+    }
 }

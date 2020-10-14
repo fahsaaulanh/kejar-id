@@ -32,7 +32,7 @@
                     font-size: 2rem;
                 }
             }
-            
+
             pre{
                 @include h5-reg;
                 color: $black-1;
@@ -77,4 +77,11 @@
             background: $purple-2;
         }
     }
+}
+
+.onboarding-page-pts{
+    background: $purple-tp;
+    border: 0;
+    border-radius: 0;
+    padding: 2rem;
 }

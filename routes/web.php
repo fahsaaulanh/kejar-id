@@ -131,6 +131,18 @@ Route::middleware('session')->group(function () {
         Route::prefix('student')->group(function () {
 
             Route::get('/', 'Student\GameController@dashboard');
+            Route::prefix('/mini_assessment')->group(function () {
+                Route::get('/', 'Student\MiniAssessmentController@index');
+                Route::get('/{subject_id}', 'Student\MiniAssessmentController@detail');
+                Route::get('/{subject_id}/exam', 'Student\MiniAssessmentController@exam');
+
+                // Route For Call API
+                Route::get('/service/subjects', 'Student\MiniAssessmentController@subjects');
+                Route::get('/service/subjects/{subject_id}', 'Student\MiniAssessmentController@detail');
+                Route::post('/service/answer', 'Student\MiniAssessmentController@setAnswer');
+                Route::post('/service/finish', 'Student\MiniAssessmentController@finish');
+            });
+
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
             Route::patch('/change-profile', 'Shared\ChangeProfileController@update');
             Route::get('/result', 'Student\ResultController@index'); //TODO EXAM

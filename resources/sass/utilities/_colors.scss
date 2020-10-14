@@ -32,6 +32,7 @@ $purple-tp: #F7F4FB;
 // alerts
 $red-2: #FF4343;
 $green: #19CE58;
+$dark-green: #008746;
 $green-2: #4DC978;
 $green-3: #70DB95;
 $deep-yellow: #FFD600;
@@ -42,7 +43,11 @@ $green-tp: #F0FFF4;
 $red-tp: #FFF4F4;
 
 .text-purple {
-    color: $purple;
+    color: $purple !important;
+}
+
+.text-grey-6 {
+    color: $grey-6 !important;
 }
 
 .bg-blue-tp {

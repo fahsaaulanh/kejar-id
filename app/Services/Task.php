@@ -60,4 +60,48 @@ class Task extends Service
 
         return $this->showResponse($response);
     }
+
+    public function startMiniAssessment($miniAssessmentId)
+    {
+
+        $payload = [
+            'mini_assessment_id' => $miniAssessmentId,
+        ];
+
+        $response = $this->post('/tasks/mini-assessments', $payload);
+
+        return $this->showResponse($response);
+    }
+
+    public function questionsMiniAssessment($miniAssessmentsId)
+    {
+        $filter = [
+            'per_page' => 99,
+        ];
+
+        $response = $this->get("/libraries/mini-assessments/$miniAssessmentsId/answers", $filter);
+
+        return $this->showResponse($response);
+    }
+
+    public function answersMiniAssessment($maTaskId)
+    {
+        $response = $this->get("/tasks/mini-assessments/$maTaskId/answers");
+
+        return $this->showResponse($response);
+    }
+
+    public function setAnswerMiniAssessment($maTaskId, $answerId, $payload)
+    {
+        $response = $this->patch("/tasks/mini-assessments/$maTaskId/answers/$answerId", $payload);
+
+        return $this->showResponse($response);
+    }
+
+    public function finishMiniAssessment($maTaskId)
+    {
+        $response = $this->patch("/tasks/mini-assessments/$maTaskId");
+
+        return $this->showResponse($response);
+    }
 }

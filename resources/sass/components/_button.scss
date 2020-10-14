@@ -10,6 +10,38 @@
     }
 }
 
+.btn-accordion {
+    background-color: $white-2;
+    display: flex;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    width: 100%;
+    padding: 1.6rem 2.4rem;
+
+    &:hover {
+        background: $grey-15;
+    }
+}
+
+.btn-accordion-item {
+    background-color: $white-2;
+    display: flex;
+    flex-direction: row;
+    align-items: center !important;
+    width: 100%;
+    padding-bottom: 1.4rem;
+    padding-top: 1.4rem;
+    padding-left: 4.2rem;
+    padding-right: 1.6rem;
+    @include h5;
+    text-align: start;
+
+    &:hover {
+        background: $grey-10;
+    }
+}
+
 .btn-delete-answer{
     display: inline-block;
     border: 0;
@@ -310,6 +342,95 @@
             }
         }
     }
+}
+
+.pts-btn-next {
+    display: flex;
+    flex-direction: row;
+    padding: 1.6rem 2rem !important;
+    text-transform: uppercase;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    border-radius: 0;
+    color: $white;
+    background: $purple;
+
+    i{
+        display: block !important;
+        font-size: 1.6rem !important;
+        margin-top: 0.2rem !important;
+        &:before{
+            color: $white;
+            font-size: 2.4rem;
+        }
+    }
+
+    &:hover{
+        background: $purple-2;
+    }
+}
+
+.pts-btn-pdf {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    padding: 1.4rem 2rem !important;
+    color: $blue;
+    background: $blue-tp2;
+
+    i{
+        display: block !important;
+        font-size: 1.6rem !important;
+        margin-top: 0.2rem !important;
+        &:before{
+            color: $blue;
+            font-size: 1.6rem;
+        }
+    }
+
+    &:hover{
+        background: $blue-tp;
+    }
+}
+
+.pts-number {
+    align-items: center;
+    display: flex;
+    height: 3.2rem;
+    justify-content: flex-end;
+    width: 3.2rem;
+}
+
+.pts-choice {
+    display: flex;
+    width: 3.2rem;
+    align-items: center;
+    margin-left: 2rem;
+    cursor: pointer;
+    justify-content: center;
+    height: 3.2rem;
+    color: $grey-6;
+    border: 2px solid $grey-6;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+
+    &.active {
+        background-color: $grey-3;
+        border: 2px solid $grey-3;
+        color: $white;
+        transition: background-color 0.2s, color 0.2s;
+    }
+}
+
+.pts-choice-check {
+    display: flex;
+    width: 6.8rem;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    height: 3.2rem;
+    color: $grey-3 !important;
 }
 
 #logout{
