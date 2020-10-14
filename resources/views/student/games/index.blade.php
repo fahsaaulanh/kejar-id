@@ -98,7 +98,7 @@
                             <div id="pts"class="card-pts">
                                 <h3>
                                     <i class="kejar-matrikulasi text-purple mr-4">kejar-penilaian</i>
-                                    PTS Semester Ganjil 2020-2021
+                                    <span id="pts-1">PTS Semester Ganjil 2020-2021</span>
                                 </h3>
                             </div>
                         </div>

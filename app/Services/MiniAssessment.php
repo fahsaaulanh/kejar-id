@@ -25,7 +25,7 @@ class MiniAssessment extends Service
         return $this->showResponse($response);
     }
 
-    public function index($filter = '')
+    public function index($filter = [])
     {
         $response = $this->get('/libraries/mini-assessments', $filter);
 

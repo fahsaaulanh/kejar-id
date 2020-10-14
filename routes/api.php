@@ -14,4 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', fn (Request $request) => $request->user());
+Route::middleware('auth:api')->group(function () {
+    Route::get('/user', fn (Request $request) => $request->user());
+});
+
+Route::get('/student/mini_assessment/subjects', 'Student\MiniAssessmentController@subjects');

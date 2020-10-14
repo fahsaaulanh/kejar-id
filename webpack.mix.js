@@ -13,6 +13,7 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/student/exam/script.js', 'public/js/student/exam/script.js')
+    .js('resources/js/student/mini_assessment/script.js', 'public/js/student/mini_assessment/script.js')
     .js('resources/js/student/games/script.js', 'public/js/student/games/script.js')
     .js('resources/js/student/exam/menulis-efektif.js', 'public/js/student/exam/menulis-efektif.js')
     .js('resources/js/student/result/script.js', 'public/js/student/result/script.js')
@@ -21,6 +22,7 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/admin/question/script.js', 'public/js/admin/question/script.js')
     .js('resources/js/admin/question/soal-cerita.js', 'public/js/admin/question/soal-cerita.js')
     .js('resources/js/check-for-tex.js', 'public/js/check-for-tex.js')
+    .js('resources/js/lodash.js', 'public/js/lodash.js')
     .sass('resources/sass/app.scss', 'public/css');
 
 if (mix.inProduction()) {
