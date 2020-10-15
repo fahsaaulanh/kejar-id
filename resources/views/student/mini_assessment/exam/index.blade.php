@@ -18,7 +18,7 @@
 
         <!-- Content -->
         <div class="row mt-8">
-            <div class="col-md-6">
+            <div class="col-md-6 mb-md-0 mb-2">
                 <h5>{{ $userable['name'] }}</h5>
                 <h5 class="text-reguler">NIS {{ $userable['nis'] }} | {{ $userable['class_name'] }}</h5>
             </div>
@@ -64,7 +64,7 @@
                             @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
                                 <div
                                     data-id="{{ $answers[$maAnswerId]['id'] }}"
-                                    onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}')"
+                                    onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
                                     id="pts-choice-{{$loop->index}}-{{$i}}"
                                     class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}"
                                 >
@@ -87,7 +87,7 @@
                             @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
                                 <div
                                     data-id="{{ $answers[$maAnswerId]['id'] }}"
-                                    onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}')"
+                                    onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
                                     id="pts-choice-{{$loop->index}}-{{$i}}"
                                     class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}"
                                 >
@@ -123,7 +123,7 @@
                             <div
                                 data-id="{{ $answers[$maAnswerId]['id'] }}"
                                 data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}"
-                                onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}')"
+                                onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
                                 id="pts-choice-{{$loop->index}}-{{$i}}"
                                 class="pts-choice-check"
                             >
@@ -141,7 +141,10 @@
             @endforeach
         </div>
 
-        <div class="row justify-content-end px-4 mt-9">
+        <div class="row justify-content-between px-4 mt-9">
+            <div>
+                <h5 id="timer"></h5>
+            </div>
             <div id="done" class="pts-btn-next bg-light text-purple" role="button">
                 <h3>Selesai</h3>
                 <i class="kejar-matrikulasi text-purple font-32">kejar-play</i>
@@ -150,9 +153,19 @@
     </div>
 @endsection
 
+@include('student.mini_assessment.exam._time_up')
+@include('student.mini_assessment.exam._time_running_out')
+@include('student.mini_assessment.exam._time_remaining')
+@include('student.mini_assessment.exam._success')
+@include('student.mini_assessment.exam._missing_answer')
+@include('student.mini_assessment.exam._download_answer_sheet')
+@include('student.mini_assessment.exam._check_answer_sheet')
+
 @push('script')
 <script>
     let promises = {};
+    let hasTime = true;
+    startTimer();
     this.sendToServer = _.debounce(this.sendToServer, 1000);
 
     $.ajaxSetup({
@@ -170,10 +183,116 @@
     });
 
     $('#done').on('click', function () {
-        finish();
+        checkAnswer();
     });
 
-    function onClickAnswerPG(index, parentIndex, choicesNumber) {
+    $('#lanjut-missing-answer').on('click', function() {
+        $('#missingAnswer').modal('hide');
+        $('#downloadAnswerSheet').modal('show');
+    });
+
+    $('#lanjut-time-remaining').on('click', function () {
+        $('#timeRemaining').modal('hide');
+        $('#downloadAnswerSheet').modal('show');
+    });
+
+    $('#lanjut-time-remaining').on('click', function () {
+        $('#timeRemaining').modal('hide');
+        $('#downloadAnswerSheet').modal('show');
+    });
+
+    $('#download-answer').on('click', function () {
+        // Function Agung in Here
+
+        //
+        if (!hasTime) {
+            $('#checkAnswerSheet .close').remove();
+            $('#checkAnswerSheet').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true,
+            });
+            $('#downloadAnswerSheet').modal('hide');
+            return;
+        }
+
+        $('#checkAnswerSheet').modal('show');
+    });
+
+    $('#unduh-lagi-check-answer').on('click', function () {
+        $('#checkAnswerSheet').modal('hide');
+        $('#downloadAnswerSheet').modal('show');
+    });
+
+    $('#selesai-check-answer').on('click', function () {
+        finish($(this));
+    });
+
+    $('#lanjut-time-up').on('click', function () {
+        $('#downloadAnswerSheet .close').remove();
+        $('#downloadAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
+
+        $('#timeUp').modal('hide');
+    });
+
+    $('#tutup-success').on('click', function () {
+        if (typeof window !== 'undefined') {
+            window.location.replace('/student/mini_assessment');
+        }
+    });
+
+    function startTimer() {
+        let modalRunningOutHasShown = false;
+
+        // var end = new Date("{{ $task['mini_assessment']['expiry_fulldate'] }}");
+        var end = new Date();
+        // end.setMinutes(end.getMinutes() + 5);
+        end.setSeconds(end.getSeconds() + 17);
+        const endTime = end.getTime();
+
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+            // Get today's date and time
+            var now = new Date().getTime();
+
+            // Find the distance between now and the count down date
+            var duration = endTime - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((duration % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="timer"
+            const hourString = `${hours < 10 ? '0' : ''}${hours}`;
+            const minuteString = `${minutes < 10 ? '0' : ''}${minutes}`;
+            const secondString = `${seconds < 10 ? '0' : ''}${seconds}`;
+            const timerString = `${hourString}:${minuteString}:${secondString}`;
+            $('#timer').html(timerString);
+
+            if (minutes < 5 && !modalRunningOutHasShown && duration > 0) {
+                modalRunningOutHasShown = true;
+                $('#timeRunningOut').modal('show');
+            }
+
+            // If the count down is finished, finish the exam
+            if (duration < 0) {
+                hasTime = false;
+                $('#timer').html('00:00:00');
+                $('#timeUp').modal('show');
+                $('#missingAnswer').modal('hide');
+                $('#timeRunningOut').modal('hide');
+                clearInterval(x);
+            }
+        }, 1000);
+    }
+
+    function onClickAnswerPG(index, parentIndex, choicesNumber, questionId) {
         const selected = $(`#pts-choice-${parentIndex}-${index}`).hasClass('active');
         const parsedIndex = parseInt(index, 10);
         const answer = String.fromCharCode(65 + parsedIndex);
@@ -189,7 +308,7 @@
         sendToServer();
     }
 
-    function onClickAnswerCheck(index, parentIndex, choicesNumber) {
+    function onClickAnswerCheck(index, parentIndex, choicesNumber, questionId) {
         const selected = $(`#pts-choice-${parentIndex}-${index}`).attr('data-active') === 'true';
         let arrayAnswer = [];
         arrayAnswer = $(`#pts-number-${parentIndex}`).attr('data-checked');
@@ -222,13 +341,14 @@
         sendToServer();
     }
 
-    function setAnswer(answerId, answer) {
+    function setAnswer(answerId, answer, questionId) {
         const url = "{!! URL::to('/student/mini_assessment/service/answer') !!}";
 
         return $.ajax({
             url,
             type: 'POST',
             data: {
+                ma_answer_id: questionId,
                 answer_id: answerId,
                 answer,
             },
@@ -256,8 +376,48 @@
         promises = {};
     }
 
-    function finish() {
+    function checkAnswer() {
+        const url = "{!! URL::to('/student/mini_assessment/service/check') !!}";
+
+        const htmlSpinner = `Tunggu...`;
+
+        const htmlSelesai = $('#done').html();
+
+         $.ajax({
+            url,
+            type: 'GET',
+            data: {},
+            dataType: 'json',
+            crossDomain: true,
+            beforeSend: function() {
+                $('#done').html(htmlSpinner);
+                $('#done').attr('disabled', 'true');
+            },
+            error: function(error) {
+                $('#done').html(htmlSelesai);
+                $('#done').removeAttr('disabled');
+            },
+            success: function(response){
+                $('#done').html(htmlSelesai);
+                $('#done').removeAttr('disabled');
+                if (response.error === false) {
+                    if (response.unanswered === 0) {
+                        $('#timeRemaining').modal('show');
+                        return;
+                    }
+
+                    $('#missingAnswer').modal('show');
+                }
+            }
+        });
+    }
+
+    function finish(component) {
         const url = "{!! URL::to('/student/mini_assessment/service/finish') !!}";
+
+        const htmlSpinner = `Tunggu...`;
+
+        const htmlSelesai = 'Selesai';
 
          $.ajax({
             url,
@@ -266,14 +426,19 @@
             dataType: 'json',
             crossDomain: true,
             beforeSend: function() {
-                //
+                component.html(htmlSpinner);
+                component.attr('disabled', 'true');
             },
             error: function(error) {
-                //
+                component.html(htmlSelesai);
+                component.removeAttr('disabled');
             },
             success: function(response){
+                component.html(htmlSelesai);
+                component.removeAttr('disabled');
                 if (response.status === 200) {
-                    window.location.replace('/student/mini_assessment');
+                    $('#checkAnswerSheet').modal('hide');
+                    $('#success').modal('show');
                     return;
                 }
             }

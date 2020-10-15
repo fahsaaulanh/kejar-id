@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?kw1utn');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?kw1utn#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?kw1utn') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?kw1utn') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?kw1utn##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?wsmhce');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?wsmhce#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?wsmhce') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?wsmhce') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?wsmhce##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -37,6 +37,30 @@ i, .icomoon-liga {
   // -moz-osx-font-smoothing: grayscale;
 }
 
+.kejar-wali-kelas-bold {
+  &:before {
+    content: $kejar-wali-kelas-bold;
+    color: #334e68;
+  }
+}
+.kejar-wali-kelas {
+  &:before {
+    content: $kejar-wali-kelas;
+    color: #334e68;
+  }
+}
+.kejar-guru-bold {
+  &:before {
+    content: $kejar-guru-bold;
+    color: #334e68;
+  }
+}
+.kejar-guru {
+  &:before {
+    content: $kejar-guru;
+    color: #334e68;
+  }
+}
 .kejar-pdf {
   &:before {
     content: $kejar-pdf;

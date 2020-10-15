@@ -66,10 +66,12 @@ class MiniAssessmentController extends Controller
             $endTime = Carbon::parse($dataMA['expiry_time']);
 
             $dataMA['duration'] = $startTime->diffInMinutes($endTime);
+            $dataMA['start_fulldate'] = Carbon::parse($dataMA['start_time'])->format('Y-m-d H:i:s');
+            $dataMA['expiry_fulldate'] = Carbon::parse($dataMA['expiry_time'])->format('Y-m-d H:i:s');
             $dataMA['start_date'] = Carbon::parse($dataMA['start_time'])->format('l, d F Y');
-            $dataMA['start_time'] = Carbon::parse($dataMA['start_time'])->format('h.i');
+            $dataMA['start_time'] = Carbon::parse($dataMA['start_time'])->format('H.i');
             $dataMA['expiry_date'] = Carbon::parse($dataMA['expiry_time'])->format('l, d F Y');
-            $dataMA['expiry_time'] = Carbon::parse($dataMA['expiry_time'])->format('h.i');
+            $dataMA['expiry_time'] = Carbon::parse($dataMA['expiry_time'])->format('H.i');
             //
 
             // Save to Session as Temporary
@@ -117,7 +119,9 @@ class MiniAssessmentController extends Controller
     {
         $user = $this->request->session()->get('user', null);
         $task = $this->request->session()->get('task', null);
+
         $answers = $this->getAnswer($task['task_id']);
+        $this->request->session()->put('answers', $answers);
 
         $pageData = [
             'user' => $user,
@@ -134,8 +138,10 @@ class MiniAssessmentController extends Controller
     {
         $maService = new MiniAssessment;
         $schoolService = new School;
+        $taskService = new Task;
 
         $schoolId = $this->request->input('school_id');
+        $user = $this->request->session()->get('user', null);
 
         $grade = $this->getGrade();
 
@@ -152,17 +158,30 @@ class MiniAssessmentController extends Controller
             foreach ($newDataUnique as $key => $newData) {
                 // GET Data Subject
                 $responseSubject = $schoolService->subjectDetail($schoolId, $newData['subject_id']);
-                $newData['subject'] = $responseSubject['error'] ? '' : $responseSubject['data']['name'];
+                $newData['subject'] = $responseSubject['error'] ? '' : $responseSubject['data']['name'] ?? '';
+                //
+                // Get Data Tasks
+                $filterTask = [
+                    'per_page' => 99,
+                    'filter[subject_id]' => $newData['subject_id'],
+                    'filter[finished]' => 'true',
+                ];
+                $responseTask = $taskService->tasksMiniAssessment($user['userable']['id'], $filterTask);
+                $newData['tasks'] = $responseTask['error'] ? [] : $responseTask['data'] ?? [];
                 //
 
                 $newStartDate = Carbon::parse($newData['start_time'])->format('l, d F Y');
-                $newStartTime = Carbon::parse($newData['start_time'])->format('h.i');
-                $newExpiryDate = Carbon::parse($newData['start_time'])->format('l, d F Y');
-                $newExpiryTime = Carbon::parse($newData['start_time'])->format('h.i');
+                $newStartTime = Carbon::parse($newData['start_time'])->format('H.i');
+                $newExpiryDate = Carbon::parse($newData['expiry_time'])->format('l, d F Y');
+                $newExpiryTime = Carbon::parse($newData['expiry_time'])->format('H.i');
+                $startTimeFullDate = Carbon::parse($newData['start_time'])->format('Y-m-d H:i:s');
+                $expiryTimeFullDate = Carbon::parse($newData['expiry_time'])->format('Y-m-d H:i:s');
                 $newData['start_date'] = $newStartDate;
                 $newData['start_time'] = $newStartTime;
                 $newData['expiry_date'] = $newExpiryDate;
                 $newData['expiry_time'] = $newExpiryTime;
+                $newData['start_fulldate'] = $startTimeFullDate;
+                $newData['expiry_fulldate'] = $expiryTimeFullDate;
 
                 $newDataUnique[$key] = $newData;
             }
@@ -177,11 +196,24 @@ class MiniAssessmentController extends Controller
     {
         $taskService = new Task;
 
+        $answer = $this->request->input('answer');
         $answerId = $this->request->input('answer_id');
+        $maAnswerId = $this->request->input('ma_answer_id');
 
         $payload = [
-            'answer' => $this->request->input('answer'),
+            'answer' => $answer,
         ];
+
+        // Set Answer To Session
+        $answers = $this->request->session()->get('answers');
+
+        $answers[$maAnswerId] = [
+            'id' => $answerId,
+            'answer' => $answer,
+        ];
+
+        $this->request->session()->put('answers', $answers);
+        //
 
         $task = $this->request->session()->get('task');
 
@@ -194,6 +226,24 @@ class MiniAssessmentController extends Controller
         return $response;
     }
 
+    public function checkAnswer()
+    {
+        $answers = $this->request->session()->get('answers');
+
+        $unanswered = 0;
+
+        foreach ($answers as $val) {
+            if ($val['answer'] === null) {
+                $unanswered += 1;
+            }
+        }
+
+        return response()->json([
+            'error' => false,
+            'unanswered' => $unanswered,
+        ]);
+    }
+
     public function finish()
     {
         $taskService = new Task;
@@ -204,6 +254,7 @@ class MiniAssessmentController extends Controller
 
         if (!$response['error']) {
             $this->request->session()->remove('task');
+            $this->request->session()->remove('answers');
 
             return $response;
         }

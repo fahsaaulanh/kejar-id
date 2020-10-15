@@ -104,4 +104,11 @@ class Task extends Service
 
         return $this->showResponse($response);
     }
+
+    public function tasksMiniAssessment($studentId, $filter = [])
+    {
+        $response = $this->get("/tasks/mini-assessments/students/$studentId", $filter);
+
+        return $this->showResponse($response);
+    }
 }

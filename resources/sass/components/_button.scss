@@ -24,6 +24,18 @@
     }
 }
 
+.btn-accordion-disabled {
+    background-color: $grey-15;
+    display: flex;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    width: 100%;
+    font-weight: normal !important;
+    color: $grey-6;
+    padding: 1.6rem 2.4rem;
+}
+
 .btn-accordion-item {
     background-color: $white-2;
     display: flex;
