@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index');
 Route::get('/login', 'LoginController@index');
 Route::post('/login', 'LoginController@login');
+Route::get('/pdf', 'HomeController@print')->name('print');
 
 Route::middleware('session')->group(function () {
     Route::get('/logout', 'HomeController@logout');
@@ -141,6 +142,7 @@ Route::middleware('session')->group(function () {
                 Route::get('/service/subjects/{subject_id}', 'Student\MiniAssessmentController@detail');
                 Route::post('/service/answer', 'Student\MiniAssessmentController@setAnswer');
                 Route::post('/service/finish', 'Student\MiniAssessmentController@finish');
+                Route::get('/service/check', 'Student\MiniAssessmentController@checkAnswer');
             });
 
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');

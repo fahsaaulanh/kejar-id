@@ -73,32 +73,53 @@
             `;
         }
 
-        return data.map((d, index) => `
+        return data.map((d, index) => {
+            const start = new Date(d.start_fulldate).getTime();
+            const end = new Date(d.expiry_fulldate).getTime();
+            const now = new Date().getTime();
+
+            const isExpired = (now < start || now > end);
+            // const done = d.tasks.length > 0;
+            const done = false;
+
+            return `
                 <div class="row mt-4">
                     <div
-                        class="btn-accordion"
-                        role="button"
+                        class="btn-accordion${isExpired || done ? '-disabled' : ''}"
+                        ${isExpired || done ? '' : 'role="button"'}
                         id="subject-${index}"
-                        onclick="onClickSubject(${index})"
+                        onclick="onClickSubject(${index},${isExpired || done})"
                     >
                         <div id="mapel">
-                            <h4>${d.subject}</h4>
+                            <h4 class="${isExpired || done ? 'text-reguler' : '' }">${d.subject}</h4>
                             <h5 class="text-reguler">${d.start_date}</h5>
                             <h5 class="text-reguler">${d.start_time} - ${d.expiry_time}</h5>
                         </div>
-                        <!--
                         <div>
-                            <span class="badge-undone label">BELUM DIKERJAKAN</span>
+                            <span class="badge-${done ? 'done' : 'undone'} label">
+                                ${done ? 'SUDAH DIKERJAKAN' : 'BELUM DIKERJAKAN'}
+                            </span>
                         </div>
-                        -->
                     </div>
                 </div>
             `
-        );
+        });
     }
 
-    function onClickSubject(index) {
+    function onClickSubject(index, expired = false) {
+        if (expired) {
+            return;
+        }
+
         if (typeof window !== 'undefined') {
+            const start = new Date(dataMA[index].start_fulldate).getTime();
+            const end = new Date(dataMA[index].expiry_fulldate).getTime();
+            const now = new Date().getTime();
+
+            if (now < start && now > end) {
+                return;
+            }
+
             localStorage.setItem('detail_title', dataMA[index].subject);
             window.location.href = `/student/mini_assessment/${dataMA[index].subject_id}`
         }

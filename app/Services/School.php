@@ -31,11 +31,4 @@ class School extends Service
 
         return $this->showResponse($response);
     }
-
-    public function subjectDetail($schoolId, $subjectId)
-    {
-        $response = $this->get("/schools/$schoolId/subjects/$subjectId");
-
-        return $this->showResponse($response);
-    }
 }
