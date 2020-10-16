@@ -32,7 +32,7 @@
 
     .nav-link{
         @include h6-reg;
-        
+
         @media screen and (max-width: $mobile-breakpoint) {
             padding-top: 1rem;
             padding-bottom: 1rem;
@@ -56,6 +56,21 @@
             }
             @include h5-reg;
             padding: 1rem 1.2rem;
+        }
+    }
+}
+
+.nav-tab-kejar{
+    .nav-item{
+        .nav-link{
+            color: $black-1 !important;
+            padding-bottom: 10px;
+            box-shadow: inset 0px -2px 0px #EBF1F6;
+            &.active{
+                color: $blue !important;
+                box-shadow: inset 0px -2px 0px #3167F6;
+                padding-bottom: 10px;
+            }
         }
     }
 }

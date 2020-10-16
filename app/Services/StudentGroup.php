@@ -11,9 +11,9 @@ class StudentGroup extends Service
         return $this->showResponse($response);
     }
 
-    public function detail($schoolId, $batchId, $studentGroupId)
+    public function detail($schoolId, $batchId, $id)
     {
-        $response = $this->get("/schools/$schoolId/batches/$batchId/student-groups/$studentGroupId");
+        $response = $this->get("/schools/$schoolId/batches/$batchId/student-groups/$id");
 
         return $this->showResponse($response);
     }

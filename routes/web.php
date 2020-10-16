@@ -42,7 +42,7 @@ Route::middleware('session')->group(function () {
             Route::prefix('mini-assessment/{mini_assessment_group}')->group(function () {
                 Route::get('/', 'Admin\MiniAssessmentController@subjects');
 
-                Route::prefix('subject/{subject_id}/{level}')->group(function () {
+                Route::prefix('subject/{subject_id}/{grade}')->group(function () {
                     Route::get('/', 'Admin\MiniAssessmentController@index');
                     Route::post('/', 'Admin\MiniAssessmentController@create');
                 });
@@ -91,6 +91,32 @@ Route::middleware('session')->group(function () {
         // Khusus route teacher disini
 
         Route::prefix('teacher')->group(function () {
+
+            // Mini Assesments
+
+            Route::get('mini-assessment/view/{id}', 'Teacher\MiniAssessmentController@view');
+
+            Route::post('mini-assessment/validation', 'Teacher\MiniAssessmentController@validation');
+            Route::post('mini-assessment/index-package', 'Teacher\MiniAssessmentController@packageData');
+            Route::post('mini-assessment/index-school-group', 'Teacher\MiniAssessmentController@schoolGroupData');
+            Route::post(
+                'mini-assessment/score-by-student-group',
+                'Teacher\MiniAssessmentController@scoreBystudentGroupData',
+            );
+            Route::post('mini-assessment/update-score', 'Teacher\MiniAssessmentController@updateScore');
+
+            Route::prefix('{type}/mini-assessment/{mini_assessment_group}')->group(function () {
+                Route::get('/', 'Teacher\MiniAssessmentController@subjects');
+                Route::get('subject/{subject_id}/{grade}', 'Teacher\MiniAssessmentController@package');
+                Route::get(
+                    'subject/{subject_id}/{grade}/batch/{batch_id}/score/{studentGroupId}',
+                    'Teacher\MiniAssessmentController@scoreBystudentGroup',
+                );
+                Route::post(
+                    'subject/{subject_id}/{grade}/batch/{batch_id}/score/{studentGroupId}/export',
+                    'Teacher\MiniAssessmentController@scoreBystudentGroupExport',
+                );
+            });
 
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
             Route::patch('/change-profile', 'Shared\ChangeProfileController@update');

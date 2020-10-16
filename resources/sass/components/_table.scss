@@ -581,7 +581,7 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-        
+
             input{
                 cursor: pointer;
                 position: absolute;
@@ -590,12 +590,12 @@
                 height: 2rem;
                 z-index: 1;
             }
-            
+
             input:checked ~ i:before{
                 content: "\e930";
                 color: $green-2;
             }
-        
+
             input:not(:checked) ~ i:before{
                 content: "\e931";
                 color: #7d8083;
@@ -630,6 +630,35 @@
             &:focus{
                 outline: 0;
             }
+        }
+    }
+}
+
+// report score
+.tr-score-report{
+    .column-grey{
+        background-color: $grey-13;
+    }
+    .column-white{
+        background-color: $white;
+    }
+
+    .input-score-grey{
+        border: none !important;
+        background-color: $grey-13;
+        &:focus{
+            border: none !important;
+            outline: 0 !important;
+            box-shadow: none;
+        }
+    }
+    .input-score-white{
+        border: none !important;
+        background-color: $white;
+        &:focus{
+            border: none !important;
+            outline: 0 !important;
+            box-shadow: none;
         }
     }
 }

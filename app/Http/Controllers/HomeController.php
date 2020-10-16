@@ -69,7 +69,25 @@ class HomeController extends Controller
             return redirect('/login');
         }
 
-        return view('teacher.games.index', $user);
+        $miniAssesmentGroup = [
+            'PTS-semester-ganjil-2020-2021' => 'PTS Semester Ganjil 2020-2021',
+            'PTS-susulan-semester-ganjil-2020-2021' => 'PTS Susulan Semester Ganjil 2020-2021',
+        ];
+
+        $wikramaId = [
+            // staging
+            '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b', // bogor
+            '35fd6bcd-2df7-414d-b7e2-20b62490d561', // garut
+
+            // prod
+            '3da67e44-ca12-4ae8-b784-f066ea605887', // bogor
+            '6286566b-a2ce-4649-9c0c-078c434215af', // garut
+        ];
+
+        return view('teacher.games.index')
+               ->with('user', $user)
+               ->with('wikramaId', $wikramaId)
+               ->with('miniAssesmentGroup', $miniAssesmentGroup);
     }
 
     public function student(Request $request)
