@@ -8,7 +8,7 @@
 
 @section('content')
 
-    @if(Session::get('PasswordMustBeChanged') == true)
+    @if(Session::get('user.PasswordMustBeChanged') == true)
         <!-- form ganti password -->
         <div class="bg-lego">
             <div class="container-center">
