@@ -172,7 +172,7 @@ class MiniAssessmentController extends Controller
             $choices = '';
             $multipleChoices = '';
             foreach ($answersAPI['data'] as $v) {
-                if ($v['choices_number'] === 1) {
+                if (!is_array($v['answer'])) {
                     // choices
                     if ($choiceRow === 1) {
                         $choices .= '<div class="row mb-3">';
@@ -272,6 +272,8 @@ class MiniAssessmentController extends Controller
                         $countChoice = $finalAnswer[0];
                         unset($finalAnswer[0]);
                         $finalAnswer = array_values($finalAnswer);
+                    } else {
+                        $countChoice = 5;
                     }
 
                     $answers[] = [
