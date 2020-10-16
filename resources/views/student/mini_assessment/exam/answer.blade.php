@@ -164,14 +164,14 @@
             <table width="100%">
                 <tr>
                     <td align="left" style="width: 60%;">
-                        <div class="font-3 color-grey pb-2">PTS Semester Ganjil 2020-2021</div>
-                        <div class="font-4 color-black pb-6">Bahasa Indonesia</div>
-                        <div class="font-1 color-grey-5">h70g873jasr3jhakjyklaweikawekuandiviawoias</div>
+                        <div id="title1" class="font-3 color-grey pb-2">{{$task['mini_assessment']['group']}}</div>
+                        <div id="title2" class="font-4 color-black pb-6">{{$subject}}</div>
+                        <div class="font-1 color-grey-5">{{ $task['mini_assessment']['id'] }}</div>
                     </td>
                     <td align="right" style="width: 40%;">
                         <div class="box">
-                            <div class="font-2 color-black pb-6">Aruna Melati Putri</div>
-                            <div class="font-3 color-grey">1023997873 | RPL X-3</div>
+                            <div class="font-2 color-black pb-6">{{ $userable['name'] }}</div>
+                            <div class="font-3 color-grey">{{ $userable['nis'] }} | {{ $userable['class_name'] }}</div>
                         </div>
                     </td>
                 </tr>
@@ -182,190 +182,81 @@
             <div class="box-2 font-1">Dokumen ini bersifat pribadi dan rahasia. Dilarang menyerahkan dokumen ini kepada orang lain tanpa petunjuk guru. Simpan dokumen ini baik-baik sebagai bukti keikutsertaan penilaian.</div>
         </div>
         <div class="question pb-32">
-            <div class="font-5 color-black">Bagian 1. Pilihan Ganda</div>
+            @php
+            $collected = collect($task['answers']);
+            $collectionPG = $collected->filter(function ($value, $key) {
+            return !is_array($value['answer']);
+            });
+            $collectionCheck = $collected->filter(function ($value, $key) {
+            return is_array($value['answer']);
+            });
+            $divider = (float) ($collectionPG->count() / 4);
+            $divider = ceil($divider);
+            $divider2 = (float) ($collectionCheck->count() / 2);
+            $divider2 = ceil($divider2);
+            $countPg = ceil((float) ($collectionPG->count()));
+            @endphp
+            <div class="font-5 color-black">Bagian 1. Pilihan Ganda </div>
             <table width="100%" class="tbl font-3">
                 <tr>
                     <td>
                         <table>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">1.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">2.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">3.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">4.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">5.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">6.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">7.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">8.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">9.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">10.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">11.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">12.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">13.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">14.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">15.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">16.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">17.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">18.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">19.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">20.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">21.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">22.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">23.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">24.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">25.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">26.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">27.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">28.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">29.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">30.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">31.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">32.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">33.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">34.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">35.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">36.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">37.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">38.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">39.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">40.</td>
-                                <td class="pl-16">A</td>
-                            </tr>
-                        </table>
-                    </td>
+                            @foreach ($task['answers'] as $t)
+                            @if (($loop->index + 1) <= $divider && !is_array($t['answer'])) <tr style="height: 8px;">
+                                <td class="td-answer">{{ $loop->index + 1 }}</td>
+                                @php
+                                $maAnswerId = $t['id'];
+                                @endphp
+                                <td class="pl-16">{{ $answers[$maAnswerId]['answer'] }}</td>
                 </tr>
+                @endif
+                @endforeach
+            </table>
+            </td>
+            <td>
+                <table>
+                    @foreach ($task['answers'] as $t)
+                    @if (($loop->index + 1) > ($divider * 1) && ($loop->index + 1) <= ($divider * 2) && !is_array($t['answer'])) <tr style="height: 8px;">
+                        <td class="td-answer">{{ $loop->index + 1 }}</td>
+                        @php
+                        $maAnswerId = $t['id'];
+                        @endphp
+                        <td class="pl-16">{{ $answers[$maAnswerId]['answer'] }}</td>
+                        </tr>
+                        @endif
+                        @endforeach
+                </table>
+            </td>
+            <td>
+                <table>
+                    @foreach ($task['answers'] as $t)
+                    @if (($loop->index + 1) > ($divider * 2) && ($loop->index + 1) <= ($divider * 3) && !is_array($t['answer'])) <tr style="height: 8px;">
+                        <td class="td-answer">{{ $loop->index + 1 }}</td>
+                        @php
+                        $maAnswerId = $t['id'];
+                        @endphp
+                        <td class="pl-16">{{ $answers[$maAnswerId]['answer'] }}</td>
+                        </tr>
+                        @endif
+                        @endforeach
+                </table>
+            </td>
+            <td>
+                <table>
+                    @foreach ($task['answers'] as $t)
+                    @if (($loop->index + 1) > ($divider * 3) && !is_array($t['answer']))
+                    <tr style="height: 8px;">
+                        <td class="td-answer">{{ $loop->index + 1 }}</td>
+                        @php
+                        $maAnswerId = $t['id'];
+                        @endphp
+                        <td class="pl-16">{{ $answers[$maAnswerId]['answer'] }}</td>
+                    </tr>
+                    @endif
+                    @endforeach
+                </table>
+            </td>
+            </tr>
             </table>
         </div>
         <div class="question">
@@ -374,72 +265,41 @@
                 <tr>
                     <td>
                         <table>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">41.</td>
-                                <td class="pl-16">A</td>
-                                <td class="pl-16">B</td>
-                                <td class="pl-16">G</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">42.</td>
-                                <td class="pl-16">B</td>
-                                <td class="pl-16">C</td>
-                                <td class="pl-16">F</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">43.</td>
-                                <td class="pl-16">A</td>
-                                <td class="pl-16">D</td>
-                                <td class="pl-16">E</td>
-                                <td class="pl-16">F</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">44.</td>
-                                <td class="pl-16">E</td>
-                                <td class="pl-16">F</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">45.</td>
-                                <td class="pl-16">B</td>
-                                <td class="pl-16">D</td>
-                                <td class="pl-16">F</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">46.</td>
-                                <td class="pl-16">D</td>
-                                <td class="pl-16">E</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">47.</td>
-                                <td class="pl-16">A</td>
-                                <td class="pl-16">E</td>
-                                <td class="pl-16">F</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">48.</td>
-                                <td class="pl-16">B</td>
-                                <td class="pl-16">C</td>
-                                <td class="pl-16">D</td>
-                                <td class="pl-16">G</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">49.</td>
-                                <td class="pl-16">C</td>
-                                <td class="pl-16">E</td>
-                                <td class="pl-16">G</td>
-                            </tr>
-                            <tr style="height: 8px;">
-                                <td class="td-answer">50.</td>
-                                <td class="pl-16">B</td>
-                                <td class="pl-16">F</td>
-                            </tr>
-                        </table>
-                    </td>
+                            @foreach ($task['answers'] as $t)
+                            @if (($loop->index + 1) > $countPg && ($loop->index + 1) <= ($divider2 + $countPg) && is_array($t['answer'])) <tr style="height: 8px;">
+                                <td class="td-answer">{{ $loop->index + 1 }}</td>
+                                @php
+                                $maAnswerId = $t['id'];
+                                @endphp
+                                @if ($answers[$maAnswerId]['answer'] !== null)
+                                @foreach ($answers[$maAnswerId]['answer'] as $a)
+                                <td class="pl-16">{{$a}}</td>
+                                @endforeach
+                                @endif
                 </tr>
+                @endif
+                @endforeach
+            </table>
+            </td>
+            <td>
+                <table>
+                    @foreach ($task['answers'] as $t)
+                    @if (($loop->index + 1) > ($divider2 + ($countPg)) && ($loop->index + 1) <= ($divider2 + ($countPg * 2)) && is_array($t['answer'])) <tr style="height: 8px;">
+                        <td class="td-answer">{{ $loop->index + 1 }}</td>
+                        @php
+                        $maAnswerId = $t['id'];
+                        @endphp
+                        @if ($answers[$maAnswerId]['answer'] !== null)
+                        @foreach ($answers[$maAnswerId]['answer'] as $a)
+                        <td class="pl-16">{{$a}}</td>
+                        @endforeach
+                        @endif
+                        </tr>
+                        @endif
+                        @endforeach
+                </table>
+            </td>
+            </tr>
             </table>
         </div>
     </div>
@@ -451,13 +311,18 @@
 
                 </td>
                 <td align="right" style="width: 70%;">
-                    <div class="font-1 color-grey-5"><i>Aruna Melati Putri (1023997873, RPL X-3)</i></div>
-                    <div class="font-1 color-grey-5"><i>Diunduh pada pukul {{ $time }}, {{ $date }} dari Kejar.id.</i></div>
+                    <div class="font-1 color-grey-5"><i>{{ $userable['name'] }} ({{ $userable['nis'] }}, {{ $userable['class_name'] }})</i></div>
+                    <div class="font-1 color-grey-5"><i>Diunduh pada pukul {{ $time ?? '' }}, {{ $date ?? '' }} dari Kejar.id.</i></div>
                 </td>
             </tr>
 
         </table>
     </div>
 </body>
+
+<script>
+    $('#title2').html(localStorage.getItem('detail_title') || '');
+    $('#title1').html(localStorage.getItem('pts_title') || '');
+</script>
 
 </html>

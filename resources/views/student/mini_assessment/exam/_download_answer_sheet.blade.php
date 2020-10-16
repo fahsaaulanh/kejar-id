@@ -42,10 +42,12 @@
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <button type="button" id="download-answer" class="btn btn-download">
-                    <i class="kejar-matrikulasi mr-4">kejar-download</i>
-                    Unduh Lembar Jawaban
-                </button>
+                <a id="download-answer" class="btn btn-download">
+                    <button type="button"  class="btn btn-download">
+                        <i class="kejar-matrikulasi mr-4">kejar-download</i>
+                        Unduh Lembar Jawaban
+                    </button>
+                </a>
             </div>
         </div>
     </div>

@@ -7,6 +7,7 @@ use App\Services\MiniAssessment;
 use App\Services\School;
 use App\Services\Task;
 use Carbon\Carbon;
+use PDF;
 
 class MiniAssessmentController extends Controller
 {
@@ -262,6 +263,64 @@ class MiniAssessmentController extends Controller
         return $response;
     }
     // End Of API Function
+
+    // Print Pdf
+
+    public function print()
+    {
+        $date = Carbon::now()->format('d F Y');
+
+        $time = Carbon::now()->format('H:i');
+
+        $schoolService = new School;
+
+
+        $answers = $this->request->session()->get('answers');
+        $task = $this->request->session()->get('task');
+        $user = $this->request->session()->get('user');
+
+        // prod
+        $wikramaIdProd = [
+            '3da67e44-ca12-4ae8-b784-f066ea605887', // bogor
+            '6286566b-a2ce-4649-9c0c-078c434215af', // garut
+        ];
+
+        // staging
+        $wikramaIdStaging = [
+            '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b', // bogor
+            '35fd6bcd-2df7-414d-b7e2-20b62490d561', // garut
+        ];
+
+        $schoolId = $user['userable']['school_id'];
+
+        if (in_array($schoolId, $wikramaIdProd)) {
+            $schoolId = '3da67e44-ca12-4ae8-b784-f066ea605887';
+        } elseif (in_array($schoolId, $wikramaIdStaging)) {
+            $schoolId = '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b';
+        }
+
+        $responseSubject = $schoolService->subjectDetail($schoolId, $task['subject_id']);
+
+        $subject = $responseSubject['error'] ? '' : $responseSubject['data']['name'] ?? '';
+
+        $pageData = [
+            'user' => $user,
+            'task' => $task,
+            'answers' => $answers,
+            'userable' => $user['userable'],
+            'date' => $date,
+            'time' => $time,
+            'subject' => $subject,
+        ];
+
+        $pdf = PDF::loadview('student.mini_assessment.exam.answer', $pageData)
+            ->setPaper('a4', 'potrait');
+
+        $taskGroup = $task['mini_assessment']['group'];
+
+        return $pdf->download($user['userable']['name'] . ' ' . $taskGroup . ' ' . $subject . ' ' . $time . '.pdf');
+    }
+    // End Print Pdf
 
     // Private Function
     private function getAnswer($taskId)
