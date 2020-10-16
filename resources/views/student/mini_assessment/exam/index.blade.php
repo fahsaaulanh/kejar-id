@@ -3,154 +3,130 @@
 @section('title', 'PTS')
 
 @section('content')
-    <div class="container">
-        <!-- Title -->
-        <div>
-            <h4 id="title1" class="text-reguler mb-2"></h4>
-            <h2 id="title2"></h2>
+<div class="container">
+    <!-- Title -->
+    <div>
+        <h4 id="title1" class="text-reguler mb-2"></h4>
+        <h2 id="title2"></h2>
+    </div>
+
+    <!--  -->
+    <div class="mt-2">
+        <h5 id="date" class="text-reguler">{{ $task['mini_assessment']['start_date'] }}</h5>
+        <h5 id="time" class="text-reguler mt-2">{{ $task['mini_assessment']['start_time'] }} - {{ $task['mini_assessment']['expiry_time'] }}</h5>
+    </div>
+
+    <!-- Content -->
+    <div class="row mt-8">
+        <div class="col-md-6 mb-md-0 mb-2">
+            <h5>{{ $userable['name'] }}</h5>
+            <h5 class="text-reguler">NIS {{ $userable['nis'] }} | {{ $userable['class_name'] }}</h5>
         </div>
 
-        <!--  -->
-        <div class="mt-2">
-            <h5 id="date" class="text-reguler">{{ $task['mini_assessment']['start_date'] }}</h5>
-            <h5 id="time" class="text-reguler mt-2">{{ $task['mini_assessment']['start_time'] }} - {{ $task['mini_assessment']['expiry_time'] }}</h5>
-        </div>
-
-        <!-- Content -->
-        <div class="row mt-8">
-            <div class="col-md-6 mb-md-0 mb-2">
-                <h5>{{ $userable['name'] }}</h5>
-                <h5 class="text-reguler">NIS {{ $userable['nis'] }} | {{ $userable['class_name'] }}</h5>
-            </div>
-
-            <div class="col-md-6">
-                <h5>Kode Paket</h5>
-                <h5 class="text-reguler">{{ $task['mini_assessment']['id'] }}</h5>
-            </div>
-        </div>
-
-        <div class="mt-8 row">
-            <div id="lihat-naskah" class="pts-btn-pdf" role="button">
-                <i class="kejar-matrikulasi">kejar-pdf</i>
-                <h4 class="text-reguler ml-4">Lihat Naskah Soal</h4>
-            </div>
-        </div>
-
-        <!-- PG -->
-        <div class="mt-8">
-            <h5>Bagian 1. Pilihan Ganda</h5>
-            <p class="mt-2">Pilihlah jawaban dengan benar!</p>
-        </div>
-
-        @php
-            $collected = collect($task['answers']);
-            $collectionPG = $collected->filter(function ($value, $key) {
-                return !is_array($value['answer']);
-            });
-            $divider = (float) ($collectionPG->count() / 2);
-            $divider = ceil($divider);
-        @endphp
-
-        <div class="row">
-            <div class="col-md-6">
-                @foreach ($task['answers'] as $t)
-                    @if (($loop->index + 1) <= $divider && !is_array($t['answer']))
-                        <div class="row px-4 mt-4">
-                            <div class="pts-number">{{ $loop->index + 1 }}</div>
-                            @php
-                                $maAnswerId = $t['id'];
-                                $choicesNumber = $task['answers'][$loop->index]['choices_number'];
-                            @endphp
-                            @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
-                                <div
-                                    data-id="{{ $answers[$maAnswerId]['id'] }}"
-                                    onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
-                                    id="pts-choice-{{$loop->index}}-{{$i}}"
-                                    class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}"
-                                >
-                                    {{ chr(65 + $i) }}
-                                </div>
-                            @endfor
-                        </div>
-                    @endif
-                @endforeach
-            </div>
-            <div class="col-md-6">
-                @foreach ($task['answers'] as $t)
-                    @if (($loop->index + 1) > $divider && !is_array($t['answer']))
-                        <div class="row px-4 mt-4">
-                            <div class="pts-number">{{ $loop->index + 1 }}</div>
-                            @php
-                                $maAnswerId = $t['id'];
-                                $choicesNumber = $task['answers'][$loop->index]['choices_number'];
-                            @endphp
-                            @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
-                                <div
-                                    data-id="{{ $answers[$maAnswerId]['id'] }}"
-                                    onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
-                                    id="pts-choice-{{$loop->index}}-{{$i}}"
-                                    class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}"
-                                >
-                                    {{ chr(65 + $i) }}
-                                </div>
-                            @endfor
-                        </div>
-                    @endif
-                @endforeach
-            </div>
-        </div>
-
-        <!-- Ceklis -->
-        <div class="mt-8">
-            <h5>Bagian 2. Menceklis Daftar</h5>
-            <p class="mt-2">Beri tanda centang di sebelah huruf sesuai jawaban yang dianggap benar!</p>
-
-            @foreach ($task['answers'] as $t)
-                @if (is_array($t['answer']))
-                    <div class="row px-4 mt-4">
-                        @php
-                            $maAnswerId = $t['id'];
-                            $choicesNumber = $task['answers'][$loop->index]['choices_number'];
-                        @endphp
-                        <div
-                            id="pts-number-{{$loop->index}}"
-                            data-checked="{{ json_encode($answers[$maAnswerId]['answer']) }}"
-                            class="pts-number"
-                        >
-                            {{ $loop->index + 1 }}
-                        </div>
-                        @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
-                            <div
-                                data-id="{{ $answers[$maAnswerId]['id'] }}"
-                                data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}"
-                                onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
-                                id="pts-choice-{{$loop->index}}-{{$i}}"
-                                class="pts-choice-check"
-                            >
-                                <i
-                                    id="pts-icon-{{$loop->index}}-{{$i}}"
-                                    class="font-24 mr-2"
-                                >
-                                    {{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }}
-                                </i>
-                                {{ chr(65 + $i) }}
-                            </div>
-                        @endfor
-                    </div>
-                @endif
-            @endforeach
-        </div>
-
-        <div class="row justify-content-between px-4 mt-9">
-            <div>
-                <h5 id="timer"></h5>
-            </div>
-            <div id="done" class="pts-btn-next bg-light text-purple" role="button">
-                <h3>Selesai</h3>
-                <i class="kejar-matrikulasi text-purple font-32">kejar-play</i>
-            </div>
+        <div class="col-md-6">
+            <h5>Kode Paket</h5>
+            <h5 class="text-reguler">{{ $task['mini_assessment']['id'] }}</h5>
         </div>
     </div>
+
+    <div class="mt-8 row">
+        <div id="lihat-naskah" class="pts-btn-pdf" role="button">
+            <i class="kejar-matrikulasi">kejar-pdf</i>
+            <h4 class="text-reguler ml-4">Lihat Naskah Soal</h4>
+        </div>
+    </div>
+
+    <!-- PG -->
+    <div class="mt-8">
+        <h5>Bagian 1. Pilihan Ganda</h5>
+        <p class="mt-2">Pilihlah jawaban dengan benar!</p>
+    </div>
+
+    @php
+    $collected = collect($task['answers']);
+    $collectionPG = $collected->filter(function ($value, $key) {
+    return !is_array($value['answer']);
+    });
+    $divider = (float) ($collectionPG->count() / 2);
+    $divider = ceil($divider);
+    @endphp
+
+    <div class="row">
+        <div class="col-md-6">
+            @foreach ($task['answers'] as $t)
+            @if (($loop->index + 1) <= $divider && !is_array($t['answer'])) <div class="row px-4 mt-4">
+                <div class="pts-number">{{ $loop->index + 1 }}</div>
+                @php
+                $maAnswerId = $t['id'];
+                $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+                @endphp
+                @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
+                    <div data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}">
+                        {{ chr(65 + $i) }}
+                    </div>
+                    @endfor
+        </div>
+        @endif
+        @endforeach
+    </div>
+    <div class="col-md-6">
+        @foreach ($task['answers'] as $t)
+        @if (($loop->index + 1) > $divider && !is_array($t['answer']))
+        <div class="row px-4 mt-4">
+            <div class="pts-number">{{ $loop->index + 1 }}</div>
+            @php
+            $maAnswerId = $t['id'];
+            $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+            @endphp
+            @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
+                <div data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}">
+                    {{ chr(65 + $i) }}
+                </div>
+                @endfor
+        </div>
+        @endif
+        @endforeach
+    </div>
+</div>
+
+<!-- Ceklis -->
+<div class="mt-8">
+    <h5>Bagian 2. Menceklis Daftar</h5>
+    <p class="mt-2">Beri tanda centang di sebelah huruf sesuai jawaban yang dianggap benar!</p>
+
+    @foreach ($task['answers'] as $t)
+    @if (is_array($t['answer']))
+    <div class="row px-4 mt-4">
+        @php
+        $maAnswerId = $t['id'];
+        $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+        @endphp
+        <div id="pts-number-{{$loop->index}}" data-checked="{{ json_encode($answers[$maAnswerId]['answer']) }}" class="pts-number">
+            {{ $loop->index + 1 }}
+        </div>
+        @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
+            <div data-id="{{ $answers[$maAnswerId]['id'] }}" data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}" onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="pts-choice-check">
+                <i id="pts-icon-{{$loop->index}}-{{$i}}" class="font-24 mr-2">
+                    {{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }}
+                </i>
+                {{ chr(65 + $i) }}
+            </div>
+            @endfor
+    </div>
+    @endif
+    @endforeach
+</div>
+
+<div class="row justify-content-between px-4 mt-9">
+    <div>
+        <h5 id="timer"></h5>
+    </div>
+    <div id="done" class="pts-btn-next bg-light text-purple" role="button">
+        <h3>Selesai</h3>
+        <i class="kejar-matrikulasi text-purple font-32">kejar-play</i>
+    </div>
+</div>
+</div>
 @endsection
 
 @include('student.mini_assessment.exam._time_up')
@@ -182,7 +158,7 @@
         }
     });
 
-    $('#done').on('click', function () {
+    $('#done').on('click', function() {
         checkAnswer();
     });
 
@@ -191,44 +167,111 @@
         $('#downloadAnswerSheet').modal('show');
     });
 
-    $('#lanjut-time-remaining').on('click', function () {
+    $('#lanjut-time-remaining').on('click', function() {
         $('#timeRemaining').modal('hide');
         $('#downloadAnswerSheet').modal('show');
     });
 
-    $('#lanjut-time-remaining').on('click', function () {
+    $('#lanjut-time-remaining').on('click', function() {
         $('#timeRemaining').modal('hide');
         $('#downloadAnswerSheet').modal('show');
     });
 
-    $('#download-answer').on('click', function () {
+    $('#download-answer').on('click', function() {
         // Function Agung in Here
+        const urlPrint = "{!! URL::to('/student/mini_assessment/exam/pdf') !!}";
+
+        $.ajax({
+            url: urlPrint,
+            type: 'GET',
+            contentType: false,
+            processData: false,
+            //xhrFields is what did the trick to read the blob to pdf
+            xhrFields: {
+                responseType: 'blob'
+            },
+            beforeSend: function() {
+                $('#download-answer').html('Tunggu...');
+            },
+            error: function(error) {
+                $('#download-answer').html('Silakan Unduh Ulang Lembar Jawaban');
+            },
+            success: function(response, status, xhr) {
+                $('#download-answer').html('Unduh Lembar Jawaban');
+
+                var filename = "";
+                var disposition = xhr.getResponseHeader('Content-Disposition');
+
+                if (disposition) {
+                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                    var matches = filenameRegex.exec(disposition);
+                    if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                }
+                var linkelem = document.createElement('a');
+                try {
+                    var blob = new Blob([response], {
+                        type: 'application/octet-stream'
+                    });
+
+                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                        //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                        window.navigator.msSaveBlob(blob, filename);
+                    } else {
+                        var URL = window.URL || window.webkitURL;
+                        var downloadUrl = URL.createObjectURL(blob);
+
+                        if (filename) {
+                            // use HTML5 a[download] attribute to specify filename
+                            var a = document.createElement("a");
+
+                            // safari doesn't support this yet
+                            if (typeof a.download === 'undefined') {
+                                window.location = downloadUrl;
+                            } else {
+                                a.href = downloadUrl;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.target = "_blank";
+                                a.click();
+                            }
+                        } else {
+                            window.location = downloadUrl;
+                        }
+                    }
+
+                } catch (ex) {
+                    console.log(ex);
+                }
+
+                $('#downloadAnswerSheet').modal('hide');
+                if (!hasTime) {
+                    $('#checkAnswerSheet .close').remove();
+                    $('#checkAnswerSheet').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true,
+                    });
+                    $('#downloadAnswerSheet').modal('hide');
+                    return;
+                }
+
+                $('#checkAnswerSheet').modal('show');
+            }
+        });
 
         //
-        if (!hasTime) {
-            $('#checkAnswerSheet .close').remove();
-            $('#checkAnswerSheet').modal({
-                backdrop: 'static',
-                keyboard: false,
-                show: true,
-            });
-            $('#downloadAnswerSheet').modal('hide');
-            return;
-        }
-
-        $('#checkAnswerSheet').modal('show');
     });
 
-    $('#unduh-lagi-check-answer').on('click', function () {
+    $('#unduh-lagi-check-answer').on('click', function() {
         $('#checkAnswerSheet').modal('hide');
         $('#downloadAnswerSheet').modal('show');
     });
 
-    $('#selesai-check-answer').on('click', function () {
+    $('#selesai-check-answer').on('click', function() {
         finish($(this));
     });
 
-    $('#lanjut-time-up').on('click', function () {
+    $('#lanjut-time-up').on('click', function() {
         $('#downloadAnswerSheet .close').remove();
         $('#downloadAnswerSheet').modal({
             backdrop: 'static',
@@ -239,7 +282,7 @@
         $('#timeUp').modal('hide');
     });
 
-    $('#tutup-success').on('click', function () {
+    $('#tutup-success').on('click', function() {
         if (typeof window !== 'undefined') {
             window.location.replace('/student/mini_assessment');
         }
@@ -248,10 +291,10 @@
     function startTimer() {
         let modalRunningOutHasShown = false;
 
-        // var end = new Date("{{ $task['mini_assessment']['expiry_fulldate'] }}");
-        var end = new Date();
+        var end = new Date("{{ $task['mini_assessment']['expiry_fulldate'] }}");
+        // var end = new Date();
         // end.setMinutes(end.getMinutes() + 5);
-        end.setSeconds(end.getSeconds() + 17);
+        // end.setSeconds(end.getSeconds() + 17);
         const endTime = end.getTime();
 
         // Update the count down every 1 second
@@ -360,7 +403,7 @@
             error: function(error) {
                 //
             },
-            success: function(response){
+            success: function(response) {
                 if (response.status === 200) {
                     return;
                 }
@@ -383,7 +426,7 @@
 
         const htmlSelesai = $('#done').html();
 
-         $.ajax({
+        $.ajax({
             url,
             type: 'GET',
             data: {},
@@ -397,7 +440,7 @@
                 $('#done').html(htmlSelesai);
                 $('#done').removeAttr('disabled');
             },
-            success: function(response){
+            success: function(response) {
                 $('#done').html(htmlSelesai);
                 $('#done').removeAttr('disabled');
                 if (response.error === false) {
@@ -419,7 +462,7 @@
 
         const htmlSelesai = 'Selesai';
 
-         $.ajax({
+        $.ajax({
             url,
             type: 'POST',
             data: {},
@@ -433,7 +476,7 @@
                 component.html(htmlSelesai);
                 component.removeAttr('disabled');
             },
-            success: function(response){
+            success: function(response) {
                 component.html(htmlSelesai);
                 component.removeAttr('disabled');
                 if (response.status === 200) {
@@ -444,6 +487,5 @@
             }
         });
     }
-
 </script>
 @endpush

@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index');
 Route::get('/login', 'LoginController@index');
 Route::post('/login', 'LoginController@login');
-Route::get('/pdf', 'HomeController@print')->name('print');
 
 Route::middleware('session')->group(function () {
     Route::get('/logout', 'HomeController@logout');
@@ -162,6 +161,8 @@ Route::middleware('session')->group(function () {
                 Route::get('/', 'Student\MiniAssessmentController@index');
                 Route::get('/{subject_id}', 'Student\MiniAssessmentController@detail');
                 Route::get('/{subject_id}/exam', 'Student\MiniAssessmentController@exam');
+                Route::get('/exam/pdf', 'Student\MiniAssessmentController@print')->name('printAnswer');
+
 
                 // Route For Call API
                 Route::get('/service/subjects', 'Student\MiniAssessmentController@subjects');

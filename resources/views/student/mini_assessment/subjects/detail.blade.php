@@ -51,7 +51,7 @@
         <!-- <div class="stage-order-buttons"> -->
         <div class="row justify-content-end px-4 mt-9">
             <div id="play" class="pts-btn-next" role="button">
-                <h3>Main</h3>
+                <h3>Mulai</h3>
                 <i class="kejar-play"></i>
             </div>
         </div>

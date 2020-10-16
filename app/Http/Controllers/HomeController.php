@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 // User Service
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-use PDF;
 
 class HomeController extends Controller
 {
@@ -111,17 +109,5 @@ class HomeController extends Controller
     public function example()
     {
         return view('example.withHeader');
-    }
-
-    public function print()
-    {
-        $date = Carbon::now()->translatedFormat('d F Y');
-
-        $time = Carbon::now()->translatedFormat('H:i');
-
-        $pdf = PDF::loadview('student.mini_assessment.exam.answer', ['date' => $date, 'time' => $time])
-            ->setPaper('a4', 'potrait');
-
-        return $pdf->donwload();
     }
 }
