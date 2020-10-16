@@ -37,4 +37,18 @@ class User extends Service
 
         return $this->showResponse($response);
     }
+
+    public function students($filter)
+    {
+        $response = $this->get('/users/students', $filter);
+
+        return $this->showResponse($response);
+    }
+
+    public function detailTeacher($id)
+    {
+        $response = $this->get('/users/teachers/'.$id);
+
+        return $this->showResponse($response);
+    }
 }

@@ -89,6 +89,25 @@
 <div class="bg-blue-tp">
     <div class="container-fluid">
         <div class="row dashboard">
+            @if(in_array(session('user.userable.school_id'),$wikramaId))
+                <div class="col-12">
+                    <div class="content-header">
+                        <h1 class="content-title">Pilih permainan...</h1>
+                    </div>
+                    <div class="content-body">
+                        @forelse($miniAssesmentGroup as $key => $v)
+                            <div class="card-deck pl-4 pr-4 pb-4">
+                                <div class="list-card-menu-item col-12" data-id="#">
+                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#ma-view-as" onclick="selectMA('{{$key}}')">
+                                        <h3><i class="kejar-penilaian" ></i> {{$v}}</h3>
+                                    </a>
+                                </div>
+                            </div>
+                        @empty
+                        @endforelse
+                    </div>
+                </div>
+            @endif
             <div class="col-12">
                 <div class="content-header">
                     <h1 class="content-title">Pilih permainan...</h1>
@@ -140,24 +159,32 @@
         </div>
     </div>
 </div>
+@include('teacher.mini_assessments._modal_view_as')
 @endif
 @endsection
 
 @push('script')
 <script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
 <script type="text/javascript">
-$('.dropify').dropify({
-    messages: {
-        'default': 'Pilih Foto',
-        'replace': 'Ubah Foto',
-        'remove':  'Hapus Foto',
-        'error':   'Error'
-    }
-});
+    $('.dropify').dropify({
+        messages: {
+            'default': 'Pilih Foto',
+            'replace': 'Ubah Foto',
+            'remove':  'Hapus Foto',
+            'error':   'Error'
+        }
+    });
 
-$('input[name=select_photo_onboarding]').change(function(){
-    readURL(this);
-});
+    $('input[name=select_photo_onboarding]').change(function(){
+        readURL(this);
+    });
+
+    function selectMA(val) {
+        var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teachers/mini-assessment') !!}"+"/"+val;
+        var urlStudentCounselor = "{!! URL::to('/teacher/student-counselor/mini-assessment') !!}"+"/"+val;
+        $("#select-ma-subject-teachers").attr("href", urlSubjectTeachers);
+        $("#select-ma-student-counselor").attr("href", urlStudentCounselor);
+    }
 </script>
 
 @if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)

@@ -2,14 +2,14 @@
     @media screen and (max-width: $mobile-breakpoint) {
         display: block;
     }
-    display: none;    
+    display: none;
 }
 
 .largescreen-only {
     @media screen and (max-width: $mobile-breakpoint) {
         display: none;
     }
-    display: block; 
+    display: block;
 }
 
 .hover-only {
@@ -21,4 +21,8 @@
             display: block;
         }
     }
+}
+
+.border-none {
+    border: none !important;
 }

@@ -452,3 +452,32 @@
         }
     }
 }
+
+.btn-ma-view-as{
+    background-color: $blue-tp2;
+    height: 180px;
+
+    .icon{
+        text-align: center;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        left: calc(50% - 64px/2);
+        top: 40px;
+        background-color: $blue-tp;
+        font-size: 40px;
+        padding-top: 23px;
+        color: #fff;
+        border-radius: 50%;
+    }
+    .caption-left{
+        top: 120px;
+        position: absolute;
+        left: calc(50% - 90px/2);
+    }
+    .caption-right{
+        top: 120px;
+        position: absolute;
+        left: calc(50% - 145px/2);
+    }
+}
