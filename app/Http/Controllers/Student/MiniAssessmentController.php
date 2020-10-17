@@ -53,6 +53,25 @@ class MiniAssessmentController extends Controller
         ];
 
         $task = $this->request->session()->get('task', null);
+        $user = $this->request->session()->get('user', null);
+
+        $filterTask = [
+            'filter[subject_id]' => $subject_id,
+            'filter[finished]' => 'true',
+        ];
+
+        $responseTask = $taskService->tasksMiniAssessment($user['userable']['id'], $filterTask);
+        $tasksDone = $responseTask['error'] ? [] : $responseTask['data'] ?? [];
+
+        if (count($tasksDone) > 0) {
+            return redirect('/student/mini_assessment');
+        }
+
+        $answers = $this->request->session()->get('answers', []);
+
+        if (count($answers) > 0) {
+            return redirect("/student/mini_assessment/$subject_id/exam");
+        }
 
         // Get if Local Storage has Cleared.
         if (!$task || $task['subject_id'] !== $subject_id || $refresh === 'true') {
@@ -129,6 +148,14 @@ class MiniAssessmentController extends Controller
     {
         $user = $this->request->session()->get('user', null);
         $task = $this->request->session()->get('task', null);
+
+        if ($task === null) {
+            return redirect('/student/mini_assessment');
+        }
+
+        if ($task['task_id'] === '') {
+            return redirect('/student/mini_assessment');
+        }
 
         $answers = $this->getAnswer($task['task_id']);
         $this->request->session()->put('answers', $answers);
@@ -208,22 +235,10 @@ class MiniAssessmentController extends Controller
 
         $answer = $this->request->input('answer');
         $answerId = $this->request->input('answer_id');
-        $maAnswerId = $this->request->input('ma_answer_id');
 
         $payload = [
             'answer' => $answer,
         ];
-
-        // Set Answer To Session
-        $answers = $this->request->session()->get('answers');
-
-        $answers[$maAnswerId] = [
-            'id' => $answerId,
-            'answer' => $answer,
-        ];
-
-        $this->request->session()->put('answers', $answers);
-        //
 
         $task = $this->request->session()->get('task');
 
@@ -240,7 +255,8 @@ class MiniAssessmentController extends Controller
 
     public function checkAnswer()
     {
-        $answers = $this->request->session()->get('answers');
+        $task = $this->request->session()->get('task', []);
+        $answers = $this->getAnswer($task['task_id']);
 
         $unanswered = 0;
 
@@ -285,9 +301,8 @@ class MiniAssessmentController extends Controller
 
         $schoolService = new School;
 
-
-        $answers = $this->request->session()->get('answers');
         $task = $this->request->session()->get('task');
+        $answers = $this->getAnswer($task['task_id']);
         $user = $this->request->session()->get('user');
 
         // prod

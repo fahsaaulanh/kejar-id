@@ -1,4 +1,4 @@
-<div class="modal fade" id="downloadAnswerSheet" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="downloadAnswerSheet" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,34 +9,34 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-1">
+                    <div class="pts-number">
                         <p>1.</p>
                     </div>
-                    <div class="col-11">
+                    <div class="col mt-1">
                         <p>Unduh salinan lembar jawaban ini sebagai bukti keikutsertaan penilaian.</p>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-1">
+                    <div class="pts-number">
                         <p>2.</p>
                     </div>
-                    <div class="col-11">
+                    <div class="col mt-1">
                         <p>Setelah terunduh, cek bilamana lembar jawaban dapat dibuka.</p>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-1">
+                    <div class="pts-number">
                         <p>3.</p>
                     </div>
-                    <div class="col-11">
+                    <div class="col mt-1">
                         <p>Simpan lembar jawaban yang sudah diunduh baik-baik.</p>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-1">
+                    <div class="pts-number">
                         <p>4.</p>
                     </div>
-                    <div class="col-11">
+                    <div class="col mt-1">
                         <p>Jangan mengeklik tombol selesai sebelum lembar jawaban sudah dapat dibuka dan tersimpan dengan baik.</p>
                     </div>
                 </div>

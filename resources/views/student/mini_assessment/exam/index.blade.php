@@ -162,6 +162,9 @@
 <script>
     let promises = {};
     let hasTime = true;
+    let doneDownloadAnswer = false;
+    let doneCheckAnswer = false;
+    let doneSuccess = false;
     startTimer();
     this.sendToServer = _.debounce(this.sendToServer, 1000);
 
@@ -188,17 +191,22 @@
     $('#lanjut-missing-answer').on('click', function() {
         $('#missingAnswer').modal('hide');
         $('#downloadAnswerSheet').modal('show');
+        doneDownloadAnswer = true;
     });
 
     $('#lanjut-time-remaining').on('click', function() {
         $('#timeRemaining').modal('hide');
         $('#downloadAnswerSheet').modal('show');
+        doneDownloadAnswer = true;
     });
 
-    $('#lanjut-time-remaining').on('click', function() {
-        $('#timeRemaining').modal('hide');
-        $('#downloadAnswerSheet').modal('show');
-    });
+    $('#downloadAnswerSheet').on('hide.bs.modal', function (e) {
+        doneDownloadAnswer = false;
+    })
+
+    $('#checkAnswerSheet').on('hide.bs.modal', function (e) {
+        doneCheckAnswer = false;
+    })
 
     $('#download-answer').on('click', function() {
         // Function Agung in Here
@@ -275,10 +283,12 @@
                         show: true,
                     });
                     $('#downloadAnswerSheet').modal('hide');
+                    doneCheckAnswer = true;
                     return;
                 }
 
                 $('#checkAnswerSheet').modal('show');
+                doneCheckAnswer = true;
             }
         });
 
@@ -350,7 +360,19 @@
             if (duration < 0) {
                 hasTime = false;
                 $('#timer').html('00:00:00');
-                $('#timeUp').modal('show');
+
+                if (doneDownloadAnswer) {
+                    $('#downloadAnswerSheet .kejar-close').remove();
+                }
+
+                if (doneCheckAnswer) {
+                    $('#checkAnswerSheet .kejar-close').remove();
+                }
+
+                if (!doneDownloadAnswer && !doneCheckAnswer && !doneSuccess) {
+                    $('#timeUp').modal('show');
+                }
+
                 $('#missingAnswer').modal('hide');
                 $('#timeRunningOut').modal('hide');
                 clearInterval(x);
@@ -506,6 +528,7 @@
                 if (response.status === 200) {
                     $('#checkAnswerSheet').modal('hide');
                     $('#success').modal('show');
+                    doneSuccess = true;
                     return;
                 }
             }
