@@ -26,7 +26,10 @@
 
 @push('script')
 <script>
-    const school_id = "{{ session('user.userable.school_id') }}";
+    var school_id = "3da67e44-ca12-4ae8-b784-f066ea605887";
+    if ("{{ env('APP_ENV') }}" === 'staging' || "{{ env('APP_ENV') }}" === 'local') {
+        var school_id = "73ceaf53-a9d8-4777-92fe-39cb55b6fe3b";
+    }
     const url = "{!! URL::to('/student/mini_assessment/service/subjects') !!}";
     fetchSubjects(url, { school_id });
 </script>
