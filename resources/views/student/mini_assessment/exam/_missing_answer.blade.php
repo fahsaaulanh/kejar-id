@@ -11,6 +11,7 @@
                 <div class="row">
                     <div class="col-12">
                         <p>Masih ada jawaban yang belum diisi. Semangat! Periksa kembali jawabanmu.</p>
+                        <p>Apabila semua jawaban sudah terisi dan pesan ini muncul, sistem sedang melakukan penyimpanan. Tutup jendela, tunggu beberapa saat, dan klik Selesai sekali lagi.<p>
                     </div>
                 </div>
             </div>

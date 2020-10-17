@@ -41,7 +41,7 @@
     let dataMA = [];
     const title = localStorage.getItem('pts_title') || '';
     $('#breadcrumb-1').html(title);
-    $('#title').html(title);
+    window.document.title = `Exam - ${title}`;
     //
 
     // Function
@@ -82,8 +82,7 @@
             const now = new Date().getTime();
 
             const isExpired = (now < start || now > end);
-            // const done = d.tasks.length > 0;
-            const done = false;
+            const done = d.tasks.length > 0 ? true : false;
 
             return `
                 <div class="row mt-4">

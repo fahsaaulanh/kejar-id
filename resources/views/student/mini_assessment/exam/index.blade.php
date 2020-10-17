@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'PTS')
+@section('title', 'Exam')
 
 @section('content')
 <div class="container">
@@ -150,6 +150,8 @@
         }
     });
 
+    window.document.title = "Exam - "+localStorage.getItem('pts_title');
+
     $('#title2').html(localStorage.getItem('detail_title') || '');
     $('#title1').html(localStorage.getItem('pts_title') || '');
     $('#lihat-naskah').on('click', function() {
@@ -296,7 +298,6 @@
         // end.setMinutes(end.getMinutes() + 5);
         // end.setSeconds(end.getSeconds() + 17);
         const endTime = end.getTime();
-
         // Update the count down every 1 second
         var x = setInterval(function() {
             // Get today's date and time
@@ -318,7 +319,8 @@
             const timerString = `${hourString}:${minuteString}:${secondString}`;
             $('#timer').html(timerString);
 
-            if (minutes < 5 && !modalRunningOutHasShown && duration > 0) {
+            // if duration only 5 more minutes
+            if (duration < 300000 && !modalRunningOutHasShown && duration > 0) {
                 modalRunningOutHasShown = true;
                 $('#timeRunningOut').modal('show');
             }
@@ -346,7 +348,7 @@
         }
 
         $(`#pts-choice-${parentIndex}-${index}`).addClass('active');
-        promises[parentIndex] = setAnswer(answerId, answer);
+        promises[parentIndex] = setAnswer(answerId, answer, questionId);
 
         sendToServer();
     }
@@ -380,7 +382,7 @@
         }
 
         // promises = [...promises, setAnswer(answerId, arrayAnswer)];
-        promises[parentIndex] = setAnswer(answerId, arrayAnswer);
+        promises[parentIndex] = setAnswer(answerId, arrayAnswer, questionId);
         sendToServer();
     }
 
@@ -444,6 +446,7 @@
                 $('#done').html(htmlSelesai);
                 $('#done').removeAttr('disabled');
                 if (response.error === false) {
+
                     if (response.unanswered === 0) {
                         $('#timeRemaining').modal('show');
                         return;
