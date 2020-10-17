@@ -41,7 +41,7 @@
     let dataMA = [];
     const title = localStorage.getItem('pts_title') || '';
     $('#breadcrumb-1').html(title);
-    window.document.title = `Exam - ${title}`;
+    window.document.title = `${title}`;
     //
 
     // Function
