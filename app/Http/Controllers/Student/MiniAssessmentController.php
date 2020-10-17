@@ -7,6 +7,7 @@ use App\Services\MiniAssessment;
 use App\Services\School;
 use App\Services\Task;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use PDF;
 
 class MiniAssessmentController extends Controller
@@ -219,8 +220,10 @@ class MiniAssessmentController extends Controller
         $task = $this->request->session()->get('task');
 
         $response = $taskService->setAnswerMiniAssessment($task['task_id'], $answerId, $payload);
-
         if (!$response['error']) {
+            $filtered = Arr::except($response['data'], ['correct_answer', 'is_correct']);
+            $response['data'] = $filtered;
+
             return $response;
         }
 
