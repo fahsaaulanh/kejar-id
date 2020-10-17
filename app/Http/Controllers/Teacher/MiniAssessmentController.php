@@ -399,6 +399,15 @@ class MiniAssessmentController extends Controller
 
         $data = [];
         $miniAssessmentApi = new miniAssessmentApi;
+
+        if (!$students['data']) {
+            $view = '<tr>
+                        <td colspan="6" class="text-center">Tidak ada data</td>
+                    </tr>';
+
+            return response()->json($view);
+        }
+
         foreach ($students['data'] as $key => $v) {
             $payload = [
                 'filter[subject_id]' => $req->subjectId,

@@ -6,7 +6,7 @@
     <div class="container-lg">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/subject-teachers/mini-assessment/'.$miniAssessmentGroupValue.'/subject/'.$StudentGroupDetail['id'].'/'.$grade) }}">
+        <a class ="btn-back" href="{{ url('/teacher/subject-teachers/mini-assessment/'.$miniAssessmentGroupValue.'/subject/'.$subject['id'].'/'.$grade) }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
