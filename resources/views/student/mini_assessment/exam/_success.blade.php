@@ -7,7 +7,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <p>Lembar jawabanmu telah dikirimkan kepada guru. Semoga hasilnya memuaskan, ya!</p>
+                        <p class="font-15">Lembar jawabanmu telah dikirimkan kepada guru. Semoga hasilnya memuaskan, ya!</p>
                     </div>
                 </div>
             </div>

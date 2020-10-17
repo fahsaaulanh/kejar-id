@@ -10,34 +10,34 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="pts-number">
-                        <p>1.</p>
+                        <p class="font-15">1.</p>
                     </div>
                     <div class="col mt-1">
-                        <p>Unduh salinan lembar jawaban ini sebagai bukti keikutsertaan penilaian.</p>
+                        <p class="font-15">Unduh salinan lembar jawaban ini sebagai bukti keikutsertaan penilaian.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="pts-number">
-                        <p>2.</p>
+                        <p class="font-15">2.</p>
                     </div>
                     <div class="col mt-1">
-                        <p>Setelah terunduh, cek bilamana lembar jawaban dapat dibuka.</p>
+                        <p class="font-15">Setelah terunduh, cek bilamana lembar jawaban dapat dibuka.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="pts-number">
-                        <p>3.</p>
+                        <p class="font-15">3.</p>
                     </div>
                     <div class="col mt-1">
-                        <p>Simpan lembar jawaban yang sudah diunduh baik-baik.</p>
+                        <p class="font-15">Simpan lembar jawaban yang sudah diunduh baik-baik.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="pts-number">
-                        <p>4.</p>
+                        <p class="font-15">4.</p>
                     </div>
                     <div class="col mt-1">
-                        <p>Jangan mengeklik tombol selesai sebelum lembar jawaban sudah dapat dibuka dan tersimpan dengan baik.</p>
+                        <p class="font-15">Jangan mengeklik tombol selesai sebelum lembar jawaban sudah dapat dibuka dan tersimpan dengan baik.</p>
                     </div>
                 </div>
             </div>

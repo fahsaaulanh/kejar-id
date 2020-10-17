@@ -26,7 +26,7 @@
         <div class="col-md-6">
             <h5>Kode Paket</h5>
             <h5 class="text-reguler">
-                {{ $task['mini_assessment']['random_char1'] . $task['mini_assessment']['id'] . $task['mini_assessment']['random_char2'] }}
+                {{ $task['mini_assessment']['random_char'] }}
             </h5>
         </div>
     </div>
@@ -40,14 +40,14 @@
 
     <!-- PG -->
     <div class="mt-8">
-        <h5>Bagian 1. Pilihan Ganda</h5>
+        <h5>Pilihan Ganda</h5>
         <p class="mt-2">Pilihlah jawaban dengan benar!</p>
     </div>
 
     @php
         $collected = collect($task['answers']);
         $collectionPG = $collected->filter(function ($value, $key) {
-        return !is_array($value['answer']);
+            return !is_array($value['answer']);
         });
         $divider = (float) ($collectionPG->count() / 2);
         $divider = ceil($divider);
@@ -100,11 +100,17 @@
     </div>
 </div>
 
-<!-- Ceklis -->
-<div class="mt-8">
-    <h5>Bagian 2. Menceklis Daftar</h5>
-    <p class="mt-2">Beri tanda centang di sebelah huruf sesuai jawaban yang dianggap benar!</p>
+@php
+    $collectionForCheck = $collected->filter(function ($value, $key) {
+        return is_array($value['answer']);
+    });
+@endphp
 
+<!-- Ceklis -->
+@if ($collectionForCheck->count() > 0)
+<div class="mt-8">
+    <h5>Menceklis Daftar</h5>
+    <p class="mt-2">Beri tanda centang di sebelah huruf sesuai jawaban yang dianggap benar!</p>
     @foreach ($task['answers'] as $t)
         @if (is_array($t['answer']))
         <div class="row px-4 mt-4">
@@ -137,6 +143,7 @@
         @endif
     @endforeach
 </div>
+@endif
 
 <div class="row justify-content-between align-items-center px-4 mt-9">
     <div>

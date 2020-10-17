@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <p>Waktu yang tersisa masih cukup banyak. Periksa kembali jawabanmu sebelum mengumpulkannya.</p>
+                        <p class="font-15">Waktu yang tersisa masih cukup banyak. Periksa kembali jawabanmu sebelum mengumpulkannya.</p>
                     </div>
                 </div>
             </div>
