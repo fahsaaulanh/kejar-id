@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'PTS')
+@section('title', 'On Boarding')
 
 @section('content')
     <div class="container">
@@ -40,11 +40,36 @@
 
         <div class="mt-8 onboarding-page-pts">
             <p class="text-bold">Petunjuk Pengerjaan</p>
-            <p class="mt-2">1. Penilaian hanya dapat dikerjakan pada tanggal dan waktu yang telah ditetapkan.</p>
-            <p class="mt-2">2. Naskah soal terkunci dengan password/token. Password/token tersebut dibagikan oleh guru pada saat ujian berlangsung.</p>
-            <p class="mt-2">3. Penilaian terdiri dari tipe soal pilihan ganda (hanya ada satu jawaban benar) dan menceklis daftar (dapat ada lebih dari satu jawaban benar). Ikuti petunjuk pada setiap bagian.</p>
-            <p class="mt-2">4. Sebelum mengeklik tombol selesai, pastikan bahwa salinan lembar jawaban telah diunduh. Simpan salinan lembar jawaban tersebut baik-baik.</p>
-            <p class="mt-2">5. Kerjakan penilaian dengan jujur, cermat, dan saksama. Segala bentuk ketidakjujuran akan dikenakan sanksi.</p>
+            <div class="row">
+                <div class="pts-number">1.</div>
+                <div class="col mt-1">
+                    <p>Penilaian hanya dapat dikerjakan pada tanggal dan waktu yang telah ditetapkan.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pts-number">2.</div>
+                <div class="col mt-1">
+                    <p>Naskah soal terkunci dengan password/token. Password/token tersebut dibagikan oleh guru pada saat ujian berlangsung.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pts-number">3.</div>
+                <div class="col mt-1">
+                    <p>Penilaian terdiri dari tipe soal pilihan ganda (hanya ada satu jawaban benar) dan menceklis daftar (dapat ada lebih dari satu jawaban benar). Ikuti petunjuk pada setiap bagian.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pts-number">4.</div>
+                <div class="col mt-1">
+                    <p>Sebelum mengeklik tombol selesai, pastikan bahwa salinan lembar jawaban telah diunduh. Simpan salinan lembar jawaban tersebut baik-baik.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="pts-number">5.</div>
+                <div class="col mt-1">
+                    <p>Kerjakan penilaian dengan jujur, cermat, dan saksama. Segala bentuk ketidakjujuran akan dikenakan sanksi.</p>
+                </div>
+            </div>
         </div>
 
         <!-- Button -->
@@ -63,6 +88,7 @@
 <script>
     $('#breadcrumb-1').html(localStorage.getItem('pts_title') || '');
     $('#title').html(localStorage.getItem('detail_title') || '');
+    $('title').html('On Boarding - ' + localStorage.getItem('pts_title') || '');
 
     $('#play').on('click', function() {
         if (typeof window !== 'undefined') {

@@ -74,6 +74,14 @@ class MiniAssessmentController extends Controller
             $dataMA['start_time'] = Carbon::parse($dataMA['start_time'])->format('H.i');
             $dataMA['expiry_date'] = Carbon::parse($dataMA['expiry_time'])->format('l, d F Y');
             $dataMA['expiry_time'] = Carbon::parse($dataMA['expiry_time'])->format('H.i');
+
+            $chr1 = chr(rand(97, 122));
+            $chr2 = chr(rand(97, 122));
+            $chr3 = chr(rand(97, 122));
+            $chr4 = chr(rand(97, 122));
+
+            $dataMA['random_char1'] = $chr1 . $chr2;
+            $dataMA['random_char2'] = $chr3 . $chr4;
             //
 
             // Save to Session as Temporary
