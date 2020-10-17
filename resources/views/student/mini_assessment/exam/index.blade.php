@@ -25,7 +25,9 @@
 
         <div class="col-md-6">
             <h5>Kode Paket</h5>
-            <h5 class="text-reguler">{{ $task['mini_assessment']['id'] }}</h5>
+            <h5 class="text-reguler">
+                {{ $task['mini_assessment']['random_char1'] . $task['mini_assessment']['id'] . $task['mini_assessment']['random_char2'] }}
+            </h5>
         </div>
     </div>
 
@@ -43,48 +45,57 @@
     </div>
 
     @php
-    $collected = collect($task['answers']);
-    $collectionPG = $collected->filter(function ($value, $key) {
-    return !is_array($value['answer']);
-    });
-    $divider = (float) ($collectionPG->count() / 2);
-    $divider = ceil($divider);
+        $collected = collect($task['answers']);
+        $collectionPG = $collected->filter(function ($value, $key) {
+        return !is_array($value['answer']);
+        });
+        $divider = (float) ($collectionPG->count() / 2);
+        $divider = ceil($divider);
     @endphp
 
     <div class="row">
         <div class="col-md-6">
-            @foreach ($task['answers'] as $t)
-            @if (($loop->index + 1) <= $divider && !is_array($t['answer'])) <div class="row px-4 mt-4">
+        @foreach ($task['answers'] as $t)
+            @if (($loop->index + 1) <= $divider && !is_array($t['answer']))
+            <div class="row px-4 mt-4">
                 <div class="pts-number">{{ $loop->index + 1 }}</div>
                 @php
-                $maAnswerId = $t['id'];
-                $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+                    $maAnswerId = $t['id'];
+                    $choicesNumber = $task['answers'][$loop->index]['choices_number'];
                 @endphp
-                @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
-                    <div data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}">
-                        {{ chr(65 + $i) }}
+                <div class="col">
+                    <div class="row">
+                        @for ($i = 0; $i < $choicesNumber; $i++)
+                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
+                                {{ chr(65 + $i) }}
+                            </div>
+                        @endfor
                     </div>
-                    @endfor
-        </div>
-        @endif
+                </div>
+            </div>
+            @endif
         @endforeach
     </div>
     <div class="col-md-6">
         @foreach ($task['answers'] as $t)
-        @if (($loop->index + 1) > $divider && !is_array($t['answer']))
-        <div class="row px-4 mt-4">
-            <div class="pts-number">{{ $loop->index + 1 }}</div>
-            @php
-            $maAnswerId = $t['id'];
-            $choicesNumber = $task['answers'][$loop->index]['choices_number'];
-            @endphp
-            @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
-                <div data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}">
-                    {{ chr(65 + $i) }}
+            @if (($loop->index + 1) > $divider && !is_array($t['answer']))
+            <div class="row px-4 mt-4">
+                <div class="pts-number">{{ $loop->index + 1 }}</div>
+                @php
+                    $maAnswerId = $t['id'];
+                    $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+                @endphp
+                <div class="col">
+                    <div class="row">
+                        @for ($i = 0; $i < $choicesNumber; $i++)
+                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
+                                {{ chr(65 + $i) }}
+                            </div>
+                        @endfor
+                    </div>
                 </div>
-                @endfor
-        </div>
-        @endif
+            </div>
+            @endif
         @endforeach
     </div>
 </div>
@@ -95,29 +106,39 @@
     <p class="mt-2">Beri tanda centang di sebelah huruf sesuai jawaban yang dianggap benar!</p>
 
     @foreach ($task['answers'] as $t)
-    @if (is_array($t['answer']))
-    <div class="row px-4 mt-4">
-        @php
-        $maAnswerId = $t['id'];
-        $choicesNumber = $task['answers'][$loop->index]['choices_number'];
-        @endphp
-        <div id="pts-number-{{$loop->index}}" data-checked="{{ json_encode($answers[$maAnswerId]['answer']) }}" class="pts-number">
-            {{ $loop->index + 1 }}
-        </div>
-        @for ($i = 0; $i < $task['answers'][$loop->index]['choices_number']; $i++)
-            <div data-id="{{ $answers[$maAnswerId]['id'] }}" data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}" onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="pts-choice-check">
-                <i id="pts-icon-{{$loop->index}}-{{$i}}" class="font-24 mr-2">
-                    {{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }}
-                </i>
-                {{ chr(65 + $i) }}
+        @if (is_array($t['answer']))
+        <div class="row px-4 mt-4">
+            @php
+                $maAnswerId = $t['id'];
+                $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+            @endphp
+            <div class="pts-number" id="pts-number-{{$loop->index}}" data-checked="{{ json_encode($answers[$maAnswerId]['answer']) }}">
+                {{ $loop->index + 1 }}
             </div>
-            @endfor
-    </div>
-    @endif
+            <div class="col">
+                <div class="row">
+                    @for ($i = 0; $i < $choicesNumber; $i++)
+                        <div
+                            data-id="{{ $answers[$maAnswerId]['id'] }}"
+                            data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}"
+                            onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
+                            id="pts-choice-{{$loop->index}}-{{$i}}"
+                            class="mb-2 mb-md-2 mb-lg-2 mb-xl-2 pts-choice-check"
+                        >
+                            <i id="pts-icon-{{$loop->index}}-{{$i}}" class="font-24 mr-2">
+                                {{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }}
+                            </i>
+                            {{ chr(65 + $i) }}
+                        </div>
+                    @endfor
+                </div>
+            </div>
+        </div>
+        @endif
     @endforeach
 </div>
 
-<div class="row justify-content-between px-4 mt-9">
+<div class="row justify-content-between align-items-center px-4 mt-9">
     <div>
         <h5 id="timer"></h5>
     </div>

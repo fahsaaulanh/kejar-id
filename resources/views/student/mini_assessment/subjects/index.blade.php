@@ -92,15 +92,17 @@
                         id="subject-${index}"
                         onclick="onClickSubject(${index},${isExpired || done})"
                     >
-                        <div id="mapel">
-                            <h4 class="${isExpired || done ? 'text-reguler' : '' }">${d.subject}</h4>
-                            <h5 class="text-reguler">${d.start_date}</h5>
-                            <h5 class="text-reguler">${d.start_time} - ${d.expiry_time}</h5>
-                        </div>
-                        <div>
-                            <span class="badge-${done ? 'done' : 'undone'} label">
-                                ${done ? 'SUDAH DIKERJAKAN' : 'BELUM DIKERJAKAN'}
-                            </span>
+                        <div class="row">
+                            <div class="col-md-6" id="mapel">
+                                <h4 class="${isExpired || done ? 'text-reguler' : '' }">${d.subject}</h4>
+                                <h5 class="text-reguler">${d.start_date}</h5>
+                                <h5 class="text-reguler">${d.start_time} - ${d.expiry_time}</h5>
+                            </div>
+                            <div class="col-md-6 mt-2 mt-md-0 mt-lg-0">
+                                <span class="badge-${done ? 'done' : 'undone'} label">
+                                    ${done ? 'SUDAH DIKERJAKAN' : 'BELUM DIKERJAKAN'}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
