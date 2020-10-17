@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <p>Waktu pengerjaan tersisa 5 (lima) menit lagi. Segera kumpulkan jawaban.</p>
+                        <p class="font-15">Waktu pengerjaan tersisa 5 (lima) menit lagi. Segera kumpulkan jawaban.</p>
                     </div>
                 </div>
             </div>

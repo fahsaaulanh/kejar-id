@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <p>Pastikan lembar jawaban yang diunduh dapat dibuka dengan baik. Jika sudah yakin, klik tombol selesai.</p>
+                        <p class="font-15">Pastikan lembar jawaban yang diunduh dapat dibuka dengan baik. Jika sudah yakin, klik tombol selesai.</p>
                     </div>
                 </div>
             </div>

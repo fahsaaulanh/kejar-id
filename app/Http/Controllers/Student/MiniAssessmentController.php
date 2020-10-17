@@ -8,6 +8,7 @@ use App\Services\School;
 use App\Services\Task;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use PDF;
 
 class MiniAssessmentController extends Controller
@@ -69,10 +70,6 @@ class MiniAssessmentController extends Controller
 
         $answers = $this->request->session()->get('answers', []);
 
-        if (count($answers) > 0) {
-            return redirect("/student/mini_assessment/$subject_id/exam");
-        }
-
         // Get if Local Storage has Cleared.
         if (!$task || $task['subject_id'] !== $subject_id || $refresh === 'true') {
             $response = $maService->index($filter);
@@ -94,13 +91,7 @@ class MiniAssessmentController extends Controller
             $dataMA['expiry_date'] = Carbon::parse($dataMA['expiry_time'])->format('l, d F Y');
             $dataMA['expiry_time'] = Carbon::parse($dataMA['expiry_time'])->format('H.i');
 
-            $chr1 = chr(rand(97, 122));
-            $chr2 = chr(rand(97, 122));
-            $chr3 = chr(rand(97, 122));
-            $chr4 = chr(rand(97, 122));
-
-            $dataMA['random_char1'] = $chr1 . $chr2;
-            $dataMA['random_char2'] = $chr3 . $chr4;
+            $dataMA['random_char'] = Str::random(12);
             //
 
             // Save to Session as Temporary
@@ -131,6 +122,10 @@ class MiniAssessmentController extends Controller
 
             $this->request->session()->put('task', $tasksSession);
 
+            return redirect("/student/mini_assessment/$subject_id/exam");
+        }
+
+        if (count($answers) > 0 && $refresh !== 'true') {
             return redirect("/student/mini_assessment/$subject_id/exam");
         }
 

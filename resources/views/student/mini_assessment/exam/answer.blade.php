@@ -196,7 +196,7 @@
             $divider2 = ceil($divider2);
             $countPg = ceil((float) ($collectionPG->count()));
             @endphp
-            <div class="font-5 color-black">Bagian 1. Pilihan Ganda </div>
+            <div class="font-5 color-black">Pilihan Ganda </div>
             <table width="100%" class="tbl font-3">
                 <tr>
                     <td>
@@ -259,14 +259,21 @@
             </tr>
             </table>
         </div>
+        @php
+            $collectionForCheck = $collected->filter(function ($value, $key) {
+                return is_array($value['answer']);
+            });
+        @endphp
+        @if ($collectionForCheck->count() > 0)
         <div class="question">
-            <div class="font-5 color-black">Bagian 2. Menceklis Daftar</div>
+            <div class="font-5 color-black">Menceklis Daftar</div>
             <table width="100%" class="tbl font-3">
                 <tr>
                     <td>
                         <table>
-                            @foreach ($task['answers'] as $t)
-                            @if (($loop->index + 1) > $countPg && ($loop->index + 1) <= ($divider2 + $countPg) && is_array($t['answer'])) <tr style="height: 8px;">
+                        @foreach ($task['answers'] as $t)
+                        @if (($loop->index + 1) > $countPg && ($loop->index + 1) <= ($divider2 + $countPg) && is_array($t['answer']))
+                            <tr style="height: 8px;">
                                 <td class="td-answer">{{ $loop->index + 1 }}</td>
                                 @php
                                 $maAnswerId = $t['id'];
@@ -276,9 +283,9 @@
                                 <td class="pl-16">{{$a}}</td>
                                 @endforeach
                                 @endif
-                </tr>
-                @endif
-                @endforeach
+                            </tr>
+                        @endif
+                        @endforeach
             </table>
             </td>
             <td>
@@ -303,6 +310,7 @@
             </table>
         </div>
     </div>
+    @endif
     <div class="footer" style="position: absolute; bottom: 0;">
         <table width="100%">
             <tr>
