@@ -6,7 +6,7 @@
     <div class="container-lg">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/games') }}">
+        <a class ="btn-back" href="{{ url('/teacher/subject-teachers/mini-assessment/'.$miniAssessmentGroupValue.'/subject/'.$StudentGroupDetail['id'].'/'.$grade) }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
@@ -29,7 +29,7 @@
                 </form>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-3">
             <div class="col-12">
                 <div class="table-responsive table-result-stage">
                     <table class="table table-bordered" id="table-kejar">
