@@ -4,8 +4,9 @@ namespace App\Exports\MiniAssessment;
 
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class ScoreBystudentGroupExport implements FromView
+class ScoreBystudentGroupExport implements FromView, ShouldAutoSize
 {
     private $data;
 

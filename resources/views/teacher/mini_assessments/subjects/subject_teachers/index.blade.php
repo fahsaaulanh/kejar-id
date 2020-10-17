@@ -6,14 +6,14 @@
     <div class="container">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/games') }}">
+        <a class ="btn-back" href="{{ url('/teacher/subject-teachers/mini-assessment/'.$miniAssessmentGroupValue) }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
-            <a class="breadcrumb-item" href="{{ url('/teacher/mini-assessment/'.$miniAssessmentGroupValue) }}">{{$miniAssessmentGroup}}</a>
+            <a class="breadcrumb-item" href="{{ url('/teacher/subject-teachers/mini-assessment/'.$miniAssessmentGroupValue) }}">{{$miniAssessmentGroup}}</a>
             <span class="breadcrumb-item active">{{$subject['name']}}</span>
         </nav>
 

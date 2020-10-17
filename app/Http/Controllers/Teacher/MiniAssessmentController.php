@@ -22,24 +22,17 @@ class MiniAssessmentController extends Controller
 
     public function schoolIdForSubject()
     {
-        // prod
-        $wikramaIdProd = [
-            '3da67e44-ca12-4ae8-b784-f066ea605887', // bogor
-            '6286566b-a2ce-4649-9c0c-078c434215af', // garut
-        ];
-
-        // staging
-        $wikramaIdStaging = [
-            '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b', // bogor
-            '35fd6bcd-2df7-414d-b7e2-20b62490d561', // garut
-        ];
+        $wikramaIdProdBogor = '3da67e44-ca12-4ae8-b784-f066ea605887';
+        $wikramaIdProdGarut = '6286566b-a2ce-4649-9c0c-078c434215af';
+        $wikramaIdStagingBogor = '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b';
+        $wikramaIdStagingGarut = '35fd6bcd-2df7-414d-b7e2-20b62490d561';
 
         $schoolId = session()->get('user.userable.school_id');
 
-        if (in_array($schoolId, $wikramaIdProd)) {
-            $schoolId = '3da67e44-ca12-4ae8-b784-f066ea605887';
-        } elseif (in_array($schoolId, $wikramaIdStaging)) {
-            $schoolId = '73ceaf53-a9d8-4777-92fe-39cb55b6fe3b';
+        if ((env('APP_ENV') === 'local' || env('APP_ENV') === 'staging') && $schoolId === $wikramaIdStagingGarut) {
+            $schoolId = $wikramaIdStagingBogor;
+        } elseif (env('APP_ENV') === 'production' && $schoolId === $wikramaIdProdGarut) {
+            $schoolId = $wikramaIdProdBogor;
         }
 
         return $schoolId;
@@ -461,8 +454,8 @@ class MiniAssessmentController extends Controller
                     $view .= '<td>'.$v['mini_assessment']['title'].'</td>';
                     $view .= '<td>'.$diff.' Menit</td>';
                     $view .= '<td>'.$v['score']['score']['recommendation_score'].'</td>';
-                    $view .= '<td class="column-white" id="score-td-'.$v['score']['id'].'">';
-                        $view .= '<div class="row m-0 p-0">';
+                    $view .= '<td style="width: 25%" class="column-white" id="score-td-'.$v['score']['id'].'">';
+                        $view .= '<div class="row m-0 p-0 style="width:180px"">';
                             $view .= '<div class="col">';
                                 $view .= '<input type="number"
                                         onchange="handleChange(this);"
@@ -535,9 +528,9 @@ class MiniAssessmentController extends Controller
         $schoolApi = new SchoolApi;
         $subject = $schoolApi->subjectDetail($schoolIdForSubject, $subjectId);
         $data['StudentGroupDetail'] = $StudentGroupDetail['data'];
-        $fileName = 'Rapot '.$subject['data']['name'].' '.$data['StudentGroupDetail']['name'].' '.Carbon::now()->format(
-            'd-m-Y',
-        ).'.xlsx';
+        $fileName = 'Report '.$subject['data']['name'].' '.
+        $data['StudentGroupDetail']['name'].' '.
+        Carbon::now()->format('d-m-Y').'.xlsx';
 
         return Excel::download(new ScoreBystudentGroupExport($data), $fileName);
 

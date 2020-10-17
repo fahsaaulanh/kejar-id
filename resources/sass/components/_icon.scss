@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: '#{$icomoon-font-family}';
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?wsmhce');
-  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?wsmhce#iefix') format('embedded-opentype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?wsmhce') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?wsmhce') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?wsmhce##{$icomoon-font-family}') format('svg');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?flh77p');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?flh77p#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?flh77p') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?flh77p') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?flh77p##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -37,6 +37,18 @@ i, .icomoon-liga {
   // -moz-osx-font-smoothing: grayscale;
 }
 
+.kejar-rombel-bold {
+  color: #334e68;
+  &:before {
+    content: $kejar-rombel-bold;
+  }
+}
+.kejar-rombel {
+  color: #334e68;
+  &:before {
+    content: $kejar-rombel;
+  }
+}
 .kejar-rombel-bold {
   color: #334e68;
   &:before {

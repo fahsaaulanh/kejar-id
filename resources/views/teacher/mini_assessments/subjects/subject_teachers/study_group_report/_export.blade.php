@@ -3,93 +3,90 @@
     $styleHeader = "vertical-align:middle; text-align:center; background-color:#d9d9d9; border: 1px solid black;";
     $styleBorder = "border: 1px solid black;";
 ?>
-
-<table>
-    <tr>
-        <td colspan="2">
-            <strong>Daftar Nilai Siswa</strong>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <strong>Rombel</strong>
-        </td>
-        <td>
-            {{$data['StudentGroupDetail']['name']}}
-        </td>
-    </tr>
-    <tr>
-        <td>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            *Untuk melihat naskah soal, silakan login terlebih dahulu pada web matrikulasi.kejar.id menggunakan username yang telah diberikan.
-        </td>
-    </tr>
-</table>
-<!-- Menggunakan cara style class belum berfungsi jadi code dibuat inline style dulu untuk sementara -->
-<table border="1">
+<table border="1" width="100%">
     <thead>
         <tr>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <td colspan="2">
+                <strong>Daftar Nilai Siswa</strong>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Rombel</strong>
+            </td>
+            <td>
+                {{$data['StudentGroupDetail']['name']}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                *Untuk melihat naskah soal, silakan login terlebih dahulu pada web matrikulasi.kejar.id menggunakan username yang telah diberikan.
+            </td>
+        </tr>
+        <!-- Menggunakan cara style class belum berfungsi jadi code dibuat inline style dulu untuk sementara -->
+        <tr>
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Nama</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>NIS</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Paket</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Link Soal</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Waktu Mulai</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Waktu Selesai</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Durasi</strong>
             </th>
-            <th colspan="3" width="20px" style="{{$styleHeader}}">
+            <th colspan="3" style="{{$styleHeader}}">
                 <strong>Pilihan Ganda</strong>
             </th>
-            <th colspan="5" width="20px" style="{{$styleHeader}}">
+            <th colspan="5" style="{{$styleHeader}}">
                 <strong>Menceklis Daftar</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Nilai Rekomendasi</strong>
             </th>
-            <th rowspan="2" width="20px" style="{{$styleHeader}}">
+            <th rowspan="2" style="{{$styleHeader}}">
                 <strong>Nilai Akhir</strong>
             </th>
         </tr>
 
         <tr>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Benar
             </td>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Salah
             </td>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Tidak
                  Diisi</td>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Pilihan
             </td>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Jawaban
             </td>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Benar
             </td>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Tidak
                  Terjawab</td>
-            <td width="15px" style="{{$styleHeader}}">
+            <td style="{{$styleHeader}}">
                 Salah
             </td>
         </tr>
