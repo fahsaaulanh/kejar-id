@@ -92,7 +92,7 @@
             @if(in_array(session('user.userable.school_id'),$wikramaId))
                 <div class="col-12">
                     <div class="content-header">
-                        <h1 class="content-title">Pilih permainan...</h1>
+                        <h1 class="content-title">Pilih penilaian...</h1>
                     </div>
                     <div class="content-body">
                         @forelse($miniAssesmentGroup as $key => $v)
