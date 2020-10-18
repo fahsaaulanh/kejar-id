@@ -241,6 +241,8 @@ class MiniAssessmentController extends Controller
                 $newDataUnique[$key] = $newData;
             }
 
+            $newDataUnique = $newDataUnique->sortBy('start_fulldate');
+
             $response['data'] = $newDataUnique->values();
         }
 
