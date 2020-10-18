@@ -13,7 +13,7 @@
             </div>
             <div class="modal-footer justify-content-end">
                 <div>
-                    <button type="button" class="btn btn-primary" id="lanjut-time-up">Lanjut</button>
+                    <button type="button" class="btn btn-primary" id="lanjut-time-up">Kumpulkan Jawaban</button>
                 </div>
             </div>
         </div>
