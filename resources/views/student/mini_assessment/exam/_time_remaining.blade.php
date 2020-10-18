@@ -16,7 +16,7 @@
             </div>
             <div class="modal-footer justify-content-end">
                 <div>
-                    <button type="button" id="lanjut-time-remaining" class="btn btn-link">Lanjut</button>
+                    <button type="button" id="lanjut-time-remaining" class="btn btn-link">Kumpulkan Jawaban</button>
                     <button type="button" data-dismiss="modal" class="btn btn-primary" id="save-btn">Kembali</button>
                 </div>
             </div>

@@ -197,8 +197,7 @@
 
     $('#lanjut-missing-answer').on('click', function() {
         $('#missingAnswer').modal('hide');
-        $('#downloadAnswerSheet').modal('show');
-        doneDownloadAnswer = true;
+        $('#timeRemaining').modal('show');
     });
 
     $('#lanjut-time-remaining').on('click', function() {
