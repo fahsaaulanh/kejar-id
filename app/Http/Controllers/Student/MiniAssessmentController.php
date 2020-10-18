@@ -212,7 +212,7 @@ class MiniAssessmentController extends Controller
             $newDataUnique = $dataCollect->unique('subject_id');
             foreach ($newDataUnique as $key => $newData) {
                 // GET Data Subject
-                $responseSubject = $schoolService->subjectDetail($schoolId, 'a79374e3-f447-4b79-8ddb-435afa515d05');
+                $responseSubject = $schoolService->subjectDetail($schoolId, $newData['subject_id']);
                 $newData['subject'] = $responseSubject['error'] ? '' : $responseSubject['data']['name'] ?? '';
                 //
                 // Get Data Tasks
