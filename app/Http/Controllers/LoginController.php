@@ -67,8 +67,9 @@ class LoginController extends Controller
 
                 $batchApi = new Batch;
                 $batchFilter = [
-                    // 'filter[entry_year]' => $entryYear,
+                    'per_page' => 99,
                 ];
+
                 $batchResponse = $batchApi->index($schoolId, $batchFilter);
                 $batchData = $batchResponse['data'];
 
