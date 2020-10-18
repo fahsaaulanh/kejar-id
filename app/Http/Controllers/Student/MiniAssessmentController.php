@@ -218,7 +218,6 @@ class MiniAssessmentController extends Controller
                 $newDataUnique[$key] = $newData;
             }
 
-
             $response['data'] = $newDataUnique->values();
         }
 
