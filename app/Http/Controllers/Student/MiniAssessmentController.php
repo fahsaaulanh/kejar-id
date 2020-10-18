@@ -177,15 +177,38 @@ class MiniAssessmentController extends Controller
 
         $grade = $this->getGrade();
 
+        $page = $this->request->input('page', 1);
+
         $filter = [
             'filter[grade]' => $grade,
-            'filter[subject_id]' => 'a79374e3-f447-4b79-8ddb-435afa515d05',
+            'per_page' => 50,
+            'page' => $page,
         ];
 
         $response = $maService->index($filter);
 
+        $data = $response['data'] ?? [];
+
+        $lastPage = $response['meta']['last_page'] ?? 1;
+
+        if ($lastPage > 1) {
+            for ($i = 2; $i <= $lastPage; $i++) {
+                $filter = [
+                    'filter[grade]' => $grade,
+                    'per_page' => 50,
+                    'page' => $page,
+                ];
+
+                $maNextService = new MiniAssessment;
+                $res = $maNextService->index($filter);
+                $newData = $res['data'] ?? [];
+
+                $data = array_merge($data, $newData);
+            }
+        }
+
         if (!$response['error']) {
-            $dataCollect = collect($response['data']);
+            $dataCollect = collect($data);
             $newDataUnique = $dataCollect->unique('subject_id');
             foreach ($newDataUnique as $key => $newData) {
                 // GET Data Subject
