@@ -49,6 +49,18 @@ i, .icomoon-liga {
     content: $kejar-rombel;
   }
 }
+.kejar-rombel-bold {
+  color: #334e68;
+  &:before {
+    content: $kejar-rombel-bold;
+  }
+}
+.kejar-rombel {
+  color: #334e68;
+  &:before {
+    content: $kejar-rombel;
+  }
+}
 .kejar-wali-kelas-bold {
   color: #334e68;
   &:before {

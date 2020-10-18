@@ -98,7 +98,11 @@
                     <td style="{{ $styleBorder }}" align="left">{{ $v['name'] }}</td>
                     <td style="{{ $styleBorder }}" align="left">{{ $v['nis'] }}</td>
                     <td style="{{ $styleBorder }}">{{ $v['mini_assessment']['title'] }}</td>
-                    <td style="{{ $styleBorder }}">{{ $v['mini_assessment']['pdf'] }}</td>
+                    <td style="{{ $styleBorder }}">
+                        <a href="{{ $v['mini_assessment']['pdf'] }}" target="_blank">
+                            {{ $v['mini_assessment']['title'] }}
+                        </a>
+                    </td>
                     <td style="{{ $styleBorder }}">{{ \Carbon\Carbon::parse($v['score']['start_time'])->format('d, M Y H:i') }}</td>
                     <td style="{{ $styleBorder }}">{{ \Carbon\Carbon::parse($v['score']['finish_time'])->format('d, M Y H:i') }}</td>
                     <td style="{{ $styleBorder }}">{{ \Carbon\Carbon::parse( $v['score']['start_time'] )
@@ -108,7 +112,7 @@
                     <td style="{{ $styleBorder }}" align="center">{{ $v['score']['score']['pg']['wrong'] }}</td>
                     <td style="{{ $styleBorder }}" align="center">{{ $v['score']['score']['pg']['miss'] }}</td>
 
-                    <td style="{{ $styleBorder }}" align="center">{{ $v['score']['score']['cq']['total'] }}</td>
+                    <td style="{{ $styleBorder }}" align="center">{{ $v['score']['score']['cq']['total_choices'] ?? '' }}</td>
                     <td style="{{ $styleBorder }}" align="center">{{ $v['score']['score']['cq']['correct_answer'] }}</td>
                     <td style="{{ $styleBorder }}" align="center">{{ $v['score']['score']['cq']['correct'] }}</td>
                     <td style="{{ $styleBorder }}" align="center">{{ $v['score']['score']['cq']['miss'] }}</td>

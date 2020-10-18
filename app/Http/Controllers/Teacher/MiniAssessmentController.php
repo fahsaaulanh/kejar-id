@@ -391,7 +391,7 @@ class MiniAssessmentController extends Controller
     {
         $UserApi = new UserApi;
         $filter = [
-            'per_page' => 20,
+            'per_page' => 99,
             'filter[student_group_id]' => $req->student_group_id,
             'page' => ($req->page ?? 1),
         ];
