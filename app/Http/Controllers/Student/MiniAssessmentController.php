@@ -179,6 +179,7 @@ class MiniAssessmentController extends Controller
 
         $filter = [
             'filter[grade]' => $grade,
+            'filter[subject_id]' => 'a79374e3-f447-4b79-8ddb-435afa515d05',
         ];
 
         $response = $maService->index($filter);
@@ -186,10 +187,9 @@ class MiniAssessmentController extends Controller
         if (!$response['error']) {
             $dataCollect = collect($response['data']);
             $newDataUnique = $dataCollect->unique('subject_id');
-
             foreach ($newDataUnique as $key => $newData) {
                 // GET Data Subject
-                $responseSubject = $schoolService->subjectDetail($schoolId, $newData['subject_id']);
+                $responseSubject = $schoolService->subjectDetail($schoolId, 'a79374e3-f447-4b79-8ddb-435afa515d05');
                 $newData['subject'] = $responseSubject['error'] ? '' : $responseSubject['data']['name'] ?? '';
                 //
                 // Get Data Tasks
@@ -217,6 +217,7 @@ class MiniAssessmentController extends Controller
 
                 $newDataUnique[$key] = $newData;
             }
+
 
             $response['data'] = $newDataUnique->values();
         }
