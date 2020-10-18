@@ -68,7 +68,7 @@
             <!-- Pagination -->
             <nav class="navigation mt-5">
                 <div>
-                    <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} soal</span>
+                    <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} mapel</span>
                 </div>
                 <ul class="pagination">
                     <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
