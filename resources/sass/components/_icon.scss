@@ -10,6 +10,7 @@
   font-weight: normal;
   font-style: normal;
   font-display: block;
+  text-rendering: optimizeLegibility;
 }
 
 i, .icomoon-liga {
@@ -24,17 +25,17 @@ i, .icomoon-liga {
 
   /* Enable Ligatures ================ */
   letter-spacing: 0;
-  // -webkit-font-feature-settings: "liga";
-  // -moz-font-feature-settings: "liga=1";
-  // -moz-font-feature-settings: "liga";
-  // -ms-font-feature-settings: "liga" 1;
+  -webkit-font-feature-settings: "liga";
+  -moz-font-feature-settings: "liga=1";
+  -moz-font-feature-settings: "liga";
+  -ms-font-feature-settings: "liga" 1;
   font-feature-settings: "liga";
-  // -webkit-font-variant-ligatures: discretionary-ligatures;
+  -webkit-font-variant-ligatures: discretionary-ligatures;
   font-variant-ligatures: discretionary-ligatures;
 
   /* Better Font Rendering =========== */
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .kejar-rombel-bold {
