@@ -294,13 +294,26 @@ class MiniAssessmentController extends Controller
         return $view;
     }
 
+    public function entryYear($grade)
+    {
+        $yearNow = Carbon::now()->year;
+
+        $year = [
+            '10' => $yearNow.'/'.($yearNow+1),
+            '11' => ($yearNow-1).'/'.$yearNow,
+            '12' => ($yearNow-2).'/'.($yearNow-1),
+        ];
+
+        return $year[$grade];
+    }
+
     public function schoolGroupData(Request $req)
     {
         $schoolId = $this->schoolId();
         $filter = [
             'page' => ($req->page ?? 1),
             'per_page' => 99,
-            'entry_year' => '2020/2021', // belum berfungsi
+            'filter[entry_year]' => $this->entryYear($req->grade),
         ];
         $BatchApi = new BatchApi;
         $batch = $BatchApi->index($schoolId, $filter);
