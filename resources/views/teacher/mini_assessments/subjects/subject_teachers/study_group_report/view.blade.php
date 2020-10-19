@@ -33,31 +33,24 @@
             <div class="col-12">
                 <div class="table-responsive table-result-stage">
                     <table class="table table-bordered" id="table-kejar">
-                        <thead>
-                            <tr>
-                                <th>Nama Siswa</th>
-                                <th>NIS</th>
-                                <th>Paket</th>
-                                <th>Durasi</th>
-                                <th>Nilai Rekomendasi</th>
-                                <th>Nilai Akhir</th>
-                            </tr>
-                        </thead>
+                        <tr class="table-head">
+                            <th width="1%">No</th>
+                            <th>Nama Siswa</th>
+                            <th>NIS</th>
+                            <!-- <th>Hadir</th> -->
+                            <th width="30%">Catatan</th>
+                            <th>Durasi<br>(menit)</th>
+                            <th>NR</th>
+                            <th>NA</th>
+                        </tr>
                         <tbody id="scoreData">
-                            <tr>
-                                <td colspan="6" class="text-center">
-                                    <div class="spinner-border" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                    Sedang mengambil data...
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+@include('teacher.mini_assessments.subjects.subject_teachers.study_group_report._note')
 @endsection
 
 @push('script')
@@ -71,7 +64,7 @@
     function scoreIndex(page = 1){
         $("#scoreDataLoading").show();
         $("#scoreData").html('<tr>\
-                                <td colspan="6" class="text-center">\
+                                <td colspan="8" class="text-center">\
                                     <div class="spinner-border" role="status">\
                                         <span class="sr-only">Loading...</span>\
                                     </div>\
@@ -168,5 +161,160 @@
             console.error(error);
         });
     }
+
+    function changePresence(id, presence) {
+        var value = 1;
+        if (presence === 1) {
+            value = 0;
+        }
+
+        // run save
+
+        const url = "{!! URL::to('/teacher/mini-assessment/update-note') !!}";
+        let data  = new Object();
+
+        data = {
+            id: id,
+            presence: value,
+        };
+
+        var form    = new URLSearchParams(data);
+        var request = new Request(url, {
+            method: 'POST',
+            body: form,
+            headers: new Headers({
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            })
+        });
+
+        fetch(request)
+        .then(response => response.json())
+        .then(function(data) {
+            changePresence(id, data);
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+    }
+
+    function changePresence(id, presence) {
+        if(presence === 1){
+            $("#presence-"+id).html(presence+" Hadir");
+        }else{
+            $("#presence-"+id).html(presence+" Tandai");
+        }
+    }
+
+    function changeNote(id, noteStudent, noteTeacher, nis, name) {
+        $("#noteContent").hide();
+
+        $("#view-note").modal('show');
+
+        var info = '<p class="text-muted">';
+                info += '<small>Catatan pengawas merupakan bagian dari berita acara kegiatan.</small>';
+            info += '</p>';
+        $("#note-teacher").html(info+'<textarea rows="6" id="teacher_note" \
+         class="form-control" placeholder="Ketik catatan..."></textarea>');
+
+        $("#teacher_note-val").val("");
+        if (noteTeacher) {
+            $("#note-teacher").html(noteTeacher);
+            $("#teacher_note-val").val(noteTeacher);
+            $("#btn-update").hide();
+            $("#btn-edit").show();
+        }else{
+            $("#btn-update").show();
+            $("#btn-edit").hide();
+        }
+
+        $("#note-student").html('<span class="text-muted">Siswa belum/tidak membuat catatan.<span>');
+        $("#student_note-val").val("");
+        if (noteStudent) {
+            $("#note-student").html(noteStudent);
+            $("#student_note-val").val(noteStudent);
+        }
+
+        $("#note-nis").html(nis);
+        $("#note-nis-val").val(nis);
+
+        $("#note-id").val(id);
+
+        $("#note-name").html(name);
+        $("#note-name-val").val(name);
+
+        $("#noteContent").show();
+    }
+
+    function updateNote() {
+        $("#noteLoading").show();
+        var teacher_note = $("#teacher_note").val();
+        var student_note = $("#student_note-val").val();
+        var id = $("#note-id").val();
+
+        // run save
+
+        const url = "{!! URL::to('/teacher/mini-assessment/update-note') !!}";
+        let data  = new Object();
+
+        data = {
+            id: id,
+            teacher_note: teacher_note,
+        };
+
+        var form    = new URLSearchParams(data);
+        var request = new Request(url, {
+            method: 'POST',
+            body: form,
+            headers: new Headers({
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            })
+        });
+
+        fetch(request)
+        .then(response => response.json())
+        .then(function(data) {
+            var nis = $("#note-nis-val").val();
+            var name = $("#note-name-val").val();
+            changeNoteValue(id, student_note ,teacher_note, nis, name);
+            $("#noteLoading").hide();
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+    }
+
+    function changeNoteValue(id, student_note ,teacher_note, nis, name) {
+
+        var note = "'"+id+"','"+student_note+"','"+teacher_note+"','"+nis+"','"+name+"'";
+
+        var html = "";
+        if(teacher_note){
+            html += '<span style="cursor: pointer;" class="text-dark" onclick="changeNote('+note+')">';
+                html += teacher_note;
+            html += '</span>';
+        }else{
+            html += '<span style="cursor: pointer;" class="text-muted" onclick="changeNote('+note+')">';
+                html += "Belum ada catatan"
+            html += '</span>';
+        }
+
+        $("#note-data-"+id).html(html);
+        $("#view-note").modal('hide');
+    }
+
+    function editNote() {
+        var teacher_note = $("#teacher_note-val").val();
+        var info = '<p class="text-muted">';
+                info += '<small>Catatan pengawas merupakan bagian dari berita acara kegiatan.</small>';
+            info += '</p>';
+        $("#note-teacher").html(info+'<textarea rows="6" id="teacher_note" class="form-control" \
+                                    placeholder="Ketik catatan...">'+teacher_note+'</textarea>');
+
+        $("#btn-update").show();
+        $("#btn-edit").hide();
+    }
+
 </script>
 @endpush

@@ -104,6 +104,7 @@ Route::middleware('session')->group(function () {
                 'Teacher\MiniAssessmentController@scoreBystudentGroupData',
             );
             Route::post('mini-assessment/update-score', 'Teacher\MiniAssessmentController@updateScore');
+            Route::post('mini-assessment/update-note', 'Teacher\MiniAssessmentController@updateNote');
 
             Route::prefix('{type}/mini-assessment/{mini_assessment_group}')->group(function () {
                 Route::get('/', 'Teacher\MiniAssessmentController@subjects');

@@ -66,4 +66,11 @@ class MiniAssessment extends Service
 
         return $this->showResponse($response);
     }
+
+    public function updateNote($id, $payload)
+    {
+        $response = $this->patch('/tasks/mini-assessments/'.$id.'/note', $payload);
+
+        return $this->showResponse($response);
+    }
 }
