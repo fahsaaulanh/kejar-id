@@ -312,7 +312,17 @@ class MiniAssessmentController extends Controller
 
         $task = $this->request->session()->get('task');
 
+        $this->request->session()->put('taskId', $task['task_id']);
+
         $response = $taskService->finishMiniAssessment($task['task_id']);
+
+        $note = $this->request->input('noteStudent');
+
+        $payloads = [
+            'student_note' => $note,
+        ];
+
+        $taskService->noteMiniAssessment($task['task_id'], $payloads);
 
         if (!$response['error']) {
             $this->request->session()->remove('task');
@@ -320,8 +330,23 @@ class MiniAssessmentController extends Controller
 
             return $response;
         }
-
+        
         return $response;
+    }
+
+    public function editNote()
+    {
+        $taskService = new Task;
+
+        $taskId = $this->request->session()->get('taskId');
+
+        $note = $this->request->input('noteStudent');
+
+        $payloads = [
+            'student_note' => $note,
+        ];
+
+        return $taskService->noteMiniAssessment($taskId, $payloads);
     }
     // End Of API Function
 

@@ -45,65 +45,62 @@
     </div>
 
     @php
-        $collected = collect($task['answers']);
-        $collectionPG = $collected->filter(function ($value, $key) {
-            return !is_array($value['answer']);
-        });
-        $divider = (float) ($collectionPG->count() / 2);
-        $divider = ceil($divider);
+    $collected = collect($task['answers']);
+    $collectionPG = $collected->filter(function ($value, $key) {
+    return !is_array($value['answer']);
+    });
+    $divider = (float) ($collectionPG->count() / 2);
+    $divider = ceil($divider);
     @endphp
 
     <div class="row">
         <div class="col-md-6">
-        @foreach ($task['answers'] as $t)
-            @if (($loop->index + 1) <= $divider && !is_array($t['answer']))
-            <div class="row px-4 mt-4">
+            @foreach ($task['answers'] as $t)
+            @if (($loop->index + 1) <= $divider && !is_array($t['answer'])) <div class="row px-4 mt-4">
                 <div class="pts-number">{{ $loop->index + 1 }}</div>
                 @php
-                    $maAnswerId = $t['id'];
-                    $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+                $maAnswerId = $t['id'];
+                $choicesNumber = $task['answers'][$loop->index]['choices_number'];
                 @endphp
                 <div class="col">
                     <div class="row">
-                        @for ($i = 0; $i < $choicesNumber; $i++)
-                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
-                                {{ chr(65 + $i) }}
-                            </div>
-                        @endfor
+                        @for ($i = 0; $i < $choicesNumber; $i++) <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
+                            {{ chr(65 + $i) }}
                     </div>
+                    @endfor
                 </div>
-            </div>
-            @endif
-        @endforeach
+        </div>
     </div>
-    <div class="col-md-6">
-        @foreach ($task['answers'] as $t)
-            @if (($loop->index + 1) > $divider && !is_array($t['answer']))
-            <div class="row px-4 mt-4">
-                <div class="pts-number">{{ $loop->index + 1 }}</div>
-                @php
-                    $maAnswerId = $t['id'];
-                    $choicesNumber = $task['answers'][$loop->index]['choices_number'];
-                @endphp
-                <div class="col">
-                    <div class="row">
-                        @for ($i = 0; $i < $choicesNumber; $i++)
-                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
-                                {{ chr(65 + $i) }}
-                            </div>
-                        @endfor
-                    </div>
-                </div>
+    @endif
+    @endforeach
+</div>
+<div class="col-md-6">
+    @foreach ($task['answers'] as $t)
+    @if (($loop->index + 1) > $divider && !is_array($t['answer']))
+    <div class="row px-4 mt-4">
+        <div class="pts-number">{{ $loop->index + 1 }}</div>
+        @php
+        $maAnswerId = $t['id'];
+        $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+        @endphp
+        <div class="col">
+            <div class="row">
+                @for ($i = 0; $i < $choicesNumber; $i++) <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
+                    {{ chr(65 + $i) }}
             </div>
-            @endif
-        @endforeach
+            @endfor
+        </div>
     </div>
+</div>
+@endif
+@endforeach
+</div>
 </div>
 
 @php
-    $collectionForCheck = $collected->filter(function ($value, $key) {
-        return is_array($value['answer']);
-    });
+$collectionForCheck = $collected->filter(function ($value, $key) {
+return is_array($value['answer']);
+});
 @endphp
 
 <!-- Ceklis -->
@@ -112,34 +109,27 @@
     <h5>Menceklis Daftar</h5>
     <p class="mt-2">Beri tanda centang di sebelah huruf sesuai jawaban yang dianggap benar!</p>
     @foreach ($task['answers'] as $t)
-        @if (is_array($t['answer']))
-        <div class="row px-4 mt-4">
-            @php
-                $maAnswerId = $t['id'];
-                $choicesNumber = $task['answers'][$loop->index]['choices_number'];
-            @endphp
-            <div class="pts-number" id="pts-number-{{$loop->index}}" data-checked="{{ json_encode($answers[$maAnswerId]['answer']) }}">
-                {{ $loop->index + 1 }}
-            </div>
-            <div class="col">
-                <div class="row">
-                    @for ($i = 0; $i < $choicesNumber; $i++)
-                        <div
-                            data-id="{{ $answers[$maAnswerId]['id'] }}"
-                            data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}"
-                            onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')"
-                            id="pts-choice-{{$loop->index}}-{{$i}}"
-                            class="mb-2 mb-md-2 mb-lg-2 mb-xl-2 pts-choice-check"
-                        >
-                            <i id="pts-icon-{{$loop->index}}-{{$i}}" class="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }} font-24 mr-2"></i>
-                            {{ chr(65 + $i) }}
-                        </div>
-                    @endfor
-                </div>
-            </div>
+    @if (is_array($t['answer']))
+    <div class="row px-4 mt-4">
+        @php
+        $maAnswerId = $t['id'];
+        $choicesNumber = $task['answers'][$loop->index]['choices_number'];
+        @endphp
+        <div class="pts-number" id="pts-number-{{$loop->index}}" data-checked="{{ json_encode($answers[$maAnswerId]['answer']) }}">
+            {{ $loop->index + 1 }}
         </div>
-        @endif
-    @endforeach
+        <div class="col">
+            <div class="row">
+                @for ($i = 0; $i < $choicesNumber; $i++) <div data-id="{{ $answers[$maAnswerId]['id'] }}" data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}" onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="mb-2 mb-md-2 mb-lg-2 mb-xl-2 pts-choice-check">
+                    <i id="pts-icon-{{$loop->index}}-{{$i}}" class="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }} font-24 mr-2"></i>
+                    {{ chr(65 + $i) }}
+            </div>
+            @endfor
+        </div>
+    </div>
+</div>
+@endif
+@endforeach
 </div>
 @endif
 
@@ -162,6 +152,9 @@
 @include('student.mini_assessment.exam._missing_answer')
 @include('student.mini_assessment.exam._download_answer_sheet')
 @include('student.mini_assessment.exam._check_answer_sheet')
+@include('student.mini_assessment.exam._student_note')
+@include('student.mini_assessment.exam._student_note_only')
+
 
 @push('script')
 <script>
@@ -179,7 +172,7 @@
         }
     });
 
-    window.document.title = "Exam - "+localStorage.getItem('pts_title');
+    window.document.title = "Exam - " + localStorage.getItem('pts_title');
 
     $('#title2').html(localStorage.getItem('detail_title') || '');
     $('#title1').html(localStorage.getItem('pts_title') || '');
@@ -204,11 +197,11 @@
         doneDownloadAnswer = true;
     });
 
-    $('#downloadAnswerSheet').on('hide.bs.modal', function (e) {
+    $('#downloadAnswerSheet').on('hide.bs.modal', function(e) {
         doneDownloadAnswer = false;
     })
 
-    $('#checkAnswerSheet').on('hide.bs.modal', function (e) {
+    $('#checkAnswerSheet').on('hide.bs.modal', function(e) {
         doneCheckAnswer = false;
     })
 
@@ -304,7 +297,31 @@
         $('#downloadAnswerSheet').modal('show');
     });
 
-    $('#selesai-check-answer').on('click', function() {
+    $('#lanjut-check-answer').on('click', function() {
+        $('#checkAnswerSheet').modal('hide');
+        $('#studentNote').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
+    });
+
+    $('#edit-note').on('click', function() {
+        $('#success').modal('hide');
+        const noteStudent = $.trim($("#noteStudent").val());
+        $.trim($("#noteStudentOnly").val(noteStudent));
+        $('#studentNoteOnly').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
+    });
+
+    $('#simpan-note').on('click', function() {
+        editNote($(this));
+    });
+
+    $('#simpan-selesai').on('click', function() {
         finish($(this));
     });
 
@@ -509,12 +526,16 @@
 
         const htmlSpinner = `Tunggu...`;
 
-        const htmlSelesai = 'Selesai';
+        const htmlSelesai = 'Simpan dan Selesai';
+
+        const noteStudent = $.trim($("#noteStudent").val());
 
         $.ajax({
             url,
             type: 'POST',
-            data: {},
+            data: {
+                noteStudent
+            },
             dataType: 'json',
             crossDomain: true,
             beforeSend: function() {
@@ -529,9 +550,58 @@
                 component.html(htmlSelesai);
                 component.removeAttr('disabled');
                 if (response.status === 200) {
-                    $('#checkAnswerSheet').modal('hide');
                     $('#success').modal('show');
+                    if (noteStudent !== '') {
+                        $('#form-note').show();
+                    } else {
+                        $('#form-note').hide();
+                    }
+                    $('#note-student').html(noteStudent);
+                    $('#studentNote').modal('hide');
                     doneSuccess = true;
+                    return;
+                }
+            }
+        });
+    }
+
+    function editNote(component) {
+        const url = "{!! URL::to('/student/mini_assessment/service/edit_note') !!}";
+
+        const htmlSpinner = `Tunggu...`;
+
+        const htmlSelesai = 'Simpan dan Selesai';
+
+        const noteStudent = $.trim($("#noteStudentOnly").val());
+
+        $.ajax({
+            url,
+            type: 'PATCH',
+            data: {
+                noteStudent
+            },
+            dataType: 'json',
+            crossDomain: true,
+            beforeSend: function() {
+                component.html(htmlSpinner);
+                component.attr('disabled', 'true');
+            },
+            error: function(error) {
+                component.html(htmlSelesai);
+                component.removeAttr('disabled');
+            },
+            success: function(response) {
+                component.html(htmlSelesai);
+                component.removeAttr('disabled');
+                if (response.status === 200) {
+                    $('#success').modal('show');
+                    if (noteStudent !== '') {
+                        $('#form-note').show();
+                    } else {
+                        $('#form-note').hide();
+                    }
+                    $('#note-student').html(noteStudent);
+                    $('#studentNoteOnly').modal('hide');
                     return;
                 }
             }

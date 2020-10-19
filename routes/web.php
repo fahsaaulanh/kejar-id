@@ -172,6 +172,7 @@ Route::middleware('session')->group(function () {
                 Route::post('/service/answer', 'Student\MiniAssessmentController@setAnswer');
                 Route::post('/service/finish', 'Student\MiniAssessmentController@finish');
                 Route::get('/service/check', 'Student\MiniAssessmentController@checkAnswer');
+                Route::patch('/service/edit_note', 'Student\MiniAssessmentController@editNote');
             });
 
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');

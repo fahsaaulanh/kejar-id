@@ -111,4 +111,11 @@ class Task extends Service
 
         return $this->showResponse($response);
     }
+
+    public function noteMiniAssessment($maTaskId, $payload)
+    {
+        $response = $this->patch("/tasks/mini-assessments/$maTaskId/note", $payload);
+
+        return $this->showResponse($response);
+    }
 }
