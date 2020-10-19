@@ -462,22 +462,60 @@ class MiniAssessmentController extends Controller
         return response()->json($view);
     }
 
+    // private function presence($val, $type)
+    // {
+    //     $array = $type === 'caption' ? ['Tandai', 'Hadir'] : ['text-blue', 'text-dark'];
+
+    //     return $array[$val];
+    // }
+
+    private function noteData($val)
+    {
+        $val = $val ?: 'Belum ada catatan';
+
+        return $val;
+    }
+
     public function scoreBystudentGroupHtml($data)
     {
         $list = $data['data'];
         $view = '';
-        foreach ($list as $v) {
+        foreach ($list as $key => $v) {
             if ($v['finished']) {
                 $diff = Carbon::parse($v['score']['start_time'])
                                 ->diffInMinutes($v['score']['finish_time']);
                 $view .= '<tr class="tr-score-report">';
+                    $view .= '<td class="text-center">'.($key+1).'</td>';
                     $view .= '<td>'.$v['name'].'</td>';
                     $view .= '<td>'.$v['nis'].'</td>';
-                    $view .= '<td>'.$v['mini_assessment']['title'].'</td>';
-                    $view .= '<td>'.$diff.' Menit</td>';
+
+                    // $presenceParam = "'".$v['score']['id']."',".($v['score']['score']['presence'] ?? 0);
+                    // $view .= '<td><div id="presence-'.$v['score']['id'].'">
+                    //             <span onclick="changePresence('.$presenceParam.')"
+                    //             class="'.$this->presence($v['score']['score']['presence'] ?? 0, 'style').'"
+                    //             style="cursor: pointer;">'.
+                    //             $this->presence($v['score']['score']['presence'] ?? 0, 'caption').
+                    // '</span><div></td>';
+
+                    $view .= '<td style="width:500px">';
+                        // Note
+                        $note = "'".$v['score']['id']."','".
+                                $v['score']['student_note']."','".
+                                $v['score']['teacher_note']."','".
+                                $v['nis']."','".
+                                $v['name']."'";
+                        $view .= '<div id="note-data-'.$v['score']['id'].'">';
+                            $view .= '<span style="cursor: pointer;" class="text-muted"
+                                onclick="changeNote('.$note.')">';
+                                $view .= $this->noteData($v['score']['teacher_note']);
+                            $view .= '</span>';
+                        $view .= '</div>';
+
+                    $view .= '</td>';
+                    $view .= '<td>'.$diff.'</td>';
                     $view .= '<td>'.$v['score']['score']['recommendation_score'].'</td>';
-                    $view .= '<td style="width: 25%" class="column-white" id="score-td-'.$v['score']['id'].'">';
-                        $view .= '<div class="row m-0 p-0 style="width:180px"">';
+                    $view .= '<td class="column-white" id="score-td-'.$v['score']['id'].'">';
+                        $view .= '<div class="row m-0 p-0" style="width:180px">';
                             $view .= '<div class="col">';
                                 $view .= '<input type="number"
                                         onchange="handleChange(this);"
@@ -497,8 +535,12 @@ class MiniAssessmentController extends Controller
                 $view .= '</tr>';
             } else {
                 $view .= '<tr>';
+                    $view .= '<td class="text-center">'.($key+1).'</td>';
                     $view .= '<td>'.$v['name'].'</td>';
                     $view .= '<td>'.$v['nis'].'</td>';
+                    // $view .= '<td><span class="text-blue" style="cursor: pointer;" id="presence-'.$key.'">
+                    // asd</span></td>';
+                    // $view .= '<td style="width:500px">Belum ada Catatan</td>';
                     $view .= '<td colspan="4">Belum mengerjakan</td>';
                 $view .= '</tr>';
             }
@@ -560,5 +602,20 @@ class MiniAssessmentController extends Controller
 
         // return view('teacher.mini_assessments.subjects.subject_teachers.study_group_report._export')
         // ->with('data',$data);
+    }
+
+    public function updateNote(Request $req)
+    {
+        $miniAssessmentApi = new miniAssessmentApi;
+        $id = $req->id;
+        $payload = $req->all();
+        unset($payload['id']);
+
+        $update = $miniAssessmentApi->updateNote($id, $payload);
+        if ($update) {
+            return response()->json($id);
+        }
+
+        return response()->json(false);
     }
 }
