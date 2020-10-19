@@ -245,7 +245,7 @@
                 var linkelem = document.createElement('a');
                 try {
                     var blob = new Blob([response], {
-                        type: 'application/octet-stream'
+                        type: 'application/pdf'
                     });
 
                     if (typeof window.navigator.msSaveBlob !== 'undefined') {
@@ -328,11 +328,11 @@
     function startTimer() {
         let modalRunningOutHasShown = false;
 
-        var end = moment("{{ $task['mini_assessment']['expiry_fulldate'] }}");
-        const endTime = end.valueOf();
+        var end = moment("{{ $task['mini_assessment']['end_time'] }}");
+        var endTime = end.valueOf();
         // Update the count down every 1 second
         var x = setInterval(function() {
-            // Get today's date and time
+            // Get today's date and time and extend it
             var now = moment().valueOf();
 
             // Find the distance between now and the count down date

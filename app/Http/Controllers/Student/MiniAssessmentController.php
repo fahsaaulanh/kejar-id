@@ -121,6 +121,11 @@ class MiniAssessmentController extends Controller
         if ($save === 'true') {
             $responseTask = $taskService->startMiniAssessment($task['mini_assessment']['id']);
 
+            $addMinutes = $task['mini_assessment']['duration'];
+            $endTime = Carbon::now()->addMinutes($addMinutes)->addSeconds(5)->format('Y-m-d H:i:s');
+
+            $task['mini_assessment']['end_time'] = $endTime;
+
             $tasksSession = [
                 'subject_id' => $subject_id,
                 'mini_assessment' => $task['mini_assessment'],
@@ -218,6 +223,7 @@ class MiniAssessmentController extends Controller
 
         if (!$response['error']) {
             $dataCollect = collect($data);
+
             $newDataUnique = $dataCollect->unique('subject_id');
             foreach ($newDataUnique as $key => $newData) {
                 // GET Data Subject
