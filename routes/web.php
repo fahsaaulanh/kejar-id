@@ -44,6 +44,7 @@ Route::middleware('session')->group(function () {
                 Route::prefix('subject/{subject_id}/{grade}')->group(function () {
                     Route::get('/', 'Admin\MiniAssessmentController@index');
                     Route::post('/', 'Admin\MiniAssessmentController@create');
+                    Route::patch('/', 'Admin\MiniAssessmentController@update');
                 });
             });
 

@@ -71,7 +71,7 @@
             <!-- <div class="modal-footer text-right">
                 <div class="text-right col-md-12">
                     <button class="btn btn-cancel pull-right" data-dismiss="modal">Batal</button>
-                    <button class="btn btn-primary pull-right">Unggah</button>
+                    <button class="btn btn-primary pull-right">Perbarui</button>
                 </div>
             </div> -->
         </div>

@@ -39,6 +39,13 @@ class MiniAssessment extends Service
         return $this->showResponse($response);
     }
 
+    public function update($id, $payload)
+    {
+        $response = $this->patch('/libraries/mini-assessments/'.$id, $payload);
+
+        return $this->showResponse($response);
+    }
+
     public function updateValidation($id, $payload)
     {
         $response = $this->patch('/libraries/mini-assessments/' . $id, $payload);

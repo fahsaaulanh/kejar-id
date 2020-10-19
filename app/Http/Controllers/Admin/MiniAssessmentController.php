@@ -114,6 +114,7 @@ class MiniAssessmentController extends Controller
     {
         $payload = [
             'title' => $request['title'],
+            'duration' => $request['duration'],
             'subject_id' => $subjectId,
             'grade' => $grade,
             'group' => $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
@@ -135,6 +136,24 @@ class MiniAssessmentController extends Controller
         }
 
         return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal tersimpan!']);
+    }
+
+    public function update(Request $request)
+    {
+        $payload = [
+            'title' => $request['title'],
+            'duration' => $request['duration'],
+            'start_time' => $request['start_date'].' '.$request['start_time'],
+            'expiry_time' => $request['expiry_date'].' '.$request['expiry_time'],
+        ];
+        $miniAssessmentApi = new miniAssessmentApi;
+        $update = $miniAssessmentApi->update($request['id'], $payload);
+
+        if ($update) {
+            return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil diperbarui!']);
+        }
+
+        return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal diperbarui!']);
     }
 
     public function alphabet($val)
