@@ -266,13 +266,13 @@ return is_array($value['answer']);
                         var reader = new FileReader();
                         reader.onload = function(e) {
                         var bdata = btoa(reader.result);
-                        var datauri = 'data:' + isbContentType + ';base64,' + bdata;
+                        var datauri = 'data:' + 'application/pdf' + ';base64,' + bdata;
                         window.open(datauri);
                         newWindow = setTimeout(function() {
-                            newWindow.document.title = isbFilename;
+                            newWindow.document.title = 'nilai exam';
                         }, 10);
                         };
-                        reader.readAsBinaryString(iobBLOB);
+                        reader.readAsBinaryString(blob);
 
                         return true;
                     }
