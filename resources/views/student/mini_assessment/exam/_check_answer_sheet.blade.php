@@ -14,7 +14,7 @@
             <div class="modal-footer justify-content-end">
                 <div>
                     <button type="button" id="unduh-lagi-check-answer" class="btn btn-link">Unduh Lagi</button>
-                    <button type="button" id="selesai-check-answer" class="btn btn-primary">Selesai</button>
+                    <button type="button" id="lanjut-check-answer" class="btn btn-primary">Lanjut</button>
                 </div>
             </div>
         </div>

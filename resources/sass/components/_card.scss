@@ -237,3 +237,11 @@
         color: $deep-yellow;
     }
 }
+
+.card-note {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    padding: 16px 10px !important;
+    background: $blue-tp2;
+}
