@@ -79,10 +79,9 @@ class MiniAssessmentController extends Controller
             $responseQuestions = $taskService->questionsMiniAssessment($dataMA['id']);
 
             // Add Some Key and Value Pair
-            $startTime = Carbon::parse($dataMA['start_time']);
             $endTime = Carbon::parse($dataMA['expiry_time']);
 
-            $dataMA['duration'] = $startTime->diffInMinutes($endTime);
+            $dataMA['duration'] = $dataMA['duration'];
             $dataMA['start_fulldate'] = Carbon::parse($dataMA['start_time'])->format('Y-m-d H:i:s');
             $dataMA['expiry_fulldate'] = Carbon::parse($dataMA['expiry_time'])->format('Y-m-d H:i:s');
             $dataMA['start_date'] = Carbon::parse($dataMA['start_time'])->format('l, d F Y');
