@@ -26,7 +26,7 @@
         <div class="col-md-6">
             <h5>Kode Paket</h5>
             <h5 class="text-reguler">
-                {{ $task['mini_assessment']['random_char'] }}
+                {{ $task['mini_assessment']['random_char1'] . $task['mini_assessment']['id'] . $task['mini_assessment']['random_char2'] }}
             </h5>
         </div>
     </div>
