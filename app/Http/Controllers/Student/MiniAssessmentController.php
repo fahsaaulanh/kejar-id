@@ -8,7 +8,6 @@ use App\Services\School;
 use App\Services\Task;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use PDF;
 
 class MiniAssessmentController extends Controller
@@ -91,8 +90,18 @@ class MiniAssessmentController extends Controller
             $dataMA['expiry_date'] = Carbon::parse($dataMA['expiry_time'])->format('l, d F Y');
             $dataMA['expiry_time'] = Carbon::parse($dataMA['expiry_time'])->format('H.i');
 
-            $dataMA['random_char'] = Str::random(12);
+            $chr1 = chr(rand(97, 122));
+            $chr2 = chr(rand(97, 122));
+            $chr3 = chr(rand(97, 122));
+            $chr4 = chr(rand(97, 122));
+            $chr5 = chr(rand(97, 122));
+            $chr6 = chr(rand(97, 122));
+            $chr7 = chr(rand(97, 122));
+            $chr8 = chr(rand(97, 122));
             //
+
+            $dataMA['random_char1'] = $chr1 . $chr2 . $chr3 . $chr4;
+            $dataMA['random_char2'] = $chr5 . $chr6 . $chr7 . $chr8;
 
             // Save to Session as Temporary
             $tasksSession = [
