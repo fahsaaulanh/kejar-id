@@ -33,7 +33,7 @@
 
     <div class="mt-8 row">
         <div id="lihat-naskah" class="pts-btn-pdf" role="button">
-            <i class="kejar-matrikulasi">kejar-pdf</i>
+            <i class="kejar-pdf"></i>
             <h4 class="text-reguler ml-4">Lihat Naskah Soal</h4>
         </div>
     </div>
@@ -131,9 +131,7 @@
                             id="pts-choice-{{$loop->index}}-{{$i}}"
                             class="mb-2 mb-md-2 mb-lg-2 mb-xl-2 pts-choice-check"
                         >
-                            <i id="pts-icon-{{$loop->index}}-{{$i}}" class="font-24 mr-2">
-                                {{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }}
-                            </i>
+                            <i id="pts-icon-{{$loop->index}}-{{$i}}" class="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }} font-24 mr-2"></i>
                             {{ chr(65 + $i) }}
                         </div>
                     @endfor
@@ -330,15 +328,12 @@
     function startTimer() {
         let modalRunningOutHasShown = false;
 
-        var end = new Date("{{ $task['mini_assessment']['expiry_fulldate'] }}");
-        // var end = new Date();
-        // end.setMinutes(end.getMinutes() + 5);
-        // end.setSeconds(end.getSeconds() + 17);
-        const endTime = end.getTime();
+        var end = moment("{{ $task['mini_assessment']['expiry_fulldate'] }}");
+        const endTime = end.valueOf();
         // Update the count down every 1 second
         var x = setInterval(function() {
             // Get today's date and time
-            var now = new Date().getTime();
+            var now = moment().valueOf();
 
             // Find the distance between now and the count down date
             var duration = endTime - now;
@@ -419,13 +414,15 @@
 
         if (!selected) {
             arrayAnswer = [...arrayAnswer, answer];
-            $(`#pts-icon-${parentIndex}-${index}`).html('kejar-checked-box');
+            $(`#pts-icon-${parentIndex}-${index}`).removeClass('kejar-check-box');
+            $(`#pts-icon-${parentIndex}-${index}`).addClass('kejar-checked-box');
             $(`#pts-choice-${parentIndex}-${index}`).attr('data-active', true);
             $(`#pts-number-${parentIndex}`).attr('data-checked', JSON.stringify(arrayAnswer));
         } else {
             const idx = arrayAnswer.indexOf(answer);
             arrayAnswer.splice(idx, 1);
-            $(`#pts-icon-${parentIndex}-${index}`).html('kejar-check-box');
+            $(`#pts-icon-${parentIndex}-${index}`).removeClass('kejar-checked-box');
+            $(`#pts-icon-${parentIndex}-${index}`).addClass('kejar-check-box');
             $(`#pts-choice-${parentIndex}-${index}`).attr('data-active', false);
             $(`#pts-number-${parentIndex}`).attr('data-checked', JSON.stringify(arrayAnswer));
         }
