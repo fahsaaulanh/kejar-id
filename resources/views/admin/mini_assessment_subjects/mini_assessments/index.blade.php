@@ -41,6 +41,7 @@
                         <i class="kejar-link" data-id="{{$v['id']}}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
                         <span data-toggle="modal" data-target="#view-ma" onclick="viewMA('{{$v['id']}}')">{{$v['title']}}</span>
                         <i class="kejar-right float-right" data-toggle="modal" onclick="viewMA('{{$v['id']}}')" data-target="#view-ma"></i>
+                        <i class="kejar-edit float-right" data-toggle="modal" onclick="editMA('{{$v['id']}}')" data-target="#edit-ma"></i>
                     </a>
                 </div>
             @empty
@@ -74,6 +75,7 @@
 @include('admin.mini_assessment_subjects.mini_assessments._create')
 @include('admin.mini_assessment_subjects.mini_assessments._upload_answer')
 @include('admin.mini_assessment_subjects.mini_assessments._view')
+@include('admin.mini_assessment_subjects.mini_assessments._edit')
 @endsection
 
 
@@ -115,6 +117,49 @@
 
                 $('#loading').hide();
                 $('#ma-content').show();
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+        }
+
+        function editMA(id){
+
+            $('#loading-edit').show();
+            $('#ma-edit-content').hide();
+
+            const url = "{!! URL::to('/admin/mini-assessment/view') !!}"+"/"+id;
+            let data  = new Object();
+
+            // data = {};
+
+            var form    = new URLSearchParams(data);
+            var request = new Request(url, {
+                method: 'GET',
+                // body: form,
+                headers: new Headers({
+                'Content-Type' : 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                })
+            });
+
+            fetch(request)
+            .then(response => response.json())
+            .then(function(data) {
+                $('#edit-title').val(data.detail.title);
+                $('#edit-id').val(data.detail.id);
+
+                $('#edit-start-date').val(moment(data.detail.start_time).format("Y-M-D"));
+                $('#edit-expiry-date').val(moment(data.detail.expiry_time).format("Y-M-D"));
+
+                var start_time = data.detail.start_time;
+                var expiry_time = data.detail.expiry_time;
+
+                $('#edit-start-time').val(start_time.substring(11, 19));
+                $('#edit-expiry-time').val(expiry_time.substring(11, 19));
+                $('#edit-duration').val(data.detail.duration);
+                $('#loading-edit').hide();
+                $('#ma-edit-content').show();
             })
             .catch(function(error) {
                 console.error(error);

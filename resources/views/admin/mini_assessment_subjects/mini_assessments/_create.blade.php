@@ -49,6 +49,14 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="title" class="font-weight-bold">Durasi</label>
+                                <input type="number" class="form-control" name="duration" placeholder="Ketik durasi" required="" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-12">
                             <label for="title" class="font-weight-bold">Naskah Soal</label>
                             <div class="row custom-upload">
