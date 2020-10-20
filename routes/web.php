@@ -35,6 +35,8 @@ Route::middleware('session')->group(function () {
             // Mini Assesments
 
             Route::post('mini-assessment/upload-answers', 'Admin\MiniAssessmentController@uploadAnswers');
+            Route::post('mini-assessment/edit-answers', 'Admin\MiniAssessmentController@editAnswers');
+            Route::post('mini-assessment/edit-schedule', 'Admin\MiniAssessmentController@editSchedule');
             Route::post('mini-assessment/create-answers', 'Admin\MiniAssessmentController@createAnswers');
             Route::get('mini-assessment/view/{id}', 'Admin\MiniAssessmentController@view');
 

@@ -204,8 +204,20 @@ class MiniAssessmentController extends Controller
                                 $choices .= '</div>';
                                 $choices .= '<div class="col-7">';
                                     $choices .= '<div class="form-group input-group-lg">';
-                                        $choices .= '<input type="text" class="form-control" value="'
-                                        .$v['answer'].'" readonly required="" autocomplete="off">';
+                                        $choices .= '<input type="text" class="form-control txtuppercase"
+                                        name="choice['.$v['id'].'][value]" maxlength="1" value="'
+                                        .$v['answer'].'" required="" autocomplete="off">';
+
+                                        $choices .= '<input type="hidden" class="form-control"
+                                        maxlength="1" name="choice['.$v['id'].'][old]" value="'.$v['answer'].'">';
+
+                                        $choices .= '<input type="hidden" class="form-control"
+                                        maxlength="1" name="choice['.$v['id'].'][order]" value="'.$v['order'].'">';
+
+                                        $choices .= '<input type="hidden" class="form-control"
+                                        maxlength="1" name="choice['.$v['id'].'][choices_number]"
+                                        value="'.$v['choices_number'].'">';
+
                                     $choices .= '</div>';
                                 $choices .= '</div>';
                             $choices .= '</div>';
@@ -227,17 +239,30 @@ class MiniAssessmentController extends Controller
                                 $multipleChoices .= '<div class="col-8">';
 
                                 $multipleChoices .= '<div class="row">';
+                                $multipleChoices .= '<input type="hidden" name="multipleChoice['.$v['id'].'][old]"
+                                value="'.implode(',', $v['answer']).'">';
+
+                                $multipleChoices .= '<input type="hidden" class="form-control"
+                                maxlength="1" name="multipleChoice['.$v['id'].'][order]" value="'.$v['order'].'">';
+
+                                $multipleChoices .= '<input type="hidden" class="form-control"
+                                maxlength="1" name="multipleChoice['.$v['id'].'][choices_number]"
+                                value="'.$v['choices_number'].'">';
+
                     for ($i=0; $i < $v['choices_number']; $i++) {
                         $multipleChoices .= '<div class="col-1 mr-4">';
                             $multipleChoices .= '<div class="form-check">';
                                 $multipleChoices .=
-                                '<input type="checkbox" class="form-check-input mt-2" id="exampleCheck1"';
+                                '<input type="checkbox" name="multipleChoice['.$v['id'].'][value][]"
+                                value="'.$this->alphabet($i).'"
+                                class="form-check-input mt-2" id="exampleCheck-'.$no.$i.'"';
                         if (in_array($this->alphabet($i), $v['answer'])) {
                                 $multipleChoices .= 'checked';
                         }
 
                                 $multipleChoices .= ' >';
-                                $multipleChoices .= '<label class="form-check-label ml-2" for="exampleCheck1">'
+                                $multipleChoices .= '<label class="form-check-label ml-2"
+                                                    for="exampleCheck-'.$no.$i.'">'
                                 .$this->alphabet($i).'</label>';
                             $multipleChoices .= '</div>';
                                         $multipleChoices .= '</div>';
@@ -317,5 +342,67 @@ class MiniAssessmentController extends Controller
         $save = $miniAssessmentApi->saveAnswer($req->mini_assessment_id, $req->all());
 
         return response()->json($save);
+    }
+
+    public function editAnswers(Request $req)
+    {
+        $choices = [];
+        $i = 0;
+        foreach ($req->choice as $key => $v) {
+            if ($v['value'] === $v['old']) {
+                continue;
+            }
+
+            $choices[$i] = [
+                'id' => $key,
+                'choices_number' => $v['choices_number'],
+                'order' => $v['order'],
+                'answer' => $v['value'],
+            ];
+            $i++;
+        }
+
+        foreach ($req->multipleChoice as $key => $v) {
+            if (implode(',', $v['value']) === $v['old']) {
+                continue;
+            }
+
+            $choices[$i] = [
+                'id' => $key,
+                'choices_number' => $v['choices_number'],
+                'order' => $v['order'],
+                'answer' => $v['value'],
+            ];
+            $i++;
+        }
+
+        // foreach update jawaban
+        $miniAssessmentApi = new miniAssessmentApi;
+        foreach ($choices as $payload) {
+            $id = $payload['id'];
+            unset($payload['id']);
+            $miniAssessmentApi->updateAnswer($req->mini_assessment_id, $id, $payload);
+        }
+
+        return redirect()->back()->with(
+            ['message' => 'Data Berhasil Diperbarui!'],
+        );
+    }
+
+    public function editSchedule(Request $req)
+    {
+        $payload = [
+            'duration' => $req['duration'],
+            'start_time' => $req['start_date'].' '.$req['start_time'],
+            'expiry_time' => $req['expiry_date'].' '.$req['expiry_time'],
+        ];
+
+        $miniAssessmentApi = new miniAssessmentApi;
+        foreach ($req->array as $v) {
+            // update
+            $miniAssessmentApi->update($v['id'], $payload);
+        }
+
+        return response()->json(true);
     }
 }
