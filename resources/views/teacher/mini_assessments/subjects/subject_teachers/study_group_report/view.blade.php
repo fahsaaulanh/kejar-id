@@ -27,6 +27,7 @@
                     @csrf
                     <button type="submit" class="btn btn-revise float-right"><i class="kejar-download text-blue mr-2"></i> Unduh Rincian</button>
                 </form>
+                <button onclick="scoreIndex()" class="btn btn-publish float-right mr-3"> Refresh Data</button>
             </div>
         </div>
         <div class="row mt-3">

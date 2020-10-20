@@ -24,12 +24,15 @@
 
         <div id="alert-upload"></div>
 
-        <div class="upload-buttons">
-            <button class="btn-upload" data-toggle="modal" data-target="#add-ma">
-                <i class="kejar-add"></i>Tambah Paket
+        <div class="row pl-3 pr-3">
+            <button class="btn-upload col mr-2" data-toggle="modal" data-target="#add-ma">
+                <i class="kejar-add"></i><small>Tambah Paket</small>
             </button>
-            <button class="btn-upload" data-toggle="modal" data-target="#upload-ma-answer">
-                <i class="kejar-upload"></i>Unggah Jawaban
+            <button class="btn-upload col" data-toggle="modal" data-target="#upload-ma-answer">
+                <i class="kejar-upload"></i><small>Unggah Jawaban</small>
+            </button>
+            <button class="btn-upload col ml-2" data-toggle="modal" data-target="#edit-schedule">
+                <i class="kejar-calendar"></i><small>Ganti Jadwal</small>
             </button>
         </div>
         <!-- List of Stages (Admin)-->
@@ -76,6 +79,87 @@
 @include('admin.mini_assessment_subjects.mini_assessments._upload_answer')
 @include('admin.mini_assessment_subjects.mini_assessments._view')
 @include('admin.mini_assessment_subjects.mini_assessments._edit')
+
+<div class="modal fade" id="edit-schedule">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Ganti Jadwal dan Durasi <br>
+                    <small>{{$subject['name']}}</small>
+                </h5>
+                <button class="close modal-close" data-dismiss="modal">
+                    <i class="kejar kejar-close"></i>
+                </button>
+            </div>
+            <form disabled>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="title" class="font-weight-bold">Dimulai Pada</label>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="date" class="form-control" id="edit-schedule-start-date" required="" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="time" class="form-control" id="edit-schedule-start-time" required="" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="title" class="font-weight-bold">Selesai Pada</label>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="date" class="form-control" id="edit-schedule-expiry-date" required="" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <input type="time" class="form-control" id="edit-schedule-expiry-time" required="" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="title" class="font-weight-bold">Durasi</label>
+                                <input type="number" class="form-control" id="edit-schedule-duration" placeholder="Ketik durasi" required="" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="text-right col-md-12">
+                        <button class="btn btn-cancel" data-dismiss="modal">Batal</button>
+                        <span class="btn btn-primary" onclick="editSchedule()">Simpan</span>
+                    </div>
+                </div>
+            </form>
+            <div class="col-12 text-center mt-3" id="loading-edit-schedule" style="display:none">
+                <div class="row justify-content-center">
+                    <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                        <span class="sr-only">Sedang Memproses Data...</span>
+                    </div>
+                    <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                        <span class="sr-only">Sedang Memproses Data...</span>
+                    </div>
+                    <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                        <span class="sr-only">Sedang Memproses Data...</span>
+                    </div>
+                </div>
+                <div class="mt-2 row justify-content-center">
+                    <h5>Sedang Memproses Data</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 
@@ -84,11 +168,51 @@
 
     <script type="text/javascript">
 
+        function editSchedule() {
+            $("#loading-edit-schedule").show();
+            const url = "{!! URL::to('/admin/mini-assessment/edit-schedule') !!}";
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var data = {
+                start_date : $("#edit-schedule-start-date").val(),
+                start_time : $("#edit-schedule-start-time").val(),
+                expiry_date : $("#edit-schedule-expiry-date").val(),
+                expiry_time : $("#edit-schedule-expiry-time").val(),
+                duration : $("#edit-schedule-duration").val(),
+                array : @json($miniAssessmentIndex)
+            };
+
+            $.ajax({
+                method: 'post',
+                data: data,
+                url: url,
+                success: function (response) {
+                    $("#loading-edit-schedule").hide();
+
+                    var alert = '';
+                    alert += '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+                        alert += '<strong>Sukses!</strong> Update jadwal berhasil.';
+                        alert += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+                            alert += '<span aria-hidden="true">&times;</span>';
+                        alert += '</button>';
+                    alert += '</div>';
+
+                    $("#alert-upload").html(alert);
+                    $("#edit-schedule").modal('hide');
+                }
+            });
+        }
+
         function viewMA(id){
 
             $('#loading').show();
             $('#ma-content').hide();
-
+            $("#mini_assessment_id").val(id);
             const url = "{!! URL::to('/admin/mini-assessment/view') !!}"+"/"+id;
             let data  = new Object();
 
@@ -117,6 +241,9 @@
 
                 $('#loading').hide();
                 $('#ma-content').show();
+                jQuery('.txtuppercase').keyup(function() {
+                    $(this).val($(this).val().toUpperCase());
+                });
             })
             .catch(function(error) {
                 console.error(error);
