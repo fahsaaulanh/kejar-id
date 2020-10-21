@@ -19,7 +19,7 @@
             </div>
             <div class="modal-footer justify-content-end">
                 <div>
-                    <button type="button" class="btn btn-primary" id="simpan-selesai">Simpan dan Selesai</button>
+                    <button type="button" class="btn btn-primary" id="simpan-note">Simpan dan Selesai</button>
                 </div>
             </div>
         </div>

@@ -318,33 +318,18 @@ class MiniAssessmentController extends Controller
 
         $task = $this->request->session()->get('task');
 
-        $this->request->session()->put('taskId', $task['task_id']);
+        $answers = $this->getAnswer($task['task_id']);
 
-        $response = $taskService->finishMiniAssessment($task['task_id']);
+        $this->request->session()->put('answers', $answers);
 
-        $note = $this->request->input('noteStudent');
-
-        $payloads = [
-            'student_note' => $note,
-        ];
-
-        $taskService->noteMiniAssessment($task['task_id'], $payloads);
-
-        if (!$response['error']) {
-            $this->request->session()->remove('task');
-            $this->request->session()->remove('answers');
-
-            return $response;
-        }
-
-        return $response;
+        return $taskService->finishMiniAssessment($task['task_id']);
     }
 
     public function editNote()
     {
         $taskService = new Task;
 
-        $taskId = $this->request->session()->get('taskId');
+        $task = $this->request->session()->get('task');
 
         $note = $this->request->input('noteStudent');
 
@@ -352,9 +337,17 @@ class MiniAssessmentController extends Controller
             'student_note' => $note,
         ];
 
-        return $taskService->noteMiniAssessment($taskId, $payloads);
+        return $taskService->noteMiniAssessment($task['task_id'], $payloads);
     }
     // End Of API Function
+
+    public function close()
+    {
+        $this->request->session()->remove('task');
+        $this->request->session()->remove('answers');
+
+        return redirect('/student/mini_assessment');
+    }
 
     // Print Pdf
 
@@ -367,7 +360,9 @@ class MiniAssessmentController extends Controller
         $schoolService = new School;
 
         $task = $this->request->session()->get('task');
-        $answers = $this->getAnswer($task['task_id']);
+
+        $answers = $this->request->session()->get('answers');
+
         $user = $this->request->session()->get('user');
 
         // prod

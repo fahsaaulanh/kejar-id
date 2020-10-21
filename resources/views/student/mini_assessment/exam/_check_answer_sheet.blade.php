@@ -9,8 +9,27 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-12">
-                        <p class="font-15">Pastikan lembar jawaban yang diunduh dapat dibuka dengan baik. Jika sudah yakin, klik tombol selesai.</p>
+                    <div class="pts-number">
+                        <p class="font-15">1.</p>
+                    </div>
+                    <div class="col mt-1">
+                        <p class="font-15">Pastikan lembar jawaban yang diunduh dapat dibuka dengan baik.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="pts-number">
+                        <p class="font-15">2.</p>
+                    </div>
+                    <div class="col mt-1">
+                        <p class="font-15">Pastikan jawaban pada PDF lembar jawaban dan jawaban yang diinputkan sudah sesuai.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="pts-number">
+                        <p class="font-15">3.</p>
+                    </div>
+                    <div class="col mt-1">
+                        <p class="font-15">Jika jawaban tidak sesuai, tambahkan catatan setelah mengklik tombol Lanjut.</p>
                     </div>
                 </div>
             </div>

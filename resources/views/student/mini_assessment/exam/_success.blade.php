@@ -22,7 +22,7 @@
             <div class="modal-footer justify-content-end">
                 <div>
                     <button type="button" id="edit-note" class="btn btn-link">Edit Catatan</button>
-                    <button type="button" class="btn btn-primary" id="tutup-success">Tutup</button>
+                    <a href="/student/mini_assessment/exam/close"><button type="button" class="btn btn-primary" id="tutup-success">Tutup</button></a>
                 </div>
             </div>
         </div>

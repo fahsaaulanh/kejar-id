@@ -169,6 +169,8 @@ Route::middleware('session')->group(function () {
                 Route::get('/{subject_id}', 'Student\MiniAssessmentController@detail');
                 Route::get('/{subject_id}/exam', 'Student\MiniAssessmentController@exam');
                 Route::get('/exam/pdf', 'Student\MiniAssessmentController@print')->name('printAnswer');
+                Route::get('/exam/close', 'Student\MiniAssessmentController@close')->name('close');
+
 
 
                 // Route For Call API
