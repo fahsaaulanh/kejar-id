@@ -405,4 +405,76 @@ class MiniAssessmentController extends Controller
 
         return response()->json(true);
     }
+
+    public function trackingCode(Request $req)
+    {
+        $realCode = $req->code;
+
+        if (!$realCode) {
+            return response()->json(false);
+        }
+
+        if (strlen($realCode) === 44) {
+            $realCode = substr($realCode, 4, 36);
+        }
+
+        $miniAssessmentApi = new miniAssessmentApi;
+        $schoolApi = new SchoolApi;
+        $detail = $miniAssessmentApi->detail($realCode);
+        if ($detail['error']) {
+            return response()->json(false);
+        }
+
+        $subject = $schoolApi->subjectDetail($this->schoolId(), $detail['data']['subject_id']);
+
+        $time = $this->dateFormat($detail['data']['start_time'], 'd M Y').
+                        '<br> '.$this->dateFormat($detail['data']['start_time'], 'H.i').
+                        ' - '.$this->dateFormat($detail['data']['expiry_time'], 'H.i');
+
+        $view = '<div class="row mt-4">';
+            $view .= '<div class="col-12">';
+                $view .= '<label for="title" class="font-weight-bold">'.$detail['data']['title'].'</label>';
+            $view .= '</div>';
+        $view .= '</div>';
+        $view .= '<div class="row mt-4">';
+            $view .= '<div class="col-12">';
+                $view .= '<label for="title" class="font-weight-bold">Nama Mapel</label>';
+                $view .= '<p>';
+                    $link = $req->mini_assessment.'/subject/'.$subject['data']['id'].'/'.$detail['data']['grade'];
+                    $view .= '<a target="_blank"
+                    href="/admin/mini-assessment/'.$link.'">';
+                        $view .= $subject['data']['name'];
+                    $view .= '</a>';
+                $view .= '</p>';
+            $view .= '</div>';
+        $view .= '</div>';
+        $view .= '<div class="row mt-4">';
+            $view .= '<div class="col-12">';
+                $view .= '<label for="title" class="font-weight-bold">Kelas</label>';
+                $view .= '<p>' .$detail['data']['grade']. '</p>';
+            $view .= '</div>';
+        $view .= '</div>';
+        $view .= '<div class="row mt-4">';
+            $view .= '<div class="col-12">';
+                $view .= '<label for="title" class="font-weight-bold">Waktu Pelaksanaan</label>';
+                $view .= '<p>'.$time.'</p>';
+            $view .= '</div>';
+        $view .= '</div>';
+        $view .= '<div class="row mt-4">';
+            $view .= '<div class="col-12">';
+                $view .= '<label for="title" class="font-weight-bold">Durasi</label>';
+                $view .= '<p>' .$detail['data']['duration']. ' menit</p>';
+            $view .= '</div>';
+        $view .= '</div>';
+        $view .= '<div class="row mt-5">';
+            $view .= '<div class="col-12">';
+                $view .= '<div class="alert alert-primary" role="alert" id="link-package">';
+                    $view .= '<a href="'.$detail['data']['pdf'].'"
+                    target="_blank"><i class="kejar-pdf text-primary"></i> Lihat Naskah Soal</a>';
+                $view .= '</div>';
+            $view .= '</div>';
+        $view .= '</div>';
+
+        return response()->json(['view' => $view, 'code' => $detail['data']['id']]);
+    }
 }
