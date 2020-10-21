@@ -21,7 +21,7 @@
                         <p class="font-15">2.</p>
                     </div>
                     <div class="col mt-1">
-                        <p class="font-15">Setelah terunduh, cek bilamana lembar jawaban dapat dibuka.</p>
+                        <p class="font-15">Setelah terunduh, cek bilamana jawaban pada PDF lembar jawaban dan jawaban yang diinputkan sudah sesuai.</p>
                     </div>
                 </div>
                 <div class="row">
@@ -29,7 +29,7 @@
                         <p class="font-15">3.</p>
                     </div>
                     <div class="col mt-1">
-                        <p class="font-15">Simpan lembar jawaban yang sudah diunduh baik-baik.</p>
+                        <p class="font-15">Pastikan back-up jawaban pada Gform telah diisi dengan lengkap.</p>
                     </div>
                 </div>
                 <div class="row">
@@ -37,17 +37,26 @@
                         <p class="font-15">4.</p>
                     </div>
                     <div class="col mt-1">
-                        <p class="font-15">Jangan mengeklik tombol selesai sebelum lembar jawaban sudah dapat dibuka dan tersimpan dengan baik.</p>
+                        <p class="font-15">Simpan lembar jawaban yang sudah diunduh baik-baik.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="pts-number">
+                        <p class="font-15">5.</p>
+                    </div>
+                    <div class="col mt-1">
+                        <p class="font-15">Klik tombol Lewati hanya jika percobaan Unduh Lembar Jawaban gagal sebanyak 2 (dua) kali.</p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <a id="download-answer" class="btn btn-download">
-                    <button type="button"  class="btn btn-download">
-                        <i class="kejar-matrikulasi mr-4">kejar-download</i>
-                        Unduh Lembar Jawaban
-                    </button>
-                </a>
+                <button type="button" id="download-answer" class="btn btn-primary w-100">
+                    <i class="kejar-matrikulasi mr-4">kejar-download</i>
+                    Unduh Lembar Jawaban
+                </button>
+                <button id="skip-download" type="button" class="btn btn-skip w-100 mt-3">
+                    Lewati
+                </button>
             </div>
         </div>
     </div>

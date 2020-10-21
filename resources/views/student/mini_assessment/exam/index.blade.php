@@ -153,8 +153,6 @@ return is_array($value['answer']);
 @include('student.mini_assessment.exam._download_answer_sheet')
 @include('student.mini_assessment.exam._check_answer_sheet')
 @include('student.mini_assessment.exam._student_note')
-@include('student.mini_assessment.exam._student_note_only')
-
 
 @push('script')
 <script>
@@ -191,9 +189,18 @@ return is_array($value['answer']);
         $('#timeRemaining').modal('show');
     });
 
+    $('#skip-download').on('click', function() {
+        $('#downloadAnswerSheet').modal('hide');
+        $('#studentNote').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
+        doneCheckAnswer = true;
+    });
+
     $('#lanjut-time-remaining').on('click', function() {
-        $('#timeRemaining').modal('hide');
-        $('#downloadAnswerSheet').modal('show');
+        finish($(this));
         doneDownloadAnswer = true;
     });
 
@@ -328,9 +335,7 @@ return is_array($value['answer']);
 
     $('#edit-note').on('click', function() {
         $('#success').modal('hide');
-        const noteStudent = $.trim($("#noteStudent").val());
-        $.trim($("#noteStudentOnly").val(noteStudent));
-        $('#studentNoteOnly').modal({
+        $('#studentNote').modal({
             backdrop: 'static',
             keyboard: false,
             show: true,
@@ -341,25 +346,8 @@ return is_array($value['answer']);
         editNote($(this));
     });
 
-    $('#simpan-selesai').on('click', function() {
-        finish($(this));
-    });
-
     $('#lanjut-time-up').on('click', function() {
-        $('#downloadAnswerSheet .close').remove();
-        $('#downloadAnswerSheet').modal({
-            backdrop: 'static',
-            keyboard: false,
-            show: true,
-        });
-
-        $('#timeUp').modal('hide');
-    });
-
-    $('#tutup-success').on('click', function() {
-        if (typeof window !== 'undefined') {
-            window.location.replace('/student/mini_assessment');
-        }
+        finish($(this));
     });
 
     function startTimer() {
@@ -546,16 +534,12 @@ return is_array($value['answer']);
 
         const htmlSpinner = `Tunggu...`;
 
-        const htmlSelesai = 'Simpan dan Selesai';
-
-        const noteStudent = $.trim($("#noteStudent").val());
+        const htmlSelesai = 'Kumpulkan Jawaban';
 
         $.ajax({
             url,
             type: 'POST',
-            data: {
-                noteStudent
-            },
+            data: {},
             dataType: 'json',
             crossDomain: true,
             beforeSend: function() {
@@ -570,15 +554,16 @@ return is_array($value['answer']);
                 component.html(htmlSelesai);
                 component.removeAttr('disabled');
                 if (response.status === 200) {
-                    $('#success').modal('show');
-                    if (noteStudent !== '') {
-                        $('#form-note').show();
-                    } else {
-                        $('#form-note').hide();
-                    }
-                    $('#note-student').html(noteStudent);
-                    $('#studentNote').modal('hide');
+                    $('#timeRemaining').modal('hide');
+                    $('#timeUp').modal('hide');
+                    $('#downloadAnswerSheet').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true,
+                    });
                     doneSuccess = true;
+                    doneDownloadAnswer = true;
+
                     return;
                 }
             }
@@ -592,7 +577,7 @@ return is_array($value['answer']);
 
         const htmlSelesai = 'Simpan dan Selesai';
 
-        const noteStudent = $.trim($("#noteStudentOnly").val());
+        const noteStudent = $.trim($("#noteStudent").val());
 
         $.ajax({
             url,
@@ -621,7 +606,7 @@ return is_array($value['answer']);
                         $('#form-note').hide();
                     }
                     $('#note-student').html(noteStudent);
-                    $('#studentNoteOnly').modal('hide');
+                    $('#studentNote').modal('hide');
                     return;
                 }
             }
