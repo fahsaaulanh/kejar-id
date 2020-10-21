@@ -17,7 +17,11 @@ class MiniAssessmentController extends Controller
         $user = $this->request->session()->get('user', null);
         $task = $this->request->session()->get('task', null);
 
-        dd(Carbon::now());
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+
+        $data = [
+            'now' => $now,
+        ];
 
         if ($task !== null) {
             if (count($task['task']) > 0) {
@@ -31,7 +35,7 @@ class MiniAssessmentController extends Controller
             return redirect('/login');
         }
 
-        return view('student.mini_assessment.subjects.index');
+        return view('student.mini_assessment.subjects.index', $data);
     }
 
     public function detail($subject_id)
