@@ -487,12 +487,23 @@ class MiniAssessmentController extends Controller
     {
         $taskService = new Task;
         $grade = $this->request->input('grade');
-        $subjectId = $this->request->input('subject_id');
+        $subjectId = $this->request->input('subject_id', null);
+        $name = $this->request->input('name', null);
+
+        if ($subjectId === null) {
+            return redirect()->back();
+        }
 
         $filter = [
             'filter[grade]' => $grade,
         ];
 
-        return $taskService->reportMiniAssessmentForAdmin($subjectId, $filter);
+        $response = $taskService->reportMiniAssessmentForAdmin($subjectId, $filter);
+
+        if (!$response['error']) {
+            return response()->download($response['data'], $name);
+        }
+
+        return redirect()->back()->with('message', $response['message']);
     }
 }

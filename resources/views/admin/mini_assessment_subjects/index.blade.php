@@ -72,10 +72,21 @@
                         @php
                             $id = $v['id'];
                             $grade = "1$i";
+                            $name = $v['name'];
                         @endphp
                         <div class="list-group" data-url="#" data-token="{{ csrf_token() }}">
                             <div class="list-group-item-dropdown">
-                                <i class="kejar-download" onclick="exportData('{{ $id }}', '{{ $grade }}')" role="button"></i>
+                                <form
+                                    id="download-{{$id}}-{{$i}}"
+                                    action="{!! URL::to('/admin/mini-assessment/export') !!}"
+                                    method="post"
+                                >
+                                    @csrf
+                                    <input type="hidden" name="subject_id" value="{{ $id }}" />
+                                    <input type="hidden" name="grade" value="{{ $grade }}" />
+                                    <input type="hidden" name="name" value="{{ $name }}.xlsx" />
+                                    <i class="kejar-download" onclick="doExport('download-{{$id}}-{{$i}}')" role="button"></i>
+                                </form>
                                 <a href="{{ URL('admin/mini-assessment/'.$miniAssessmentGroupValue.'/subject/'.$v['id'].'/1'.$i) }}" class="col-12">
                                     <span class="ml-5">Kelas 1{{$i}}</span>
                                     <i class="kejar-right float-right"></i>
@@ -201,25 +212,8 @@
         });
     }
 
-    function exportData(subjectId, grade) {
-        const url = "{!! URL::to('/admin/mini-assessment/export') !!}";
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        return $.ajax({
-            url,
-            type: 'POST',
-            data: {
-                grade,
-                subject_id: subjectId,
-            },
-            dataType: 'json',
-            responseType: 'blob',
-        });
+    function doExport(element) {
+        $(`#${element}`).submit();
     }
 
 </script>
