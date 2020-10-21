@@ -77,9 +77,9 @@
         }
 
         return data.map((d, index) => {
-            const start = new Date(d.start_fulldate).getTime();
-            const end = new Date(d.expiry_fulldate).getTime();
-            const now = new Date().getTime();
+            const start = moment(d.start_fulldate).valueOf();
+            const end = moment(d.expiry_fulldate).valuoOf();
+            const now = moment("{{ $now }}").valueOf();
 
             const isExpired = (now < start || now > end);
             const done = d.tasks.length > 0 ? true : false;
