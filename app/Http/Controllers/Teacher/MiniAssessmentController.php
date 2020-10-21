@@ -104,7 +104,8 @@ class MiniAssessmentController extends Controller
                ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
                ->with('type', $type)
                ->with('subjectId', $subjectId)
-               ->with('grade', $grade);
+               ->with('grade', $grade)
+               ->with('reportAccess', $this->reportAccess);
     }
 
     public function alphabet($val)
@@ -376,6 +377,10 @@ class MiniAssessmentController extends Controller
 
     public function scoreBystudentGroup($type, $miniAssessmentGroupValue, $subjectId, $grade, $batchId, $studentGroupId)
     {
+        if ($this->reportAccess) {
+            return redirect('teacher/games');
+        }
+
         $schoolIdForSubject = $this->schoolIdForSubject();
         $schoolId = $this->schoolId();
         $schoolApi = new SchoolApi;
