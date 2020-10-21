@@ -38,6 +38,26 @@
             </script>
         @endif
 
+        <form disabled>
+            <div class="row mb-5">
+                <div class="col-10">
+                    <div class="input-group">
+                        <span class="input-group-append">
+                            <h2 class="border-right-0 border pt-1 pl-1">
+                                <i class="kejar-search text-muted"></i>
+                            </h2>
+                        </span>
+                        <input class="form-control py-2 border-left-0 border" id="code-tracking" type="search">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <span class="btn btn-revise btn-block bg-white" onclick="viewTracking()">
+                        <span>Cari</span>
+                    </span>
+                </div>
+            </div>
+        </form>
+
         <!-- List of Stages (Admin)-->
         <div class="list-group" data-url="#" data-token="{{ csrf_token() }}">
             @forelse($subjects as $key => $v)
@@ -87,9 +107,93 @@
         @endif()
 
     </div>
+
+<div class="modal fade bd-example-modal-md" id="view-ma-tracking">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Kode Paket<br>
+                    <small id="tracking-title"></small>
+                </h5>
+                <button class="close modal-close" data-dismiss="modal">
+                    <i class="kejar kejar-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="ma-tracking" style="display:none">
+                    <div id="loading-ma-tracking">
+                        <div class="row justify-content-center">
+                            <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                                <span class="sr-only">Sedang mengambil data...</span>
+                            </div>
+                            <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                                <span class="sr-only">Sedang mengambil data...</span>
+                            </div>
+                            <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                                <span class="sr-only">Sedang mengambil data...</span>
+                            </div>
+                        </div>
+                        <div class="mt-2 row justify-content-center">
+                            <h5>Sedang mengambil data...</h5>
+                        </div>
+                    </div>
+                    <div id="tracking-content"></div>
+                </div>
+            </div>
+            <div class="modal-footer text-right">
+                <div class="text-right col-md-12">
+                    <button class="btn btn-primary pull-right" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 
 @push('script')
 <script src="{{ mix('/js/admin/stage/script.js') }}"></script>
+<script>
+    function viewTracking(){
+        $("#loading-ma-tracking").show();
+        $("#tracking-content").empty();
+        $("#tracking-title").empty();
+        $("#ma-tracking").show();
+
+        $("#view-ma-tracking").modal('show');
+
+        const url = "{!! URL::to('/admin/mini-assessment/tracking-code') !!}";
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        var data = {
+            code : $("#code-tracking").val(),
+            mini_assessment : "{{$miniAssessmentGroupValue}}"
+        };
+
+        $.ajax({
+            method: 'post',
+            data: data,
+            url: url,
+            success: function (response) {
+                if(response){
+                    $("#tracking-content").html(response.view);
+                    $("#tracking-title").html(response.code);
+                }else{
+
+                    var alert = '<h2>Data tidak ditemukan!</h2>';
+
+                    $("#tracking-content").html(alert);
+                }
+                $("#loading-ma-tracking").hide();
+                $("#ma-tracking").show();
+            }
+        });
+    }
+</script>
 @endpush
