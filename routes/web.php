@@ -43,6 +43,7 @@ Route::middleware('session')->group(function () {
             Route::post('mini-assessment/edit-schedule', 'Admin\MiniAssessmentController@editSchedule');
             Route::post('mini-assessment/create-answers', 'Admin\MiniAssessmentController@createAnswers');
             Route::get('mini-assessment/view/{id}', 'Admin\MiniAssessmentController@view');
+            Route::post('mini-assessment/export', 'Admin\MiniAssessmentController@export');
 
             Route::prefix('mini-assessment/{mini_assessment_group}')->group(function () {
                 Route::get('/', 'Admin\MiniAssessmentController@subjects');

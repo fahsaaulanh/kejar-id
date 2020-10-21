@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+// use App\Exports\MiniAssessment\ScoreBystudentGroupExport;
 use App\Http\Controllers\Controller;
 use App\Services\MiniAssessment as miniAssessmentApi;
 use App\Services\School as SchoolApi;
+// use App\Services\StudentGroup;
+use App\Services\Task;
+use Exception;
+// use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -476,5 +481,18 @@ class MiniAssessmentController extends Controller
         $view .= '</div>';
 
         return response()->json(['view' => $view, 'code' => $detail['data']['id']]);
+    }
+
+    public function export()
+    {
+        $taskService = new Task;
+        $grade = $this->request->input('grade');
+        $subjectId = $this->request->input('subject_id');
+
+        $filter = [
+            'filter[grade]' => $grade,
+        ];
+
+        return $taskService->reportMiniAssessmentForAdmin($subjectId, $filter);
     }
 }
