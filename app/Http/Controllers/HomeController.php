@@ -85,7 +85,8 @@ class HomeController extends Controller
         return view('teacher.games.index')
                ->with('user', $user)
                ->with('wikramaId', $wikramaId)
-               ->with('miniAssesmentGroup', $miniAssesmentGroup);
+               ->with('miniAssesmentGroup', $miniAssesmentGroup)
+               ->with('reportAccess', $this->reportAccess);
     }
 
     public function student(Request $request)

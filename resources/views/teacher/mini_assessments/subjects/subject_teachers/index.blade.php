@@ -23,7 +23,7 @@
         </div>
         <ul class="nav nav-justified nav-tab-kejar">
             <li class="nav-item">
-                <a class="nav-link" id="nav-score-tab" data-toggle="pill" href="#nav-score" role="tab" aria-controls="nav-score" aria-selected="true">Nilai Siswa</a>
+                <a class="nav-link" id="nav-score-tab" data-toggle="{{ $reportAccess ? 'pill' : ''}}" href="#nav-score" role="tab" aria-controls="nav-score" aria-selected="false">Nilai Siswa</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" id="nav-package-tab" data-toggle="pill" href="#nav-package" role="tab" aria-controls="nav-package" aria-selected="false">Paket Soal</a>
@@ -158,7 +158,9 @@
                 $("#schoolGroupDataLoading").hide();
             });
         }
-        schoolGroupIndex();
+        if ('{{ $reportAccess }}') {
+            schoolGroupIndex();
+        }
 
         function viewMA(id){
 

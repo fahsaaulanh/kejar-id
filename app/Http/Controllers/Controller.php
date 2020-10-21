@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,10 +16,27 @@ class Controller extends BaseController
     use ValidatesRequests;
 
     protected $request;
+    protected $reportAccess;
 
     //
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->reportAccess = $this->teacherAccess();
+    }
+
+    private function teacherAccess()
+    {
+        // teacher given access at 6pm until 6am
+        $dateNow = Carbon::now();
+        $timeNow = $dateNow->format('H:i');
+        $first = Carbon::create($dateNow->year, $dateNow->month, $dateNow->day, 18, 0, 0)->format('H:i');
+        $second = Carbon::create($dateNow->year, $dateNow->month, $dateNow->day, 6, 0, 0)->format('H:i');
+
+        if ($timeNow >= $first) {
+            return true;
+        }
+
+        return $timeNow <= $second;
     }
 }
