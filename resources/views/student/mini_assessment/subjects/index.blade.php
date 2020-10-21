@@ -78,7 +78,7 @@
 
         return data.map((d, index) => {
             const start = moment(d.start_fulldate).valueOf();
-            const end = moment(d.expiry_fulldate).valuoOf();
+            const end = moment(d.expiry_fulldate).valueOf();
             const now = moment("{{ $now }}").valueOf();
 
             const isExpired = (now < start || now > end);
