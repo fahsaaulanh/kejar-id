@@ -69,8 +69,13 @@
                 </div>
                 <div class="collapse" id="collapse-{{ $v['id']}}" style="margin-top: -16px;">
                     @for($i=0; $i < 3; $i++)
+                        @php
+                            $id = $v['id'];
+                            $grade = "1$i";
+                        @endphp
                         <div class="list-group" data-url="#" data-token="{{ csrf_token() }}">
                             <div class="list-group-item-dropdown">
+                                <i class="kejar-download" onclick="exportData('{{ $id }}', '{{ $grade }}')" role="button"></i>
                                 <a href="{{ URL('admin/mini-assessment/'.$miniAssessmentGroupValue.'/subject/'.$v['id'].'/1'.$i) }}" class="col-12">
                                     <span class="ml-5">Kelas 1{{$i}}</span>
                                     <i class="kejar-right float-right"></i>
@@ -195,5 +200,27 @@
             }
         });
     }
+
+    function exportData(subjectId, grade) {
+        const url = "{!! URL::to('/admin/mini-assessment/export') !!}";
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        return $.ajax({
+            url,
+            type: 'POST',
+            data: {
+                grade,
+                subject_id: subjectId,
+            },
+            dataType: 'json',
+            responseType: 'blob',
+        });
+    }
+
 </script>
 @endpush

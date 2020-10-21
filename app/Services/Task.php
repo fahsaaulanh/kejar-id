@@ -118,4 +118,11 @@ class Task extends Service
 
         return $this->showResponse($response);
     }
+
+    public function reportMiniAssessmentForAdmin($subjectId, $filter = [])
+    {
+        return $this->get("/reports/mini-assessment/subjects/$subjectId/tasks", $filter);
+
+        return $response;
+    }
 }
