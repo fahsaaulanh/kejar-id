@@ -17,6 +17,8 @@ class MiniAssessmentController extends Controller
         $user = $this->request->session()->get('user', null);
         $task = $this->request->session()->get('task', null);
 
+        dd(Carbon::now());
+
         if ($task !== null) {
             if (count($task['task']) > 0) {
                 $subjectId = $task['subject_id'];
@@ -330,7 +332,7 @@ class MiniAssessmentController extends Controller
 
             return $response;
         }
-        
+
         return $response;
     }
 
