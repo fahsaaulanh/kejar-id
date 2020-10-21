@@ -51,6 +51,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if (app()->bound('sentry') && $this->shouldReport($exception)) {
+            app('sentry')->captureException($exception);
+        }
+
+        parent::report($exception);
+
         if ($exception instanceof HttpExceptionInterface) {
             if ($exception->getStatusCode() === 408) {
                 Log::error($exception->getMessage());
