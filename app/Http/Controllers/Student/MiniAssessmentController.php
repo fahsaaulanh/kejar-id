@@ -443,8 +443,7 @@ class MiniAssessmentController extends Controller
         $taskGroup = $task['mini_assessment']['group'];
         $filename = $user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.PDF';
 
-        return $pdf->download()->header('Content-Type: application/pdf', true)
-            ->header("Content-Disposition: attachment; filename='$filename'", true);
+        return $pdf->stream($filename);
     }
     // End Print Pdf
 
