@@ -441,9 +441,10 @@ class MiniAssessmentController extends Controller
             ->setPaper('a4', 'potrait');
 
         $taskGroup = $task['mini_assessment']['group'];
+
         $filename = $user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.PDF';
 
-        return $pdf->stream($filename);
+        return $pdf->download($filename);
     }
     // End Print Pdf
 
