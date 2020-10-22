@@ -202,6 +202,14 @@ class MiniAssessmentController extends Controller
         }
 
         $answers = $this->getAnswer($task['task_id']);
+
+        if (!$answers) {
+            $this->request->session()->remove('task');
+            $this->request->session()->remove('answers');
+
+            return redirect('/student/mini_assessment');
+        }
+
         $this->request->session()->put('answers', $answers);
 
         $pageData = [
@@ -432,9 +440,11 @@ class MiniAssessmentController extends Controller
         $pdf = PDF::loadview('student.mini_assessment.exam.answer', $pageData)
             ->setPaper('a4', 'potrait');
 
+        header('Content-Type: application/pdf');
+
         $taskGroup = $task['mini_assessment']['group'];
 
-        return $pdf->download($user['userable']['name'] . ' ' . $taskGroup . ' ' . $subject . ' ' . $time . '.pdf');
+        return $pdf->download($user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.pdf');
     }
     // End Print Pdf
 
@@ -445,6 +455,10 @@ class MiniAssessmentController extends Controller
 
         $response = $taskService->answersMiniAssessment($taskId);
         $data = [];
+
+        if ($response['error']) {
+            return $data;
+        }
 
         if (!$response['error']) {
             foreach ($response['data'] as $val) {
