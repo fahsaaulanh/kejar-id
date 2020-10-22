@@ -12,8 +12,9 @@
 
     <!--  -->
     <div class="mt-2">
-        <h5 id="date" class="text-reguler">{{ $task['mini_assessment']['start_date'] }}</h5>
-        <h5 id="time" class="text-reguler mt-2">{{ $task['mini_assessment']['start_time'] }} - {{ $task['mini_assessment']['expiry_time'] }}</h5>
+        <h5 id="date">{{ $task['mini_assessment']['start_date'] }}</h5>
+        <h5 class="text-reguler">Durasi mengerjakan: <span id="timer"></span></h5>
+        <!-- <h5 id="time" class="text-reguler mt-2">{{ $task['mini_assessment']['start_time'] }} - {{ $task['mini_assessment']['expiry_time'] }}</h5> -->
     </div>
 
     <!-- Content -->
@@ -135,7 +136,7 @@ return is_array($value['answer']);
 
 <div class="row justify-content-between align-items-center px-4 mt-9">
     <div>
-        <h5 id="timer"></h5>
+        <h5 id="timer-bottom"></h5>
     </div>
     <div id="done" class="pts-btn-next bg-light text-purple" role="button">
         <h3>Selesai</h3>
@@ -375,6 +376,7 @@ return is_array($value['answer']);
             const secondString = `${seconds < 10 ? '0' : ''}${seconds}`;
             const timerString = `${hourString}:${minuteString}:${secondString}`;
             $('#timer').html(timerString);
+            $('#timer-bottom').html(timerString);
 
             // if duration only 5 more minutes
             if (duration < 300000 && !modalRunningOutHasShown && duration > 0) {

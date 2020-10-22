@@ -96,8 +96,8 @@
                         <div class="row">
                             <div class="col-md-6" id="mapel">
                                 <h4 class="${isExpired || done ? 'text-reguler' : '' }">${d.subject}</h4>
-                                <h5 class="text-reguler">${d.start_date}</h5>
-                                <h5 class="text-reguler">${d.start_time} - ${d.expiry_time}</h5>
+                                ${done ? '' : '<h5 class="text-reguler">'+d.start_date+'</h5>'}
+                                ${done ? '' : '<h5 class="text-reguler">'+d.start_time+' - '+d.expiry_time+'</h5>'}
                             </div>
                             <div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">
                                 <div class="row justify-content-start justify-content-md-end justify-content-lg-end">

@@ -165,7 +165,7 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('student')->group(function () {
 
-            Route::get('/', 'Student\GameController@dashboard');
+            Route::get('/', 'HomeController@index');
             Route::prefix('/mini_assessment')->group(function () {
                 Route::get('/', 'Student\MiniAssessmentController@index');
                 Route::get('/{subject_id}', 'Student\MiniAssessmentController@detail');
