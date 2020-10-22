@@ -440,11 +440,11 @@ class MiniAssessmentController extends Controller
         $pdf = PDF::loadview('student.mini_assessment.exam.answer', $pageData)
             ->setPaper('a4', 'potrait');
 
-        header('Content-Type: application/pdf');
-
         $taskGroup = $task['mini_assessment']['group'];
+        $filename = $user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.PDF';
 
-        return $pdf->download($user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.PDF');
+        return $pdf->download()->header('Content-Type: application/pdf', true)
+            ->header("Content-Disposition: attachment; filename='$filename'", true);
     }
     // End Print Pdf
 
