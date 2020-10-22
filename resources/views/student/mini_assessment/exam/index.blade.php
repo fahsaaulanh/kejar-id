@@ -233,91 +233,24 @@ return is_array($value['answer']);
         return "unknown";
     }
 
-    $('#download-answer').on('click', function() {
+    $('#download-answer').on('click', function(e) {
         // Function Agung in Here
-        const urlPrint = "{!! URL::to('/student/mini_assessment/exam/pdf') !!}";
+        e.preventDefault();
+        $('#download-answer').html('Tunggu...');
 
-        $.ajax({
-            url: urlPrint,
-            type: 'GET',
-            contentType: false,
-            processData: false,
-            //xhrFields is what did the trick to read the blob to pdf
-            xhrFields: {
-                responseType: 'blob'
-            },
-            beforeSend: function() {
-                $('#download-answer').html('Tunggu...');
-            },
-            error: function(error) {
-                $('#download-answer').html('Silakan Unduh Ulang Lembar Jawaban');
-            },
-            success: function(response, status, xhr) {
-                $('#download-answer').html('Unduh Lembar Jawaban');
+        //set delay to let session store first, note : delay only estimate
+        setTimeout( function(){
+            const urlPrint = "{!! URL::to('/student/mini_assessment/exam/pdf') !!}";
+            var a = document.createElement("a");
+            a.href = urlPrint;
+            document.body.appendChild(a);
+            a.click();
 
-                var filename = "";
-                var disposition = xhr.getResponseHeader('Content-Disposition');
-
-                if (disposition) {
-                    var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-                    var matches = filenameRegex.exec(disposition);
-                    if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-                }
-                var linkelem = document.createElement('a');
-                try {
-                    var blob = new Blob([response], {
-                        type: 'application/pdf'
-                    });
-
-                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-                        //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-                        window.navigator.msSaveBlob(blob, filename);
-                    } else {
-                        var URL = window.URL || window.webkitURL;
-                        var downloadUrl = URL.createObjectURL(blob);
-
-                        if (filename) {
-                            // use HTML5 a[download] attribute to specify filename
-                            var a = document.createElement("a");
-
-                            // safari doesn't support this yet
-                            if (typeof a.download === 'undefined') {
-                                window.location = downloadUrl;
-                            } else {
-                                a.href = downloadUrl;
-                                a.download = filename;
-                                document.body.appendChild(a);
-                                a.target = "_blank";
-                                a.click();
-                            }
-                        } else {
-                            window.location = downloadUrl;
-                        }
-                    }
-
-                } catch (ex) {
-                    console.log(ex);
-                }
-
+            setTimeout( function(){
                 $('#downloadAnswerSheet').modal('hide');
-                if (!hasTime) {
-                    $('#checkAnswerSheet .close').remove();
-                    $('#checkAnswerSheet').modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: true,
-                    });
-                    $('#downloadAnswerSheet').modal('hide');
-                    doneCheckAnswer = true;
-                    return;
-                }
-
                 $('#checkAnswerSheet').modal('show');
-                doneCheckAnswer = true;
-            }
-        });
-
-        //
+            }, 2000)
+        }, 3000)
     });
 
     $('#unduh-lagi-check-answer').on('click', function() {
@@ -555,19 +488,18 @@ return is_array($value['answer']);
             success: function(response) {
                 component.html(htmlSelesai);
                 component.removeAttr('disabled');
-                if (response.status === 200) {
-                    $('#timeRemaining').modal('hide');
-                    $('#timeUp').modal('hide');
-                    $('#downloadAnswerSheet').modal({
-                        backdrop: 'static',
-                        keyboard: false,
-                        show: true,
-                    });
-                    doneSuccess = true;
-                    doneDownloadAnswer = true;
 
-                    return;
-                }
+                $('#timeRemaining').modal('hide');
+                $('#timeUp').modal('hide');
+                $('#downloadAnswerSheet').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true,
+                });
+                doneSuccess = true;
+                doneDownloadAnswer = true;
+
+                return;
             }
         });
     }
