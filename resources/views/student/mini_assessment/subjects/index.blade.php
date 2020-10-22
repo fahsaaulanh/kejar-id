@@ -70,7 +70,8 @@
             return `
                 <div class="row px-7 mt-4">
                     <div class="row bg-light py-2 w-100 justify-content-center">
-                        <h4 class="text-reguler">Data Kosong.</h4>
+                        <h4 class="text-reguler">
+                        <a href="/student/mini_assessment" class="btn btn-primary btn-lg"> Tampilkan Daftar Mapel </a></h4>
                     </div>
                 </div>
             `;

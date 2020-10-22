@@ -1,4 +1,4 @@
-@extends('layout/index')
+@extends('layout.error')
 
 @section('title', 'Error 505')
 
@@ -11,11 +11,19 @@
         <div class="container">
             <div class="error-group error-505">
                 <!-- Icon Alert -->
-                <i class="kejar-belum-mengerjakan-2"></i>
+                <!-- <i class="kejar-belum-mengerjakan-2"></i> -->
 
                 <!-- Error Description -->
-                <h1>Sepertinya telah terjadi kesalahan</h1>
-                <h4>namun jangan khawatir, kamu tetap bisa semangat belajar dengan segarkan halaman atau kembali ke beranda.</h4>
+                <!-- Pesan Lama -->
+                    <!-- <h1>Sepertinya telah terjadi kesalahan</h1> -->
+                    <!-- <h4>namun jangan khawatir, kamu tetap bisa semangat belajar dengan segarkan halaman atau kembali ke beranda.</h4> -->
+                <!-- End Pesan Lama -->
+                <h1>Hore! Jawabanmu sudah tersimpan dengan baik.</h1>
+                <h4>Pastikan link GForm juga sudah diisi dengan sesuai.</h4>
+                <p>
+                    <span class="text-danger">*</span>
+                    Apabila halaman ini muncul tidak saat mengumpulkan jawaban,<br> hubungi tim layanan.
+                </p>
 
                 <!-- Button Group -->
                 <div class="d-flex flex-wrap">
@@ -25,4 +33,5 @@
             </div>
         </div>
     </div>
+
 @endsection
