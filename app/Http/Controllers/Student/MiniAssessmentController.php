@@ -164,11 +164,41 @@ class MiniAssessmentController extends Controller
         $task = $this->request->session()->get('task', null);
 
         if ($task === null) {
+            $this->request->session()->remove('task');
+            $this->request->session()->remove('answers');
+
             return redirect('/student/mini_assessment');
         }
 
         if ($task['task_id'] === '') {
+            $this->request->session()->remove('task');
+            $this->request->session()->remove('answers');
+
             return redirect('/student/mini_assessment');
+        }
+
+        $MiniAssessment = new MiniAssessment;
+        $cek = $MiniAssessment->result(
+            $user['userable']['id'],
+            [
+                'filter[subject_id]' => $task['subject_id'],
+                'filter[group]' => $task['mini_assessment']['group'],
+                'per_page' => 5,
+            ],
+        );
+
+        if ($cek['error']) {
+            $this->request->session()->remove('task');
+            $this->request->session()->remove('answers');
+
+            return redirect('/student/mini_assessment');
+        }
+
+        if (isset($cek['data'][0]['finish_time']) && $cek['data'][0]['finish_time']) {
+            $this->request->session()->remove('task');
+            $this->request->session()->remove('answers');
+
+            return redirect('/student/mini_assessment')->with('message', 'Jawaban telah dikumpulkan');
         }
 
         $answers = $this->getAnswer($task['task_id']);
