@@ -18,18 +18,20 @@
                     <!-- <h1>Sepertinya telah terjadi kesalahan</h1> -->
                     <!-- <h4>namun jangan khawatir, kamu tetap bisa semangat belajar dengan segarkan halaman atau kembali ke beranda.</h4> -->
                 <!-- End Pesan Lama -->
-                <h1>Hore! Jawabanmu sudah tersimpan dengan baik.</h1>
-                <h4>Pastikan link GForm juga sudah diisi dengan sesuai.</h4>
+                <h1>Halo hai!</h1>
+                <h4><strong>Mohon tunggu sebentar,</strong> <br><br>lakukan penyegaran (refresh) pada halaman ini untuk melanjutkan aktivitas.</h4>
                 <p>
                     <span class="text-danger">*</span>
-                    Apabila halaman ini muncul tidak saat mengumpulkan jawaban,<br> hubungi tim layanan.
+                    Jika kamu sedang menyimpan jawaban, tenang saja jawabanmu akan tetap tersimpan.<br><br>
+                    Tetap pastikan backup jawaban pada link GForm sebelum menyelesaikan aktivitas ulangan.
                 </p>
 
                 <!-- Button Group -->
-                <div class="d-flex flex-wrap">
+                <div class="d-flex flex-wrap mt-5">
                     <a href="{{ url()->current() }}" class="btn-refresh">Segarkan Halaman</a>
                     <a href="{{ url('/') }}" class="btn-home">Kembali ke Beranda</a>
                 </div>
+                <p class="mt-5">Semangat Kejar!</p>
             </div>
         </div>
     </div>
