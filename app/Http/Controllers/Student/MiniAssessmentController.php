@@ -444,7 +444,7 @@ class MiniAssessmentController extends Controller
 
         $taskGroup = $task['mini_assessment']['group'];
 
-        return $pdf->download($user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.pdf');
+        return $pdf->download($user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.PDF');
     }
     // End Print Pdf
 
