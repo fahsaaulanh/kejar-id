@@ -5,13 +5,35 @@ namespace App\Http\Controllers\Student;
 use App\Http\Controllers\Controller;
 use App\Services\MiniAssessment;
 use App\Services\School;
+use App\Services\School as SchoolApi;
 use App\Services\Task;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use PDF;
 
 class MiniAssessmentController extends Controller
 {
+    public function miniAssessmentGroups($val, $type = 'title')
+    {
+        $miniAssessmentGroup = $type === 'value' ? [
+            'PTS-semester-ganjil-2020-2021' => 'pts ganjil 2020-2021',
+            'PTS-susulan-semester-ganjil-2020-2021' => 'pts susulan ganjil 2020-2021',
+        ] : [
+            'PTS Semester Ganjil 2020-2021' => 'pts ganjil 2020-2021',
+            'PTS Susulan Semester Ganjil 2020-2021' => 'pts susulan ganjil 2020-2021',
+        ];
+
+        if ($type === 'header') {
+            $miniAssessmentGroup = [
+                'pts ganjil 2020-2021' => 'PTS Semester Ganjil 2020-2021',
+                'pts susulan ganjil 2020-2021' => 'PTS Susulan Semester Ganjil 2020-2021',
+            ];
+        }
+
+        return $miniAssessmentGroup[$val];
+    }
+
     public function index()
     {
         $user = $this->request->session()->get('user', null);
@@ -222,89 +244,176 @@ class MiniAssessmentController extends Controller
         return view('student.mini_assessment.exam.index', $pageData);
     }
 
-    // API Function
-    public function subjects()
+    private function schoolId()
     {
-        $maService = new MiniAssessment;
-        $schoolService = new School;
-        $taskService = new Task;
+        return session()->get('user.userable.school_id');
+    }
 
-        $schoolId = $this->request->input('school_id');
-        $user = $this->request->session()->get('user', null);
-
-        $grade = $this->getGrade();
-
-        $page = $this->request->input('page', 1);
-
+    public function getSubject(Request $req)
+    {
+        $schoolApi = new SchoolApi;
         $filter = [
-            'filter[grade]' => $grade,
-            'per_page' => 50,
-            'page' => $page,
+            'page' => ($req->page ?? 1),
+            // 'filter[name]' => ($req->subject_name ?? ''),
+            'per_page' => 10,
         ];
+        $subjects = $schoolApi->subjectIndex($this->schoolId(), $filter);
 
-        $response = $maService->index($filter);
+        $data = [];
+        if ($subjects['error']) {
+            $view = '<div class="row px-7 mt-4">
+                        <div class="row bg-light py-2 w-100 justify-content-center">
+                            <h4 class="text-reguler">
+                            <a href="/student/mini_assessment" class="btn btn-primary btn-lg">
+                            Tampilkan Daftar Mapel </a></h4>
+                        </div>
+                    </div>';
 
-        $data = $response['data'] ?? [];
+            return response()->json($view);
+        }
 
-        $lastPage = $response['meta']['last_page'] ?? 1;
+        $user = $this->request->session()->get('user');
+        $MiniAssessment = new MiniAssessment;
 
-        if ($lastPage > 1) {
-            for ($i = 2; $i <= $lastPage; $i++) {
-                $filter = [
+        $maGroup = $this->miniAssessmentGroups($req->mini_assessment);
+        $grade = $this->getGrade();
+        foreach ($subjects['data'] as $key => $v) {
+            $data[$key] = [
+                'id' => $v['id'],
+                'name' => $v['name'],
+            ];
+            $data[$key]['schedule'] = '';
+            $data[$key]['finished'] = 0;
+            $data[$key]['enabled'] = 0;
+
+            // get exam
+
+            $exam = $MiniAssessment->result(
+                $user['userable']['id'],
+                [
+                    'filter[subject_id]' => $v['id'],
+                    'filter[group]' => $maGroup,
+                    'per_page' => 1,
+                ],
+            );
+            if (!$exam['error'] && isset($exam['data'][0])) {
+                $data[$key]['finished'] = 1;
+            } else {
+                // get package info
+                $package = $MiniAssessment->index([
+                    'per_page' => 1,
+                    'filter[subject_id]' => $v['id'],
                     'filter[grade]' => $grade,
-                    'per_page' => 50,
-                    'page' => $page,
-                ];
+                ]);
 
-                $maNextService = new MiniAssessment;
-                $res = $maNextService->index($filter);
-                $newData = $res['data'] ?? [];
+                if (!$package['error'] && isset($package['data'][0])) {
+                    $packageDetail = $package['data'][0];
 
-                $data = array_merge($data, $newData);
+                    $time = Carbon::parse($packageDetail['start_time'])->format('l, d F Y').
+                    '<br> '.Carbon::parse($packageDetail['start_time'])->format('H.i').
+                    ' - '.Carbon::parse($packageDetail['expiry_time'])->format('H.i');
+                    $data[$key]['schedule'] = $time;
+
+                    $now = Carbon::now()->format('Y-m-d H:i:s');
+                    $start = Carbon::parse($packageDetail['start_time'])->format('Y-m-d H:i:s');
+                    $end = Carbon::parse($packageDetail['expiry_time'])->format('Y-m-d H:i:s');
+                    if ($now >= $start && $now <= $end) {
+                        $data[$key]['enabled'] = 1;
+                    }
+                }
             }
         }
 
-        if (!$response['error']) {
-            $dataCollect = collect($data);
+        $getView = [];
+        $getView['data'] = $data;
+        $getView['meta'] = $subjects['meta'];
+        $html = $this->getSubjectHtml($getView, (int)$req->page, $req->paginationFunction);
 
-            $newDataUnique = $dataCollect->unique('subject_id');
-            foreach ($newDataUnique as $key => $newData) {
-                // GET Data Subject
-                $responseSubject = $schoolService->subjectDetail($schoolId, $newData['subject_id']);
-                $newData['subject'] = $responseSubject['error'] ? '' : $responseSubject['data']['name'] ?? '';
-                //
-                // Get Data Tasks
-                $filterTask = [
-                    'per_page' => 99,
-                    'filter[subject_id]' => $newData['subject_id'],
-                    'filter[finished]' => 'true',
-                ];
-                $responseTask = $taskService->tasksMiniAssessment($user['userable']['id'], $filterTask);
-                $newData['tasks'] = $responseTask['error'] ? [] : $responseTask['data'] ?? [];
-                //
+        return response()->json($html);
+    }
 
-                $newStartDate = Carbon::parse($newData['start_time'])->format('l, d F Y');
-                $newStartTime = Carbon::parse($newData['start_time'])->format('H.i');
-                $newExpiryDate = Carbon::parse($newData['expiry_time'])->format('l, d F Y');
-                $newExpiryTime = Carbon::parse($newData['expiry_time'])->format('H.i');
-                $startTimeFullDate = Carbon::parse($newData['start_time'])->format('Y-m-d H:i:s');
-                $expiryTimeFullDate = Carbon::parse($newData['expiry_time'])->format('Y-m-d H:i:s');
-                $newData['start_date'] = $newStartDate;
-                $newData['start_time'] = $newStartTime;
-                $newData['expiry_date'] = $newExpiryDate;
-                $newData['expiry_time'] = $newExpiryTime;
-                $newData['start_fulldate'] = $startTimeFullDate;
-                $newData['expiry_fulldate'] = $expiryTimeFullDate;
+    public function getSubjectHtml($getView, $page, $paginationFunction)
+    {
+        $list = $getView['data'];
+        $meta = $getView['meta'];
 
-                $newDataUnique[$key] = $newData;
+        $view = '';
+        $view .= '<div class="row">';
+            $view .= '<div class="col-12 p-0">';
+                $view .= '<h6 class="grey-6 text-reguler">Diurutkan A-Z.</h6>';
+            $view .= '</div>';
+        $view .= '</div>';
+        foreach ($list as $v) {
+            $view .= '<div class="row mt-4">';
+
+                $view .= '<div class="btn-accordion';
+                    $view .= ($v['enabled'] === 1 ? '' : '-disabled' );
+                    $view .= '"';
+                    $view .= ($v['enabled'] === 1 ? 'role="button"' : '' );
+                $view .= '">';
+
+                        $view .= '<div class="row" ';
+            if ($v['enabled'] === 1) {
+                $view .= 'onclick="goExam(\''.$v['id'].'\')"';
             }
 
-            $newDataUnique = $newDataUnique->sortBy('start_fulldate');
+                        $view .= '>';
 
-            $response['data'] = $newDataUnique->values();
+                            $view .= '<div class="col-md-6" id="mapel">';
+                                $view .= '<h4>'. $v['name'] .'</h4>';
+                                $view .= '<h5 class="text-reguler">'. $v['schedule'] .'</h5>';
+                            $view .= '</div>';
+                            $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
+                                $view .= '<div class="row justify-content-start justify-content-md-end
+                                justify-content-lg-end">';
+                                    $view .= '<div class="col-auto">';
+
+            if ($v['schedule'] || $v['finished'] === 1) {
+                $view .= '<span class="badge-';
+                    $view .= ($v['finished'] === 1 ? 'done' : 'undone' );
+                $view .= ' label">';
+                    $view .= ($v['finished'] === 1 ? 'SUDAH DIKERJAKAN' :
+                                'BELUM DIKERJAKAN' );
+                $view .= '</span>';
+            }
+
+                                        $view .= '</div>';
+                                $view .= '</div>';
+                            $view .= '</div>';
+                        $view .= '</div>';
+
+                $view .= '</div>';
+            $view .= '</div>';
         }
 
-        return $response;
+        if ($meta && $meta['total'] > 10) {
+            $view .= '<nav class="navigation mt-5">';
+                $view .= '<div>';
+                    $view .= '<span class="pagination-detail">'. ($meta['to'] ?? 0)
+                            .' dari '. $meta['total'] .' mapel</span>';
+                $view .= '</div>';
+                $view .= '<ul class="pagination">';
+                    $view .= '<li class="page-item '.($page - 1 <= 0 ? 'disabled' : '').'">';
+                        $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.($page - 1).')"
+                              href="javascript::void(0)" tabindex="-1">&lt;</a>';
+                    $view .= '</li>';
+
+            for ($i=1; $i <= $meta['last_page']; $i++) {
+                $view .= '<li class="page-item '. ($page === $i ? 'active disabled' : '') .'">';
+                    $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.$i.')"
+                              href="javascript::void(0)">'.$i.'</a>';
+                $view .= '</li>';
+            }
+
+                    $view .= '<li class="page-item '. ($page + 1).' > '.($meta['last_page'] ? 'disabled' : '' ).'">';
+                        $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.($page + 1).')"
+                                  href="javascript::void(0)">&gt;</a>';
+                    $view .= '</li>';
+                $view .= '</ul>';
+            $view .= '</nav>';
+        }
+
+        return $view;
     }
 
     public function setAnswer()
