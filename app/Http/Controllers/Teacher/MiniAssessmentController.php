@@ -377,7 +377,7 @@ class MiniAssessmentController extends Controller
 
     public function scoreBystudentGroup($type, $miniAssessmentGroupValue, $subjectId, $grade, $batchId, $studentGroupId)
     {
-        if ($this->reportAccess) {
+        if (!$this->reportAccess) {
             return redirect('teacher/games');
         }
 
