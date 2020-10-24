@@ -98,7 +98,8 @@
     }
     subjectIndex();
 
-    function goExam(id){
+    function goExam(id, title){
+        localStorage.setItem('detail_title', title);
         window.location.href = `/student/mini_assessment/${id}`;
     }
 </script>
