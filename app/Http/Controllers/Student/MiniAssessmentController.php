@@ -354,7 +354,7 @@ class MiniAssessmentController extends Controller
 
                         $view .= '<div class="row" ';
             if ($v['enabled'] === 1) {
-                $view .= 'onclick="goExam(\''.$v['id'].'\')"';
+                $view .= 'onclick="goExam(\''.$v['id'].'\',\''.$v['name'].'\')"';
             }
 
                         $view .= '>';
