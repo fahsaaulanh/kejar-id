@@ -72,9 +72,9 @@
 
         data = {
             page: page,
-            paginationFunction: 'subjectIndex',
+            paginationFunction: 'subjectIndex'
             // subject_name: $("#subject-name").val(),
-            mini_assessment: localStorage.getItem('pts_title')
+            // mini_assessment: localStorage.getItem('pts_title')
         };
 
         var form    = new URLSearchParams(data);
