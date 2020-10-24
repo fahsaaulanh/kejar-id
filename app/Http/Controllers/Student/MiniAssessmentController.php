@@ -275,7 +275,7 @@ class MiniAssessmentController extends Controller
         $user = $this->request->session()->get('user');
         $MiniAssessment = new MiniAssessment;
 
-        $maGroup = $this->miniAssessmentGroups($req->mini_assessment);
+        $maGroup = $this->miniAssessmentGroups(strip_tags($req->mini_assessment));
         $grade = $this->getGrade();
         foreach ($subjects['data'] as $key => $v) {
             $data[$key] = [
