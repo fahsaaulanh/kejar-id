@@ -168,6 +168,7 @@ Route::middleware('session')->group(function () {
             Route::get('/', 'HomeController@index');
             Route::prefix('/mini_assessment')->group(function () {
                 Route::get('/', 'Student\MiniAssessmentController@index');
+                Route::post('/view-detail', 'Student\MiniAssessmentController@viewDetail');
                 Route::post('/get-subject', 'Student\MiniAssessmentController@getSubject');
                 Route::get('/{subject_id}', 'Student\MiniAssessmentController@detail');
                 Route::get('/{subject_id}/exam', 'Student\MiniAssessmentController@exam');
