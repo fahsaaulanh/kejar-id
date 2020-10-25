@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\Batch;
 use App\Services\School as SchoolApi;
-use App\Services\StudentGroup;
 use App\Services\User as UserApi;
 use Illuminate\Http\Request;
 
@@ -60,40 +59,15 @@ class LoginController extends Controller
                 $responseMe['data']['userable']['school_name'] = $responseSchool['data']['name'];
                 $responseMe['data']['userable']['educational_stage'] = $responseSchool['data']['educational_stage'];
 
-                // Mengambil nama kelas
                 $schoolId = $responseMe['data']['userable']['school_id'];
-                $studentGroupId = $responseMe['data']['userable']['student_group_id'];
-                // $entryYear = Carbon::now()->year . '/' . Carbon::now()->add(1, 'year')->year;
+                $studentGroup = $responseMe['data']['userable']['student_group'];
 
                 $batchApi = new Batch;
-                $batchFilter = [
-                    'per_page' => 99,
-                ];
+                $batch = $batchApi->detail($schoolId, $studentGroup['batch_id']);
 
-                $batchResponse = $batchApi->index($schoolId, $batchFilter);
-                $batchData = $batchResponse['data'];
-
-                $className = '-';
-                $entryYear = '';
-                $batchId = '';
-
-                // Select a batch for session
-                foreach ($batchData as $batch) {
-                    $studentGroupApi = new StudentGroup;
-                    $classResponse = $studentGroupApi->detail($schoolId, $batch['id'], $studentGroupId);
-
-                    if (!$classResponse['error']) {
-                        $className = $classResponse['data']['name'] ?? '-';
-                        $entryYear = $batch['entry_year'];
-                        $batchId = $batch['id'];
-
-                        break;
-                    }
-                }
-
-                $responseMe['data']['userable']['class_name'] = $className;
-                $responseMe['data']['userable']['entry_year'] = $entryYear;
-                $responseMe['data']['userable']['batch_id'] = $batchId;
+                $responseMe['data']['userable']['class_name'] = $studentGroup['name'];
+                $responseMe['data']['userable']['entry_year'] = $batch['data']['entry_year'];
+                $responseMe['data']['userable']['batch_id'] = $batch['data']['id'];
 
                 // Check foto tersedia dalam directory
                 $photo = $responseMe['data']['userable']['photo'];
