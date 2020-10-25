@@ -10,4 +10,11 @@ class Batch extends Service
 
         return $this->showResponse($response);
     }
+
+    public function detail($schoolId, $id)
+    {
+        $response = $this->get("/schools/$schoolId/batches/$id");
+
+        return $this->showResponse($response);
+    }
 }
