@@ -292,56 +292,11 @@ class MiniAssessmentController extends Controller
             return response()->json($view);
         }
 
-        $user = $this->request->session()->get('user');
-        $MiniAssessment = new MiniAssessment;
-
-        $maGroup = 'pts ganjil 2020-2021';
-        $grade = $this->getGrade();
         foreach ($subjects['data'] as $key => $v) {
             $data[$key] = [
                 'id' => $v['id'],
                 'name' => $v['name'],
             ];
-            $data[$key]['schedule'] = '';
-            $data[$key]['finished'] = 0;
-            $data[$key]['enabled'] = 0;
-
-            // get exam
-
-            $exam = $MiniAssessment->result(
-                $user['userable']['id'],
-                [
-                    'filter[subject_id]' => $v['id'],
-                    'filter[group]' => $maGroup,
-                    'per_page' => 1,
-                ],
-            );
-            if (!$exam['error'] && isset($exam['data'][0])) {
-                $data[$key]['finished'] = 1;
-            } else {
-                // get package info
-                $package = $MiniAssessment->index([
-                    'per_page' => 1,
-                    'filter[subject_id]' => $v['id'],
-                    'filter[grade]' => $grade,
-                ]);
-
-                if (!$package['error'] && isset($package['data'][0])) {
-                    $packageDetail = $package['data'][0];
-
-                    $time = Carbon::parse($packageDetail['start_time'])->format('l, d F Y').
-                    '<br> '.Carbon::parse($packageDetail['start_time'])->format('H.i').
-                    ' - '.Carbon::parse($packageDetail['expiry_time'])->format('H.i');
-                    $data[$key]['schedule'] = $time;
-
-                    $now = Carbon::now()->format('Y-m-d H:i:s');
-                    $start = Carbon::parse($packageDetail['start_time'])->format('Y-m-d H:i:s');
-                    $end = Carbon::parse($packageDetail['expiry_time'])->format('Y-m-d H:i:s');
-                    if ($now >= $start && $now <= $end) {
-                        $data[$key]['enabled'] = 1;
-                    }
-                }
-            }
         }
 
         $getView = [];
@@ -366,43 +321,21 @@ class MiniAssessmentController extends Controller
         foreach ($list as $v) {
             $view .= '<div class="row mt-4">';
 
-                $view .= '<div class="btn-accordion';
-                    $view .= ($v['enabled'] === 1 ? '' : '-disabled' );
-                    $view .= '"';
-                    $view .= ($v['enabled'] === 1 ? 'role="button"' : '' );
-                $view .= '">';
+                $view .= '<div class="btn-accordion" role="button">';
 
-                        $view .= '<div class="row" ';
-            if ($v['enabled'] === 1) {
-                $view .= 'onclick="goExam(\''.$v['id'].'\',\''.$v['name'].'\')"';
-            }
-
-                        $view .= '>';
-
-                            $view .= '<div class="col-md-6" id="mapel">';
-                                $view .= '<h4>'. $v['name'] .'</h4>';
-                                $view .= '<h5 class="text-reguler">'. $v['schedule'] .'</h5>';
-                            $view .= '</div>';
-                            $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
-                                $view .= '<div class="row justify-content-start justify-content-md-end
-                                justify-content-lg-end">';
-                                    $view .= '<div class="col-auto">';
-
-            if ($v['schedule'] || $v['finished'] === 1) {
-                $view .= '<span class="badge-';
-                    $view .= ($v['finished'] === 1 ? 'done' : 'undone' );
-                $view .= ' label">';
-                    $view .= ($v['finished'] === 1 ? 'SUDAH DIKERJAKAN' :
-                                'BELUM DIKERJAKAN' );
-                $view .= '</span>';
-            }
-
-                                        $view .= '</div>';
-                                $view .= '</div>';
+                    $view .= '<div class="row" onclick="viewDetail(\''.$v['id'].'\',\''.$v['name'].'\')">';
+                        $view .= '<div class="col-md-6" id="mapel">';
+                            $view .= '<h4>'. $v['name'] .'</h4>';
+                        $view .= '</div>';
+                        $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
+                            $view .= '<div class="row justify-content-start justify-content-md-end
+                            justify-content-lg-end">';
                             $view .= '</div>';
                         $view .= '</div>';
+                    $view .= '</div>';
 
                 $view .= '</div>';
+
             $view .= '</div>';
         }
 
@@ -415,22 +348,127 @@ class MiniAssessmentController extends Controller
                 $view .= '<ul class="pagination">';
                     $view .= '<li class="page-item '.($page - 1 <= 0 ? 'disabled' : '').'">';
                         $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.($page - 1).')"
-                              href="javascript::void(0)" tabindex="-1">&lt;</a>';
+                              href="javascript:void(0)" tabindex="-1">&lt;</a>';
                     $view .= '</li>';
 
             for ($i=1; $i <= $meta['last_page']; $i++) {
                 $view .= '<li class="page-item '. ($page === $i ? 'active disabled' : '') .'">';
                     $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.$i.')"
-                              href="javascript::void(0)">'.$i.'</a>';
+                              href="javascript:void(0)">'.$i.'</a>';
                 $view .= '</li>';
             }
 
                     $view .= '<li class="page-item '. ($page + 1).' > '.($meta['last_page'] ? 'disabled' : '' ).'">';
                         $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.($page + 1).')"
-                                  href="javascript::void(0)">&gt;</a>';
+                                  href="javascript:void(0)">&gt;</a>';
                     $view .= '</li>';
                 $view .= '</ul>';
             $view .= '</nav>';
+        }
+
+        return $view;
+    }
+
+    public function viewDetail(Request $req)
+    {
+        $id = $req->id;
+        $data = [
+            'id' => $req->id,
+            'name' => $req->name,
+            'schedule' => '',
+            'finished' => 0,
+            'enabled' => 0,
+        ];
+
+        $user = $this->request->session()->get('user');
+
+        $MiniAssessment = new MiniAssessment;
+        $maGroup = 'pts ganjil 2020-2021';
+        $grade = $this->getGrade();
+        $exam = $MiniAssessment->result(
+            $user['userable']['id'],
+            [
+                'filter[subject_id]' => $id,
+                'filter[group]' => $maGroup,
+                'per_page' => 1,
+            ],
+        );
+
+        if (!$exam['error'] && isset($exam['data'][0])) {
+            $data['finished'] = 1;
+        } else {
+            // get package info
+            $package = $MiniAssessment->index([
+                'per_page' => 1,
+                'filter[subject_id]' => $id,
+                'filter[grade]' => $grade,
+            ]);
+
+            if (!$package['error'] && isset($package['data'][0])) {
+                $packageDetail = $package['data'][0];
+
+                $time = Carbon::parse($packageDetail['start_time'])->format('l, d F Y').
+                '<br> '.Carbon::parse($packageDetail['start_time'])->format('H.i').
+                ' - '.Carbon::parse($packageDetail['expiry_time'])->format('H.i');
+                $data['schedule'] = $time;
+
+                $now = Carbon::now()->format('Y-m-d H:i:s');
+                $start = Carbon::parse($packageDetail['start_time'])->format('Y-m-d H:i:s');
+                $end = Carbon::parse($packageDetail['expiry_time'])->format('Y-m-d H:i:s');
+                if ($now >= $start && $now <= $end) {
+                    $data['enabled'] = 1;
+                }
+            } else {
+                $data['schedule'] = 'Belum ada jadwal.';
+            }
+        }
+
+        $view = $this->viewDetailHtml($data);
+
+        return response()->json($view);
+    }
+
+    public function viewDetailHtml($data)
+    {
+        $view = '<div class="row">';
+            $view .= '<div class="col-12">';
+                $view .= '<h5>Nama Mapel</h5>';
+                $view .= '<p>'.$data['name'].'</p>';
+            $view .= '</div>';
+        $view .= '</div>';
+
+        if ($data['schedule']) {
+            $view .= '<div class="row">';
+                $view .= '<div class="col-12">';
+                    $view .= '<h5>Jadwal</h5>';
+                    $view .= '<p>'.$data['schedule'].'</p>';
+                $view .= '</div>';
+            $view .= '</div>';
+        }
+
+        if (($data['schedule'] && $data['schedule'] !== 'Belum ada jadwal.') || $data['finished'] === 1) {
+            $view .= '<div class="row">';
+                $view .= '<div class="col-12">';
+                    $view .= '<h5>Status</h5>';
+                    $view .= '<p class="mt-2">';
+                        $view .= '<span class="badge-';
+                            $view .= ($data['finished'] === 1 ? 'done' : 'undone' );
+                        $view .= ' label">';
+                            $view .= ($data['finished'] === 1 ? 'SUDAH DIKERJAKAN' :
+                                        'BELUM DIKERJAKAN' );
+                        $view .= '</span>';
+                    $view .= '</p>';
+                $view .= '</div>';
+            $view .= '</div>';
+        }
+
+        if ($data['enabled']) {
+            $view .= '<div class="modal-footer text-right">';
+                $view .= '<div class="text-right col-md-12 p-0">';
+                        $view .= '<button class="btn btn-primary pull-right"
+                        onclick="goExam(\''.$data['id'].'\',\''.$data['name'].'\')">Kerjakan</button>';
+                $view .= '</div>';
+            $view .= '</div>';
         }
 
         return $view;

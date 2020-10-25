@@ -40,6 +40,23 @@
             <!-- Empty -->
         </div>
     </div>
+    <div class="modal fade bd-example-modal-md" id="view-detail">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Mapel</h5>
+                    <button class="close modal-close" data-dismiss="modal">
+                        <i class="kejar kejar-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="viewDetailContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('script')
@@ -48,6 +65,63 @@
     const title = localStorage.getItem('pts_title') || '';
     $('#breadcrumb-1').html(title);
     window.document.title = `${title}`;
+
+    function viewDetail(id, name) {
+        $("#view-detail").modal('show');
+        $("#viewDetailContent").html(`
+            <div class="row justify-content-center">
+                <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div class="mt-2 row justify-content-center">
+                <h5>Loading</h5>
+            </div>
+        `);
+
+        const url = "{!! URL::to('/student/mini_assessment/view-detail') !!}";
+        let data  = new Object();
+
+        data = {
+            id: id,
+            name: name
+        };
+
+        var form    = new URLSearchParams(data);
+        var request = new Request(url, {
+            method: 'POST',
+            body: form,
+            headers: new Headers({
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            })
+        });
+
+        fetch(request)
+        .then(response => response.json())
+        .then(function(data) {
+            $("#viewDetailContent").html(data);
+        })
+        .catch(function(error) {
+            var view = '<div class="row px-7 mt-4">\
+                            <div class="row bg-light py-2 w-100 p-4">\
+                                <h4 class="text-reguler col-12 text-center">\
+                                Periksa Koneksi Anda. \
+                                <a href="javascript:void(0)" \
+                                onclick="viewDetail(\''+id+'\',\''+name+'\')"\
+                                class="btn btn-primary btn-lg mt-2">\
+                                Tampilkan Detail Mapel </a></h4>\
+                            </div>\
+                        </div>';
+            $('#viewDetailContent').html(view);
+        });
+    }
 
     function subjectIndex(page = 1){
         $("#accordion-pts").html(`
@@ -93,7 +167,15 @@
             $('#accordion-pts').html(data);
         })
         .catch(function(error) {
-            console.error(error);
+            var view = '<div class="row px-7 mt-4">\
+                            <div class="row bg-light py-2 w-100 justify-content-center">\
+                                <h4 class="text-reguler">\
+                                Periksa Koneksi Anda. \
+                                <a href="/student/mini_assessment" class="btn btn-primary btn-lg">\
+                                Tampilkan Daftar Mapel </a></h4>\
+                            </div>\
+                        </div>';
+            $('#accordion-pts').html(view);
         });
     }
     subjectIndex();
