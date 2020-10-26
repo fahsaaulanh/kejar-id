@@ -103,6 +103,8 @@ Route::middleware('session')->group(function () {
 
             Route::get('mini-assessment/view/{id}', 'Teacher\MiniAssessmentController@view');
 
+            Route::post('mini-assessment/update-presence', 'Teacher\MiniAssessmentController@updatePresence');
+            Route::post('mini-assessment/attendance-form/{id}', 'Teacher\MiniAssessmentController@attendanceForm');
             Route::post('mini-assessment/validation', 'Teacher\MiniAssessmentController@validation');
             Route::post('mini-assessment/index-package', 'Teacher\MiniAssessmentController@packageData');
             Route::post('mini-assessment/index-school-group', 'Teacher\MiniAssessmentController@schoolGroupData');
