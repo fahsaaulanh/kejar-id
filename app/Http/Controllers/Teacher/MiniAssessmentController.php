@@ -102,6 +102,11 @@ class MiniAssessmentController extends Controller
                ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
                ->with('subject', $subject['data'])
                ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
+               ->with(
+                   'miniAssessmentGroupId',
+                   $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
+               )
+               ->with('subject', $subject['data'])
                ->with('type', $type)
                ->with('subjectId', $subjectId)
                ->with('grade', $grade)
@@ -345,10 +350,20 @@ class MiniAssessmentController extends Controller
                 $view .= '<div class="list-group-item">';
                     $view .= '<a href="/teacher/subject-teachers/mini-assessment/'
                                 .$req['miniAssessmentGroupValue'].'/subject/'.$req['subjectId'].
-                                '/'.$req['grade'].'/batch/'.$v['batch_id'].'/score/'.$v['id'].'" class="col-12">';
+                                '/'.$req['grade'].'/batch/'.$v['batch_id'].'/score/'.$v['id'].'" class="col-10">';
                         $view .= '<i class="kejar-rombel"></i>';
                         $view .= '<span>'.$v['name'].'</span>';
                     $view .= '</a>';
+                    $param = "'".$req['miniAssessmentGroupValue']."',".
+                             "'".$req['subjectId']."',".
+                             "'".$req['grade']."',".
+                             "'".$v['batch_id']."',".
+                             "'".$v['id']."',".
+                             "'".$v['name']."'";
+                    $view .= '<span class="col row" style="cursor:pointer"
+                    onclick="attendanceForm('.$param.')" >
+                    <i class="kejar-edit float-right col-1">';
+                    $view .= '</i><small class="col pl-2">Absensi</small></span>';
                 $view .= '</div>';
             }
         } else {
@@ -356,6 +371,76 @@ class MiniAssessmentController extends Controller
         }
 
         $view .= '</div>';
+
+        return $view;
+    }
+
+    public function attendanceForm(Request $req, $id)
+    {
+        $UserApi = new UserApi;
+        $filter = [
+            'per_page' => 99,
+            'filter[student_group_id]' => $id,
+            'page' => ($req->page ?? 1),
+        ];
+        $students = $UserApi->students($filter);
+
+        $data = [];
+
+        if (!$students['data']) {
+            $view = '<tr>
+                        <td colspan="6" class="text-center">Tidak ada data</td>
+                    </tr>';
+
+            return response()->json($view);
+        }
+
+        $UserApi = new UserApi;
+        foreach ($students['data'] as $key => $v) {
+            $attendanceFilter = ['filter[group]' => 'pts ganjil 2020-2021'];
+            $presence = $UserApi->attendanceIndex($v['id'], $attendanceFilter);
+            $data[$key]['presence'] = 1;
+            $data[$key]['value'] = 1;
+            if (isset($presence['data'][0])) {
+                $data[$key]['presence'] = "'".$presence['data'][0]['id']."'";
+                $data[$key]['value'] = ($presence['data'][0]['status'] === 1 ? 0 : 1);
+            }
+
+            $data[$key]['id'] = $v['id'];
+            $data[$key]['nis'] = $v['nis'];
+            $data[$key]['name'] = $v['name'];
+        }
+
+        $payload = [
+            'data' => $data,
+            'meta' => $students['meta'],
+        ];
+
+        $view = $this->attendanceFormHtml($payload);
+
+        return response()->json($view);
+    }
+
+    public function attendanceFormHtml($data)
+    {
+
+        $list = $data['data'];
+        $view = '';
+        foreach ($list as $key => $v) {
+            $presenceParams = "'".$v['id']."',".$v['presence'].','.$v['value'];
+            $presenceText = ($v['value'] === 1 ? 'Tandai' : 'Hadir');
+
+            $presence = '<span class="btn btn-link btn-lg
+            text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+
+            $view .= '<tr class="tr-score-report">';
+                $view .= '<td class="text-center">'.($key+1).'</td>';
+                $view .= '<td>'.$v['name'].'</td>';
+                $view .= '<td>'.$v['nis'].'</td>';
+
+                $view .= '<td><div id="presenceBtn-'. $v['id'] .'">'.$presence.'</div></td>';
+            $view .= '</tr>';
+        }
 
         return $view;
     }
@@ -396,6 +481,10 @@ class MiniAssessmentController extends Controller
 
         return view('teacher.mini_assessments.subjects.subject_teachers.study_group_report.view')
                 ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
+                ->with(
+                    'miniAssessmentGroupId',
+                    $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
+                )
                 ->with('subject', $subject['data'])
                 ->with('StudentGroupDetail', $StudentGroupDetail['data'])
                 ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
@@ -426,6 +515,7 @@ class MiniAssessmentController extends Controller
             return response()->json($view);
         }
 
+        $UserApi = new UserApi;
         foreach ($students['data'] as $key => $v) {
             $payload = [
                 'filter[subject_id]' => $req->subjectId,
@@ -435,7 +525,17 @@ class MiniAssessmentController extends Controller
             $filterScore = [
                 'filter[subject_id]' => $req->subjectId,
             ];
+            $attendanceFilter = ['filter[group]' => 'pts ganjil 2020-2021'];
+            $presence = $UserApi->attendanceIndex($v['id'], $attendanceFilter);
+            $data[$key]['presence'] = 1;
+            $data[$key]['value'] = 1;
+            if (isset($presence['data'][0])) {
+                $data[$key]['presence'] = "'".$presence['data'][0]['id']."'";
+                $data[$key]['value'] = ($presence['data'][0]['status'] === 1 ? 0 : 1);
+            }
+
             $score = $miniAssessmentApi->result($v['id'], $filterScore);
+            $data[$key]['id'] = $v['id'];
             $data[$key]['nis'] = $v['nis'];
             $data[$key]['name'] = $v['name'];
 
@@ -455,6 +555,7 @@ class MiniAssessmentController extends Controller
             $data[$key]['finished'] = true;
         }
 
+        // dd($data);
         $payload['data'] = $data;
         $payload['meta'] = $students['meta'];
 
@@ -466,13 +567,6 @@ class MiniAssessmentController extends Controller
 
         return response()->json($view);
     }
-
-    // private function presence($val, $type)
-    // {
-    //     $array = $type === 'caption' ? ['Tandai', 'Hadir'] : ['text-blue', 'text-dark'];
-
-    //     return $array[$val];
-    // }
 
     private function noteData($val)
     {
@@ -486,6 +580,12 @@ class MiniAssessmentController extends Controller
         $list = $data['data'];
         $view = '';
         foreach ($list as $key => $v) {
+            $presenceParams = "'".$v['id']."',".$v['presence'].','.$v['value'];
+            $presenceText = ($v['value'] === 1 ? 'Tandai' : 'Hadir');
+
+            $presence = '<span class="btn btn-link btn-lg
+            text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+
             if ($v['finished']) {
                 $diff = Carbon::parse($v['score']['start_time'])
                                 ->diffInMinutes($v['score']['finish_time']);
@@ -494,13 +594,7 @@ class MiniAssessmentController extends Controller
                     $view .= '<td>'.$v['name'].'</td>';
                     $view .= '<td>'.$v['nis'].'</td>';
 
-                    // $presenceParam = "'".$v['score']['id']."',".($v['score']['score']['presence'] ?? 0);
-                    // $view .= '<td><div id="presence-'.$v['score']['id'].'">
-                    //             <span onclick="changePresence('.$presenceParam.')"
-                    //             class="'.$this->presence($v['score']['score']['presence'] ?? 0, 'style').'"
-                    //             style="cursor: pointer;">'.
-                    //             $this->presence($v['score']['score']['presence'] ?? 0, 'caption').
-                    // '</span><div></td>';
+                    $view .= '<td><div id="presenceBtn-'. $v['id'] .'">'.$presence.'</div></td>';
 
                     $view .= '<td style="width:500px">';
                         // Note
@@ -543,15 +637,41 @@ class MiniAssessmentController extends Controller
                     $view .= '<td class="text-center">'.($key+1).'</td>';
                     $view .= '<td>'.$v['name'].'</td>';
                     $view .= '<td>'.$v['nis'].'</td>';
-                    // $view .= '<td><span class="text-blue" style="cursor: pointer;" id="presence-'.$key.'">
-                    // asd</span></td>';
-                    // $view .= '<td style="width:500px">Belum ada Catatan</td>';
+                    $view .= '<td><div id="presenceBtn-'. $v['id'] .'">'.$presence.'</div></td>';
                     $view .= '<td colspan="4">Belum mengerjakan</td>';
                 $view .= '</tr>';
             }
         }
 
         return $view;
+    }
+
+    public function updatePresence(Request $req)
+    {
+        $UserApi = new UserApi;
+        if ($req->presence !== 1) {
+            // Update
+            $payload = [
+                'status' => $req->value,
+            ];
+            $UserApi->attendanceUpdate($req->id, $req->presence, $payload);
+        } else {
+            // Create
+            $payload = [
+                'subject_id' => $req->subject_id,
+                'group' => $req->mini_assessment_group_id,
+                'status' => 1,
+            ];
+            $create = $UserApi->attendanceCreate($req->id, $payload);
+            $req['presence'] = $create['data']['id'];
+        }
+
+        $presenceParams = "'".$req['id']."','".$req['presence']."',".($req->value === '1' ? 0 : 1);
+        $presenceText = ($req->value === '1' ? 'Hadir' : 'Tandai');
+        $presence = '<span class="btn btn-link btn-lg text-decoration-none"
+        onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+
+        return response()->json(['id' => $req->id, 'btn' => $presence, 'req' => $req->all()]);
     }
 
     public function updateScore(Request $req)

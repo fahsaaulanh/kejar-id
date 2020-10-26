@@ -38,7 +38,7 @@
                             <th width="1%">No</th>
                             <th>Nama Siswa</th>
                             <th>NIS</th>
-                            <!-- <th>Hadir</th> -->
+                            <th>Hadir</th>
                             <th width="30%">Catatan</th>
                             <th>Durasi<br>(menit)</th>
                             <th>NR</th>
@@ -48,6 +48,17 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p>Keterangan :</p>
+                <p>
+                    <strong>NR</strong> = Nilai Rekomendasi
+                </p>
+                <p>
+                    <strong>NA</strong> = Nilai Akhir
+                </p>
             </div>
         </div>
     </div>
@@ -163,20 +174,24 @@
         });
     }
 
-    function changePresence(id, presence) {
-        var value = 1;
-        if (presence === 1) {
-            value = 0;
-        }
+    function changePresence(id, presence, value) {
 
         // run save
 
-        const url = "{!! URL::to('/teacher/mini-assessment/update-note') !!}";
+        $("#presenceBtn-"+id).html('<div class="spinner-border mr-1" role="status">\
+                                            <span class="sr-only">Loading...</span>\
+                                         </div>Proses\
+                                        ');
+
+        const url = "{!! URL::to('/teacher/mini-assessment/update-presence') !!}";
         let data  = new Object();
 
         data = {
             id: id,
-            presence: value,
+            presence: presence,
+            value: value,
+            subject_id: "{{$subject['id']}}",
+            mini_assessment_group_id: "{{$miniAssessmentGroupId}}",
         };
 
         var form    = new URLSearchParams(data);
@@ -192,19 +207,11 @@
         fetch(request)
         .then(response => response.json())
         .then(function(data) {
-            changePresence(id, data);
+            $("#presenceBtn-"+data.id).html(data.btn);
         })
         .catch(function(error) {
             console.error(error);
         });
-    }
-
-    function changePresence(id, presence) {
-        if(presence === 1){
-            $("#presence-"+id).html(presence+" Hadir");
-        }else{
-            $("#presence-"+id).html(presence+" Tandai");
-        }
     }
 
     function changeNote(id, noteStudent, noteTeacher, nis, name) {

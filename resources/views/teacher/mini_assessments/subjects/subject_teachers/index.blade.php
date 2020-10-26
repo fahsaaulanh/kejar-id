@@ -70,6 +70,36 @@
             </div>
         </div>
     </div>
+    <div class="modal fade bd-example-modal-lg" id="attendance-form">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Absensi Kelas <span id="AttendanceStudentGroup"></span></h5>
+                    <button class="close modal-close" data-dismiss="modal">
+                        <i class="kejar kejar-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-1">
+                        <div class="col-12">
+                            <div class="table-responsive table-result-stage">
+                                <table class="table table-bordered" id="table-kejar">
+                                    <tr class="table-head">
+                                        <th width="1%">No</th>
+                                        <th>Nama Siswa</th>
+                                        <th>NIS</th>
+                                        <th>Hadir</th>
+                                    </tr>
+                                    <tbody id="AttendanceContent">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('teacher.mini_assessments.subjects.subject_teachers._view')
 @endsection
 
@@ -211,6 +241,101 @@
         function modalValidation() {
             $("#view-ma").modal('hide');
             $("#ma-validation").modal('show');
+        }
+
+        function attendanceForm(miniAssessmentGroupValue, subjectId, grade, batch_id, id, name){
+            $("#attendance-form").modal('show');
+            var html = '<tr>\
+                            <td colspan="4">\
+                                <div class="row justify-content-center">\
+                                    <div class="mr-2 spinner-grow spinner-grow-sm" role="status">\
+                                        <span class="sr-only">Loading...</span>\
+                                    </div>\
+                                    <div class="mr-2 spinner-grow spinner-grow-sm" role="status">\
+                                        <span class="sr-only">Loading...</span>\
+                                    </div>\
+                                    <div class="mr-2 spinner-grow spinner-grow-sm" role="status">\
+                                        <span class="sr-only">Loading...</span>\
+                                    </div>\
+                                </div>\
+                                <div class="mt-2 row justify-content-center">\
+                                    <h5>Loading</h5>\
+                                </div>\
+                            </td>\
+                        </tr>';
+            $("#AttendanceStudentGroup").html(name);
+            $("#AttendanceContent").html(html);
+
+            const url = "{!! URL::to('/teacher/mini-assessment/attendance-form') !!}"+"/"+id;
+            let data  = new Object();
+
+            data = {
+                mini_assessment_group: miniAssessmentGroupValue,
+                subjectId: subjectId,
+                grade: grade,
+                batch_id: batch_id,
+                id: id
+            };
+
+            var form    = new URLSearchParams(data);
+            var request = new Request(url, {
+                method: 'POST',
+                body: form,
+                headers: new Headers({
+                'Content-Type' : 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                })
+            });
+
+            fetch(request)
+            .then(response => response.json())
+            .then(function(data) {
+                $("#AttendanceContent").html(data);
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+        }
+
+
+        function changePresence(id, presence, value) {
+
+            // run save
+
+            $("#presenceBtn-"+id).html('<div class="spinner-border mr-1" role="status">\
+                                                <span class="sr-only">Loading...</span>\
+                                            </div>Proses\
+                                            ');
+
+            const url = "{!! URL::to('/teacher/mini-assessment/update-presence') !!}";
+            let data  = new Object();
+
+            data = {
+                id: id,
+                presence: presence,
+                value: value,
+                subject_id: "{{$subject['id']}}",
+                mini_assessment_group_id: "{{$miniAssessmentGroupId}}",
+            };
+
+            var form    = new URLSearchParams(data);
+            var request = new Request(url, {
+                method: 'POST',
+                body: form,
+                headers: new Headers({
+                'Content-Type' : 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+                })
+            });
+
+            fetch(request)
+            .then(response => response.json())
+            .then(function(data) {
+                $("#presenceBtn-"+data.id).html(data.btn);
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
         }
     </script>
 @endpush
