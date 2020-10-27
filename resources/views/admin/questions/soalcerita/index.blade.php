@@ -160,15 +160,15 @@
                     </div>
                 </div>
             </div>
-        </div>
-
+        </div> -->
+        @if ($question['question']['type'] === 'TFQMA')
         <div class="card type-benar-salah">
             <div class="card-header">
                 <div>
-                    <h5>SOAL 3</h5> <i class="kejar-dot"></i> <i class="kejar-benar-salah"></i> <h5>Benar Salah</h5>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-benar-salah"></i> <h5>Benar Salah</h5>
                 </div>
                 <div>
-                    <button>
+                    <button data-toggle="modal" data-target="#edit-benar-salah" class="btn-edit" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                         <i class="kejar-edit"></i> Edit
                     </button>
                 </div>
@@ -176,45 +176,30 @@
             <div class="card-body">
                 <div class="direction-text">
                     <p class="">
-                        Bacalah wacana yang diberikan dengan seksama. Pilihlah benar atau salah untuk setiap pernyataan berikut sesuai dengan wacana. Petunjuk juga bisa menjadi sangat panjang sehingga ukuran formnya menjadi lebih besar dari yang semula disediakan seperti ini.
+                        {!! $question['question']['question'] !!}
                     </p>
                 </div>
                 <div class="question-answer-group">
                     <table class="question-answer-table">
+                        @foreach($question['question']['choices'] as $choice)
                         <tr>
-                            <td>Ibu dan ayah pergi ke Taman Safari.</td>
-                            <td>Benar</td>
+                            <td>{!! $choice['question'] !!}</td>
+                            <td>{{ $choice['answer'] === true ? 'Benar' : 'Salah' }}</td>
                         </tr>
-                        <tr>
-                            <td>Taman Safari Indonesia terletak di Prigen, Pasuruan.</td>
-                            <td>Benar</td>
-                        </tr>
-                        <tr>
-                            <td>Taman Safari adalah tempat penangkaran Gajah Lampung.</td>
-                            <td>Salah</td>
-                        </tr>
-                        <tr>
-                            <td>Ada berbagai pertunjukkan badut yang dapat disaksikan di Taman Safari. Ada berbagai pertunjukkan badut yang dapat disaksikan di Taman Safari. Ada berbagai pertunjukkan badut yang dapat disaksikan di Taman Safari.</td>
-                            <td>Benar</td>
-                        </tr>
+                        @endforeach
                     </table>
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
                     
                     <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
+                        {!! $question['question']['explanation'] !!}
                     </div>
                 </div>
             </div>
         </div>
-
+        @endif
+<!-- 
         <div class="card type-ya-tidak">
             <div class="card-header">
                 <div>
@@ -571,6 +556,8 @@
 @include('admin.questions.soalcerita.update._update_direction')
 @include('admin.questions.soalcerita.create._pilihan_ganda')
 @include('admin.questions.soalcerita.update._pilihan_ganda')
+@include('admin.questions.soalcerita.create._benar_salah')
+@include('admin.questions.soalcerita.update._benar_salah')
 @endsection
 
 

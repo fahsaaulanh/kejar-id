@@ -532,54 +532,6 @@
     }
 }
 
-/* Modal Exit */
-#exitExamModal{
-
-    .modal-content{
-        padding: 0rem;
-        .modal-header{
-            display: flex !important;
-            align-items: center;
-            justify-content: space-between;
-            padding: 3.2rem !important;
-
-            .modal-title{
-                margin: 0rem;
-                @include h3;
-            }
-
-            .close{
-                margin: 0rem;
-                outline: none;
-            }
-        }
-
-        .modal-body{
-            position: relative;
-            margin: 0rem;
-            padding: 3.2rem !important;
-            p{
-                font-size: 1.5rem;
-                font-weight: normal;
-                color: $grey-2;
-                line-height: 160%;
-            }
-        }
-
-        .modal-footer{
-            padding: 2.5rem 3.2rem !important;
-            .btn{
-                padding: 10px 12px;
-                font-size: 15px;
-            }
-            
-            .btn-transparent{
-                background-color: transparent !important;
-            }
-        }
-    }
-}
-
 .toeic-notification {
     position: relative !important;
     margin-top: 6.4rem !important;

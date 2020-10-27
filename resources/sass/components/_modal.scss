@@ -94,6 +94,7 @@
                 }
 
                 .modal-body{
+                    padding: 2.5rem 2.2rem !important;
                     max-height: 504px;
                     overflow: auto;
                     margin-top: -2.1rem;
@@ -110,7 +111,7 @@
 
             .modal{
                 &-header{
-                    padding: 1rem 2.2rem 0rem 2.2rem !important;
+                    padding: 2.5rem 2.2rem 0rem 2.2rem;
                     border: 0 !important;
 
                     .close{
@@ -137,7 +138,6 @@
                 }
 
                 &-body{
-                    padding: 2.5rem 2.2rem !important;
                     border: 0 !important;
 
                     .list-group{
@@ -485,19 +485,16 @@
         margin-top: 0px;
     }
 }
-
-@media (min-width: 576px) {
-    #create-question, .modal-large{
-        .modal-dialog{
-            max-width: 70rem !important;
-        }
-    }
-}
-
 @media (max-width: 576px){
     #detailResultModal{
         .modal-dialog{
             margin: 0 !important;
+        }
+    }
+    
+    #create-question, .modal-large{
+        .modal-dialog{
+            max-width: 70rem !important;
         }
     }
 
@@ -612,6 +609,80 @@
     z-index: 100;
 }
 
+/* Modal Exit */
+#exitExamModal{
+
+    .modal-content{
+        padding: 0rem;
+        .modal-header{
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3.2rem !important;
+
+            .modal-title{
+                margin: 0rem;
+                @include h3;
+            }
+
+            .close{
+                margin: 0rem;
+                outline: none;
+            }
+        }
+
+        .modal-body{
+            position: relative;
+            margin: 0rem;
+            padding: 3.2rem !important;
+            p{
+                font-size: 1.5rem;
+                font-weight: normal;
+                color: $grey-2;
+                line-height: 160%;
+            }
+        }
+
+        .modal-footer{
+            padding: 2.5rem 3.2rem !important;
+            .btn{
+                padding: 10px 12px;
+                font-size: 15px;
+            }
+            
+            .btn-transparent{
+                background-color: transparent !important;
+            }
+        }
+    }
+}
+
+.modal-fix {
+    max-width: 70.4rem;
+
+    .modal-content {
+        width: 70.4rem;
+        padding: 0px !important;
+    }
+
+    .modal-header {
+        padding: 3.2rem 3.2rem 3rem !important;
+
+        .close {
+            margin: 0px;
+        }
+    }
+
+    .modal-body {
+        padding: 0rem 3.2rem 3.2rem !important;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end !important;
+        padding-top: 0px !important;
+    }
+}
 
 .modal-default {
     max-width: 54.4rem;

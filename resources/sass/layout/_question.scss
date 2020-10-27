@@ -358,3 +358,146 @@
         clear: both;
     }
 }
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+.benar-salah-input-table {
+    width: 100%;
+
+    tr td {
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+
+        &:nth-child(1) {
+            width: 48.8rem !important;
+            padding-right: 8px;
+
+            .ck-editor {
+                box-sizing: border-box;
+                
+            }
+            
+            .ck-editor__main {
+                box-sizing: border-box;
+                min-height: 4rem !important;
+                
+                .ck-content {
+                    padding: 0px 1,8rem !important;
+
+                    p {
+                        line-height: normal;
+                        margin-top: 1rem;
+                        margin-bottom: 1rem;
+
+                        &.ck-placeholder {
+                            position: absolute;
+                        }
+                    }
+                }
+            }
+        }
+
+        &:nth-child(2) {
+
+            .custom-dropdown {
+                button{
+                    background: $white;
+                    border-radius: 0px;
+                    color: $black-1;
+                    border: 2px solid #EBF1F6;
+                    box-shadow: none !important;
+                    min-height: 4.4rem;
+                    width: 11.6rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    align-items: center;
+                    font-size: 1.5rem;
+                    padding: 1rem 1.6rem;
+                    box-sizing: border-box;
+                    line-height: normal;
+                    height: 100%;
+
+                    i {
+                        line-height: normal;
+                    }
+    
+                    &::after {
+                        content: "";
+                        display: none;
+                    }
+
+                    &:focus {
+                        background: white;
+                        border: 2px solid $blue-4;
+                    }
+    
+                }
+
+                .dropdown-menu {
+                    border: none;
+                    border-radius: 0px;
+                    margin-top: 4px;
+                    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1), 0px 10px 20px rgba(0, 0, 0, 0.15);
+                    padding: 0px;
+                }
+                
+                .dropdown-item {
+                    padding: 1.8rem 2rem;
+                    font-size: 1.5rem;
+                    line-height: normal;
+
+                    &:hover {
+                        background: $blue-tp2;
+                    }
+
+                    &:focus {
+                        color: $black-1;
+                    }
+
+                    &.active {
+                        background: $grey-15 !important;
+                        color: $black-1;
+                    }
+                }
+
+            }
+
+            .remove-btn {
+                outline: none;
+                background: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+            }
+            
+            width: 11.6rem !important;
+            display: flex;
+
+            i::before {
+                color: $black-1;
+                font-size: 2rem;
+            }
+        }
+    }
+}
+
+.add-btn {
+    @include h5-reg;
+    text-decoration: none !important;
+    margin: 1.6rem auto;
+    display: inline-flex;
+    align-items: center;
+
+    span {
+    }
+    
+    i::before {
+        color: $blue;
+        font-size: 1.5rem;
+        margin-right: 0.7rem;
+    }
+}
