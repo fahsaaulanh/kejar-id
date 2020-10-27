@@ -22,7 +22,7 @@
                                 <h6>Menceklis Gambar</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
+                        <a class="card" href="#create-benar-salah" data-toggle="modal" data-target="#create-benar-salah">
                             <div class="card-body">
                                 <i class="kejar-benar-salah"></i>
                             <h6>Benar Salah</h6>

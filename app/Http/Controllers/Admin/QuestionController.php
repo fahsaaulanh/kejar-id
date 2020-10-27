@@ -224,7 +224,6 @@ class QuestionController extends Controller
                                 'round_id' => $roundId,
                                 'order' => $questionTotal + 1,
                             ];
-
                             $roundQuestionApi->store($question['data']['id'], $payloadQS);
                         }
                     }
@@ -281,6 +280,54 @@ class QuestionController extends Controller
                         ];
         
                         $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                    } elseif ($request->question_type === 'TFQMA') {
+                        $choices = [];
+
+                        foreach ($request->pertanyaan as $key => $value) {
+                            if ($value !== null || $request->status_pertanyaan[$key] !== null) {
+                                $choices[$key + 1] = [
+                                    'question' => $value,
+                                    'answer' => $request->status_pertanyaan[$key] === 'Benar',
+                                ];
+                            }
+                        }
+
+                        if (count($choices) > 0) {
+                            $collection = [
+                                'subject_id' => null,
+                                'topic_id' => null,
+                                'bank' => $gameParsed['short'],
+                                'question' => $request->keterangan_soal,
+                                'level' => 'LEVEL_1',
+                                'created_by' => session('user.id'),
+                                'type' => 'TFQMA',
+                                'choices' => $choices,
+                                'answer' => $choices,
+                            ];
+    
+                            $question = $questionApi->store($collection);
+    
+                            $updateData = [
+                                'explanation' => (string)$request->pembahasan,
+                                'explained_by' => session('user.id'),
+                                'tags' => ['explanation'],
+                                'note' => 'explanation',
+                            ];
+    
+                            $questionApi->update($question['data']['id'], ['status' => '2']);
+                            $questionApi->update($question['data']['id'], $updateData);
+
+                            $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                            $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                            $payloadQS = [
+                                'question_id' => $question['data']['id'],
+                                'round_id' => $roundId,
+                                'order' => $questionTotal + 1,
+                            ];
+            
+                            $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                        }
                     }
                 }
             }
@@ -432,6 +479,37 @@ class QuestionController extends Controller
 
                 $updateData = [
                     'explanation' => $request['explanation'],
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($request->question_type === 'TFQMA') {
+                $questionApi = new QuestionApi;
+
+                $choices = [];
+                foreach ($request->pertanyaan as $key => $value) {
+                    if ($value !== null || $request->status_pertanyaan[$key] !== null) {
+                        $choices[$key + 1] = [
+                            'question' => $value,
+                            'answer' => $request->status_pertanyaan[$key] === 'Benar',
+                        ];
+                    }
+                }
+
+                $payload = [
+                    'question' => (string)($request->keterangan_soal),
+                    'choices' => $choices,
+                    'answer' => $choices,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => (string)$request->pembahasan,
                     'explained_by' => session('user.id'),
                     'tags' => ['explanation'],
                     'note' => 'explanation',
