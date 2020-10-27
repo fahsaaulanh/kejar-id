@@ -65,8 +65,11 @@
                 @endphp
                 <div class="col">
                     <div class="row">
-                        @for ($i = 0; $i < $choicesNumber; $i++) <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
-                            {{ chr(65 + $i) }}
+                        @for ($i = 0; $i < $choicesNumber; $i++) <div class="choice-group-{{$maAnswerId}} mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
+                        <span class="caption-{{ (chr(65 + $i)).'-'.$maAnswerId }}">{{ chr(65 + $i) }}</span>
+                        <div id="spinner-{{ (chr(65 + $i)).'-'.$maAnswerId }}" class="spinner-border" style="display:none">
+                            <span class="sr-only"></span>
+                        </div>
                     </div>
                     @endfor
                 </div>
@@ -86,8 +89,11 @@
         @endphp
         <div class="col">
             <div class="row">
-                @for ($i = 0; $i < $choicesNumber; $i++) <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
-                    {{ chr(65 + $i) }}
+                @for ($i = 0; $i < $choicesNumber; $i++) <div class="choice-group-{{$maAnswerId}} mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice {{ $answers[$maAnswerId]['answer'] === chr(65 + $i) ? 'active' : '' }}" data-id="{{ $answers[$maAnswerId]['id'] }}" onclick="onClickAnswerPG('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}">
+                    <span class="caption-{{ (chr(65 + $i)).'-'.$maAnswerId }}">{{ chr(65 + $i) }}</span>
+                    <div id="spinner-{{ (chr(65 + $i)).'-'.$maAnswerId }}" class="spinner-border" style="display:none">
+                        <span class="sr-only"></span>
+                    </div>
             </div>
             @endfor
         </div>
@@ -121,9 +127,14 @@ return is_array($value['answer']);
         </div>
         <div class="col">
             <div class="row">
+                <div>
+                </div>
                 @for ($i = 0; $i < $choicesNumber; $i++) <div data-id="{{ $answers[$maAnswerId]['id'] }}" data-active="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'true' : 'false' }}" onclick="onClickAnswerCheck('{{ $i }}', '{{ $loop->index }}', '{{ $choicesNumber }}', '{{ $maAnswerId }}')" id="pts-choice-{{$loop->index}}-{{$i}}" class="mb-2 mb-md-2 mb-lg-2 mb-xl-2 pts-choice-check">
-                    <i id="pts-icon-{{$loop->index}}-{{$i}}" class="{{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }} font-24 mr-2"></i>
-                    {{ chr(65 + $i) }}
+                    <i id="pts-icon-{{$loop->index}}-{{$i}}" class="caption-{{ (chr(65 + $i)).'-'.$maAnswerId }} caption-{{ $maAnswerId }} {{ in_array(chr(65 + $i), $answers[$maAnswerId]['answer'] ?? []) ? 'kejar-checked-box' : 'kejar-check-box' }} font-24 mr-2"></i>
+                    <span class="caption-{{ (chr(65 + $i)).'-'.$maAnswerId }} caption-{{ $maAnswerId }}">{{ chr(65 + $i) }}</span>
+                    <div id="spinner-{{ (chr(65 + $i)).'-'.$maAnswerId }}" class="spinner-{{ $maAnswerId }} spinner-border" style="display:none">
+                        <span class="sr-only"></span>
+                    </div>
             </div>
             @endfor
         </div>
@@ -341,11 +352,30 @@ return is_array($value['answer']);
         }, 1000);
     }
 
+    function viewSpinner(answer, questionId, set){
+        if (set === 'value') {
+            if(Array.isArray(answer)){
+                $(".caption-"+questionId).show();
+                $(".spinner-"+questionId).hide();
+            }else{
+                $(".caption-"+answer+'-'+questionId).show();
+                $("#spinner-"+answer+'-'+questionId).hide();
+            }
+            $(".choice-group-"+questionId).css("pointer-events", "auto");
+        }else if (set === 'spinner'){
+            $(".choice-group-"+questionId).css("pointer-events", "none");
+            $(".caption-"+answer+'-'+questionId).hide();
+            $("#spinner-"+answer+'-'+questionId).show();
+        }
+    }
+
     function onClickAnswerPG(index, parentIndex, choicesNumber, questionId) {
         const selected = $(`#pts-choice-${parentIndex}-${index}`).hasClass('active');
         const parsedIndex = parseInt(index, 10);
         const answer = String.fromCharCode(65 + parsedIndex);
         const answerId = $(`#pts-choice-${parentIndex}-${index}`).attr('data-id')
+
+        viewSpinner(answer, questionId, 'spinner');
 
         for (let i = 0; i < choicesNumber; i++) {
             $(`#pts-choice-${parentIndex}-${i}`).removeClass('active');
@@ -369,6 +399,7 @@ return is_array($value['answer']);
 
         const parsedIndex = parseInt(index, 10);
         const answer = String.fromCharCode(65 + parsedIndex);
+        viewSpinner(answer, questionId, 'spinner');
 
         const answerId = $(`#pts-choice-${parentIndex}-${index}`).attr('data-id')
 
@@ -413,6 +444,7 @@ return is_array($value['answer']);
             },
             success: function(response) {
                 if (response.status === 200) {
+                    viewSpinner(answer, questionId, 'value');
                     return;
                 }
             }
