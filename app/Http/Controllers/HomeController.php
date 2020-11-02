@@ -111,4 +111,9 @@ class HomeController extends Controller
     {
         return view('example.withHeader');
     }
+
+    public function modal()
+    {
+        return view('admin.questions.soalcerita.create._mengurutkan');
+    }
 }

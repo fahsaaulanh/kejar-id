@@ -171,7 +171,7 @@ class QuestionController extends Controller
                         'level'=> 'LEVEL_1',
                         'created_by' => session('user.id'),
                     ];
-  
+
                     $question = $questionApi->store($collection);
 
                     $updateData = [
@@ -227,41 +227,87 @@ class QuestionController extends Controller
                             $roundQuestionApi->store($question['data']['id'], $payloadQS);
                         }
                     }
-                } else {
-                    if ($questionType === 'MCQSA') {
-                        $choices = [];
-                        $alphabet = 'A';
-                        foreach ($request['choices'] as $key => $choice) {
-                            if (!is_null($choice)) {
-                                $choices[$alphabet] = $choice;
-                                if ($key === intval($request['answer'])) {
-                                    $answer = $alphabet;
-                                }
-
-                                $alphabet++;
+                } elseif ($questionType === 'MCQSA') {
+                    $choices = [];
+                    $alphabet = 'A';
+                    foreach ($request['choices'] as $key => $choice) {
+                        if (!is_null($choice)) {
+                            $choices[$alphabet] = $choice;
+                            if ($key === intval($request['answer'])) {
+                                $answer = $alphabet;
                             }
-                        }
 
-                        if (count($choices) <= 0 || is_null($request['question']) || is_null($request['answer'])) {
-                            return redirect()->back();
+                            $alphabet++;
                         }
+                    }
 
+                    if (count($choices) <= 0 || is_null($request['question']) || is_null($request['answer'])) {
+                        return redirect()->back();
+                    }
+
+                    $collection = [
+                        'subject_id' => null,
+                        'topic_id' => null,
+                        'bank' => $gameParsed['short'],
+                        'question' => $request['question'],
+                        'level' => 'LEVEL_1',
+                        'created_by' => session('user.id'),
+                        'type' => 'MCQSA',
+                        'choices' => $choices,
+                        'answer' => $answer,
+                    ];
+
+                    $question = $questionApi->store($collection);
+
+                    $updateData = [
+                        'explanation' => (string)$request['explanation'],
+                        'explained_by' => session('user.id'),
+                        'tags' => ['explanation'],
+                        'note' => 'explanation',
+                    ];
+
+                    $questionApi->update($question['data']['id'], ['status' => '2']);
+                    $questionApi->update($question['data']['id'], $updateData);
+
+                    $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                    $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                    $payloadQS = [
+                        'question_id' => $question['data']['id'],
+                        'round_id' => $roundId,
+                        'order' => $questionTotal + 1,
+                    ];
+
+                    $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                } elseif ($request->question_type === 'TFQMA') {
+                    $choices = [];
+
+                    foreach ($request->pertanyaan as $key => $value) {
+                        if ($value !== null || $request->status_pertanyaan[$key] !== null) {
+                            $choices[$key + 1] = [
+                                'question' => $value,
+                                'answer' => $request->status_pertanyaan[$key] === 'Benar',
+                            ];
+                        }
+                    }
+
+                    if (count($choices) > 0) {
                         $collection = [
                             'subject_id' => null,
                             'topic_id' => null,
                             'bank' => $gameParsed['short'],
-                            'question' => $request['question'],
+                            'question' => $request->keterangan_soal,
                             'level' => 'LEVEL_1',
                             'created_by' => session('user.id'),
-                            'type' => 'MCQSA',
+                            'type' => 'TFQMA',
                             'choices' => $choices,
-                            'answer' => $answer,
+                            'answer' => $choices,
                         ];
 
                         $question = $questionApi->store($collection);
 
                         $updateData = [
-                            'explanation' => (string)$request['explanation'],
+                            'explanation' => (string)$request->pembahasan,
                             'explained_by' => session('user.id'),
                             'tags' => ['explanation'],
                             'note' => 'explanation',
@@ -278,56 +324,55 @@ class QuestionController extends Controller
                             'round_id' => $roundId,
                             'order' => $questionTotal + 1,
                         ];
-        
+
                         $roundQuestionApi->store($question['data']['id'], $payloadQS);
-                    } elseif ($request->question_type === 'TFQMA') {
-                        $choices = [];
-
-                        foreach ($request->pertanyaan as $key => $value) {
-                            if ($value !== null || $request->status_pertanyaan[$key] !== null) {
-                                $choices[$key + 1] = [
-                                    'question' => $value,
-                                    'answer' => $request->status_pertanyaan[$key] === 'Benar',
-                                ];
-                            }
+                    }
+                } elseif ($request->question_type === 'SSQ') {
+                    $choices = [];
+                    foreach ($request->answer as $key => $value) {
+                        if ($value['key'] !== null && $value['description'] !== null) {
+                            $choices[(String)($key + 1)] = [
+                                'question' => $value['description'],
+                                'answer' => (int)$value['key'],
+                            ];
                         }
+                    }
 
-                        if (count($choices) > 0) {
-                            $collection = [
-                                'subject_id' => null,
-                                'topic_id' => null,
-                                'bank' => $gameParsed['short'],
-                                'question' => $request->keterangan_soal,
-                                'level' => 'LEVEL_1',
-                                'created_by' => session('user.id'),
-                                'type' => 'TFQMA',
-                                'choices' => $choices,
-                                'answer' => $choices,
-                            ];
-    
-                            $question = $questionApi->store($collection);
-    
-                            $updateData = [
-                                'explanation' => (string)$request->pembahasan,
-                                'explained_by' => session('user.id'),
-                                'tags' => ['explanation'],
-                                'note' => 'explanation',
-                            ];
-    
-                            $questionApi->update($question['data']['id'], ['status' => '2']);
-                            $questionApi->update($question['data']['id'], $updateData);
+                    if (count($choices) > 0) {
+                        $collection = [
+                            'subject_id' => null,
+                            'topic_id' => null,
+                            'bank' => $gameParsed['short'],
+                            'question' => $request->question['question'],
+                            'level' => 'LEVEL_1',
+                            'created_by' => session('user.id'),
+                            'type' => 'SSQ',
+                            'choices' => $choices,
+                            'answer' => $choices,
+                        ];
 
-                            $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
-                            $questionTotal = $roundQuestionMeta['total'] ?? 0;
+                        $question = $questionApi->store($collection);
 
-                            $payloadQS = [
-                                'question_id' => $question['data']['id'],
-                                'round_id' => $roundId,
-                                'order' => $questionTotal + 1,
-                            ];
-            
-                            $roundQuestionApi->store($question['data']['id'], $payloadQS);
-                        }
+                        $updateData = [
+                            'explanation' => (string)$request->question['description'],
+                            'explained_by' => session('user.id'),
+                            'tags' => ['explanation'],
+                            'note' => 'explanation',
+                        ];
+
+                        $questionApi->update($question['data']['id'], ['status' => '2']);
+                        $questionApi->update($question['data']['id'], $updateData);
+
+                        $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                        $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                        $payloadQS = [
+                            'question_id' => $question['data']['id'],
+                            'round_id' => $roundId,
+                            'order' => $questionTotal + 1,
+                        ];
+
+                        $roundQuestionApi->store($question['data']['id'], $payloadQS);
                     }
                 }
             }
@@ -425,18 +470,17 @@ class QuestionController extends Controller
                 'question' => 'required',
                 'answer' => 'required',
             ]);
-    
+
             try {
                 $questionApi = new QuestionApi;
-    
-    
+
                 $payload = [
                     'question'=> (string)strtolower($request->question),
                     'answer'=> (string)strtolower($request->answer),
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
                 ];
-    
+
                 $questionApi->update($questionId, $payload);
             } catch (Throwable $th) {
                 return $th;
@@ -510,6 +554,36 @@ class QuestionController extends Controller
 
                 $updateData = [
                     'explanation' => (string)$request->pembahasan,
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($request->question_type === 'SSQ') {
+                $questionApi = new QuestionApi;
+                $choices = [];
+                foreach ($request->answer as $key => $value) {
+                    if ($value['key'] !== null && $value['description'] !== null) {
+                        $choices[(String)($key + 1)] = [
+                            'question' => $value['description'],
+                            'answer' => (int)$value['key'],
+                        ];
+                    }
+                }
+
+                $payload = [
+                    'question' => (string)($request->question['question']),
+                    'choices' => $choices,
+                    'answer' => $choices,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => (string)$request->question['description'],
                     'explained_by' => session('user.id'),
                     'tags' => ['explanation'],
                     'note' => 'explanation',

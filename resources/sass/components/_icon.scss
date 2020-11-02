@@ -44,7 +44,16 @@ i, .icomoon-liga {
     content: $kejar-calendar;
   }
 }
-.kejar-rombel-bold {
+.kejar-drag-vertical:before{
+  content: '\e92e';
+  color: #334e68;
+}
+.kejar-drag-vertical:before{
+  content: '\e92e';
+  color: #334e68;
+}
+.kejar-edit:before{
+  content: "\e912";
   color: #334e68;
   &:before {
     content: $kejar-rombel-bold;

@@ -148,7 +148,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -191,7 +191,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         {!! $question['question']['explanation'] !!}
                     </div>
@@ -199,7 +199,7 @@
             </div>
         </div>
         @endif
-<!-- 
+<!--
         <div class="card type-ya-tidak">
             <div class="card-header">
                 <div>
@@ -239,7 +239,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -251,58 +251,48 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
+        @if ($question['question']['type'] === 'SSQ')
         <div class="card type-mengurutkan">
             <div class="card-header">
                 <div>
-                    <h5>SOAL 5</h5> <i class="kejar-dot"></i> <i class="kejar-mengurutkan-vertikal"></i> <h5>Mengurutkan</h5>
+                    <h5>SOAL {{ $key + 1 }}</h5> <i class="kejar-dot"></i> <i class="kejar-mengurutkan-vertikal"></i> <h5>Mengurutkan</h5>
                 </div>
                 <div>
-                    <button>
+                    <button data-toggle="modal" data-target="#update-mengurutkan" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                         <i class="kejar-edit"></i> Edit
                     </button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="direction-text">
-                    <p class="">
-                        Bacalah wacana yang diberikan dengan seksama. Pilihlah benar atau salah untuk setiap pernyataan berikut sesuai dengan wacana. Petunjuk juga bisa menjadi sangat panjang sehingga ukuran formnya menjadi lebih besar dari yang semula disediakan seperti ini.
+                    <p class="editor-display">
+                        {!! $question['question']['question'] !!}
                     </p>
                 </div>
                 <div class="question-answer-group">
                     <table class="question-answer-table">
+                        @foreach($question['question']['choices'] as $choice)
                         <tr>
-                            <td>1.</td>
-                            <td>Ini adalah pernyataan yang sudah diisi. Ketika agak panjang, ukuran form akan mengikuti.</td>
+                            <td>{{ $choice['answer'] }}.</td>
+                            <td class="editor-display">{!! $choice['question'] !!}</td>
                         </tr>
-                        <tr>
-                            <td>2.</td>
-                            <td>Pernyataan ini sedang diisi.</td>
-                        </tr>
-                        <tr>
-                            <td>3.</td>
-                            <td>Pernytaaan ini sudah diisi juga.</td>
-                        </tr>
+                        @endforeach
                     </table>
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
+                        {!! $question['question']['explanation'] !!}
                     </div>
                 </div>
             </div>
         </div>
+        @endif
 
-        <div class="card type-memasangkan">
+        <!-- <div class="card type-memasangkan">
             <div class="card-header">
                 <div>
                     <h5>SOAL 6</h5> <i class="kejar-dot"></i> <i class="kejar-mencocokkan"></i> <h5>Memasangkan</h5>
@@ -340,7 +330,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -386,7 +376,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -422,7 +412,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -471,7 +461,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -508,7 +498,7 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    
+
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -558,6 +548,8 @@
 @include('admin.questions.soalcerita.update._pilihan_ganda')
 @include('admin.questions.soalcerita.create._benar_salah')
 @include('admin.questions.soalcerita.update._benar_salah')
+@include('admin.questions.soalcerita.create._mengurutkan')
+@include('admin.questions.soalcerita.update._mengurutkan')
 @endsection
 
 

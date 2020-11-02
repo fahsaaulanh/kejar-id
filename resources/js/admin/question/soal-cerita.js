@@ -10,12 +10,25 @@ $('#create-question').on('show.bs.modal', event => {
     $('#upload-questions').modal('hide');
 });
 
+// $(document).on('click', '.btn-add', function(){
+//     var index = $('.table-form tbody tr').length;
+
+//     $('.table-form').find('tbody').append('<tr><td><input type="text" placeholder="Ketik soal" name="question[' + index + '][question]" class="form-control"></td><td><input type="text" placeholder="Ketik jawaban" name="question['+ index +'][answer]" class="form-control"></td></tr>');
+// });
+
+$(document).on('click', '#btn-add-alternative-answer', function(){
+    var index = $('.form-group #new_answer textarea').length;
+    $('#new_answer').append('<div class="d-flex justify-content-start align-items-start"><textarea class="textarea-answer" name="question[answer][' + index + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (index+1) +'"></textarea><button class="btn-delete-answer" type="button"><i class="kejar-close"></i></button></div>');
+});
+
 $(document).on('change', 'input[type=file]', function(){
     var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
 
     filename = filename == '' ? 'Pilih file' : filename;
     $(this).parents('.custom-upload').find('input[type=text]').val(filename);
 });
+
+// Editing
 
 $('.page-title h2').dblclick(function() {
     $('#rename-round').modal('show');
@@ -37,7 +50,19 @@ $('.direction').dblclick(function() {
     $('#update-direction').modal('show');
 });
 
-$('.copy-id').click(function (e) { 
+$('.table-questions tbody tr').on('dblclick', 'td', function() {
+    var modal = $('#update-question');
+    var id = $(this).parent().data('id');
+    var question = $(this).parent().data('question');
+    var answer = $(this).parent().data('answer');
+    var url = $(this).parent().data('url');
+    $(modal).find('form').attr('action', url);
+    $(modal).find('input[name="question"]').val(question);
+    $(modal).find('input[name="answer"]').val(answer);
+    $(modal).modal('show');
+});
+
+$('.copy-id').click(function (e) {
     e.preventDefault();
     textToClipboard($(this).data('id'));
 });
@@ -277,7 +302,7 @@ function radioPgManagement(){
             $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
         } else {
             $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
-        }   
+        }
     });
 }
 
@@ -430,12 +455,28 @@ $(document).on('click', '.add-btn', function() {
         var indexNumber = $(this).parent().find('.benar-salah-input-table').find('tr').length;
         var row = '<tr><td><div class="ckeditor-list"><textarea name="pertanyaan[]" id="" cols="30" rows="1" class="editor-field" placeholder="Ketik pernyataan ' + (indexNumber + 1) + '"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><input type="hidden" name="status_pertanyaan[]"><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">B/S</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" href="#">Benar</a><a class="dropdown-item" href="#">Salah</a></div></div><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>';
         $(this).parent().find('.benar-salah-input-table').append(row);
-    
+
         $(this).parent().find('.benar-salah-input-table').find('tr').each(function(index, element) {
             $(element).find('.remove-btn').removeClass('d-none');
         });
-    
+
         initializeEditor(ckEditorField.length, $(this).parent().find('.benar-salah-input-table').find('tr').last().find('textarea')[0]);
+    }
+
+    if ($(this).parent().find('table').data('type') === 'mengurutkan') {
+        var indexNumber = $(this).parent().find('.mengurutkan-input-table').find('tr').length;
+        var row = `<tr><td><div class="num-group"><input type="hidden" name="answer[${ indexNumber }][key]" value="${ indexNumber + 1 }">${ indexNumber + 1 }</div></td><td><div class="ckeditor-group ckeditor-list"><textarea name="answer[${ indexNumber }][description]" class="editor-field" placeholder="Ketik pernyataan/kalimat urutan ${ indexNumber + 1 }" ck-type="mengurutkan"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><div class="btn-action-group"><div class="dropdown dropleft"><button class="sort-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="kejar-drag-vertical"></i></button><div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" href="#"><i class="kejar-top"></i> Geser ke Atas</a><a class="dropdown-item" href="#"><i class="kejar-bottom"></i> Geser ke Bawah</a></div></div><button class="remove-btn" type="button"><i class="kejar-close"></i></button></div></td></tr>`;
+        $(this).parent().find('.mengurutkan-input-table').append(row);
+
+        $(this).parent().find('.mengurutkan-input-table').find('tr').each(function(index, element) {
+            $(element).find('.remove-btn').removeClass('d-none');
+        });
+
+        clearEditorField();
+
+        $(this).parents('.modal-body').find('.editor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
     }
 });
 
@@ -454,20 +495,45 @@ $(document).on('click', '.remove-btn', function(e) {
 
     if ($(this).parents('table').data('type') === 'benar_salah') {
         $(this).parents('tr').remove();
-    
+
         $(modalBody).find('.benar-salah-input-table').find('tr').each(function(index, element) {
             if (index < 1 && $(modalBody).find('.benar-salah-input-table').find('tr').length == 1) {
                 $(element).find('.remove-btn').addClass('d-none');
             }
             $(element).find('textarea').attr('placeholder', 'Ketik pernyataan ' + (index + 1));
         });
-    
+
         for (let index = 0; index < ckEditorField.length; index++) {
             ckEditorField[index].destroy();
         }
-    
+
         ckEditorField = [];
-    
+
+        $(modalBody).find('.editor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+    }
+
+    if ($(this).parents('table').data('type') === 'mengurutkan') {
+        $(this).parents('tr').remove();
+
+        $(modalBody).find('.mengurutkan-input-table').find('tr').each(function(index, element) {
+            if (index < 1 && $('.mengurutkan-input-table').find('tr').length == 1) {
+                $(element).find('.remove-btn').addClass('d-none');
+            }
+            $(element).find('.num-group').html(`<input type="hidden" name="answer[key][${index}]" value="${index + 1}">${index+1}`);
+            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan/kalimat urutan ' + (index + 1));
+        });
+        for (let index = 0; index < ckEditorField.length; index++) {
+            ckEditorField[index].destroy();
+        }
+
+        if ($(modalBody).find('.mengurutkan-input-table tr').length <= 1) {
+            $(modalBody).find('.mengurutkan-input-table').find('.remove-btn').addClass('d-none');
+        }
+
+        ckEditorField = [];
+
         $(modalBody).find('.editor-field').each((index, element) => {
             initializeEditor(index, element);
         });
@@ -476,7 +542,6 @@ $(document).on('click', '.remove-btn', function(e) {
 
 $(document).on('show.bs.dropdown', '.custom-dropdown', function () {
     var currentStatus = $(this).find('.dropdown-status').text();
-    
     $(this).find('.dropdown-menu a').each(function(e) {
         if ($(this).text() === currentStatus) {
             $(this).addClass('active');
@@ -490,7 +555,6 @@ $('#edit-benar-salah').on('show.bs.modal', (e) => {
     e.stopImmediatePropagation();
 
     $(e.target).find('form').attr('action', $(e.relatedTarget).data('url'));
-    
     $.ajax({
         type: "GET",
         url: $(e.relatedTarget).data('url'),
@@ -527,12 +591,81 @@ $('#create-benar-salah').on('hide.bs.modal', (e) => {
     clearEditorField();
 });
 
+$('#create-mengurutkan').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+
+    $(e.target).find('.editor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+$('#create-mengurutkan').on('hide.bs.modal', (e) => {
+    $('#create-soal-cerita-question-modal').modal('show');
+    clearEditorField();
+});
+
+$('#update-mengurutkan').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+
+    $(e.target).find('form').attr('action', $(e.relatedTarget).data('url'));
+    $.ajax({
+        type: "GET",
+        url: $(e.relatedTarget).data('url'),
+        success: function (response) {
+            $(e.target).find('textarea[name="question[question]"]').val(response.question);
+            $(e.target).find('textarea[name="question[description]"]').val(response.explanation);
+            $(e.target).find('.mengurutkan-input-table').html('');
+            for (let x = 0; x < Object.keys(response.choices).length; x++) {
+                $(e.target).find('.mengurutkan-input-table').append(`<tr><td><div class="num-group"><input type="hidden" name="answer[${ x }][key]" value="${ response.choices[x + 1].answer }">${ response.choices[x + 1].answer }</div></td><td><div class="ckeditor-group ckeditor-list"><textarea name="answer[${ x }][description]" class="editor-field" placeholder="Ketik pernyataan/kalimat urutan ${ x + 1 }" ck-type="mengurutkan">${ response.choices[x + 1].question }</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><div class="btn-action-group"><div class="dropdown dropleft"><button class="sort-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="kejar-drag-vertical"></i></button><div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" href="#"><i class="kejar-top"></i> Geser ke Atas</a><a class="dropdown-item" href="#"><i class="kejar-bottom"></i> Geser ke Bawah</a></div></div><button class="remove-btn" type="button"><i class="kejar-close"></i></button></div></td></tr>`);
+            }
+
+            if (Object.keys(response.choices).length <= 1) {
+                $(e.target).find('.mengurutkan-input-table').find('.remove-btn').addClass('d-none');
+            }
+
+            $(e.target).find('form').find('.editor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+        }
+    });
+});
+
+$('#update-mengurutkan').on('show.bs.modal', (e) => {
+    clearEditorField();
+});
+
 
 function clearEditorField() {
     for (let index = 0; index < ckEditorField.length; index++) {
         ckEditorField[index].destroy();
     }
-    
+
     ckEditorField = [];
     ckEditorFieldLength = 0;
 }
+
+
+$(document).on('click', '.answer-list-table-ur .btn-action-group a:nth-child(1)', function(e){
+    e.preventDefault();
+    var thisIndex = $(this).parents('tr').index();
+    if (thisIndex !== 0) {
+        var toIndex = $(this).parents('tr').prev().index();
+        var thisData = ckEditorField[thisIndex + 1].getData();
+        var toData = ckEditorField[toIndex + 1].getData();
+        ckEditorField[thisIndex + 1].setData(toData);
+        ckEditorField[toIndex + 1].setData(thisData);
+    }
+});
+
+$(document).on('click', '.answer-list-table-ur .btn-action-group a:nth-child(2)', function(e){
+    e.preventDefault();
+    var thisIndex = $(this).parents('tr').index();
+    if (thisIndex !== $(this).parents('.answer-list-table-ur').find('tr').length - 1) {
+        var toIndex = $(this).parents('tr').next().index();
+        var thisData = ckEditorField[thisIndex + 1].getData();
+        var toData = ckEditorField[toIndex + 1].getData();
+        ckEditorField[thisIndex + 1].setData(toData);
+        ckEditorField[toIndex + 1].setData(thisData);
+    }
+});
