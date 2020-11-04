@@ -493,6 +493,22 @@ function checkBoxMdManagement(type){
     }
 }
 
+function checkBoxMdManagement(type){
+    if (type == 'check') {
+        $('.answer-list-table-md input[type=checkbox]').each(function(){
+            if ($(this).is(':checked')) {
+                $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
+            } else {
+                $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
+            }
+        });
+    } else {
+        $('.answer-list-table-md input[type=checkbox]').each(function(){
+            $(this).prop('checked', false);
+        });
+    }
+}
+
 var ckEditorField = [];
 var ckEditorFieldLength = 0;
 
