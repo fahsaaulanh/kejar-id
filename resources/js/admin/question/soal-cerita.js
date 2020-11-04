@@ -1,3 +1,6 @@
+const { bind } = require("lodash");
+const { ajax, ajaxSetup } = require("jquery");
+
 $('#upload-questions').on('show.bs.modal', event => {
     $('#create-question').modal('hide');
 });
@@ -189,6 +192,10 @@ $(document).on('input', '.answer-list-table-pg input[type=radio]', function() {
     radioPgManagement();
 });
 
+$(document).on('input', '.answer-list-table-md input[type=checkbox]', function() {
+    checkBoxMdManagement('check');
+});
+
 $(document).on('focus', '.ckeditor-list .ck-content', function(){
     $(this).parents().closest('.ck-editor').next().removeClass('d-none');
 }).on('blur', '.ckeditor-list .ck-content', function(){
@@ -219,12 +226,34 @@ $(document).on('click', '.add-btn', function(){
         }
         radioPgManagement();
     }
+
+    if (type == 'menceklis-daftar'){
+        var modal = $(this).parents('.modal');
+        var totalField = modal.find('.answer-list-table-md tr').length;
+        if (totalField == 2) {
+            modal.find('.answer-list-table-md tr').each(function(){
+                var secondField = $(this).children().eq(1);
+                var removeBtn = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                secondField.attr('colspan', 1);
+                secondField.removeClass('colspan-2');
+                $(this).append(removeBtn);
+            });
+        }
+        var td1 = '<td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ totalField +'"><i class="kejar-belum-dikerjakan"></i></div></td>';
+        var td2 = '<td><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ totalField +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(totalField + 1) +'" ck-type="menceklis-daftar" required></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
+        var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+        var newAnswer = '<tr>'+ td1 + td2 + td3 +'</tr>';
+        modal.find('.answer-list-table-md').append(newAnswer);
+        initializeEditor(ckEditorFieldLength, $(this).prev().children().find('.editor-field').last()[0]);
+        checkBoxMdManagement('check');
+    }
 });
 
 $(document).on('click', '.edit-btn', function(){
     var type = $(this).data('target');
     var modal = $(type);
     var url = $(this).data('url');
+
     if (type == '#edit-pilihan-ganda') {
         $.ajax({
             url: url,
@@ -247,6 +276,33 @@ $(document).on('click', '.edit-btn', function(){
                     initializeEditor(index, element);
                 });
                 setTimeout(function(){ radioPgManagement(); }, 50);
+                modal.modal('show');
+            }
+        });
+    }
+
+    if (type == '#edit-menceklis-daftar') {
+        $.ajax({
+            url: url,
+            method: "GET",
+            success:function(response){
+                modal.find('form').attr('action', url);
+                modal.find('textarea[name=question]').val(response.question);
+                modal.find('textarea[name=explanation]').val(response.explanation);
+                var answersData = '';
+                for (var i = 0; i < Object.keys(response.choices).length; i++) {
+                    var checkedBox = response.answer.includes(String.fromCharCode(parseInt(65 + i))) == true ? 'checked' : '';
+                    if (Object.keys(response.choices).length > 2) {
+                        answersData += '<tr><td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ i +'" '+ checkedBox +'><i class="kejar-belum-dikerjakan"></i></div></td><td><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ i +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(i + 1) +' }}" ck-type="menceklis-daftar" required>'+ response.choices[String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
+                    } else {
+                        answersData += '<tr><td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ i +'" '+ checkedBox +'><i class="kejar-belum-dikerjakan"></i></div></td><td colspan="2" class="colspan-2"><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ i +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(i + 1) +' }}" ck-type="menceklis-daftar" required>'+ response.choices[String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td></tr>';
+                    }
+                }
+                modal.find('.answer-list-table-md').html(answersData);
+                modal.find('.ckeditor-field').each((index, element) => {
+                    initializeEditor(index, element);
+                });
+                setTimeout(function(){ checkBoxMdManagement('check'); }, 50);
                 modal.modal('show');
             }
         });
@@ -282,9 +338,37 @@ $(document).on('click', '.remove-btn', function(){
         }
         setTimeout(function(){ radioPgManagement(); }, 50);
     }
+
+    if (type == 'menceklis-daftar') {
+        var modal = $(this).parents('.modal');
+        $(this).parents('tr').remove();
+        clearEditorField();
+        modal.find('.ckeditor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+        var number = 0;
+        modal.find('.answer-list-table-md tr').each(function(){
+            $(this).find('input[type=checkbox]').val(number);
+            $(this).find('textarea').attr({
+                'name': 'choices['+ number +']',
+                'placeholder': 'Ketik pilihan jawaban ' + parseInt(number + 1)
+            });
+            number++;
+        });
+        var totalField = modal.find('.answer-list-table-md tr').length;
+        if (totalField == 2) {
+            modal.find('.answer-list-table-md tr').each(function(){
+                var secondField = $(this).children().eq(1);
+                secondField.attr('colspan', 2);
+                secondField.addClass('colspan-2');
+                $(this).children().eq(2).remove();
+            });
+        }
+        setTimeout(function(){ checkBoxMdManagement('check'); }, 50);
+    }
 });
 
-$('#create-pilihan-ganda').on('show.bs.modal', (e) => {
+$('#create-menceklis-daftar').on('show.bs.modal', (e) => {
     e.stopImmediatePropagation();
     $('#create-soal-cerita-question-modal').modal('hide');
     $(e.target).find('.ckeditor-field').each((index, element) => {
@@ -294,6 +378,7 @@ $('#create-pilihan-ganda').on('show.bs.modal', (e) => {
 
 $('.modal').on('hide.bs.modal', (e) => {
     clearEditorField();
+    checkBoxMdManagement('unchecked');
 });
 
 function radioPgManagement(){
@@ -390,7 +475,26 @@ function btnManagement(){
     }).on('blur', '.ckeditor-list .ck-content', function(){
         $(this).parents().closest('.ck-editor').next().addClass('d-none');
     });
+});
+
+function checkBoxMdManagement(type){
+    if (type == 'check') {
+        $('.answer-list-table-md input[type=checkbox]').each(function(){
+            if ($(this).is(':checked')) {
+                $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
+            } else {
+                $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
+            }
+        });
+    } else {
+        $('.answer-list-table-md input[type=checkbox]').each(function(){
+            $(this).prop('checked', false);
+        });
+    }
 }
+
+var ckEditorField = [];
+var ckEditorFieldLength = 0;
 
 function initializeEditor(index, element) {
     ClassicEditor

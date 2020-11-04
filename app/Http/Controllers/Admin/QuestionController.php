@@ -279,7 +279,7 @@ class QuestionController extends Controller
                     ];
 
                     $roundQuestionApi->store($question['data']['id'], $payloadQS);
-                } elseif ($request->question_type === 'TFQMA') {
+                } elseif ($questionType === 'TFQMA') {
                     $choices = [];
 
                     foreach ($request->pertanyaan as $key => $value) {
@@ -327,7 +327,7 @@ class QuestionController extends Controller
 
                         $roundQuestionApi->store($question['data']['id'], $payloadQS);
                     }
-                } elseif ($request->question_type === 'SSQ') {
+                } elseif ($questionType === 'SSQ') {
                     $choices = [];
                     foreach ($request->answer as $key => $value) {
                         if ($value['key'] !== null && $value['description'] !== null) {
@@ -374,6 +374,59 @@ class QuestionController extends Controller
 
                         $roundQuestionApi->store($question['data']['id'], $payloadQS);
                     }
+                } elseif ($questionType === 'CQ') {
+                    $choices = [];
+                    $answers = [];
+                    $alphabet = 'A';
+                    foreach ($request['choices'] as $key => $choice) {
+                        if (!is_null($choice)) {
+                            $choices[$alphabet] = $choice;
+                            if (in_array($key, $request['answer'], true)) {
+                                $answers[] = $alphabet;
+                            }
+
+                            $alphabet++;
+                        }
+                    }
+
+                    if (count($choices) <= 0 || count($answers) <= 0 || is_null($request['question'])) {
+                        return redirect()->back();
+                    }
+
+                    $collection = [
+                        'subject_id' => null,
+                        'topic_id' => null,
+                        'bank' => $gameParsed['short'],
+                        'question' => $request['question'],
+                        'level' => 'LEVEL_1',
+                        'created_by' => session('user.id'),
+                        'type' => 'CQ',
+                        'choices' => $choices,
+                        'answer' => $answers,
+                    ];
+
+                    $question = $questionApi->store($collection);
+
+                    $updateData = [
+                        'explanation' => (string)$request['explanation'],
+                        'explained_by' => session('user.id'),
+                        'tags' => ['explanation'],
+                        'note' => 'explanation',
+                    ];
+
+                    $questionApi->update($question['data']['id'], ['status' => '2']);
+                    $questionApi->update($question['data']['id'], $updateData);
+
+                    $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                    $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                    $payloadQS = [
+                        'question_id' => $question['data']['id'],
+                        'round_id' => $roundId,
+                        'order' => $questionTotal + 1,
+                    ];
+
+                    $roundQuestionApi->store($question['data']['id'], $payloadQS);
                 }
             }
         } catch (Throwable $th) {
@@ -584,6 +637,49 @@ class QuestionController extends Controller
 
                 $updateData = [
                     'explanation' => (string)$request->question['description'],
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($request->question_type === 'CQ') {
+                $questionApi = new QuestionApi;
+                $this->validate($request, [
+                    'question' => 'required',
+                ]);
+
+                $choices = [];
+                $answers = [];
+                $alphabet = 'A';
+
+                foreach ($request['choices'] as $key => $choice) {
+                    if (!is_null($choice)) {
+                        $choices[$alphabet] = $choice;
+                        if (in_array($key, $request['answer'], true)) {
+                            $answers[] = $alphabet;
+                        }
+
+                        $alphabet++;
+                    }
+                }
+
+                if (count($choices) <= 0 || count($answers) <= 0) {
+                    return redirect()->back();
+                }
+
+                $payload = [
+                    'question' => $request['question'],
+                    'choices' => $choices,
+                    'answer' => $answers,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => $request['explanation'],
                     'explained_by' => session('user.id'),
                     'tags' => ['explanation'],
                     'note' => 'explanation',

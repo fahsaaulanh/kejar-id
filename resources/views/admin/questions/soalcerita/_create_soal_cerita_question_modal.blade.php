@@ -16,10 +16,10 @@
                                 <h6>Pilihan Ganda</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
-                            <div class="card-body">
+                        <a class="card" href="#create-menceklis-daftar" data-toggle="modal" data-target="#create-menceklis-daftar">
+                            <div class="card-body p-3">
                                 <i class="kejar-pilih-centang"></i>
-                                <h6>Menceklis Gambar</h6>
+                                <h6>Menceklis Daftar</h6>
                             </div>
                         </a>
                         <a class="card" href="#create-benar-salah" data-toggle="modal" data-target="#create-benar-salah">

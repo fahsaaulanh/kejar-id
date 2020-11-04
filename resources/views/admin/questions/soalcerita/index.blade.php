@@ -111,58 +111,50 @@
                     </div>
                 </div>
             </div>
-        </div>
-        @endif
-
-        <!-- <div class="card type-menceklis-daftar">
+        </div> -->
+        @if ($question['question']['type'] === 'CQ')
+        <div class="card type-menceklis-daftar">
             <div class="card-header">
                 <div>
-                    <h5>SOAL 2</h5> <i class="kejar-dot"></i> <i class="kejar-pilih-centang"></i> <h5>Menceklis Daftar</h5>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-pilih-centang"></i> <h5>Menceklis Daftar</h5>
                 </div>
                 <div>
-                    <button>
+                    <button class="edit-btn" data-target="#edit-menceklis-daftar" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                         <i class="kejar-edit"></i> Edit
                     </button>
                 </div>
             </div>
             <div class="card-body">
-                <div class="question-text">
-                    <strong>Jawablah pertanyaan berikut!</strong>
-                    <p class="mt-5">Pada suatu hari, hiduplah dua orang bersaudara bernama Ana dan Elsa. Mereka berdua tinggal pada sebuah istana di negeri yang bernama Arandelle. Sejak kecil, Ana dan Elsa senang bermain bersama. Permainan favorit mereka adalah membuat manusia salju. Mereka juga senang bercerita. Mereka saling menyayangi. Jawaban yang tepat adalah ...</p>
+                <div class="editor-display">
+                    {!! $question['question']['question'] !!}
                 </div>
                 <div class="answer-text">
-                    <ul class="list-unstyled">
-                        <li>
-                            <i class="kejar-checked-box"></i> Ibu dan Ayah pergi ke Taman Safari.
-                        </li>
-                        <li>
-                            <i class="kejar-check-box"></i> Ibu dan Ayah pergi ke Taman Safari.
-                        </li>
-                        <li>
-                            <i class="kejar-check-box"></i> Ibu dan Ayah pergi ke Taman Safari.
-                        </li>
-                        <li>
-                            <i class="kejar-check-box"></i> Ibu dan Ayah pergi ke Taman Safari.
-                        </li>
-                    </ul>
+                    <table class="question-answer-table">
+                        @foreach($question['question']['choices'] as $key => $choice)
+                        <tr>
+                            <td>
+                                @if(in_array($key, $question['question']['answer'], true))
+                                <i class="kejar-checked-box"></i>
+                                @else
+                                <i class="kejar-check-box"></i>
+                                @endif
+                            </td>
+                            <td class="editor-display">{!! $choice !!}</td>
+                        </tr>
+                        @endforeach
+                    </table>
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-
-                    <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
+                    <div class="editor-display">
+                        {!! $question['question']['explanation'] !!}
                     </div>
                 </div>
             </div>
-        </div> -->
-        @if ($question['question']['type'] === 'TFQMA')
-        <div class="card type-benar-salah">
+        </div>
+        @endif
+
+        <!-- <div class="card type-benar-salah">
             <div class="card-header">
                 <div>
                     <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-benar-salah"></i> <h5>Benar Salah</h5>
@@ -239,7 +231,6 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -330,7 +321,6 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -376,7 +366,6 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -412,7 +401,6 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -461,7 +449,6 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -498,7 +485,6 @@
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-
                     <div class="explanation-text">
                         <p>
                             <ul class="list-unstyled">
@@ -550,6 +536,8 @@
 @include('admin.questions.soalcerita.update._benar_salah')
 @include('admin.questions.soalcerita.create._mengurutkan')
 @include('admin.questions.soalcerita.update._mengurutkan')
+@include('admin.questions.soalcerita.create._menceklis_daftar')
+@include('admin.questions.soalcerita.update._menceklis_daftar')
 @endsection
 
 
