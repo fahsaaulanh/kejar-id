@@ -475,7 +475,7 @@ function btnManagement(){
     }).on('blur', '.ckeditor-list .ck-content', function(){
         $(this).parents().closest('.ck-editor').next().addClass('d-none');
     });
-});
+}
 
 function checkBoxMdManagement(type){
     if (type == 'check') {
