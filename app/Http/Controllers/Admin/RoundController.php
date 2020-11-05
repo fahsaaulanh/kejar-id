@@ -273,6 +273,11 @@ class RoundController extends Controller
                 ];
 
                 $question = $questionApi->store($collection);
+
+                if ($question['error']) {
+                    continue;
+                }
+
                 $questionApi->update($question['data']['id'], ['status' => '2']);
 
                 $roundQuestionMeta = $roundQuestionApi
