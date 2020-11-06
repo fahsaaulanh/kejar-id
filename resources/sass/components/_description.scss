@@ -41,3 +41,11 @@
         display: none;
     }
 }
+
+.score-description{
+    color: $grey-6 !important;
+    
+    @media screen and (max-width: $mobile-breakpoint) {
+        display: none;
+    }
+}

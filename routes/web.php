@@ -116,8 +116,25 @@ Route::middleware('session')->group(function () {
             Route::post('mini-assessment/update-score', 'Teacher\MiniAssessmentController@updateScore');
             Route::post('mini-assessment/update-note', 'Teacher\MiniAssessmentController@updateNote');
 
+            Route::get('/mini-assessment/score', 'Teacher\MiniAssessmentController@getScore');
+
+            Route::post('/mini-assessment/student-score', 'Teacher\MiniAssessmentController@studentScore');
+
+            Route::post(
+                '/mini-assessment/counselor-students',
+                'Teacher\MiniAssessmentController@getStudentByCounselor',
+            );
+
             Route::prefix('{type}/mini-assessment/{mini_assessment_group}')->group(function () {
                 Route::get('/', 'Teacher\MiniAssessmentController@subjects');
+
+                // Rayon
+
+                Route::get('/list', 'Teacher\MiniAssessmentController@list');
+                Route::get('/{studentCounselorId}/detail', 'Teacher\MiniAssessmentController@report');
+
+                // End Rayon
+
                 Route::get('subject/{subject_id}/{grade}', 'Teacher\MiniAssessmentController@package');
                 Route::get(
                     'subject/{subject_id}/{grade}/batch/{batch_id}/score/{studentGroupId}',
