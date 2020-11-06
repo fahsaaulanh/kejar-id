@@ -17,4 +17,11 @@ class StudentGroup extends Service
 
         return $this->showResponse($response);
     }
+
+    public function detailWithoutBatch($id)
+    {
+        $response = $this->get("/schools/student-groups/$id");
+
+        return $this->showResponse($response);
+    }
 }

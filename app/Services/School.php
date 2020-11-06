@@ -31,4 +31,11 @@ class School extends Service
 
         return $this->showResponse($response);
     }
+
+    public function studentGroupDetail($id)
+    {
+        $response = $this->get("/schools/student-groups/$id");
+
+        return $this->showResponse($response);
+    }
 }
