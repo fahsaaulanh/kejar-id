@@ -130,7 +130,6 @@
                                     </div>
                                 </a>
                             </div>
-                            @env(['staging', 'local'])
                             <div class="card-deck">
                                 <a href="{{ url('/student/games/toeicwords/stages') }}" class="card">
                                     <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
@@ -139,6 +138,9 @@
                                         <p class="card-text">Kuasi 4000 kosakata yang sering muncul pada TOEIC.</p>
                                     </div>
                                 </a>
+                            </div>
+                            @env(['staging', 'local'])
+                            <div class="card-deck">
                                 <a href="{{ url('/student/games/menulisefektif/stages') }}" class="card">
                                     <img src="{{ asset('assets/images/home/menulis-efektif.jpg') }}" class="card-img-top" alt="...">
                                     <div class="card-body">
