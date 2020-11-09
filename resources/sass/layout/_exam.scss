@@ -586,27 +586,7 @@
     margin-top: 0.8rem;
 }
 
-._benar_salah_options input {
-    opacity: 0;
-}
-
-._benar_salah_options input ~ label i::after {
-    content: '\e931';
-    color: #7C92A7;
-    position: absolute;
-    margin-left: -2rem;
-    margin-top: 0px;
-    font-size: 1.6rem;
-}
-
-._benar_salah_options input:checked ~ label i::after {
-    content: '\e930';
-    color: #3167F6;
-    font-size: 1.6rem;
-    margin-top: 0px;
-}
-
-._benar_salah_direction {
+._isian_matematika_direction {
     margin-top: 3.2rem;
     color: black;
     margin-bottom: 2.4rem;
@@ -723,7 +703,7 @@
 }
 
 ._question_button {
-    margin: 5.6rem 0rem 4rem;
+    margin: 5.6rem 0rem;
     padding: 1.2rem 1.6rem;
     display: flex;
     cursor: pointer;
@@ -800,6 +780,62 @@
     }
 
     ._ya_tidak_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+    }
+}
+
+._isian_matematika_input,
+._isian_matematika_input_session {
+    width: 11.2rem;
+    padding: 1rem 1.2rem;
+    margin: 3px auto;
+    border: 2px solid #EBF1F6;
+    outline: none;
+
+    &:disabled {
+        background: white;
+        pointer-events: none;
+    }
+}
+
+._isian_matematika_input:focus,
+._isian_matematika_input:active,
+._isian_matematika_input_session:focus,
+._isian_matematika_input_session:active {
+    border: 2px solid #A6D1FF;
+}
+
+._isian_matematika_question_text {
+    margin: auto 1.6rem;
+    padding: 1rem 0px;
+
+    p {
+        display: inline;
+        padding: 0px;
+        margin: 0px;
+    }
+}
+
+._isian_matematika_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._isian_matematika_right_answers_item {
+        box-shadow: inset 0px -2px 0px #EBF1F6;
+        padding: 1rem 0rem;
+
+        ._isian_matematika_options_right_answer {
+            margin-left: 1.6rem;
+            min-width: 8rem;
+        }
+    }
+
+    ._isian_matematika_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
     }
