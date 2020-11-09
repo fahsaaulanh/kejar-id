@@ -899,6 +899,57 @@
     }
 }
 
+.answer-list-table-rc{
+    table-layout: fixed;
+    width: 100%;
+
+    tr td{
+        vertical-align: top;
+        padding-bottom: 1.6rem;
+
+        &:nth-child(2){
+            width: 3rem;
+            text-align: right;
+            padding-left: 1.5rem;
+        }
+
+        .answer-field{
+            width: auto;
+            box-sizing: border-box;
+            border-radius: 0rem;
+            border: 0.2rem solid $grey-13;
+            padding: 1rem 1.2rem;
+            color: $grey-6;
+            background-color: $white !important;
+
+            &:focus{
+                border: 0.2rem solid $blue-4;
+                outline: 0;
+            }
+
+            &[contentEditable=true]:empty:not(:focus):before{
+                cursor: text;
+                content: attr(placeholder);
+                pointer-events: none;
+                color: $grey-ph;
+            }
+        }
+
+        .remove-btn{
+            display: inline-block;
+            border: 0;
+            height: 4rem;
+            font-size: 2rem;
+            text-align: center;
+            background-color: transparent;
+
+            &:focus{
+                outline: 0;
+            }
+        }
+    }
+}
+
 // report score
 .tr-score-report{
     .column-grey{

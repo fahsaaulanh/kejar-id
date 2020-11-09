@@ -206,6 +206,11 @@ $(document).on('input', '.answer-list-table-ib .answer-field', function(){
     $(this).prev().val(value);
 });
 
+$(document).on('input', '.answer-list-table-rc .answer-field', function(){
+    var value = $(this).html();
+    $(this).prev().html(value);
+});
+
 $(document).on('click', '.add-btn', function(){
     var type = $(this).attr('data-type');
     if (type == 'pilihan-ganda'){
@@ -401,6 +406,23 @@ $(document).on('click', '.add-btn', function(){
         var newAnswer = '<tr>'+ td1 + td2 +'</tr>';
         modal.find('.answer-list-table-ib').append(newAnswer);
     }
+
+    if (type == 'merinci') {
+        var modal = $(this).parents('.modal');
+        var totalField = modal.find('.answer-list-table-rc tr').length;
+        if (totalField == 2) {
+            modal.find('.answer-list-table-rc tr').each(function(){
+                var firstField = $(this).children().eq(0);
+                var removeBtn = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                firstField.attr('colspan', 1);
+                $(this).append(removeBtn);
+            });
+        }
+        var td1 = '<td><textarea name="answer[]" hidden></textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik jawaban '+ parseInt(totalField + 1) +'"></div></td>';
+        var td2 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+        var newAnswer = '<tr>'+ td1 + td2 +'</tr>';
+        modal.find('.answer-list-table-rc').append(newAnswer);
+    }
 });
 
 $(document).on('click', '.edit-btn', function(){
@@ -563,6 +585,32 @@ $(document).on('click', '.edit-btn', function(){
             }
         });
     }
+
+    if (type == '#edit-merinci') {
+        $.ajax({
+            url: url,
+            method: "GET",
+            success:function(response){
+                modal.find('form').attr('action', url);
+                modal.find('textarea[name=question]').val(response.question);
+                modal.find('textarea[name=explanation]').val(response.explanation);
+                var answersData = '';
+                for (var i = 0; i < response.answer.length; i++) {
+                    if (response.answer.length > 2) {
+                        answersData += '<tr><td><textarea name="answer[]" hidden>'+ response.answer[i] +'</textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
+                    } else {
+                        answersData += '<tr><td colspan="2"><textarea name="answer[]" hidden="">'+ response.answer[i] +'</textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td></tr>';
+                    }
+                }
+                modal.find('.answer-list-table-rc').html(answersData);
+                modal.find('.ckeditor-field').each((index, element) => {
+                    initializeEditor(index, element);
+                });
+                modal.modal('show');
+            }
+        });
+    }
+
 });
 
 $(document).on('click', '.remove-btn', function(){
@@ -791,6 +839,23 @@ $(document).on('click', '.remove-btn', function(){
         });
     }
 
+    if (type == 'merinci') {
+        var number = 0;
+        var modal = $(this).parents('.modal');
+        $(this).parents('tr').remove();
+        modal.find('.answer-list-table-rc tr').each(function(){
+            $(this).find('.answer-field').attr('placeholder', 'Ketik jawaban ' + parseInt(number + 1));
+            number++;
+        });
+        var totalField = modal.find('.answer-list-table-rc tr').length;
+        if (totalField == 2) {
+            modal.find('.answer-list-table-rc tr').each(function(){
+                var firstChild = $(this).children().eq(0);
+                firstChild.attr('colspan', 2);
+                $(this).children().eq(1).remove();
+            });
+        }
+    }
 });
 
 $('#create-teks-rumpang-pg').on('show.bs.modal', (e) => {
@@ -1383,6 +1448,14 @@ $('#create-pilihan-ganda').on('show.bs.modal', (e) => {
 });
 
 $('#create-isian-bahasa').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+    $(e.target).find('.ckeditor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+$('#create-merinci').on('show.bs.modal', (e) => {
     e.stopImmediatePropagation();
     $('#create-soal-cerita-question-modal').modal('hide');
     $(e.target).find('.ckeditor-field').each((index, element) => {

@@ -564,6 +564,43 @@
             </div>
         </div>
         @endif
+
+        @if ($question['question']['type'] === 'BDCQMA')
+        <div class="card type-merinci">
+            <div class="card-header">
+                <div>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-teks-merinci"></i> <h5>Merinci</h5>
+                </div>
+                <div>
+                    <button class="edit-btn" data-target="#edit-merinci" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                        <i class="kejar-edit"></i> Edit
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="editor-display">
+                    {!! $question['question']['question'] !!}
+                </div>
+                <div class="question-answer-group">
+                    <table class="question-answer-table">
+                        @foreach($question['question']['answer'] as $answer)
+                        <tr>
+                            <td class="disable-editor black">{!! $answer !!}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
+                <div class="explanation-group">
+                    <strong>Pembahasan</strong>
+                    <div class="editor-display">
+                        {!! $question['question']['explanation'] !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+
         @endforeach
     </div>
 
@@ -617,6 +654,8 @@
 @include('admin.questions.soalcerita.update._melengkapi_tabel')
 @include('admin.questions.soalcerita.create._isian_bahasa')
 @include('admin.questions.soalcerita.update._isian_bahasa')
+@include('admin.questions.soalcerita.create._merinci')
+@include('admin.questions.soalcerita.update._merinci')
 @endsection
 
 

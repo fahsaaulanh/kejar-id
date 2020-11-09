@@ -19,7 +19,7 @@ $(document).on('click', '._check_button', function(e) {
 
 $('.question-list').on('click', '._next_button', function(e) {
     e.preventDefault();
-    
+
     nextQuestion(e);
 });
 
@@ -41,21 +41,21 @@ function countDown() {
 }
 
 function countDownStop() {
-    $('.timer-length').stop(); 
+    $('.timer-length').stop();
 }
 
 function checkAnswer() {
     countDownStop();
 
     var parentElement = $('.question-group:visible');
-    
+
     // Check if the current question type is benar_salah
     if ($(parentElement).data('type') === 'benar_salah') {
         var arrayAnswers = {};
         let type = $(parentElement).data('type');
-    
+
         for (let i = 1; i <= $(parentElement).find('input[type="radio"]').length / 2; i++) {
-            arrayAnswers[`${i}`] = {  
+            arrayAnswers[`${i}`] = {
                                     'answer' : $(parentElement).find('input[name="answer[' + i + ']"]:checked').val() === "benar" ? true : $(parentElement).find('input[name="answer[' + i + ']"]:checked').val() === 'salah' ? false : null,
                                     'question' : $($(parentElement).find('._benar_salah_question')[i - 1]).html().trim() ?? null,
                                 };
@@ -75,7 +75,7 @@ function checkAnswer() {
             for (let i = 0; i < res.answer.length; i++) {
                 html += `<div class='d-flex flex-wrap flex-nowrap justify-content-between align-items-center _benar_salah_right_answers_item'><div class='_benar_salah_question_answer'>${res.answer[i].question}</div><div class='_benar_salah_options_right_answer'>${res.answer[i].answer === true ? 'Benar' : 'Salah'}</div></div>`;
             }
-        
+
             $(parentElement).find('._benar_salah_right_answers').html(html);
             $(parentElement).find('._benar_salah_session').first().css('display', 'block');
 
@@ -96,10 +96,10 @@ function checkAnswer() {
     }
 
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
-    
+
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
 
-    
+
 }
 
 function buttonFunction(parentElement) {
@@ -133,7 +133,7 @@ function wrongAnswer() {
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('disabled _check_button');
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
-    
+
             $('.question-list').append(cloned);
         }
     }
@@ -146,9 +146,9 @@ $(document).ready(() => {
 
 function AjaxRequest(data, res) {
     var urlCheck = $('.question-list').data('check');
-    
+
     data['_token'] = $('input[name="_token"]').val();
-    
+
     $.ajax({
         type: "POST",
         url: urlCheck,
@@ -164,7 +164,7 @@ function AjaxRequest(data, res) {
 }
 
 $(document).on('click', '#question-list ._soal_cerita_finish', function() {
-    finish(); 
+    finish();
 });
 
 function finish() {
