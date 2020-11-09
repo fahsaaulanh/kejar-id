@@ -48,7 +48,7 @@
                                 <h6>Memasangkan</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
+                        <a class="card" href="#create-merinci" data-toggle="modal" data-target="#create-merinci">
                             <div class="card-body">
                                 <i class="kejar-teks-merinci"></i>
                                 <h6>Merinci</h6>
