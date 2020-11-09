@@ -487,6 +487,47 @@
                 </div>
             </div>
         </div> -->
+
+        @if ($question['question']['type'] === 'IQ')
+        <div class="card type-teks-rumpang">
+            <div class="card-header">
+                <div>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-checked-box"></i> <h5>Teks Rumpang PG</h5>
+                </div>
+                <div>
+                    <button class="edit-btn" data-target="#edit-teks-rumpang-pg" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                        <i class="kejar-edit"></i> Edit
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="question-answer-group">
+                    <div class="editor-display">
+                        @foreach($question['question']['choices'] as $key1 => $choice)
+                            @if(!is_null($choice['question']))
+                                {!! $choice['question'] !!}
+                            @endif
+                            @if(!is_null($choice['choices']))
+                                @foreach($choice['choices'] as $key2 => $answer)
+                                    @if($key2 == $question['question']['answer'][$key1])
+                                    <div class="answer-box disable-editor active">{!! $answer !!}</div>
+                                    @else
+                                    <div class="answer-box disable-editor">{!! $answer !!}</div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+                <div class="explanation-group">
+                    <strong>Pembahasan</strong>
+                    <div class="editor-display">
+                        {!! $question['question']['explanation'] !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
         @endforeach
     </div>
 
@@ -530,6 +571,8 @@
 @include('admin.questions.soalcerita.update._menceklis_daftar')
 @include('admin.questions.soalcerita.create._memasangkan')
 @include('admin.questions.soalcerita.update._memasangkan')
+@include('admin.questions.soalcerita.create._teks_rumpang_PG')
+@include('admin.questions.soalcerita.update._teks_rumpang_PG')
 @endsection
 
 

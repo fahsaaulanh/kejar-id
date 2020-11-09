@@ -941,3 +941,114 @@
         }
     }
 }
+
+.answer-list-table-rmpg{
+    table-layout: fixed;
+    width: 100%;
+
+    tr td{
+        vertical-align: top;
+        padding-bottom: 1.6rem;
+
+        &:nth-child(1){
+            width: 3rem;
+            text-align: left;
+        }
+
+        &:nth-child(3){
+            width: 3rem;
+            text-align: right;
+        }
+
+        .radio-group{
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            width: 2rem;
+            height: 2rem;
+            margin: 1rem 0;
+            font-size: 2rem;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+
+            input{
+                cursor: pointer;
+                position: absolute;
+                opacity: 0;
+                width: 2rem;
+                height: 2rem;
+                z-index: 1;
+            }
+
+            input:checked ~ i:before{
+                content: "\e930";
+                color: $green-2;
+            }
+
+            input:not(:checked) ~ i:before{
+                content: "\e931";
+                color: #7d8083;
+            }
+        }
+
+        .answer-field{
+            width: auto;
+            box-sizing: border-box;
+            border-radius: 0rem;
+            border: 0.2rem solid $grey-13;
+            padding: 1rem 1.2rem;
+            color: $grey-6;
+            background-color: $white !important;
+
+            &:focus{
+                border: 0.2rem solid $blue-4;
+                outline: 0;
+            }
+
+            &[contentEditable=true]{
+                font-size: 1.5rem !important;
+                color: $grey-6 !important;
+
+                &:empty:not(:focus):before{
+                    cursor: text;
+                    content: attr(placeholder);
+                    pointer-events: none;
+                    color: $grey-ph;
+                }
+            }
+
+            &.active{
+                border: 0.2rem solid $green-3 !important;
+            }
+        }
+    }
+}
+
+.text-list-table-rmpg{
+    table-layout: fixed;
+    width: 100%;
+
+    .first-td{
+        width: 100%;
+    }
+
+    .second-td{
+        width: 3rem;
+    }
+
+    tr td{
+        vertical-align: top;
+        padding-bottom: 1.6rem;
+
+        &:nth-child(3){
+            text-align: right;
+            padding-left: 1.5rem;
+        }
+
+        .ckeditor-group{
+            width: 100%;
+        }
+    }
+}

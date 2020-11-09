@@ -325,6 +325,43 @@
             }
         }
     }
+
+    .type-teks-rumpang{
+        .question-answer-group{
+            .text-group{
+                color: $black-1 !important;
+                line-height: 4.4rem;
+                display: inline;
+            }
+
+            .answer-box{
+                margin: 0.8rem 1.6rem 0.8rem 0;
+                padding: 1rem 1.2rem;
+                border: 0.2rem solid $grey-13;
+                display: inline-block;
+
+                &.active{
+                    border: 0.2rem solid $grey-3;
+                }
+
+                *{
+                    color: $black-1 !important;
+                    background-color: transparent !important;
+                    font-family: $font-family-monospace !important;
+                    font-weight: normal !important;
+                    font-style: normal !important;
+                    text-decoration: none !important;
+                    line-height: 2.5rem !important;
+                    font-size: 1.5rem !important;
+                }
+
+                .text-group{
+                    margin: 0 !important;
+                    line-height: 1rem !important;
+                }
+            }
+        }
+    }
 }
 
 .editor-display {
