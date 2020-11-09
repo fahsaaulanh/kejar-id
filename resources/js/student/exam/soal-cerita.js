@@ -1,10 +1,10 @@
 var timer = $('.question-list').data('timer') * 1000;
 
-$(document).on('click', '._ya_tidak_radio', (e) => {
-    var radios = $(e.target).parents('.question-group').find('._ya_tidak_radio').length;
+$(document).on('click', '._benar_salah_radio', (e) => {
+    var radios = $(e.target).parents('.question-group').find('._benar_salah_radio').length;
     var radiosQuestions = radios / 2;
 
-    if ($(e.target).parents('.question-group').find('._ya_tidak_radio:checked').length >= radiosQuestions) {
+    if ($(e.target).parents('.question-group').find('._benar_salah_radio:checked').length >= radiosQuestions) {
         $(e.target).parents('.question-group').find('._check_button').removeClass('disabled');
     } else {
         $(e.target).parents('.question-group').find('._check_button').addClass('disabled');
