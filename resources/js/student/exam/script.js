@@ -195,7 +195,6 @@ $(document).ready(function(){
     function finish() {
         var form = $('#question-list');
         $(form).prepend('<input class="d-none" name="_token" value="' + $('input[name="_token"]').val() +'">');
-        console.log(form.html());
         $(form).submit();
     }
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Services\Game;
 use App\Services\Round as RoundApi;
 use App\Services\Task as TaskApi;
 use Illuminate\Http\Request;
@@ -27,8 +28,15 @@ class MatrikulasiExamController extends Controller
 
         $timespan = $this->getTimer($roundId);
 
+        $gameApi = new Game;
+
+        session()->forget('old_answer');
+
+        $view = $gameApi->parse($game)['uri'] === 'soalcerita' ?
+            'student.exams.game._soal_cerita' : 'student.exams.index';
+
         return view(
-            'student.exams.index',
+            $view,
             compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan', 'round'),
         );
     }
@@ -39,8 +47,20 @@ class MatrikulasiExamController extends Controller
 
         $answer = $request->answer;
 
-        if ($game !== 'menulisefektif') {
+        if ($game !== 'menulisefektif' && $game !== 'soalcerita') {
             $answer = strtolower($request->answer);
+        }
+
+        if ($request->type === 'benar_salah') {
+            $answers = [];
+            foreach ($request->answer as $key => $a) {
+                $answers[$key] = [
+                    'answer' => $a['answer'] === 'true' ? true : ($a['answer'] === 'false' ? false : null),
+                    'question' => $a['question'],
+                ];
+            }
+
+            $answer = $answers;
         }
 
         $task = $taskApi
@@ -48,15 +68,30 @@ class MatrikulasiExamController extends Controller
         
         $status = $task['is_correct'] ?? false;
         $answer = $task['correct_answer'] ?? '';
+
+        if ($status === false) {
+            session()->put('old_answer.' . $task['question_id'], $task['answer']);
+        }
+
         if ($request->repeatance === 'true') {
-            $taskApi->answer($request->task_id, $request->id, 'null')['data'] ?? [];
+            $taskApi
+                    ->answer($request->task_id, $request->id, session()->get('old_answer')[$task['question_id']]);
+        }
+
+        if (gettype($answer) === 'array') {
+            $answers = [];
+            foreach ($answer as $value) {
+                $answers[] = $value;
+            }
+
+            $answer = $answers;
         }
 
         return response()->json([
             'status' => $status,
             'answer' => $answer,
             'repeatance' => $request->repeatance === 'true',
-            'explanation' => $task['explanation'],
+            'explanation' => $task['explanation'] ?? '',
         ]);
     }
 
@@ -91,6 +126,8 @@ class MatrikulasiExamController extends Controller
         }
         
         $nextRound = $roundsContainer[0] ?? [];
+
+        session()->forget('old_answer');
 
         session()->flash('result', [
             'task' => $task,
