@@ -816,6 +816,44 @@ class QuestionController extends Controller
                     ];
 
                     $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                } elseif ($questionType === 'EQ') {
+                    if (is_null($request['question']) || is_null($request['answer'])) {
+                        return redirect()->back();
+                    }
+
+                    $collection = [
+                        'subject_id' => null,
+                        'topic_id' => null,
+                        'bank' => $gameParsed['short'],
+                        'question' => $request['question'],
+                        'level' => 'LEVEL_1',
+                        'created_by' => session('user.id'),
+                        'type' => 'EQ',
+                        'answer' => $request['answer'],
+                    ];
+
+                    $question = $questionApi->store($collection);
+
+                    $updateData = [
+                        'explanation' => (string)$request['explanation'],
+                        'explained_by' => session('user.id'),
+                        'tags' => ['explanation'],
+                        'note' => 'explanation',
+                    ];
+
+                    $questionApi->update($question['data']['id'], ['status' => '2']);
+                    $questionApi->update($question['data']['id'], $updateData);
+
+                    $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                    $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                    $payloadQS = [
+                        'question_id' => $question['data']['id'],
+                        'round_id' => $roundId,
+                        'order' => $questionTotal + 1,
+                    ];
+
+                    $roundQuestionApi->store($question['data']['id'], $payloadQS);
                 }
             }
         } catch (Throwable $th) {
@@ -1345,6 +1383,31 @@ class QuestionController extends Controller
                     'question' => $request['question'],
                     'choices' => $answers,
                     'answer' => $answers,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => $request['explanation'],
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($questionType === 'EQ') {
+                $this->validate($request, [
+                    'question' => 'required',
+                    'answer' => 'required',
+                ]);
+
+                $questionApi = new QuestionApi;
+
+                $payload = [
+                    'question' => $request['question'],
+                    'answer' => $request['answer'],
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
                 ];
