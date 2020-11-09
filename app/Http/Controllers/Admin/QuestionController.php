@@ -427,6 +427,70 @@ class QuestionController extends Controller
                     ];
 
                     $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                } elseif ($questionType === 'MQ') {
+                    $choices = [];
+                    $answers = [];
+                    $alphabet = 'A';
+                    foreach ($request['answer']['statement'] as $key => $statement) {
+                        if (!is_null($statement) && !is_null($request['answer']['setstatement'][$key])) {
+                            $choices[0][$alphabet] = $statement;
+                            $alphabet++;
+                        }
+                    }
+
+                    foreach ($request['answer']['setstatement'] as $key => $statement) {
+                        if (!is_null($statement) && !is_null($request['answer']['statement'][$key])) {
+                            $choices[1][$alphabet] = $statement;
+                            $answers[] = $alphabet;
+                            $alphabet++;
+                        }
+                    }
+
+                    $alphabet = 'A';
+                    foreach ($answers as $key => $answer) {
+                        $answers[$alphabet] = $answer;
+                        unset($answers[$key]);
+                        $alphabet++;
+                    }
+
+                    if (count($choices[0]) <= 0 || count($answers) <= 0 || is_null($request['question'])) {
+                        return redirect()->back();
+                    }
+
+                    $collection = [
+                        'subject_id' => null,
+                        'topic_id' => null,
+                        'bank' => $gameParsed['short'],
+                        'question' => $request['question'],
+                        'level' => 'LEVEL_3',
+                        'created_by' => session('user.id'),
+                        'type' => 'MQ',
+                        'choices' => (object)$choices,
+                        'answer' => (object)$answers,
+                    ];
+
+                    $question = $questionApi->store($collection);
+
+                    $updateData = [
+                        'explanation' => (string)$request['explanation'],
+                        'explained_by' => session('user.id'),
+                        'tags' => ['explanation'],
+                        'note' => 'explanation',
+                    ];
+
+                    $questionApi->update($question['data']['id'], ['status' => '2']);
+                    $questionApi->update($question['data']['id'], $updateData);
+
+                    $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                    $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                    $payloadQS = [
+                        'question_id' => $question['data']['id'],
+                        'round_id' => $roundId,
+                        'order' => $questionTotal + 1,
+                    ];
+
+                    $roundQuestionApi->store($question['data']['id'], $payloadQS);
                 }
             }
         } catch (Throwable $th) {
@@ -582,7 +646,7 @@ class QuestionController extends Controller
                 ];
 
                 $questionApi->update($questionId, $updateData);
-            } elseif ($request->question_type === 'TFQMA') {
+            } elseif ($questionType === 'TFQMA') {
                 $questionApi = new QuestionApi;
 
                 $choices = [];
@@ -613,7 +677,7 @@ class QuestionController extends Controller
                 ];
 
                 $questionApi->update($questionId, $updateData);
-            } elseif ($request->question_type === 'SSQ') {
+            } elseif ($questionType === 'SSQ') {
                 $questionApi = new QuestionApi;
                 $choices = [];
                 foreach ($request->answer as $key => $value) {
@@ -643,7 +707,7 @@ class QuestionController extends Controller
                 ];
 
                 $questionApi->update($questionId, $updateData);
-            } elseif ($request->question_type === 'CQ') {
+            } elseif ($questionType === 'CQ') {
                 $questionApi = new QuestionApi;
                 $this->validate($request, [
                     'question' => 'required',
@@ -665,6 +729,60 @@ class QuestionController extends Controller
                 }
 
                 if (count($choices) <= 0 || count($answers) <= 0) {
+                    return redirect()->back();
+                }
+
+                $payload = [
+                    'question' => $request['question'],
+                    'choices' => $choices,
+                    'answer' => $answers,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => $request['explanation'],
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($questionType === 'MQ') {
+                $this->validate($request, [
+                    'question' => 'required',
+                ]);
+
+                $questionApi = new QuestionApi;
+
+                $choices = [];
+                $answers = [];
+                $alphabet = 'A';
+                foreach ($request['answer']['statement'] as $key => $statement) {
+                    if (!is_null($statement) && !is_null($request['answer']['setstatement'][$key])) {
+                        $choices[0][$alphabet] = $statement;
+                        $alphabet++;
+                    }
+                }
+
+                foreach ($request['answer']['setstatement'] as $key => $statement) {
+                    if (!is_null($statement) && !is_null($request['answer']['statement'][$key])) {
+                        $choices[1][$alphabet] = $statement;
+                        $answers[] = $alphabet;
+                        $alphabet++;
+                    }
+                }
+
+                $alphabet = 'A';
+                foreach ($answers as $key => $answer) {
+                    $answers[$alphabet] = $answer;
+                    unset($answers[$key]);
+                    $alphabet++;
+                }
+
+                if (count($choices[0]) <= 0 || count($answers) <= 0) {
                     return redirect()->back();
                 }
 

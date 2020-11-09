@@ -111,7 +111,9 @@
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
+        @endif
+
         @if ($question['question']['type'] === 'CQ')
         <div class="card type-menceklis-daftar">
             <div class="card-header">
@@ -154,7 +156,8 @@
         </div>
         @endif
 
-        <!-- <div class="card type-benar-salah">
+        @if ($question['question']['type'] === 'TFQMA')
+        <div class="card type-benar-salah">
             <div class="card-header">
                 <div>
                     <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-benar-salah"></i> <h5>Benar Salah</h5>
@@ -191,7 +194,7 @@
             </div>
         </div>
         @endif
-<!--
+        <!--
         <div class="card type-ya-tidak">
             <div class="card-header">
                 <div>
@@ -283,57 +286,44 @@
         </div>
         @endif
 
-        <!-- <div class="card type-memasangkan">
+        @if ($question['question']['type'] === 'MQ')
+        <div class="card type-memasangkan">
             <div class="card-header">
                 <div>
-                    <h5>SOAL 6</h5> <i class="kejar-dot"></i> <i class="kejar-mencocokkan"></i> <h5>Memasangkan</h5>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-mencocokkan"></i> <h5>Memasangkan</h5>
                 </div>
                 <div>
-                    <button>
+                    <button class="edit-btn" data-target="#edit-memasangkan" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                         <i class="kejar-edit"></i> Edit
                     </button>
                 </div>
             </div>
             <div class="card-body">
-                <div class="direction-text">
-                    <p class="">
-                        Bacalah wacana yang diberikan dengan seksama. Urutkanlah dari yang paling terkecil sampai dengan yang terbesar. Petunjuk juga bisa menjadi sangat panjang sehingga ukuran formnya menjadi lebih besar dari yang semula disediakan seperti ini.
-                    </p>
+                <div class="editor-display">
+                    {!! $question['question']['question'] !!}
                 </div>
                 <div class="question-answer-group">
                     <table class="question-answer-table">
+                        @foreach($question['question']['choices'][0] as $key => $choice)
                         <tr>
-                            <td>Ini adalah pernyataan yang sudah diisi. Ketika agak panjang, ukuran form akan mengikuti.</td>
+                            <td class="editor-display">{!! $choice !!}</td>
                             <td><i class="kejar-arrow-right"></i></td>
-                            <td>Ini adalah pernyataan yang sudah diisi. Ketika agak panjang, ukuran form akan mengikuti.</td>
+                            <td class="editor-display">{!! $question['question']['choices'][1][$question['question']['answer'][$key]] !!}</td>
                         </tr>
-                        <tr>
-                            <td>Ini adalah pernyataan yang sudah diisi. Ketika agak panjang, ukuran form akan mengikuti.</td>
-                            <td><i class="kejar-arrow-right"></i></td>
-                            <td>Pernyataan ini sedang diisi.</td>
-                        </tr>
-                        <tr>
-                            <td>Ini adalah pernyataan yang sudah diisi. Ketika agak panjang, ukuran form akan mengikuti.</td>
-                            <td><i class="kejar-arrow-right"></i></td>
-                            <td>Pernytaaan ini sudah diisi juga.</td>
-                        </tr>
+                        @endforeach
                     </table>
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
-                    <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
+                    <div class="editor-display">
+                        {!! $question['question']['explanation'] !!}
                     </div>
                 </div>
             </div>
         </div>
+        @endif
 
+        <!--
         <div class="card type-merinci">
             <div class="card-header">
                 <div>
@@ -538,6 +528,8 @@
 @include('admin.questions.soalcerita.update._mengurutkan')
 @include('admin.questions.soalcerita.create._menceklis_daftar')
 @include('admin.questions.soalcerita.update._menceklis_daftar')
+@include('admin.questions.soalcerita.create._memasangkan')
+@include('admin.questions.soalcerita.update._memasangkan')
 @endsection
 
 

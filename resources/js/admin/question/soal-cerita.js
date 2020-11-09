@@ -247,6 +247,29 @@ $(document).on('click', '.add-btn', function(){
         initializeEditor(ckEditorFieldLength, $(this).prev().children().find('.editor-field').last()[0]);
         checkBoxMdManagement('check');
     }
+
+    if (type == 'memasangkan') {
+        var modal = $(this).parents('.modal');
+        var totalField = modal.find('.answer-list-table-ps tr').length;
+        if (totalField == 2) {
+            modal.find('.answer-list-table-ps tr').each(function(){
+                var secondField = $(this).children().eq(1);
+                var removeBtn = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                secondField.attr('colspan', 1);
+                secondField.removeClass('colspan-2');
+                $(this).append(removeBtn);
+            });
+        }
+        var td1 = '<td><div class="num-group">'+ parseInt(totalField + 1) +'</div></td>';
+        var td2 = '<td><div class="ckeditor-group ckeditor-list mb-3"><textarea name="answer[statement]['+ totalField +']" class="ckeditor-field" placeholder="Ketik pernyataan '+ parseInt(totalField + 1) +'" ck-type="memasangkan"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div><div class="ckeditor-group ckeditor-list"><textarea name="answer[setstatement]['+ totalField +']" class="ckeditor-field" placeholder="Ketik pasangan pernyataan '+ parseInt(totalField + 1) +'" ck-type="memasangkan"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
+        var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+        var newAnswer = '<tr>'+ td1 + td2 + td3 +'</tr>';
+        modal.find('.answer-list-table-ps').append(newAnswer);
+        clearEditorField();
+        modal.find('.ckeditor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+    }
 });
 
 $(document).on('click', '.edit-btn', function(){
@@ -303,6 +326,31 @@ $(document).on('click', '.edit-btn', function(){
                     initializeEditor(index, element);
                 });
                 setTimeout(function(){ checkBoxMdManagement('check'); }, 50);
+                modal.modal('show');
+            }
+        });
+    }
+
+    if (type == '#edit-memasangkan') {
+        $.ajax({
+            url: url,
+            method: "GET",
+            success:function(response){
+                modal.find('form').attr('action', url);
+                modal.find('textarea[name=question]').val(response.question);
+                modal.find('textarea[name=explanation]').val(response.explanation);
+                var answersData = '';
+                for (var i = 0; i < Object.keys(response.choices).length; i++) {
+                    if (Object.keys(response.choices[0]).length > 2) {
+                        answersData += '<tr><td><div class="num-group">'+ parseInt(i + 1) +'</div></td><td><div class="ckeditor-group ckeditor-list mb-3"><textarea name="answer[statement]['+ i +']" class="ckeditor-field" placeholder="Ketik pernyataan '+ parseInt(i + 1) +'" ck-type="memasangkan">'+ response.choices[0][String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div><div class="ckeditor-group ckeditor-list"><textarea name="answer[setstatement]['+ i +']" class="ckeditor-field" placeholder="Ketik pasangan pernyataan '+ parseInt(i + 1) +'" ck-type="memasangkan">'+ response.choices[1][response.answer[String.fromCharCode(parseInt(65 + i))]] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
+                    } else {
+                        answersData += '<tr><td><div class="num-group">'+ parseInt(i + 1) +'</div></td><td colspan="2" class="colspan-2"><div class="ckeditor-group ckeditor-list mb-3"><textarea name="answer[statement]['+ i +']" class="ckeditor-field" placeholder="Ketik pernyataan '+ parseInt(i + 1) +'" ck-type="memasangkan">'+ response.choices[0][String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div><div class="ckeditor-group ckeditor-list"><textarea name="answer[setstatement]['+ i +']" class="ckeditor-field" placeholder="Ketik pasangan pernyataan '+ parseInt(i + 1) +'" ck-type="memasangkan">'+ response.choices[1][response.answer[String.fromCharCode(parseInt(65 + i))]] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td></tr>';
+                    }
+                }
+                modal.find('.answer-list-table-ps').html(answersData);
+                modal.find('.ckeditor-field').each((index, element) => {
+                    initializeEditor(index, element);
+                });
                 modal.modal('show');
             }
         });
@@ -366,9 +414,48 @@ $(document).on('click', '.remove-btn', function(){
         }
         setTimeout(function(){ checkBoxMdManagement('check'); }, 50);
     }
+
+    if (type == 'memasangkan') {
+        var modal = $(this).parents('.modal');
+        $(this).parents('tr').remove();
+        clearEditorField();
+        modal.find('.ckeditor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+        var number = 0;
+        modal.find('.answer-list-table-ps tr').each(function(){
+            $(this).children().eq(0).html('<div class="num-group">'+ parseInt(number + 1) +'</div>');
+            $(this).find('textarea').eq(0).attr({
+                'name': 'answer[statement]['+ number +']',
+                'placeholder': 'Ketik pernyataan ' + parseInt(number + 1)
+            });
+            $(this).find('textarea').eq(1).attr({
+                'name': 'answer[setstatement]['+ number +']',
+                'placeholder': 'Ketik pasangan pernyataan ' + parseInt(number + 1)
+            });
+            number++;
+        });
+        var totalField = modal.find('.answer-list-table-ps tr').length;
+        if (totalField == 2) {
+            modal.find('.answer-list-table-ps tr').each(function(){
+                var secondField = $(this).children().eq(1);
+                secondField.attr('colspan', 2);
+                secondField.addClass('colspan-2');
+                $(this).children().eq(2).remove();
+            });
+        }
+    }
 });
 
 $('#create-menceklis-daftar').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+    $(e.target).find('.ckeditor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+$('#create-memasangkan').on('show.bs.modal', (e) => {
     e.stopImmediatePropagation();
     $('#create-soal-cerita-question-modal').modal('hide');
     $(e.target).find('.ckeditor-field').each((index, element) => {
