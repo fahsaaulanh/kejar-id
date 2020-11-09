@@ -611,6 +611,23 @@ $(document).on('click', '.edit-btn', function(){
         });
     }
 
+    if (type == '#edit-esai') {
+        $.ajax({
+            url: url,
+            method: "GET",
+            success:function(response){
+                modal.find('form').attr('action', url);
+                modal.find('textarea[name=question]').val(response.question);
+                modal.find('textarea[name=answer]').val(response.answer);
+                modal.find('textarea[name=explanation]').val(response.explanation);
+                modal.find('.ckeditor-field').each((index, element) => {
+                    initializeEditor(index, element);
+                });
+                modal.modal('show');
+            }
+        });
+    }
+
 });
 
 $(document).on('click', '.remove-btn', function(){
@@ -1456,6 +1473,14 @@ $('#create-isian-bahasa').on('show.bs.modal', (e) => {
 });
 
 $('#create-merinci').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+    $(e.target).find('.ckeditor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+$('#create-esai').on('show.bs.modal', (e) => {
     e.stopImmediatePropagation();
     $('#create-soal-cerita-question-modal').modal('hide');
     $(e.target).find('.ckeditor-field').each((index, element) => {

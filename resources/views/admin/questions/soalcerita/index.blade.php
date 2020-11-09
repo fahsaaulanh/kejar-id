@@ -67,539 +67,487 @@
     <!-- Table of questions -->
     <div class="table-questions border-top-none">
         @foreach($roundQuestionsData as $key => $question)
-        @php
-        $pageNum = request()->page ?? 1;
-        $questionNum = (($pageNum * 20) - 20) + $key + 1;
-        @endphp
+            @php
+                $pageNum = request()->page ?? 1;
+                $questionNum = (($pageNum * 20) - 20) + $key + 1;
+            @endphp
 
-        @if ($question['question']['type'] === 'MCQSA')
-        <div class="card type-pilihan-ganda">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-pilihan-ganda"></i> <h5>Pilihan Ganda</h5>
-                </div>
-                <div>
-                    <button class="edit-btn" data-target="#edit-pilihan-ganda" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="editor-display">
-                    {!! $question['question']['question'] !!}
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        @foreach($question['question']['choices'] as $key => $choice)
-                        <tr>
-                            <td>
-                                @if($key == $question['question']['answer'])
-                                <i class="kejar-radio-button"></i>
-                                @else
-                                <i class="kejar-belum-dikerjakan"></i>
-                                @endif
-                            </td>
-                            <td class="editor-display">{!! $choice !!}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="editor-display">
-                        {!! $question['question']['explanation'] !!}
+            @if ($question['question']['type'] === 'MCQSA')
+                <div class="card type-pilihan-ganda">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-pilihan-ganda"></i> <h5>Pilihan Ganda</h5>
+                        </div>
+                        <div>
+                            <button class="edit-btn" data-target="#edit-pilihan-ganda" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        @if ($question['question']['type'] === 'CQ')
-        <div class="card type-menceklis-daftar">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-pilih-centang"></i> <h5>Menceklis Daftar</h5>
-                </div>
-                <div>
-                    <button class="edit-btn" data-target="#edit-menceklis-daftar" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="editor-display">
-                    {!! $question['question']['question'] !!}
-                </div>
-                <div class="answer-text">
-                    <table class="question-answer-table">
-                        @foreach($question['question']['choices'] as $key => $choice)
-                        <tr>
-                            <td>
-                                @if(in_array($key, $question['question']['answer'], true))
-                                <i class="kejar-checked-box"></i>
-                                @else
-                                <i class="kejar-check-box"></i>
-                                @endif
-                            </td>
-                            <td class="editor-display">{!! $choice !!}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="editor-display">
-                        {!! $question['question']['explanation'] !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        @if ($question['question']['type'] === 'TFQMA')
-        <div class="card type-benar-salah">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-benar-salah"></i> <h5>Benar Salah</h5>
-                </div>
-                <div>
-                    <button data-toggle="modal" data-target="#edit-benar-salah" class="btn-edit" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="direction-text">
-                    <p class="">
-                        {!! $question['question']['question'] !!}
-                    </p>
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        @foreach($question['question']['choices'] as $choice)
-                        <tr>
-                            <td>{!! $choice['question'] !!}</td>
-                            <td>{{ $choice['answer'] === true ? 'Benar' : 'Salah' }}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-
-                    <div class="explanation-text">
-                        {!! $question['question']['explanation'] !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-        @if ($question['question']['type'] === 'YNQMA')
-        <div class="card type-ya-tidak">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{$questionNum}}</h5> <i class="kejar-dot"></i> <i class="kejar-ya-tidak"></i> <h5>Ya Tidak</h5>
-                </div>
-                <div>
-                    <button data-toggle="modal" data-target="#update-ya-tidak" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="direction-text">
-                    <p class="">
-                        {!! $question['question']['question'] !!}
-                    </p>
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        @foreach ($question['question']['choices'] as $choice)
-                        <tr>
-                            <td>{!! $choice['question'] !!}</td>
-                            <td class="text-capitalize">{!! $choice['answer'] !!}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-
-                    <div class="explanation-text">
-                        {!! $question['question']['explanation'] !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        @if ($question['question']['type'] === 'SSQ')
-        <div class="card type-mengurutkan">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $key + 1 }}</h5> <i class="kejar-dot"></i> <i class="kejar-mengurutkan-vertikal"></i> <h5>Mengurutkan</h5>
-                </div>
-                <div>
-                    <button data-toggle="modal" data-target="#update-mengurutkan" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="direction-text">
-                    <p class="editor-display">
-                        {!! $question['question']['question'] !!}
-                    </p>
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        @foreach($question['question']['choices'] as $choice)
-                        <tr>
-                            <td>{{ $choice['answer'] }}.</td>
-                            <td class="editor-display">{!! $choice['question'] !!}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-
-                    <div class="explanation-text">
-                        {!! $question['question']['explanation'] !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        @if ($question['question']['type'] === 'MQ')
-        <div class="card type-memasangkan">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-mencocokkan"></i> <h5>Memasangkan</h5>
-                </div>
-                <div>
-                    <button class="edit-btn" data-target="#edit-memasangkan" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="editor-display">
-                    {!! $question['question']['question'] !!}
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        @foreach($question['question']['choices'][0] as $key => $choice)
-                        <tr>
-                            <td class="editor-display">{!! $choice !!}</td>
-                            <td><i class="kejar-arrow-right"></i></td>
-                            <td class="editor-display">{!! $question['question']['choices'][1][$question['question']['answer'][$key]] !!}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="editor-display">
-                        {!! $question['question']['explanation'] !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <!--
-        <div class="card type-merinci">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL 7</h5> <i class="kejar-dot"></i> <i class="kejar-teks-merinci"></i> <h5>Merinci</h5>
-                </div>
-                <div>
-                    <button>
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="direction-text">
-                    <p class="">
-                        Berikut adalah soal yang akan ditampilkan. Bagaimana jika soalnya sangat panjang? Ukuran form akan mengikuti konten soal dengan sendirinya. Apa saja yang diperlukan untuk membuat sebuah resep kue bolu?
-                    </p>
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        <tr>
-                            <td>tepun terigu</td>
-                        </tr>
-                        <tr>
-                            <td>gula pasir</td>
-                        </tr>
-                        <tr>
-                            <td>telur</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card type-essai">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL 8</h5> <i class="kejar-dot"></i> <i class="kejar-esai"></i> <h5>Esai</h5>
-                </div>
-                <div>
-                    <button>
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="question-text">
-                    <p class="">
-                        Berikut adalah soal yang akan ditampilkan. Bagaimana jika soalnya sangat panjang? Ukuran form akan mengikuti konten soal dengan sendirinya. Bisa jadi ukurannya menjadi lebih besar dari form yang semula disediakan.
-                    </p>
-                </div>
-                <div class="answer-group">
-                    <p>Sedang mengetik kunci jawaban. Demikian adalah tampilannya.</p>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-         -->
-
-        @if ($question['question']['type'] === 'MQIA')
-        <div class="card type-isian-matematika">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-matematika"></i> <h5>Isian Matematika</h5>
-                </div>
-                <div>
-                    <button data-toggle="modal" data-target="#update-isian-matematika" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="direction-text">
-                    {!! $question['question']['question'] !!}
-                </div>
-                <div class="answer-group">
-                    @for ($x = 0; $x < count($question['question']['choices']['first']); $x++)
-                        @if ($question['question']['choices']['first'][$x] !== null)
-                            <div class="_awalan">{!! $question['question']['choices']['first'][$x] !!}</div>
-                        @endif
-
-                        @isset($question['question']['answer'][$x])
-                            <div class="input-styled">{!! $question['question']['answer'][$x] !!}</div>
-                        @endisset
-
-                        @if ($question['question']['choices']['last'][$x] !== null)
-                            <div class="_akhiran">{!! $question['question']['choices']['last'][$x] !!}</span></div>
-                        @endif
-                    @endfor
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-
-                    <div class="explanation-text">
-                        {!! $question['question']['explanation'] !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        @if ($question['question']['type'] === 'IQ')
-        <div class="card type-teks-rumpang">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-checked-box"></i> <h5>Teks Rumpang PG</h5>
-                </div>
-                <div>
-                    <button class="edit-btn" data-target="#edit-teks-rumpang-pg" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="question-answer-group">
-                    <div class="editor-display">
-                        @foreach($question['question']['choices'] as $key1 => $choice)
-                            @if(!is_null($choice['question']))
-                                {!! $choice['question'] !!}
-                            @endif
-                            @if(!is_null($choice['choices']))
-                                @foreach($choice['choices'] as $key2 => $answer)
-                                    @if($key2 == $question['question']['answer'][$key1])
-                                    <div class="answer-box disable-editor active">{!! $answer !!}</div>
-                                    @else
-                                    <div class="answer-box disable-editor">{!! $answer !!}</div>
-                                    @endif
+                    <div class="card-body">
+                        <div class="editor-display">
+                            {!! $question['question']['question'] !!}
+                        </div>
+                        <div class="question-answer-group">
+                            <table class="question-answer-table">
+                                @foreach($question['question']['choices'] as $key => $choice)
+                                <tr>
+                                    <td>
+                                        @if($key == $question['question']['answer'])
+                                        <i class="kejar-radio-button"></i>
+                                        @else
+                                        <i class="kejar-belum-dikerjakan"></i>
+                                        @endif
+                                    </td>
+                                    <td class="editor-display">{!! $choice !!}</td>
+                                </tr>
                                 @endforeach
-                            @endif
-                        @endforeach
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+                            <div class="editor-display">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="editor-display">
-                        {!! $question['question']['explanation'] !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
+            @endif
 
-        @if ($question['question']['type'] === 'CTQ')
-        <div class="card type-melengkapi-tabel">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-table"></i> <h5>Melengkapi Tabel</h5>
-                </div>
-                <div>
-                <button data-toggle="modal" data-target="#update-melengkapi-tabel" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="direction-text">
-                    <p class="">
-                        {!! $question['question']['question'] !!}
-                    </p>
-                </div>
-                <div class="table-responsive-md">
-                    <table class="table table-borderless">
-                        <thead>
-                            @foreach ($question['question']['choices']['header'] as $header)
-                                <th>{{ $header }}</th>
-                            @endforeach
-                        </thead>
-                        <tbody>
-                            @foreach ($question['question']['choices']['body'] as $body)
-                            <tr>
-                                @foreach ($body as $column)
-                                    @if ($column['type'] === 'question')
-                                        <td class="melengkapi-table-filled">
-                                            {!! $column['value'] !!}
-                                        </td>
-                                    @else
-                                        <td class="melengkapi-table-unfilled">
-                                            {{ $column['value'] }}
-                                        </td>
-                                    @endif
+            @if ($question['question']['type'] === 'CQ')
+                <div class="card type-menceklis-daftar">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-pilih-centang"></i> <h5>Menceklis Daftar</h5>
+                        </div>
+                        <div>
+                            <button class="edit-btn" data-target="#edit-menceklis-daftar" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="editor-display">
+                            {!! $question['question']['question'] !!}
+                        </div>
+                        <div class="answer-text">
+                            <table class="question-answer-table">
+                                @foreach($question['question']['choices'] as $key => $choice)
+                                <tr>
+                                    <td>
+                                        @if(in_array($key, $question['question']['answer'], true))
+                                        <i class="kejar-checked-box"></i>
+                                        @else
+                                        <i class="kejar-check-box"></i>
+                                        @endif
+                                    </td>
+                                    <td class="editor-display">{!! $choice !!}</td>
+                                </tr>
                                 @endforeach
-                            </tr>
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+                            <div class="editor-display">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($question['question']['type'] === 'TFQMA')
+                <div class="card type-benar-salah">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-benar-salah"></i> <h5>Benar Salah</h5>
+                        </div>
+                        <div>
+                            <button data-toggle="modal" data-target="#edit-benar-salah" class="btn-edit" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="direction-text">
+                            <p class="">
+                                {!! $question['question']['question'] !!}
+                            </p>
+                        </div>
+                        <div class="question-answer-group">
+                            <table class="question-answer-table">
+                                @foreach($question['question']['choices'] as $choice)
+                                <tr>
+                                    <td>{!! $choice['question'] !!}</td>
+                                    <td>{{ $choice['answer'] === true ? 'Benar' : 'Salah' }}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+
+                            <div class="explanation-text">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if ($question['question']['type'] === 'YNQMA')
+                <div class="card type-ya-tidak">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{$questionNum}}</h5> <i class="kejar-dot"></i> <i class="kejar-ya-tidak"></i> <h5>Ya Tidak</h5>
+                        </div>
+                        <div>
+                            <button data-toggle="modal" data-target="#update-ya-tidak" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="direction-text">
+                            <p class="">
+                                {!! $question['question']['question'] !!}
+                            </p>
+                        </div>
+                        <div class="question-answer-group">
+                            <table class="question-answer-table">
+                                @foreach ($question['question']['choices'] as $choice)
+                                <tr>
+                                    <td>{!! $choice['question'] !!}</td>
+                                    <td class="text-capitalize">{!! $choice['answer'] !!}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+
+                            <div class="explanation-text">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($question['question']['type'] === 'SSQ')
+                <div class="card type-mengurutkan">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $key + 1 }}</h5> <i class="kejar-dot"></i> <i class="kejar-mengurutkan-vertikal"></i> <h5>Mengurutkan</h5>
+                        </div>
+                        <div>
+                            <button data-toggle="modal" data-target="#update-mengurutkan" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="direction-text">
+                            <p class="editor-display">
+                                {!! $question['question']['question'] !!}
+                            </p>
+                        </div>
+                        <div class="question-answer-group">
+                            <table class="question-answer-table">
+                                @foreach($question['question']['choices'] as $choice)
+                                <tr>
+                                    <td>{{ $choice['answer'] }}.</td>
+                                    <td class="editor-display">{!! $choice['question'] !!}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+
+                            <div class="explanation-text">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($question['question']['type'] === 'MQ')
+                <div class="card type-memasangkan">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-mencocokkan"></i> <h5>Memasangkan</h5>
+                        </div>
+                        <div>
+                            <button class="edit-btn" data-target="#edit-memasangkan" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="editor-display">
+                            {!! $question['question']['question'] !!}
+                        </div>
+                        <div class="question-answer-group">
+                            <table class="question-answer-table">
+                                @foreach($question['question']['choices'][0] as $key => $choice)
+                                <tr>
+                                    <td class="editor-display">{!! $choice !!}</td>
+                                    <td><i class="kejar-arrow-right"></i></td>
+                                    <td class="editor-display">{!! $question['question']['choices'][1][$question['question']['answer'][$key]] !!}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+                            <div class="editor-display">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($question['question']['type'] === 'MQIA')
+                <div class="card type-isian-matematika">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-matematika"></i> <h5>Isian Matematika</h5>
+                        </div>
+                        <div>
+                            <button data-toggle="modal" data-target="#update-isian-matematika" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="direction-text">
+                            {!! $question['question']['question'] !!}
+                        </div>
+                        <div class="answer-group">
+                            @for ($x = 0; $x < count($question['question']['choices']['first']); $x++)
+                                @if ($question['question']['choices']['first'][$x] !== null)
+                                    <div class="_awalan">{!! $question['question']['choices']['first'][$x] !!}</div>
+                                @endif
+
+                                @isset($question['question']['answer'][$x])
+                                    <div class="input-styled">{!! $question['question']['answer'][$x] !!}</div>
+                                @endisset
+
+                                @if ($question['question']['choices']['last'][$x] !== null)
+                                    <div class="_akhiran">{!! $question['question']['choices']['last'][$x] !!}</span></div>
+                                @endif
+                            @endfor
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+
+                            <div class="explanation-text">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($question['question']['type'] === 'IQ')
+                <div class="card type-teks-rumpang">
+                <div class="card-header">
+                    <div>
+                        <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-checked-box"></i> <h5>Teks Rumpang PG</h5>
+                    </div>
+                    <div>
+                        <button class="edit-btn" data-target="#edit-teks-rumpang-pg" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                            <i class="kejar-edit"></i> Edit
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="question-answer-group">
+                        <div class="editor-display">
+                            @foreach($question['question']['choices'] as $key1 => $choice)
+                                @if(!is_null($choice['question']))
+                                    {!! $choice['question'] !!}
+                                @endif
+                                @if(!is_null($choice['choices']))
+                                    @foreach($choice['choices'] as $key2 => $answer)
+                                        @if($key2 == $question['question']['answer'][$key1])
+                                        <div class="answer-box disable-editor active">{!! $answer !!}</div>
+                                        @else
+                                        <div class="answer-box disable-editor">{!! $answer !!}</div>
+                                        @endif
+                                    @endforeach
+                                @endif
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-
-                    <div class="explanation-text">
-                        {!! $question['question']['explanation'] !!}
+                        </div>
+                    </div>
+                    <div class="explanation-group">
+                        <strong>Pembahasan</strong>
+                        <div class="editor-display">
+                            {!! $question['question']['explanation'] !!}
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        @endif
+                </div>
+            @endif
 
-        @if ($question['question']['type'] === 'QSAT')
-        <div class="card type-isian-bahasa">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-bahasa"></i> <h5>Isian Bahasa</h5>
-                </div>
-                <div>
-                    <button class="edit-btn" data-target="#edit-isian-bahasa" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="editor-display">
-                    {!! $question['question']['question'] !!}
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        @foreach($question['question']['answer'] as $answer)
-                        <tr>
-                            <td><i class="kejar-soal-benar"></i></td>
-                            <td class="disable-editor">{!! $answer !!}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="editor-display">
-                        {!! $question['question']['explanation'] !!}
+            @if ($question['question']['type'] === 'CTQ')
+                <div class="card type-melengkapi-tabel">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-table"></i> <h5>Melengkapi Tabel</h5>
+                        </div>
+                        <div>
+                        <button data-toggle="modal" data-target="#update-melengkapi-tabel" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="direction-text">
+                            <p class="">
+                                {!! $question['question']['question'] !!}
+                            </p>
+                        </div>
+                        <div class="table-responsive-md">
+                            <table class="table table-borderless">
+                                <thead>
+                                    @foreach ($question['question']['choices']['header'] as $header)
+                                        <th>{{ $header }}</th>
+                                    @endforeach
+                                </thead>
+                                <tbody>
+                                    @foreach ($question['question']['choices']['body'] as $body)
+                                    <tr>
+                                        @foreach ($body as $column)
+                                            @if ($column['type'] === 'question')
+                                                <td class="melengkapi-table-filled">
+                                                    {!! $column['value'] !!}
+                                                </td>
+                                            @else
+                                                <td class="melengkapi-table-unfilled">
+                                                    {{ $column['value'] }}
+                                                </td>
+                                            @endif
+                                        @endforeach
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+
+                            <div class="explanation-text">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        @endif
+            @endif
 
-        @if ($question['question']['type'] === 'BDCQMA')
-        <div class="card type-merinci">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-teks-merinci"></i> <h5>Merinci</h5>
-                </div>
-                <div>
-                    <button class="edit-btn" data-target="#edit-merinci" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="editor-display">
-                    {!! $question['question']['question'] !!}
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        @foreach($question['question']['answer'] as $answer)
-                        <tr>
-                            <td class="disable-editor black">{!! $answer !!}</td>
-                        </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="editor-display">
-                        {!! $question['question']['explanation'] !!}
+            @if ($question['question']['type'] === 'QSAT')
+                <div class="card type-isian-bahasa">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-bahasa"></i> <h5>Isian Bahasa</h5>
+                        </div>
+                        <div>
+                            <button class="edit-btn" data-target="#edit-isian-bahasa" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="editor-display">
+                            {!! $question['question']['question'] !!}
+                        </div>
+                        <div class="question-answer-group">
+                            <table class="question-answer-table">
+                                @foreach($question['question']['answer'] as $answer)
+                                <tr>
+                                    <td><i class="kejar-soal-benar"></i></td>
+                                    <td class="disable-editor">{!! $answer !!}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+                            <div class="editor-display">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        @endif
+            @endif
 
+            @if ($question['question']['type'] === 'BDCQMA')
+                <div class="card type-merinci">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-teks-merinci"></i> <h5>Merinci</h5>
+                        </div>
+                        <div>
+                            <button class="edit-btn" data-target="#edit-merinci" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="editor-display">
+                            {!! $question['question']['question'] !!}
+                        </div>
+                        <div class="question-answer-group">
+                            <table class="question-answer-table">
+                                @foreach($question['question']['answer'] as $answer)
+                                <tr>
+                                    <td class="disable-editor black">{!! $answer !!}</td>
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+                            <div class="editor-display">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($question['question']['type'] === 'EQ')
+                <div class="card type-essai">
+                    <div class="card-header">
+                        <div>
+                            <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-esai"></i> <h5>Esai</h5>
+                        </div>
+                        <div>
+                            <button class="edit-btn" data-target="#edit-esai" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                                <i class="kejar-edit"></i> Edit
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="editor-display">
+                            {!! $question['question']['question'] !!}
+                        </div>
+                        <div class="answer-group">
+                            <div class="editor-display">
+                                {!! $question['question']['answer'] !!}
+                            </div>
+                        </div>
+                        <div class="explanation-group">
+                            <strong>Pembahasan</strong>
+                            <div class="editor-display">
+                                {!! $question['question']['explanation'] !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
         @endforeach
     </div>
@@ -656,6 +604,8 @@
 @include('admin.questions.soalcerita.update._isian_bahasa')
 @include('admin.questions.soalcerita.create._merinci')
 @include('admin.questions.soalcerita.update._merinci')
+@include('admin.questions.soalcerita.create._esai')
+@include('admin.questions.soalcerita.update._esai')
 @endsection
 
 

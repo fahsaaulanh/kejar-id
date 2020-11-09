@@ -54,7 +54,7 @@
                                 <h6>Merinci</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
+                        <a class="card" href="#create-esai" data-toggle="modal" data-target="#create-esai">
                             <div class="card-body">
                                 <i class="kejar-esai"></i>
                                 <h6>Esai</h6>
