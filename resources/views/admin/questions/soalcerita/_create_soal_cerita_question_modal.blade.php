@@ -74,10 +74,10 @@
                                 <h6>Isian Matematika</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
+                        <a class="card" href="#" data-toggle="modal" data-target="#create-melengkapi-tabel-column">
                             <div class="card-body">
                                 <i class="kejar-table"></i>
-                                <h6>Melengka&shy;pi Tabel</h6>
+                                <h6>Melengkapi Tabel</h6>
                             </div>
                         </a>
                         <a class="card" href="#create-teks-rumpang-pg" data-toggle="modal" data-target="#create-teks-rumpang-pg">

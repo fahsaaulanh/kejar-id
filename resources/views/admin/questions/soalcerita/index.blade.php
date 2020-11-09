@@ -521,6 +521,61 @@
             </div>
         </div>
         @endif
+
+        @if ($question['question']['type'] === 'CTQ')
+        <div class="card type-melengkapi-tabel">
+            <div class="card-header">
+                <div>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-table"></i> <h5>Melengkapi Tabel</h5>
+                </div>
+                <div>
+                <button data-toggle="modal" data-target="#update-melengkapi-tabel" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                        <i class="kejar-edit"></i> Edit
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="direction-text">
+                    <p class="">
+                        {!! $question['question']['question'] !!}
+                    </p>
+                </div>
+                <div class="table-responsive-md">
+                    <table class="table table-borderless">
+                        <thead>
+                            @foreach ($question['question']['choices']['header'] as $header)
+                                <th>{{ $header }}</th>
+                            @endforeach
+                        </thead>
+                        <tbody>
+                            @foreach ($question['question']['choices']['body'] as $body)
+                            <tr>
+                                @foreach ($body as $column)
+                                    @if ($column['type'] === 'question')
+                                        <td class="melengkapi-table-filled">
+                                            {!! $column['value'] !!}
+                                        </td>
+                                    @else
+                                        <td class="melengkapi-table-unfilled">
+                                            {{ $column['value'] }}
+                                        </td>
+                                    @endif
+                                @endforeach
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="explanation-group">
+                    <strong>Pembahasan</strong>
+
+                    <div class="explanation-text">
+                        {!! $question['question']['explanation'] !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
         @endforeach
     </div>
 
@@ -570,6 +625,8 @@
 @include('admin.questions.soalcerita.update._ya_tidak')
 @include('admin.questions.soalcerita.create._isian_matematika')
 @include('admin.questions.soalcerita.update._isian_matematika')
+@include('admin.questions.soalcerita.create._melengkapi_tabel')
+@include('admin.questions.soalcerita.update._melengkapi_tabel')
 @endsection
 
 
