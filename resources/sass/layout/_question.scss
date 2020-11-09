@@ -372,6 +372,44 @@
             }
         }
     }
+
+    .type-melengkapi-tabel {
+
+        .table-responsive-md {
+            margin-top: 1.2rem;
+        }
+
+        table {
+
+            th {
+                border: 1px solid #EBF1F6;
+                padding: 1rem ,8rem;
+                background: $white-2;
+                font-weight: bold;
+            }
+
+            tr {
+                td {
+                    border: 1px solid #EBF1F6 !important;
+                    padding: 1rem ,8rem;
+
+                    p {
+                        margin-bottom: 0px;
+                    }
+
+                }
+
+                .melengkapi-table-unfilled {
+                    background: $grey-15 !important;
+                }
+
+                .melengkapi-table-filled {
+                    background: $white !important;
+                }
+            }
+        }
+    }
+
 }
 
 .editor-display {
@@ -568,4 +606,13 @@
     overflow: hidden;
     resize: none;
     line-height: normal;
+}
+
+.melengkapi-tabel-input-table {
+    textarea {
+        height: 4.4rem !important;
+        line-height: 2.2rem;
+        overflow: hidden;
+        resize: none;
+    }
 }

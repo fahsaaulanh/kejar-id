@@ -1,5 +1,4 @@
-const { bind } = require("lodash");
-const { ajax, ajaxSetup } = require("jquery");
+const { countBy, find } = require("lodash");
 
 $('#upload-questions').on('show.bs.modal', event => {
     $('#create-question').modal('hide');
@@ -366,6 +365,28 @@ $(document).on('click', '.add-btn', function(){
 
         initializeEditor(ckEditorField.length, $(this).parent().find('.ya-tidak-input-table').find('tr').last().find('textarea')[0]);
     }
+
+    if ($(this).parent().find('table').data('type') === 'melengkapi_tabel') {
+        var modalBody = $(this).parents('.modal-body');
+
+        var columnAmount = $('#create-melengkapi-tabel-column').find('input[name="column_amount"]').val();
+
+        var defaultInput = $(this).parent().find('.melengkapi-tabel-input-table').find('tr').last().data('row') + 1;
+
+        var appendHTML = `<tr data-row="${defaultInput}">`;
+
+        for (let columnBody = 0; columnBody < columnAmount; columnBody++) {
+            appendHTML += `<td><input type="hidden" name="column[status][${defaultInput}][]" value="" /><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">Soal/Jawaban</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100"><a class="dropdown-item" href="#">Soal</a><a class="dropdown-item" href="#">Jawaban</a></div></div><div class="ckeditor-list"><textarea placeholder="Ketik data" name="column[content][${defaultInput}][]" class="form-control"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>`;
+        }
+
+        appendHTML += '<td><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>';
+
+        $(this).parent().find('.melengkapi-tabel-input-table').append(appendHTML);
+
+        $(this).parent().find('.melengkapi-tabel-input-table').find('tr').each(function(index, element) {
+            $(element).find('.remove-btn').removeClass('d-none');
+        });
+    }
 });
 
 $(document).on('click', '.edit-btn', function(){
@@ -721,6 +742,17 @@ $(document).on('click', '.remove-btn', function(){
         }, 1);
 
     }
+
+    if ($(this).parents('table').data('type') === 'melengkapi_tabel') {
+        $(this).parents('tr').remove();
+
+        $(modalBody).find('.melengkapi-table-input-table').find('tr').each(function(index, element) {
+            if (index < 1 && $(modalBody).find('.melengkapi-table-input-table').find('tr').length == 1) {
+                $(element).find('.remove-btn').addClass('d-none');
+            }
+        });
+    }
+
 });
 
 $('#create-teks-rumpang-pg').on('show.bs.modal', (e) => {
@@ -941,6 +973,23 @@ var ckEditorField = [];
 
 $(document).on('click', '.custom-dropdown .dropdown-menu a', function() {
     var statusValue = $(this).text();
+
+    var modalBody = $(this).parents('.modal-body');
+
+    if ($(modalBody).find('table').data('type') === 'melengkapi_tabel') {
+        if (statusValue === 'Jawaban') {
+            $(this).parents('td').find('textarea').addClass('input-valid').removeClass('editor-field');
+            if ($(this).parents('td').find('textarea').data('index') !== undefined) {
+                ckEditorField[$(this).parents('td').find('textarea').data('index')].destroy();
+                $(this).parents('td').find('textarea').removeAttr('data-index');
+            }
+        } else if (statusValue === 'Soal') {
+            if ($(this).parents('td').find('textarea').attr('data-index') === undefined) {
+                $(this).parents('td').find('textarea').removeClass('input-valid').addClass('editor-field').attr('data-index', ckEditorField.length);
+                initializeEditor(ckEditorField.length, $(this).parents('td').find('textarea')[0]);
+            }
+        }
+    }
 
     $(this).parents('td').find('.dropdown button').removeClass('text-muted');
     $(this).parents('td').find('.dropdown-status').text(statusValue);
@@ -1177,6 +1226,110 @@ $('#update-isian-matematika').on('hide.bs.modal', (e) => {
     clearEditorField();
 });
 
+
+$('#create-melengkapi-tabel-column').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+});
+
+$('#create-melengkapi-tabel').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-melengkapi-tabel-column').modal('hide');
+
+    var columnAmount = $('#create-melengkapi-tabel-column').find('input[name="column_amount"]').val();
+
+    var columnHTML = "<tr>";
+
+    for (let columnHeader = 0; columnHeader < columnAmount; columnHeader++) {
+        columnHTML += `<td><input type="text" placeholder="Ketik judul kolom" name="header[]" class="form-control"></td>`;
+    }
+
+    columnHTML += "<td></td></tr>";
+
+    $('.melengkapi-tabel-input-table').html(columnHTML);
+
+    for (let defaultInput = 0; defaultInput < 3; defaultInput++) {
+        var appendHTML = `<tr data-row="${defaultInput}">`;
+
+        for (let columnBody = 0; columnBody < columnAmount; columnBody++) {
+            appendHTML += `<td><input type="hidden" name="column[status][${defaultInput}][]" value="" /><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">Soal/Jawaban</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100"><a class="dropdown-item" href="#">Soal</a><a class="dropdown-item" href="#">Jawaban</a></div></div><div class="ckeditor-list"><textarea placeholder="Ketik data" name="column[content][${defaultInput}][]" class="form-control"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>`;
+        }
+
+        appendHTML += '<td><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>';
+
+        $('.melengkapi-tabel-input-table').append(appendHTML);
+    }
+
+    clearEditorField();
+
+    $(e.target).find('.editor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+$('#create-melengkapi-tabel').on('hide.bs.modal', (e) => {
+    $('#create-soal-cerita-question-modal').modal('show');
+    clearEditorField();
+});
+
+$('#update-melengkapi-tabel').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+
+    $(e.target).find('form').attr('action', $(e.relatedTarget).data('url'));
+
+    $.ajax({
+        type: "GET",
+        url: $(e.relatedTarget).data('url'),
+        success: function (response) {
+            $(e.target).find('textarea[name="keterangan_soal"]').val(response.question);
+            $(e.target).find('textarea[name="pembahasan"]').val(response.explanation);
+            $(e.target).find('.melengkapi-tabel-input-table').html('');
+            $(e.target).find('.editor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+            $('#create-melengkapi-tabel-column').find('input[name="column_amount"]').val(response.choices.header.length);
+            var headerHTML = `<tr>`;
+            for (let h = 0; h < response.choices.header.length; h++) {
+                headerHTML += `<td><input type="text" placeholder="Ketik judul kolom" name="header[]" value="${response.choices.header[h]}" class="form-control"></td>`;
+            }
+
+
+            headerHTML += `<td></td></tr>`;
+            $(e.target).find('.melengkapi-tabel-input-table').html(headerHTML);
+            var editorIndex = 2;
+            for (let defaultInput = 0; defaultInput < Object.keys(response.choices.body).length; defaultInput++) {
+                var appendHTML = `<tr data-row="${defaultInput}">`;
+
+                    for (let columnBody = 0; columnBody < response.choices.body[defaultInput].length; columnBody++) {
+                        appendHTML += `<td>
+                            <input type="hidden" name="column[status][${defaultInput}][]" value="${response.choices.body[defaultInput][columnBody].type === 'question' ? 'Soal' : 'Jawaban'}" />
+                            <div class="dropdown custom-dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">${response.choices.body[defaultInput][columnBody].type === 'question' ? 'Soal' : 'Jawaban'}</span><i class="kejar-dropdown"></i></button>
+                                <div class="dropdown-menu w-100">
+                                    <a class="dropdown-item" href="#">Soal</a>
+                                    <a class="dropdown-item" href="#">Jawaban</a>
+                                </div>
+                            </div>
+                            <div class="ckeditor-list">
+                                <textarea placeholder="Ketik data" name="column[content][${defaultInput}][]" class="form-control ${response.choices.body[defaultInput][columnBody].type === 'answer' ? 'input-valid' : 'editor-field' }" ${ response.choices.body[defaultInput][columnBody].type === 'question' ? 'data-index="' + parseInt(editorIndex++) + '"' : '' }>${response.choices.body[defaultInput][columnBody].value}</textarea>
+                                <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
+                                    <button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button>
+                                </div>
+                            </div>
+                        </td>`;
+                    }
+
+                    appendHTML += '<td><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>';
+
+                    $('.melengkapi-tabel-input-table').append(appendHTML);
+            }
+
+            $(e.target).find('.melengkapi-tabel-input-table .editor-field').each((index, element) => {
+                initializeEditor($(element).data('index'), element);
+            });
+        }
+    });
+});
 
 function clearEditorField() {
     for (let index = 0; index < ckEditorField.length; index++) {

@@ -615,7 +615,7 @@ class QuestionController extends Controller
 
                         $roundQuestionApi->store($question['data']['id'], $payloadQS);
                     }
-                } elseif ($request->question_type === 'MQIA') {
+                } elseif ($questionType === 'MQIA') {
                     $choices = [];
                     $choices['first'] = [];
                     $choices['last'] = [];
@@ -642,6 +642,62 @@ class QuestionController extends Controller
                             'type' => 'MQIA',
                             'choices' => $choices,
                             'answer' => $answer,
+                        ];
+
+                        $question = $questionApi->store($collection);
+
+                        $updateData = [
+                            'explanation' => (string)$request->pembahasan,
+                            'explained_by' => session('user.id'),
+                            'tags' => ['explanation'],
+                            'note' => 'explanation',
+                        ];
+
+                        $questionApi->update($question['data']['id'], ['status' => '2']);
+                        $questionApi->update($question['data']['id'], $updateData);
+
+                        $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                        $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                        $payloadQS = [
+                            'question_id' => $question['data']['id'],
+                            'round_id' => $roundId,
+                            'order' => $questionTotal + 1,
+                        ];
+
+                        $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                    }
+                } elseif ($questionType === 'CTQ') {
+                    $body = [];
+                    foreach ($request->column['status'] as $key => $value) {
+                        foreach ($value as $k => $val) {
+                            $body[$key][] = [
+                                'type' => $val === 'Jawaban' ? 'answer' : 'question',
+                                'value' => $val === 'Jawaban' ?
+                                    strtolower($request->column['content'][$key][$k]) :
+                                    $request->column['content'][$key][$k],
+                            ];
+                        }
+                    }
+
+                    $header = $request->header;
+
+                    $choices = [
+                        'header' => $header,
+                        'body' => $body,
+                    ];
+
+                    if (count($choices) > 0) {
+                        $collection = [
+                            'subject_id' => null,
+                            'topic_id' => null,
+                            'bank' => $gameParsed['short'],
+                            'question' => $request->keterangan_soal,
+                            'level' => 'LEVEL_1',
+                            'created_by' => session('user.id'),
+                            'type' => 'CTQ',
+                            'choices' => $choices,
+                            'answer' => $body,
                         ];
 
                         $question = $questionApi->store($collection);
@@ -1063,7 +1119,7 @@ class QuestionController extends Controller
                 ];
 
                 $questionApi->update($questionId, $updateData);
-            } elseif ($request->question_type === 'MQIA') {
+            } elseif ($questionType === 'MQIA') {
                 $questionApi = new QuestionApi;
 
                 $choices = [];
@@ -1085,6 +1141,46 @@ class QuestionController extends Controller
                     'question' => (string)($request->keterangan_soal),
                     'choices' => $choices,
                     'answer' => $answer,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => (string)$request->pembahasan,
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($questionType === 'CTQ') {
+                $questionApi = new QuestionApi;
+
+                $body = [];
+                foreach ($request->column['status'] as $key => $value) {
+                    foreach ($value as $k => $val) {
+                        $body[$key][] = [
+                            'type' => $val === 'Jawaban' ? 'answer' : 'question',
+                            'value' => $val === 'Jawaban' ?
+                                strtolower($request->column['content'][$key][$k]) :
+                                $request->column['content'][$key][$k],
+                        ];
+                    }
+                }
+
+                $header = $request->header;
+
+                $choices = [
+                    'header' => $header,
+                    'body' => $body,
+                ];
+
+                $payload = [
+                    'question' => (string)($request->keterangan_soal),
+                    'choices' => $choices,
+                    'answer' => $body,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
                 ];
