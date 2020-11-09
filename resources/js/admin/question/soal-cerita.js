@@ -837,6 +837,19 @@ $(document).on('click', '.add-btn', function() {
             initializeEditor(index, element);
         });
     }
+
+    if ($(this).parent().find('table').data('type') === 'ya_tidak') {
+        var indexNumber = $(this).parent().find('.ya-tidak-input-table').find('tr').length;
+        var row = `<tr><td><div class="ckeditor-list"><textarea name="question[]" class="editor-field" placeholder="Ketik pernyataan ${indexNumber +1 }"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><input type="hidden" name="answer[]"><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">Y/T</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100" aria-labelledby=""><a class="dropdown-item" href="#">Ya</a><a class="dropdown-item" href="#">Tidak</a></div></div><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>`;
+        $(this).parent().find('.ya-tidak-input-table').append(row);
+
+        $(this).parent().find('.ya-tidak-input-table').find('tr').each(function(index, element) {
+            $(element).find('.remove-btn').removeClass('d-none');
+        });
+
+        initializeEditor(ckEditorField.length, $(this).parent().find('.ya-tidak-input-table').find('tr').last().find('textarea')[0]);
+    }
+
 });
 
 $(document).on('click', '.custom-dropdown .dropdown-menu a', function() {
@@ -896,6 +909,30 @@ $(document).on('click', '.remove-btn', function(e) {
         $(modalBody).find('.editor-field').each((index, element) => {
             initializeEditor(index, element);
         });
+    }
+
+    if ($(this).parents('table').data('type') === 'ya_tidak') {
+        $(this).parents('tr').remove();
+
+        $(modalBody).find('.ya-tidak-input-table').find('tr').each(function(index, element) {
+            if (index < 1 && $(modalBody).find('.ya-tidak-input-table').find('tr').length == 1) {
+                $(element).find('.remove-btn').addClass('d-none');
+            }
+            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan ' + (index + 1));
+        });
+
+        for (let index = 0; index < ckEditorField.length; index++) {
+            ckEditorField[index].destroy();
+        }
+
+        ckEditorField = [];
+
+        setTimeout(() => {
+            $(modalBody).find('.editor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+        }, 1);
+
     }
 });
 
@@ -994,6 +1031,92 @@ $('#update-mengurutkan').on('show.bs.modal', (e) => {
     clearEditorField();
 });
 
+$('#create-ya-tidak').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+
+    $(e.target).find('.editor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+$('#create-ya-tidak').on('hide.bs.modal', (e) => {
+    $('#create-soal-cerita-question-modal').modal('show');
+    clearEditorField();
+});
+
+$('#update-ya-tidak').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+
+    $(e.target).find('form').attr('action', $(e.relatedTarget).data('url'));
+
+    $.ajax({
+        type: "GET",
+        url: $(e.relatedTarget).data('url'),
+        success: function (response) {
+            $(e.target).find('textarea[name="keterangan_soal"]').val(response.question);
+            $(e.target).find('textarea[name="pembahasan"]').val(response.explanation);
+            $(e.target).find('.ya-tidak-input-table').html('');
+            for (let x = 0; x < Object.keys(response.choices).length; x++) {
+                $(e.target).find('.ya-tidak-input-table').append(`
+                    <tr>
+                        <td>
+                            <div class="ckeditor-list"><textarea name="question[]" class="editor-field" placeholder="Ketik pernyataan ${x}">${ response.choices[x + 1].question }</textarea>
+                                <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
+                                    <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
+                                        <i class="kejar-bold"></i>
+                                    </button>
+                                    <button type="button" class="italic-btn" title="Italic (Ctrl + I)">
+                                        <i class="kejar-italic"></i>
+                                    </button>
+                                    <button type="button" class="underline-btn" title="Underline (Ctrl + U)">
+                                        <i class="kejar-underlined"></i>
+                                    </button>
+                                    <button type="button" class="bullet-list-btn" title="Bulleted list">
+                                        <i class="kejar-bullet"></i>
+                                    </button>
+                                    <button type="button" class="number-list-btn" title="Number list">
+                                        <i class="kejar-number"></i>
+                                    </button>
+                                    <button type="button" class="photo-btn" title="Masukkan foto">
+                                        <i class="kejar-photo"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="hidden" name="answer[]" value="${ response.choices[x + 1].answer }">
+                            <div class="dropdown custom-dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="dropdown-status text-capitalize">${ response.choices[x + 1].answer === 'yes' ? 'Ya' : 'Tidak' }</span>
+                                    <i class="kejar-dropdown"></i>
+                                </button>
+                                <div class="dropdown-menu w-100" aria-labelledby="">
+                                    <a class="dropdown-item" href="#">Ya</a>
+                                    <a class="dropdown-item" href="#">Tidak</a>
+                                </div>
+                            </div>
+                            <button class="remove-btn">
+                                <i class="kejar-close"></i>
+                            </button>
+                        </td>
+                    </tr>`);
+            }
+
+            if (Object.keys(response.choices).length <= 1) {
+                $(e.target).find('.ya-tidak-input-table').find('.remove-btn').addClass('d-none');
+            }
+
+            $(e.target).find('form').find('.editor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+        }
+    });
+});
+
+$('#update-ya-tidak').on('hide.bs.modal', (e) => {
+    clearEditorField();
+});
 
 function clearEditorField() {
     for (let index = 0; index < ckEditorField.length; index++) {
