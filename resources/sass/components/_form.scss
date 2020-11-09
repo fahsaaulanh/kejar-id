@@ -189,7 +189,7 @@ input.input-alternative-answer{
 
 .form-group.ckeditor-list {
     .ck-content {
-        min-height: 9rem;
+        min-height: 9rem !important;
     }
 }
 
@@ -306,6 +306,65 @@ input.input-alternative-answer{
 
             width: 11.6rem !important;
             display: flex;
+
+            i::before {
+                color: $black-1;
+                font-size: 2rem;
+            }
+        }
+    }
+}
+
+.isian-matematika-input-table {
+    width: 100%;
+
+    tr td {
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+        vertical-align: top !important;
+
+
+        .ck-editor {
+            box-sizing: border-box;
+        }
+
+        .ck-editor__main {
+            box-sizing: border-box;
+            min-height: 4rem !important;
+
+            .ck-content {
+                padding: 0px 1,8rem !important;
+
+                p {
+                    line-height: normal;
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
+
+                    &.ck-placeholder {
+                        position: absolute;
+                    }
+                }
+            }
+        }
+
+        box-sizing: border-box;
+        &:nth-child(1), &:nth-child(2), &:nth-child(3) {
+            padding-right: 8px;
+            width: 19.9rem !important;
+        }
+
+        &:nth-child(4) {
+            width: 2rem;
+            .remove-btn {
+                margin-top: 1.2rem;
+                outline: none;
+                background: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: none;
+                // display: none;
+            }
 
             i::before {
                 color: $black-1;

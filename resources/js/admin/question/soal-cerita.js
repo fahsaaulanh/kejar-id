@@ -313,6 +313,59 @@ $(document).on('click', '.add-btn', function(){
         setTimeout(function(){ radioRmpgManagement(); }, 50);
     }
 
+    if($(this).parent().find('table').data('type') === 'benar_salah') {
+        var indexNumber = $(this).parent().find('.benar-salah-input-table').find('tr').length;
+        var row = '<tr><td><div class="ckeditor-list"><textarea name="pertanyaan[]" id="" cols="30" rows="1" class="editor-field" placeholder="Ketik pernyataan ' + (indexNumber + 1) + '"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><input type="hidden" name="status_pertanyaan[]"><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">B/S</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" href="#">Benar</a><a class="dropdown-item" href="#">Salah</a></div></div><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>';
+        $(this).parent().find('.benar-salah-input-table').append(row);
+
+        $(this).parent().find('.benar-salah-input-table').find('tr').each(function(index, element) {
+            $(element).find('.remove-btn').removeClass('d-none');
+        });
+
+        initializeEditor(ckEditorField.length, $(this).parent().find('.benar-salah-input-table').find('tr').last().find('textarea')[0]);
+    }
+
+    if ($(this).parent().find('table').data('type') === 'isian_matematika') {
+        var indexNumber = $(this).parent().find('.isian-matematika-input-table').find('tr').length;
+        var row = `<tr><td><div class="ckeditor-list"><textarea name="first[]" class="editor-field" placeholder="Ketik awalan"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><textarea name="answer[]" class="_isian_matematika_input_answer" placeholder="Ketik jawaban"></textarea></td><td><div class="ckeditor-list"><textarea name="last[]" class="editor-field" placeholder="Ketik akhiran"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>`;
+        $(this).parent().find('.isian-matematika-input-table').append(row);
+
+        $(this).parent().find('.isian-matematika-input-table').find('tr').each(function(index, element) {
+            $(element).find('.remove-btn').removeClass('d-none');
+        });
+
+        for (let index = 0; index < 3; index++) {
+            initializeEditor(ckEditorField.length + index, $(this).parent().find('.isian-matematika-input-table').find('tr').last().find('textarea')[index]);
+        }
+    }
+
+    if ($(this).parent().find('table').data('type') === 'mengurutkan') {
+        var indexNumber = $(this).parent().find('.mengurutkan-input-table').find('tr').length;
+        var row = `<tr><td><div class="num-group"><input type="hidden" name="answer[${ indexNumber }][key]" value="${ indexNumber + 1 }">${ indexNumber + 1 }</div></td><td><div class="ckeditor-group ckeditor-list"><textarea name="answer[${ indexNumber }][description]" class="editor-field" placeholder="Ketik pernyataan/kalimat urutan ${ indexNumber + 1 }" ck-type="mengurutkan"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><div class="btn-action-group"><div class="dropdown dropleft"><button class="sort-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="kejar-drag-vertical"></i></button><div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" href="#"><i class="kejar-top"></i> Geser ke Atas</a><a class="dropdown-item" href="#"><i class="kejar-bottom"></i> Geser ke Bawah</a></div></div><button class="remove-btn" type="button"><i class="kejar-close"></i></button></div></td></tr>`;
+        $(this).parent().find('.mengurutkan-input-table').append(row);
+
+        $(this).parent().find('.mengurutkan-input-table').find('tr').each(function(index, element) {
+            $(element).find('.remove-btn').removeClass('d-none');
+        });
+
+        clearEditorField();
+
+        $(this).parents('.modal-body').find('.editor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+    }
+
+    if ($(this).parent().find('table').data('type') === 'ya_tidak') {
+        var indexNumber = $(this).parent().find('.ya-tidak-input-table').find('tr').length;
+        var row = `<tr><td><div class="ckeditor-list"><textarea name="question[]" class="editor-field" placeholder="Ketik pernyataan ${indexNumber +1 }"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><input type="hidden" name="answer[]"><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">Y/T</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100" aria-labelledby=""><a class="dropdown-item" href="#">Ya</a><a class="dropdown-item" href="#">Tidak</a></div></div><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>`;
+        $(this).parent().find('.ya-tidak-input-table').append(row);
+
+        $(this).parent().find('.ya-tidak-input-table').find('tr').each(function(index, element) {
+            $(element).find('.remove-btn').removeClass('d-none');
+        });
+
+        initializeEditor(ckEditorField.length, $(this).parent().find('.ya-tidak-input-table').find('tr').last().find('textarea')[0]);
+    }
 });
 
 $(document).on('click', '.edit-btn', function(){
@@ -455,6 +508,8 @@ $(document).on('click', '.edit-btn', function(){
 
 $(document).on('click', '.remove-btn', function(){
     var type = $(this).parents('table').attr('data-type');
+    var modalBody = $(e.target).parents('.modal-body');
+
     if (type == 'pilihan-ganda') {
         var thisModal = $(this).parents('.modal');
         $(this).parents('tr').remove();
@@ -541,6 +596,7 @@ $(document).on('click', '.remove-btn', function(){
             });
         }
     }
+
     if (typeBtn == 'bagian-rumpang') {
         $(this).parents('.bagian-rumpang').remove();
         clearEditorField();
@@ -574,6 +630,96 @@ $(document).on('click', '.remove-btn', function(){
             }
         }
         setTimeout(function(){ radioRmpgManagement(); }, 50);
+    }
+
+    if ($(this).parents('table').data('type') === 'isian_matematika') {
+        $(this).parents('tr').remove();
+
+        $(modalBody).find('.isian-matematika-input-table').find('tr').each(function(index, element) {
+            if (index < 1 && $(modalBody).find('.isian-matematika-input-table').find('tr').length == 1) {
+                $(element).find('.remove-btn').addClass('d-none');
+            }
+        });
+
+        for (let index = 0; index < ckEditorField.length; index++) {
+            ckEditorField[index].destroy();
+        }
+
+        ckEditorField = [];
+
+        $(modalBody).find('.editor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+    }
+
+    if ($(this).parents('table').data('type') === 'benar_salah') {
+        $(this).parents('tr').remove();
+
+        $(modalBody).find('.benar-salah-input-table').find('tr').each(function(index, element) {
+            if (index < 1 && $(modalBody).find('.benar-salah-input-table').find('tr').length == 1) {
+                $(element).find('.remove-btn').addClass('d-none');
+            }
+            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan ' + (index + 1));
+        });
+
+        for (let index = 0; index < ckEditorField.length; index++) {
+            ckEditorField[index].destroy();
+        }
+
+        ckEditorField = [];
+
+        $(modalBody).find('.editor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+    }
+
+    if ($(this).parents('table').data('type') === 'mengurutkan') {
+        $(this).parents('tr').remove();
+
+        $(modalBody).find('.mengurutkan-input-table').find('tr').each(function(index, element) {
+            if (index < 1 && $('.mengurutkan-input-table').find('tr').length == 1) {
+                $(element).find('.remove-btn').addClass('d-none');
+            }
+            $(element).find('.num-group').html(`<input type="hidden" name="answer[key][${index}]" value="${index + 1}">${index+1}`);
+            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan/kalimat urutan ' + (index + 1));
+        });
+        for (let index = 0; index < ckEditorField.length; index++) {
+            ckEditorField[index].destroy();
+        }
+
+        if ($(modalBody).find('.mengurutkan-input-table tr').length <= 1) {
+            $(modalBody).find('.mengurutkan-input-table').find('.remove-btn').addClass('d-none');
+        }
+
+        ckEditorField = [];
+
+        $(modalBody).find('.editor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+    }
+
+    if ($(this).parents('table').data('type') === 'ya_tidak') {
+        $(this).parents('tr').remove();
+
+        $(modalBody).find('.ya-tidak-input-table').find('tr').each(function(index, element) {
+            if (index < 1 && $(modalBody).find('.ya-tidak-input-table').find('tr').length == 1) {
+                $(element).find('.remove-btn').addClass('d-none');
+            }
+            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan ' + (index + 1));
+        });
+
+        for (let index = 0; index < ckEditorField.length; index++) {
+            ckEditorField[index].destroy();
+        }
+
+        ckEditorField = [];
+
+        setTimeout(() => {
+            $(modalBody).find('.editor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+        }, 1);
+
     }
 });
 
@@ -655,21 +801,6 @@ $(document).on('input', 'input[type=radio]', function() {
     });
     $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
 });
-
-// $(document).on('click', '.remove-btn', function(){
-//     $(this).parents().closest('tr').remove();
-//     var totalField = $('.answer-list-table-pg tr').length;
-//     resetFieldPg();
-//     refreshCkEditor();
-//     if (totalField == 2) {
-//         $('.answer-list-table-pg tr').each(function(){
-//             var secondField = $(this).children().eq(1);
-//             secondField.attr('colspan', 2);
-//             secondField.addClass('colspan-2');
-//             $(this).children().eq(2).remove();
-//         });
-//     }
-// });
 
 $(document).on('click', '#btn-add-answer-pg', function(){
     var totalField = $('.answer-list-table-pg tr').length;
@@ -808,132 +939,12 @@ function initializeEditor(index, element) {
 
 var ckEditorField = [];
 
-
-$(document).on('click', '.add-btn', function() {
-    if($(this).parent().find('table').data('type') === 'benar_salah') {
-        var indexNumber = $(this).parent().find('.benar-salah-input-table').find('tr').length;
-        var row = '<tr><td><div class="ckeditor-list"><textarea name="pertanyaan[]" id="" cols="30" rows="1" class="editor-field" placeholder="Ketik pernyataan ' + (indexNumber + 1) + '"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><input type="hidden" name="status_pertanyaan[]"><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">B/S</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" href="#">Benar</a><a class="dropdown-item" href="#">Salah</a></div></div><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>';
-        $(this).parent().find('.benar-salah-input-table').append(row);
-
-        $(this).parent().find('.benar-salah-input-table').find('tr').each(function(index, element) {
-            $(element).find('.remove-btn').removeClass('d-none');
-        });
-
-        initializeEditor(ckEditorField.length, $(this).parent().find('.benar-salah-input-table').find('tr').last().find('textarea')[0]);
-    }
-
-    if ($(this).parent().find('table').data('type') === 'mengurutkan') {
-        var indexNumber = $(this).parent().find('.mengurutkan-input-table').find('tr').length;
-        var row = `<tr><td><div class="num-group"><input type="hidden" name="answer[${ indexNumber }][key]" value="${ indexNumber + 1 }">${ indexNumber + 1 }</div></td><td><div class="ckeditor-group ckeditor-list"><textarea name="answer[${ indexNumber }][description]" class="editor-field" placeholder="Ketik pernyataan/kalimat urutan ${ indexNumber + 1 }" ck-type="mengurutkan"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><div class="btn-action-group"><div class="dropdown dropleft"><button class="sort-btn dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="kejar-drag-vertical"></i></button><div class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton"><a class="dropdown-item" href="#"><i class="kejar-top"></i> Geser ke Atas</a><a class="dropdown-item" href="#"><i class="kejar-bottom"></i> Geser ke Bawah</a></div></div><button class="remove-btn" type="button"><i class="kejar-close"></i></button></div></td></tr>`;
-        $(this).parent().find('.mengurutkan-input-table').append(row);
-
-        $(this).parent().find('.mengurutkan-input-table').find('tr').each(function(index, element) {
-            $(element).find('.remove-btn').removeClass('d-none');
-        });
-
-        clearEditorField();
-
-        $(this).parents('.modal-body').find('.editor-field').each((index, element) => {
-            initializeEditor(index, element);
-        });
-    }
-
-    if ($(this).parent().find('table').data('type') === 'ya_tidak') {
-        var indexNumber = $(this).parent().find('.ya-tidak-input-table').find('tr').length;
-        var row = `<tr><td><div class="ckeditor-list"><textarea name="question[]" class="editor-field" placeholder="Ketik pernyataan ${indexNumber +1 }"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><input type="hidden" name="answer[]"><div class="dropdown custom-dropdown"><button class="btn btn-light dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="dropdown-status">Y/T</span><i class="kejar-dropdown"></i></button><div class="dropdown-menu w-100" aria-labelledby=""><a class="dropdown-item" href="#">Ya</a><a class="dropdown-item" href="#">Tidak</a></div></div><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>`;
-        $(this).parent().find('.ya-tidak-input-table').append(row);
-
-        $(this).parent().find('.ya-tidak-input-table').find('tr').each(function(index, element) {
-            $(element).find('.remove-btn').removeClass('d-none');
-        });
-
-        initializeEditor(ckEditorField.length, $(this).parent().find('.ya-tidak-input-table').find('tr').last().find('textarea')[0]);
-    }
-
-});
-
 $(document).on('click', '.custom-dropdown .dropdown-menu a', function() {
     var statusValue = $(this).text();
 
     $(this).parents('td').find('.dropdown button').removeClass('text-muted');
     $(this).parents('td').find('.dropdown-status').text(statusValue);
     $(this).parents('td').find('input').val(statusValue);
-});
-
-$(document).on('click', '.remove-btn', function(e) {
-    e.preventDefault();
-
-    var modalBody = $(e.target).parents('.modal-body');
-
-    if ($(this).parents('table').data('type') === 'benar_salah') {
-        $(this).parents('tr').remove();
-
-        $(modalBody).find('.benar-salah-input-table').find('tr').each(function(index, element) {
-            if (index < 1 && $(modalBody).find('.benar-salah-input-table').find('tr').length == 1) {
-                $(element).find('.remove-btn').addClass('d-none');
-            }
-            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan ' + (index + 1));
-        });
-
-        for (let index = 0; index < ckEditorField.length; index++) {
-            ckEditorField[index].destroy();
-        }
-
-        ckEditorField = [];
-
-        $(modalBody).find('.editor-field').each((index, element) => {
-            initializeEditor(index, element);
-        });
-    }
-
-    if ($(this).parents('table').data('type') === 'mengurutkan') {
-        $(this).parents('tr').remove();
-
-        $(modalBody).find('.mengurutkan-input-table').find('tr').each(function(index, element) {
-            if (index < 1 && $('.mengurutkan-input-table').find('tr').length == 1) {
-                $(element).find('.remove-btn').addClass('d-none');
-            }
-            $(element).find('.num-group').html(`<input type="hidden" name="answer[key][${index}]" value="${index + 1}">${index+1}`);
-            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan/kalimat urutan ' + (index + 1));
-        });
-        for (let index = 0; index < ckEditorField.length; index++) {
-            ckEditorField[index].destroy();
-        }
-
-        if ($(modalBody).find('.mengurutkan-input-table tr').length <= 1) {
-            $(modalBody).find('.mengurutkan-input-table').find('.remove-btn').addClass('d-none');
-        }
-
-        ckEditorField = [];
-
-        $(modalBody).find('.editor-field').each((index, element) => {
-            initializeEditor(index, element);
-        });
-    }
-
-    if ($(this).parents('table').data('type') === 'ya_tidak') {
-        $(this).parents('tr').remove();
-
-        $(modalBody).find('.ya-tidak-input-table').find('tr').each(function(index, element) {
-            if (index < 1 && $(modalBody).find('.ya-tidak-input-table').find('tr').length == 1) {
-                $(element).find('.remove-btn').addClass('d-none');
-            }
-            $(element).find('textarea').attr('placeholder', 'Ketik pernyataan ' + (index + 1));
-        });
-
-        for (let index = 0; index < ckEditorField.length; index++) {
-            ckEditorField[index].destroy();
-        }
-
-        ckEditorField = [];
-
-        setTimeout(() => {
-            $(modalBody).find('.editor-field').each((index, element) => {
-                initializeEditor(index, element);
-            });
-        }, 1);
-
-    }
 });
 
 $(document).on('show.bs.dropdown', '.custom-dropdown', function () {
@@ -1117,6 +1128,55 @@ $('#update-ya-tidak').on('show.bs.modal', (e) => {
 $('#update-ya-tidak').on('hide.bs.modal', (e) => {
     clearEditorField();
 });
+
+$('#create-isian-matematika').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+
+    $(e.target).find('.editor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+
+$('#create-isian-matematika').on('hide.bs.modal', (e) => {
+    $('#create-soal-cerita-question-modal').modal('show');
+    clearEditorField();
+});
+
+$('#update-isian-matematika').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+
+    $(e.target).find('form').attr('action', $(e.relatedTarget).data('url'));
+
+    $.ajax({
+        type: "GET",
+        url: $(e.relatedTarget).data('url'),
+        success: function (response) {
+            $(e.target).find('textarea[name="keterangan_soal"]').val(response.question);
+            $(e.target).find('textarea[name="pembahasan"]').val(response.explanation);
+            $(e.target).find('.isian-matematika-input-table').html('');
+
+            for (let x = 0; x < response.choices.first.length; x++) {
+                $(e.target).find('.isian-matematika-input-table').append(`<tr><td><div class="ckeditor-list"><textarea name="first[]" class="editor-field" placeholder="Ketik awalan">${ response.choices.first[x] ?? '' }</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><textarea name="answer[]" class="_isian_matematika_input_answer" placeholder="Ketik jawaban">${ response.answer[x] ?? '' }</textarea></td><td><div class="ckeditor-list"><textarea name="last[]" class="editor-field" placeholder="Ketik akhiran">${ response.choices.last[x] ?? '' }</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><button class="remove-btn"><i class="kejar-close"></i></button></td></tr>`);
+            }
+
+            if (response.choices.first.length <= 1) {
+                $(e.target).find('.isian-matematika-input-table').find(`.remove-btn`).addClass('d-none');
+            }
+
+            $(e.target).find('form').find('.editor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+        }
+    });
+});
+
+
+$('#update-isian-matematika').on('hide.bs.modal', (e) => {
+    clearEditorField();
+});
+
 
 function clearEditorField() {
     for (let index = 0; index < ckEditorField.length; index++) {

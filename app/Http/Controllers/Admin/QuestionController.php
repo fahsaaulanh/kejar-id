@@ -615,6 +615,58 @@ class QuestionController extends Controller
 
                         $roundQuestionApi->store($question['data']['id'], $payloadQS);
                     }
+                } elseif ($request->question_type === 'MQIA') {
+                    $choices = [];
+                    $choices['first'] = [];
+                    $choices['last'] = [];
+                    $answer = [];
+
+                    for ($i=0; $i < count($request->first); $i++) {
+                        if (!($request->first[$i] === null &&
+                            $request->last[$i] === null &&
+                            $request->answer[$i] === null)) {
+                                $choices['first'][] = $request->first[$i];
+                                $choices['last'][] = $request->last[$i];
+                                $answer[] = $request->answer[$i];
+                        }
+                    }
+
+                    if (count($choices) > 0) {
+                        $collection = [
+                            'subject_id' => null,
+                            'topic_id' => null,
+                            'bank' => $gameParsed['short'],
+                            'question' => $request->keterangan_soal,
+                            'level' => 'LEVEL_1',
+                            'created_by' => session('user.id'),
+                            'type' => 'MQIA',
+                            'choices' => $choices,
+                            'answer' => $answer,
+                        ];
+
+                        $question = $questionApi->store($collection);
+
+                        $updateData = [
+                            'explanation' => (string)$request->pembahasan,
+                            'explained_by' => session('user.id'),
+                            'tags' => ['explanation'],
+                            'note' => 'explanation',
+                        ];
+
+                        $questionApi->update($question['data']['id'], ['status' => '2']);
+                        $questionApi->update($question['data']['id'], $updateData);
+
+                        $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                        $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                        $payloadQS = [
+                            'question_id' => $question['data']['id'],
+                            'round_id' => $roundId,
+                            'order' => $questionTotal + 1,
+                        ];
+
+                        $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                    }
                 }
             }
         } catch (Throwable $th) {
@@ -997,6 +1049,42 @@ class QuestionController extends Controller
                     'question' => (string)($request->keterangan_soal),
                     'choices' => $choices,
                     'answer' => $choices,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => (string)$request->pembahasan,
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($request->question_type === 'MQIA') {
+                $questionApi = new QuestionApi;
+
+                $choices = [];
+                $choices['first'] = [];
+                $choices['last'] = [];
+                $answer = [];
+
+                for ($i=0; $i < count($request->first); $i++) {
+                    if (!($request->first[$i] === null &&
+                        $request->last[$i] === null &&
+                        $request->answer[$i] === null)) {
+                            $choices['first'][] = $request->first[$i];
+                            $choices['last'][] = $request->last[$i];
+                            $answer[] = $request->answer[$i];
+                    }
+                }
+
+                $payload = [
+                    'question' => (string)($request->keterangan_soal),
+                    'choices' => $choices,
+                    'answer' => $answer,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
                 ];

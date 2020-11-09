@@ -68,7 +68,7 @@
                                 <h6>Isian Bahasa</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
+                        <a class="card" href="#create-isian-matematika" data-toggle="modal" data-target="#create-isian-matematika">
                             <div class="card-body">
                                 <i class="kejar-isian-matematika"></i>
                                 <h6>Isian Matematika</h6>
