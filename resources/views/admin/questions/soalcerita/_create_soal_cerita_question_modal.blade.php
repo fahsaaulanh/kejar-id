@@ -62,7 +62,7 @@
                         </a>
                 </div>
                 <div class="card-deck">
-                        <a class="card" href="#">
+                        <a class="card" href="#create-isian-bahasa" data-toggle="modal" data-target="#create-isian-bahasa">
                             <div class="card-body">
                                 <i class="kejar-isian-bahasa"></i>
                                 <h6>Isian Bahasa</h6>

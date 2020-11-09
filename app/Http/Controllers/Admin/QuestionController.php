@@ -723,6 +723,53 @@ class QuestionController extends Controller
 
                         $roundQuestionApi->store($question['data']['id'], $payloadQS);
                     }
+                } elseif ($questionType === 'QSAT') {
+                    $answers = [];
+                    foreach ($request['answer'] as $answer) {
+                        if (!is_null($answer)) {
+                            $answers[] = $answer;
+                        }
+                    }
+
+                    if (count($answers) <= 0 || is_null($request['question'])) {
+                        return redirect()->back();
+                    }
+
+                    $collection = [
+                        'owner' => 'KEJAR',
+                        'subject_id'=> null,
+                        'topic_id'=> null,
+                        'bank'=> $gameParsed['short'],
+                        'type'=> 'QSAT',
+                        'question'=> $request['question'],
+                        'choices'=> null,
+                        'answer'=> $answers,
+                        'level'=> 'LEVEL_1',
+                        'created_by' => session('user.id'),
+                    ];
+
+                    $question = $questionApi->store($collection);
+
+                    $updateData = [
+                        'explanation' => (string)$request['explanation'],
+                        'explained_by' => session('user.id'),
+                        'tags' => ['explanation'],
+                        'note' => 'explanation',
+                    ];
+
+                    $questionApi->update($question['data']['id'], $updateData);
+                    $questionApi->update($question['data']['id'], ['status' => 2]);
+
+                    $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                    $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                    $payloadQS = [
+                        'question_id' => $question['data']['id'],
+                        'round_id' => $roundId,
+                        'order' => $questionTotal + 1,
+                    ];
+
+                    $roundQuestionApi->store($question['data']['id'], $payloadQS);
                 }
             }
         } catch (Throwable $th) {
@@ -1189,6 +1236,41 @@ class QuestionController extends Controller
 
                 $updateData = [
                     'explanation' => (string)$request->pembahasan,
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($questionType === 'QSAT') {
+                $this->validate($request, [
+                    'question' => 'required',
+                ]);
+
+                $questionApi = new QuestionApi;
+
+                $answers = [];
+                foreach ($request['answer'] as $answer) {
+                    if (!is_null($answer)) {
+                        $answers[] = $answer;
+                    }
+                }
+
+                if (count($answers) <= 0) {
+                    return redirect()->back();
+                }
+
+                $payload = [
+                    'question' => $request['question'],
+                    'answer' => $answers,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => $request['explanation'],
                     'explained_by' => session('user.id'),
                     'tags' => ['explanation'],
                     'note' => 'explanation',

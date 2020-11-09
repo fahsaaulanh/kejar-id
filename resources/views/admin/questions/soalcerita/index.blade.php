@@ -389,54 +389,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="card type-isian-bahasa">
-            <div class="card-header">
-                <div>
-                    <h5>SOAL 9</h5> <i class="kejar-dot"></i> <i class="kejar-isian-bahasa"></i> <h5>Isian Bahasa</h5>
-                </div>
-                <div>
-                    <button>
-                        <i class="kejar-edit"></i> Edit
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="direction-text">
-                    <p class="">
-                        Berikut adalah soal yang akan ditampilkan. Bagaimana jika soalnya sangat panjang? Ukuran form akan mengikuti konten soal dengan sendirinya. Bisa jadi ukurannya menjadi lebih besar dari form yang semula disediakan.
-                    </p>
-                </div>
-                <div class="question-answer-group">
-                    <table class="question-answer-table">
-                        <tr>
-                            <td><i class="kejar-soal-benar"></i></td>
-                            <td>Ini adalah pernyataan yang sudah diisi. Ketika agak panjang, ukuran form akan mengikuti.</td>
-                        </tr>
-                        <tr>
-                            <td><i class="kejar-soal-benar"></i></td>
-                            <td>Pernyataan ini sedang diisi.</td>
-                        </tr>
-                        <tr>
-                            <td><i class="kejar-soal-benar"></i></td>
-                            <td>Pernytaaan ini sudah diisi juga.</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="explanation-group">
-                    <strong>Pembahasan</strong>
-                    <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
          -->
 
         @if ($question['question']['type'] === 'MQIA')
@@ -576,6 +528,42 @@
             </div>
         </div>
         @endif
+
+        @if ($question['question']['type'] === 'QSAT')
+        <div class="card type-isian-bahasa">
+            <div class="card-header">
+                <div>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-bahasa"></i> <h5>Isian Bahasa</h5>
+                </div>
+                <div>
+                    <button class="edit-btn" data-target="#edit-isian-bahasa" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                        <i class="kejar-edit"></i> Edit
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="editor-display">
+                    {!! $question['question']['question'] !!}
+                </div>
+                <div class="question-answer-group">
+                    <table class="question-answer-table">
+                        @foreach($question['question']['answer'] as $answer)
+                        <tr>
+                            <td><i class="kejar-soal-benar"></i></td>
+                            <td class="disable-editor">{!! $answer !!}</td>
+                        </tr>
+                        @endforeach
+                    </table>
+                </div>
+                <div class="explanation-group">
+                    <strong>Pembahasan</strong>
+                    <div class="editor-display">
+                        {!! $question['question']['explanation'] !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
         @endforeach
     </div>
 
@@ -627,6 +615,8 @@
 @include('admin.questions.soalcerita.update._isian_matematika')
 @include('admin.questions.soalcerita.create._melengkapi_tabel')
 @include('admin.questions.soalcerita.update._melengkapi_tabel')
+@include('admin.questions.soalcerita.create._isian_bahasa')
+@include('admin.questions.soalcerita.update._isian_bahasa')
 @endsection
 
 

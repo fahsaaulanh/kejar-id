@@ -201,6 +201,11 @@ $(document).on('focus', '.ckeditor-list .ck-content', function(){
     $(this).parents().closest('.ck-editor').next().addClass('d-none');
 });
 
+$(document).on('input', '.answer-list-table-ib .answer-field', function(){
+    var value = $(this).html();
+    $(this).prev().val(value);
+});
+
 $(document).on('click', '.add-btn', function(){
     var type = $(this).attr('data-type');
     if (type == 'pilihan-ganda'){
@@ -387,6 +392,15 @@ $(document).on('click', '.add-btn', function(){
             $(element).find('.remove-btn').removeClass('d-none');
         });
     }
+
+    if (type == 'isian-bahasa') {
+        var modal = $(this).parents('.modal');
+        var totalField = modal.find('.answer-list-table-ib tr').length;
+        var td1 = '<td><input type="hidden" name="answer['+ totalField +']"><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik alternatif jawaban '+ parseInt(totalField + 1) +'"></div></td>';
+        var td2 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+        var newAnswer = '<tr>'+ td1 + td2 +'</tr>';
+        modal.find('.answer-list-table-ib').append(newAnswer);
+    }
 });
 
 $(document).on('click', '.edit-btn', function(){
@@ -521,6 +535,30 @@ $(document).on('click', '.edit-btn', function(){
                 });
                 setTimeout(function(){ radioRmpgManagement(); }, 50);
                 addTypeRmpg(modal.find('.add-btn[data-type=next-rumpang-pg]'));
+                modal.modal('show');
+            }
+        });
+    }
+
+    if (type == '#edit-isian-bahasa') {
+        $.ajax({
+            url: url,
+            method: "GET",
+            success:function(response){
+                modal.find('form').attr('action', url);
+                modal.find('textarea[name=question]').val(response.question);
+                modal.find('textarea[name=explanation]').val(response.explanation);
+                var answersData = '<colgroup><col class="first-col"/><col class="second-col"/></colgroup>';
+                for (var i = 0; i < response.answer.length; i++) {
+                    if (i == 0) {
+                        answersData += '<tr><td colspan="2"><input type="hidden" name="answer['+ i +']" value="'+ response.answer[i] +'"><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik alternatif jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td></tr>';
+                        answersData += '<tr><td><input type="hidden" name="answer['+ i +']" value="'+ response.answer[i] +'"><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik alternatif jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
+                    }
+                }
+                modal.find('.answer-list-table-ib').html(answersData);
+                modal.find('.ckeditor-field').each((index, element) => {
+                    initializeEditor(index, element);
+                });
                 modal.modal('show');
             }
         });
@@ -1328,6 +1366,27 @@ $('#update-melengkapi-tabel').on('show.bs.modal', (e) => {
                 initializeEditor($(element).data('index'), element);
             });
         }
+    });
+});
+
+$('#create-pilihan-ganda').on('show.bs.modal', (e) => {
+    var modal = $(this).parents('.modal');
+    $(this).parents('tr').remove();
+    if (type == 'isian-bahasa') {
+        var number = 0;
+        modal.find('.answer-list-table-ib tr').each(function(){
+            $(this).find('input').attr('name', 'answer['+ number +']');
+            $(this).find('.answer-field').attr('placeholder', 'Ketik alternatif jawaban ' + parseInt(number + 1));
+            number++;
+        });
+    }
+});
+
+$('#create-isian-bahasa').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+    $(e.target).find('.ckeditor-field').each((index, element) => {
+        initializeEditor(index, element);
     });
 });
 
