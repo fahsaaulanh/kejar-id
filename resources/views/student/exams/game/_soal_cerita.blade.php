@@ -44,6 +44,11 @@
                     <!-- Type YNQMA/Ya Tidak -->
                         @include('student.exams.question_type._ya_tidak')
                     @endif
+
+                    @if ($question['type'] === 'MQIA')
+                        <!-- Type MQIA/Isian Matematika -->
+                        @include('student.exams.question_type._isian_matematika')
+                    @endif
                 @endforeach
 
             </form>

@@ -147,6 +147,53 @@ function checkAnswer() {
         });
     }
 
+    // Check if the current question type is isian_matematika
+    if ($(parentElement).data('type') === 'isian_matematika') {
+        var arrayAnswers = Array();
+        let type = $(parentElement).data('type');
+    
+        $(parentElement).find('._isian_matematika_input').each((index, element) => {
+            arrayAnswers.push($(element).val());
+        });
+
+        let data = {
+            'id' : $(parentElement).data('id'),
+            'task_id' : $('.question-list').data('task'),
+            'answer' : arrayAnswers,
+            'repeatance' : $(parentElement).data('repeat'),
+            'type': type
+        }
+
+        // Send ajax request
+        AjaxRequest(data, (res) => {
+            var questionHTML = $($(parentElement).find('._isian_matematika_question')[0]).clone(false);
+            $(questionHTML).find('._isian_matematika_input').each((index, element) => {
+                $(element).removeClass('_isian_matematika_input').addClass('_isian_matematika_input_session')
+                    .val(res.answer[index]).prop('disabled', true)
+                    .removeAttr('name');
+            });
+        
+            $(parentElement).find('._isian_matematika_right_answers').append(questionHTML);
+
+            inputAutoWith();
+
+            $(parentElement).find('._isian_matematika_session').first().css('display', 'block');
+
+            $(parentElement).find('._isian_matematika_explanation div').html(`${res.explanation}`);
+
+            $(parentElement).find('._isian_matematika_input').each((index, element) => {
+                $(element).prop('disabled', true);
+            });
+
+            if (res.status === false) {
+                wrongAnswer();
+            }
+
+            buttonFunction(parentElement);
+
+        });
+    }
+
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
 
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
@@ -202,6 +249,25 @@ function wrongAnswer() {
             $(cloned).css('display', 'none');
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._ya_tidak_session').css('display', 'none');
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
+
+    if ($(currentQuestion).data('type') === 'isian_matematika') {
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+
+            $(cloned).find('._isian_matematika_input').each((index, element) => {
+                $(element).prop('disabled', false).val('').width(40);
+            });
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._isian_matematika_session').css('display', 'none');
+            $(cloned).find('._isian_matematika_session').find('._isian_matematika_question').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('disabled _check_button');
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
