@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Daftar Ronde - ' . $game['title'])
+@section('title', 'Daftar Ronde - ' . $stage['title'])
 
 @section('content')
     <div class="container-fluid">

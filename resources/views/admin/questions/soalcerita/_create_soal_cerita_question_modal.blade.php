@@ -36,7 +36,7 @@
                         </a>
                 </div>
                 <div class="card-deck">
-                        <a class="card" href="#">
+                        <a class="card" href="#create-mengurutkan" data-toggle="modal" data-target="#create-mengurutkan">
                             <div class="card-body">
                                 <i class="kejar-mengurutkan-vertikal"></i>
                                 <h6>Mengurutkan</h6>

@@ -81,7 +81,7 @@
                             </tr>
                             @endfor
                         </table>
-                        <a href="#" class="add-btn" id="add-btn"><i class="kejar-add"></i> <span>Tambah Jawaban</span></a>
+                        <a href="#" class="add-btn" data-type="isian_matematika" id="add-btn"><i class="kejar-add"></i> <span>Tambah Jawaban</span></a>
                     </div>
                     <div class="form-group ckeditor-list">
                         <label for="pembahasan">Pembahasan</label>

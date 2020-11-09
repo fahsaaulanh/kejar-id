@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Permainan - ' . $round['title'])
+@section('title', 'Onboarding : Permainan - ' . $round['title'])
 
 @section('content')
 

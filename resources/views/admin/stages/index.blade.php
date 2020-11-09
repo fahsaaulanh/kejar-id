@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Games ')
+@section('title', 'Daftar Babak - ' . $game['title'])
 
 @section('content')
     <div class="container">

@@ -381,7 +381,7 @@ class QuestionController extends Controller
                     foreach ($request['choices'] as $key => $choice) {
                         if (!is_null($choice)) {
                             $choices[$alphabet] = $choice;
-                            if (in_array($key, $request['answer'], true)) {
+                            if (in_array($key, $request['answer'])) {
                                 $answers[] = $alphabet;
                             }
 
@@ -1074,7 +1074,7 @@ class QuestionController extends Controller
                 foreach ($request['choices'] as $key => $choice) {
                     if (!is_null($choice)) {
                         $choices[$alphabet] = $choice;
-                        if (in_array($key, $request['answer'], true)) {
+                        if (in_array($key, $request['answer'])) {
                             $answers[] = $alphabet;
                         }
 

@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Questions')
+@section('title', $game['title'] . ' - ' . $round['title'])
 
 @section('content')
 

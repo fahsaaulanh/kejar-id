@@ -248,6 +248,7 @@
     .type-memasangkan {
         .question-answer-table {
             margin-top: 2.4rem;
+            width: 100%;
 
             tr {
                 cursor: auto;
@@ -370,6 +371,11 @@
                     line-height: 1rem !important;
                 }
             }
+
+            p {
+                display: inline-block;
+                margin-right: 1.6rem;
+            }
         }
     }
 
@@ -384,7 +390,7 @@
             th {
                 border: 1px solid #EBF1F6;
                 padding: 1rem ,8rem;
-                background: $white-2;
+                background: $white-2 !important;
                 font-weight: bold;
             }
 
@@ -614,5 +620,20 @@
         line-height: 2.2rem;
         overflow: hidden;
         resize: none;
+    }
+}
+
+
+.mengurutkan-input-table tr {
+    &:first-child {
+        .dropdown-item:first-child {
+            display: none !important;
+        }
+    }
+
+    &:last-child {
+        .dropdown-item:last-child {
+            display: none !important;
+        }
     }
 }
