@@ -49,6 +49,11 @@
                         <!-- Type MQIA/Isian Matematika -->
                         @include('student.exams.question_type._isian_matematika')
                     @endif
+
+                    @if ($question['type'] === 'MCQSA')
+                        <!-- Type MCQSA/Pilihan Ganda -->
+                        @include('student.exams.question_type._pilihan_ganda')
+                    @endif
                 @endforeach
 
             </form>

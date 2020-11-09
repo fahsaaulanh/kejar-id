@@ -194,6 +194,48 @@ function checkAnswer() {
         });
     }
 
+    // Check if the current question type is pilihan_ganda
+    if ($(parentElement).data('type') === 'pilihan_ganda') {
+        var answer = $(parentElement).find('._pilihan_ganda_answer input:checked').val() ?? null;
+        let type = $(parentElement).data('type');
+
+        let data = {
+            'id' : $(parentElement).data('id'),
+            'task_id' : $('.question-list').data('task'),
+            'answer' : answer,
+            'repeatance' : $(parentElement).data('repeat'),
+            'type': type
+        }
+
+        // Send ajax request
+        AjaxRequest(data, (res) => {
+
+            var html = `
+                <div>
+                    ${ res.answer }
+                </div>
+            `;
+        
+            $(parentElement).find('._pilihan_ganda_right_answers').append(html);
+
+            $(parentElement).find('._pilihan_ganda_session').first().css('display', 'block');
+
+            $(parentElement).find('._pilihan_ganda_explanation div').html(`${res.explanation}`);
+
+            $(parentElement).find('._pilihan_ganda_answer input').each((index, element) => {
+                $(element).prop('disabled', true);
+            });
+
+            if (res.status === false) {
+                console.log('salah');
+                wrongAnswer();
+            }
+
+            buttonFunction(parentElement);
+
+        });
+    }
+
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
 
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
@@ -203,9 +245,9 @@ function checkAnswer() {
 
 function buttonFunction(parentElement) {
     if ($(parentElement).next().length > 0) {
-        $(parentElement).find('._question_button').addClass('_next_button').html('LANJUT <i class="kejar kejar-next"></i>');
+        $(parentElement).find('._question_button').addClass('_next_button').html('LANJUT <i class="kejar kejar-next"></i>').prop('disabled', false);
     } else {
-        $(parentElement).find('._question_button').addClass('_soal_cerita_finish').html('SELESAI <i class="kejar kejar-next"></i>');
+        $(parentElement).find('._question_button').addClass('_soal_cerita_finish').html('SELESAI <i class="kejar kejar-next"></i>').prop('disabled', false);
     }
 }
 
@@ -275,6 +317,27 @@ function wrongAnswer() {
             $('.question-list').append(cloned);
         }
     }
+
+    if ($(currentQuestion).data('type') === 'pilihan_ganda') {
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+            var options = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+
+            $(cloned).find('._pilihan_ganda_answer input').each((index, element) => {
+                $(element).prop('disabled', false).removeAttr('checked')
+                $(element).next('i').removeAttr('class').addClass(`kejar-${options[index]}-ellipse`);
+            });
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._pilihan_ganda_session').css('display', 'none');
+            $(cloned).find('._pilihan_ganda_session').find('._pilihan_ganda_right_answers div').remove();
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
 }
 
 $(document).ready(() => {
@@ -309,3 +372,80 @@ function finish() {
     $(form).prepend('<input class="d-none" name="_token" value="' + $('input[name="_token"]').val() +'">');
     $(form).submit();
 }
+
+// Isian Matematika
+$(document).on('input', '._isian_matematika_input', (e) => {
+    var count = 0;
+    var parentElement = $('.question-group:visible');
+
+    $(parentElement).find("._isian_matematika_input").each((index, element) => {
+        if (element.value === "") {
+            count++;
+        }
+    });
+
+    if( count === 0 ) {
+        $(parentElement).find('._question_button').removeClass('disabled');
+    } else {
+        $(parentElement).find('._question_button').addClass('disabled');
+    }
+
+    inputAutoWith();
+});
+
+inputAutoWith();
+
+function inputAutoWith() {
+    elementWidth("._isian_matematika_input");
+    elementWidth("._isian_matematika_input_session");
+}
+
+function elementWidth(className) {
+    var parentWidth;
+
+    $(className).each((index, element) => {
+        var defaultWith;
+        if ($(document).width() <= 768) {
+            defaultWith = 40;
+            parentWidth = $('div.col-md-10.col-sm-12').width() - 30;
+        } else {
+            defaultWith = 84;
+            parentWidth = $('div.col-md-10.col-sm-12').width();
+        }
+
+        $(element).width(() => {
+            var inputWidth = $(element).val().length * 9 + 4 >= defaultWith ? ($(element).val().length * 9 + 4) : defaultWith;
+            inputWidth = inputWidth > parentWidth ? parentWidth : inputWidth; 
+            return inputWidth;
+        });
+    });
+}
+// End Isian Matematika
+
+// Pilihan Ganda
+$(document).on('click', '._pilihan_ganda_radio_answer input', function(){
+    var currentELement = $('.question-group:visible');
+    $(currentELement).find('._pilihan_ganda_radio_answer').each(function(){
+        var iconEl = $(this).children().last();
+        var parseArr = iconEl.removeClass('kejar').attr('class').split('-');
+        if (iconEl.prev().is(':checked')) {
+            parseArr.remove('bold').splice(2, 0, 'bold');
+            iconEl.attr('class', 'kejar ' + parseArr.join('-'));
+            $(currentELement).find('._question_button').addClass('active').attr('disabled', false);
+        } else {
+            iconEl.attr('class', 'kejar ' + parseArr.remove('bold').join('-'));
+        } 
+    });
+});
+
+Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+// End Pilihan Ganda
