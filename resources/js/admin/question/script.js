@@ -59,6 +59,20 @@ $(document).on('click', '#btn-add-answer-pg', function(){
     }
 });
 
+function resetFieldPg(){
+    var number = 0;
+    $('.answer-list-table-pg tr').each(function(){
+        $(this).find('input[type=radio]').val(number);
+        $(this).find('textarea').attr({
+            'name': 'answer[description]['+ number +']',
+            'id': 'editor_field_' + parseInt(number + 1) ,
+            'placeholder': 'Ketik pilihan jawaban ' + parseInt(number + 1)
+        });
+        number++;
+    });
+    return number;
+}
+
 
 $(document).on('change', 'input[type=file]', function(){
     var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
@@ -89,7 +103,7 @@ $('.direction').dblclick(function() {
     $('#update-direction').modal('show');
 });
 
-$('.table-questions tbody tr, .table-toeic tbody tr').on('dblclick', 'td', function() {
+$('.table-questions tbody tr').on('dblclick', 'td', function() {
     var modal = $('#update-question');
     var id = $(this).parent().data('id');
     var question = $(this).parent().data('question');

@@ -437,42 +437,49 @@
                 </div>
             </div>
         </div>
+         -->
 
+        @if ($question['question']['type'] === 'MQIA')
         <div class="card type-isian-matematika">
             <div class="card-header">
                 <div>
-                    <h5>SOAL 10</h5> <i class="kejar-dot"></i> <i class="kejar-isian-matematika"></i> <h5>Isian Matematika</h5>
+                    <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-matematika"></i> <h5>Isian Matematika</h5>
                 </div>
                 <div>
-                    <button>
+                    <button data-toggle="modal" data-target="#update-isian-matematika" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                         <i class="kejar-edit"></i> Edit
                     </button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="direction-text">
-                    <p class="">
-                        Berikut adalah soal yang akan ditampilkan. Bagaimana jika soalnya sangat panjang? Ukuran form akan mengikuti konten soal dengan sendirinya. Bisa jadi ukurannya menjadi lebih besar dari form yang semula disediakan.
-                    </p>
+                    {!! $question['question']['question'] !!}
                 </div>
                 <div class="answer-group">
-                    <span class="input-styled">15</span>
-                     apel + <span class="input-styled">3</span> jeruk
+                    @for ($x = 0; $x < count($question['question']['choices']['first']); $x++)
+                        @if ($question['question']['choices']['first'][$x] !== null)
+                            <div class="_awalan">{!! $question['question']['choices']['first'][$x] !!}</div>
+                        @endif
+
+                        @isset($question['question']['answer'][$x])
+                            <div class="input-styled">{!! $question['question']['answer'][$x] !!}</div>
+                        @endisset
+
+                        @if ($question['question']['choices']['last'][$x] !== null)
+                            <div class="_akhiran">{!! $question['question']['choices']['last'][$x] !!}</span></div>
+                        @endif
+                    @endfor
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
+
                     <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
+                        {!! $question['question']['explanation'] !!}
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
+        @endif
 
         @if ($question['question']['type'] === 'IQ')
         <div class="card type-teks-rumpang">
@@ -561,6 +568,8 @@
 @include('admin.questions.soalcerita.update._teks_rumpang_PG')
 @include('admin.questions.soalcerita.create._ya_tidak')
 @include('admin.questions.soalcerita.update._ya_tidak')
+@include('admin.questions.soalcerita.create._isian_matematika')
+@include('admin.questions.soalcerita.update._isian_matematika')
 @endsection
 
 

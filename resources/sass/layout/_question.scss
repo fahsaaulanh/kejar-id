@@ -312,16 +312,26 @@
 
     .type-isian-matematika {
         .answer-group {
+            * {
+                display: inline;
+            }
+
             margin: 2.4rem 0rem;
+            line-height: 5.5rem;
 
             .input-styled {
+                display: inline;
                 padding: 1rem 1.2rem;
                 border-radius: 0%;
                 text-align: center;
                 border: 2px solid $grey-13;
-                width: 5rem;
                 background: $white;
                 color: $black-1;
+
+                * {
+                    display: inline;
+                    line-height: normal;
+                }
             }
         }
     }
@@ -541,12 +551,21 @@
     display: inline-flex;
     align-items: center;
 
-    span {
-    }
-
     i::before {
         color: $blue;
         font-size: 1.5rem;
         margin-right: 0.7rem;
     }
+}
+
+
+.ck-content {
+    word-break: break-all;
+}
+
+._isian_matematika_input_answer {
+    height: 4.4rem;
+    overflow: hidden;
+    resize: none;
+    line-height: normal;
 }
