@@ -702,6 +702,56 @@
     width: 10rem;
 }
 
+._pilihan_ganda_direction{
+    color: $black-1;
+    margin: 0.8rem 0rem;
+}
+
+._pilihan_ganda_question{
+    margin-top: 3.2rem;
+
+    *, p {
+        color: $black-1;
+    }
+}
+
+._pilihan_ganda_answer{
+    margin-bottom: 6rem;
+
+    ._pilihan_ganda_radio_answer{
+        @include h5;
+        display: block;
+        position: relative;
+        padding-left: 3.5rem;
+        margin-bottom: 2.4rem;
+        font-weight: normal;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 2.2rem;
+            
+            &:before{
+                color: $blue;
+            }
+        }
+    }
+}
+
 ._question_button {
     margin: 5.6rem 0rem;
     padding: 1.2rem 1.6rem;
@@ -710,13 +760,13 @@
     column-gap: 1.1rem;
     align-items: center;
     border: none;
-    background: #F13392;
+    background: $magenta;
     color: white;
     font-size: 1.5rem;
 }
 
-._question_button.disabled {
-    background: #EBF1F6;
+._question_button:disabled {
+    background: $grey-13;
     pointer-events: none;
 }
 
@@ -836,6 +886,20 @@
     }
 
     ._isian_matematika_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+    }
+}
+
+._pilihan_ganda_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._pilihan_ganda_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
     }
