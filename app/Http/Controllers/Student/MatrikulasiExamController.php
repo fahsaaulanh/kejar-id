@@ -35,6 +35,13 @@ class MatrikulasiExamController extends Controller
         $view = $gameApi->parse($game)['uri'] === 'soalcerita' ?
             'student.exams.game._soal_cerita' : 'student.exams.index';
 
+        $gameApi = new Game;
+
+        session()->forget('old_answer');
+
+        $view = $gameApi->parse($game)['uri'] === 'soalcerita' ?
+            'student.exams.game._soal_cerita' : 'student.exams.index';
+
         return view(
             $view,
             compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan', 'round'),

@@ -654,6 +654,74 @@
     width: 10rem;
 }
 
+._ya_tidak_options input {
+    opacity: 0;
+}
+
+._ya_tidak_options input ~ label i::after {
+    content: '\e931';
+    color: #7C92A7;
+    position: absolute;
+    margin-left: -2rem;
+    margin-top: 0px;
+    font-size: 1.6rem;
+}
+
+._ya_tidak_options input:checked ~ label i::after {
+    content: '\e930';
+    color: #3167F6;
+    font-size: 1.6rem;
+    margin-top: 0px;
+}
+
+._ya_tidak_direction {
+    margin-top: 3.2rem;
+    color: black;
+    margin-bottom: 2.4rem;
+}
+
+._ya_tidak {
+    box-shadow: 0px -2px 0px #EBF1F6, inset 0px -2px 0px #EBF1F6;
+    padding: 1.6rem 0rem;
+}
+
+._ya_tidak ._ya_tidak_options input[type='radio'] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+._ya_tidak ._ya_tidak_options input[type='radio'] ~ label {
+    color: #7C92A7;
+    cursor: pointer;
+}
+
+._ya_tidak ._ya_tidak_options input[type='radio']:checked ~ label {
+    color: black !important;
+}
+
+._ya_tidak p, ._ya_tidak label {
+    font-weight: normal !important;
+    margin: 0px !important;
+}
+
+._ya_tidak_question{
+    width: 72.8rem;
+    padding-right: 1.6rem;
+}
+
+._ya_tidak_question p {
+    color: black !important;
+}
+
+._ya_tidak_options{
+    display: flex;
+    justify-content: space-between;
+}
+
+._ya_tidak_options div {
+    width: 10rem;
+}
+
 ._question_button {
     margin: 5.6rem 0rem 4rem;
     padding: 1.2rem 1.6rem;
@@ -683,6 +751,12 @@
         justify-content: flex-start;
         padding-top: 1.6rem;
     }
+    
+    ._ya_tidak_options {
+        width: 100%;
+        justify-content: flex-start;
+        padding-top: 1.6rem;
+    }
 }
 
 ._benar_salah_session {
@@ -703,6 +777,29 @@
     }
 
     ._benar_salah_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+    }
+}
+
+._ya_tidak_session {
+    display: none;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._ya_tidak_right_answers_item {
+        box-shadow: inset 0px -2px 0px #EBF1F6;
+        padding: 1rem 0rem;
+
+        ._ya_tidak_options_right_answer {
+            margin-left: 1.6rem;
+            min-width: 8rem;
+        }
+    }
+
+    ._ya_tidak_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
     }

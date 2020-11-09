@@ -38,6 +38,12 @@
                     <!-- Type TFQMA/Benar Salah -->
                         @include('student.exams.quesiton_type._benar_salah')
                     @endif
+                    
+                    @if ($question['type'] === 'YNQMA')
+                    <!-- include the question by the question' type -->
+                    <!-- Type YNQMA/Ya Tidak -->
+                        @include('student.exams.question_type._ya_tidak')
+                    @endif
                 @endforeach
 
             </form>
