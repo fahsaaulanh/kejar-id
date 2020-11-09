@@ -42,7 +42,7 @@
                                 <h6>Mengurutkan</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
+                        <a class="card" href="#create-memasangkan" data-toggle="modal" data-target="#create-memasangkan">
                             <div class="card-body">
                                 <i class="kejar-mencocokkan"></i>
                                 <h6>Memasangkan</h6>

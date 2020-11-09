@@ -645,7 +645,7 @@
     }
 }
 
-.answer-list-table-pg{
+.answer-list-table-pg, .answer-list-table-ps{
     table-layout: fixed;
     width: 100%;
 
@@ -898,12 +898,12 @@
                 height: 2rem;
                 z-index: 1;
             }
-            
+
             input:checked ~ i:before{
                 content: "\e933";
                 color: $green-2;
             }
-        
+
             input:not(:checked) ~ i:before{
                 content: "\e932";
                 color: #7d8083;

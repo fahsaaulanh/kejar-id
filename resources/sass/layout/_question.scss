@@ -250,6 +250,7 @@
             margin-top: 2.4rem;
 
             tr {
+                cursor: auto;
                 border: 2px solid $grey-13;
                 border-left: none;
                 border-right: none;
@@ -272,6 +273,10 @@
                         i::before {
                             font-size: 2.2rem;
                         }
+                    }
+
+                    &:nth-child(3) {
+                        padding-left: 1rem;
                     }
                 }
             }
