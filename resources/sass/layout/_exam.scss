@@ -572,3 +572,138 @@
         }
     }
 }
+
+.question-group {
+    display: none;
+}
+
+.question-group:nth-child(1) {
+    display: block;
+}
+
+._soal_cerita_direction {
+    color: #202020;
+    margin-top: 0.8rem;
+}
+
+._benar_salah_options input {
+    opacity: 0;
+}
+
+._benar_salah_options input ~ label i::after {
+    content: '\e931';
+    color: #7C92A7;
+    position: absolute;
+    margin-left: -2rem;
+    margin-top: 0px;
+    font-size: 1.6rem;
+}
+
+._benar_salah_options input:checked ~ label i::after {
+    content: '\e930';
+    color: #3167F6;
+    font-size: 1.6rem;
+    margin-top: 0px;
+}
+
+._benar_salah_direction {
+    margin-top: 3.2rem;
+    color: black;
+    margin-bottom: 2.4rem;
+}
+
+._benar_salah {
+    box-shadow: 0px -2px 0px #EBF1F6, inset 0px -2px 0px #EBF1F6;
+    padding: 1.6rem 0rem;
+}
+
+._benar_salah ._benar_salah_options input[type='radio'] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+._benar_salah ._benar_salah_options input[type='radio'] ~ label {
+    color: #7C92A7;
+    cursor: pointer;
+}
+
+._benar_salah ._benar_salah_options input[type='radio']:checked ~ label {
+    color: black !important;
+}
+
+._benar_salah p, ._benar_salah label {
+    font-weight: normal !important;
+    margin: 0px !important;
+}
+
+._benar_salah_question{
+    width: 72.8rem;
+    padding-right: 1.6rem;
+}
+
+._benar_salah_question p {
+    color: black !important;
+}
+
+._benar_salah_options{
+    display: flex;
+    justify-content: space-between;
+}
+
+._benar_salah_options div {
+    width: 10rem;
+}
+
+._question_button {
+    margin: 5.6rem 0rem 4rem;
+    padding: 1.2rem 1.6rem;
+    display: flex;
+    cursor: pointer;
+    column-gap: 1.1rem;
+    align-items: center;
+    border: none;
+    background: #F13392;
+    color: white;
+    font-size: 1.5rem;
+}
+
+._question_button.disabled {
+    background: #EBF1F6;
+    pointer-events: none;
+}
+
+._question_button i::before{
+    color: white;
+    font-size: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    ._benar_salah_options {
+        width: 100%;
+        justify-content: flex-start;
+        padding-top: 1.6rem;
+    }
+}
+
+._benar_salah_session {
+    display: none;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._benar_salah_right_answers_item {
+        box-shadow: inset 0px -2px 0px #EBF1F6;
+        padding: 1rem 0rem;
+
+        ._benar_salah_options_right_answer {
+            margin-left: 1.6rem;
+            min-width: 8rem;
+        }
+    }
+
+    ._benar_salah_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+    }
+}
