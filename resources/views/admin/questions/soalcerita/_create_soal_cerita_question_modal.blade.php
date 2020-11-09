@@ -28,7 +28,7 @@
                             <h6>Benar Salah</h6>
                             </div>
                         </a>
-                        <a class="card" href="#">
+                        <a class="card" href="#create-ya-tidak" data-toggle="modal" data-target="#create-ya-tidak">
                             <div class="card-body">
                                 <i class="kejar-ya-tidak"></i>
                                 <h6>Ya Tidak</h6>

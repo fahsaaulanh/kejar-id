@@ -20,31 +20,31 @@
         -webkit-box-shadow: inset 0px 0px 10px 0.2px rgba(0, 0, 0, 0.05);
         box-shadow:         inset 0px 0px 10px 0.2px rgba(0, 0, 0, 0.05);
     }
-    
+
     .timer-stick .timer-length{
         background: #4DC978;
         width: 100%;
         display: block;
         height: inherit;
     }
-    
+
     /* Exam Navbar */
     .exam-navbar{
         margin-top: 44px;
     }
-    
+
     .exam-navbar .question-amount{
         font-size: 15px;
         color: #7c92a7 !important;
     }
-    
+
     .exam-navbar .question-amount .active{
         color: #202020;
         font-weight: bold;
     }
-    
+
     /* Link Logout */
-    
+
     .exam-navbar .link-logout a{
         color: #334E68;
         font-size: 15px;
@@ -52,11 +52,11 @@
         align-items: center;
         text-decoration: none;
     }
-    
+
     .exam-navbar .link-logout a i{
         margin-right: 5px;
     }
-    
+
     /* Command Text */
     .command{
         margin-top: 8px;
@@ -77,7 +77,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        
+
         .notification-text{
             @include h3;
 
@@ -98,15 +98,15 @@
     .notification-success, .notification-failed{
         display: none;
     }
-    
+
     .notification-success, .notification-success i::before{
         color: #4DC978;
     }
-    
+
     .notification-failed, .notification-failed i::before{
         color: #FF4343;
     }
-    
+
     /* Question */
     .question{
         margin: 0px auto;
@@ -118,13 +118,13 @@
         line-height: initial;
         color: #202020;
     }
-    
+
     /* Answer Input */
     .answer{
         margin-top: 32px;
         display: block;
     }
-    
+
     .answer .answer-input{
         border: 0px;
         border-bottom: 4px solid #A6D1FF;
@@ -136,7 +136,7 @@
         outline: none;
         line-height: 20px;
     }
-    
+
     /* Next Button */
     .next-button{
         margin: 5.6rem auto;
@@ -144,7 +144,7 @@
         font-size: 17px;
         text-align: center;
     }
-    
+
     .next-button .btn-next{
         background: #F13392;
         border-radius: 0px;
@@ -153,12 +153,12 @@
         font-size: 25px;
         font-weight: bold;
     }
-    
+
     .next-button .btn-next  i::before{
         color: white;
         font-size: 25px;
     }
-    
+
     @media screen and (max-width: 1200px) {
         .question .question-text{
             font-size: 48px;
@@ -166,26 +166,26 @@
         .answer .answer-input{
             font-size: 48px;
         }
-    
+
         .next-button .btn-next{
             padding: 16px 20px;
         }
-    
+
         .next-button .btn-next{
             font-size: 19px;
         }
-    
+
         .timer-stick{
             width: 100%;
         }
-    
+
         .next-button .btn-next  i::before{
             color: white;
             font-size: 19px;
         }
     }
-    
-    
+
+
     @media screen and (max-width: $mobile-breakpoint) {
         .exam-navbar{
             margin-top: 20px;
@@ -199,7 +199,7 @@
         .answer .answer-input{
             font-size: 28px !important;
         }
-    
+
         .timer-stick{
             width: 100%;
         }
@@ -207,41 +207,41 @@
         .next-button {
             margin: 4rem auto;
         }
-    
+
         .next-button .btn-next{
             padding: 12px 16px;
         }
         .next-button .btn-next{
             font-size: 17px;
         }
-    
+
         .next-button .btn-next  i::before{
             color: white;
             font-size: 17px;
         }
     }
-    
+
     .question-item{
         display: none;
     }
-    
+
     .question-item:first-child{
         display: block;
     }
-    
+
     .btn-next-disabled{
         background: #EBF1F6 !important;
         color: #ffffff !important;
         pointer-events: none;
     }
-    
+
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
-    
+
     /* Firefox */
     input[type=number] {
       -moz-appearance: textfield;
@@ -252,7 +252,7 @@
       -webkit-appearance: none;
       margin: 0;
     }
-    
+
     /* Firefox */
     input[type=number] {
       -moz-appearance: textfield;
@@ -263,7 +263,7 @@
       -webkit-appearance: none;
       margin: 0;
     }
-    
+
     /* Firefox */
     input[type=number] {
       -moz-appearance: textfield;
@@ -274,7 +274,7 @@
       -webkit-appearance: none;
       margin: 0;
     }
-    
+
     /* Firefox */
     input[type=number] {
       -moz-appearance: textfield;
@@ -284,7 +284,7 @@
     .menulis-efektif{
         .question{
             margin-top: 6.4rem !important;
-            
+
             .question-text{
                 font-size: 2rem !important;
                 font-weight: 500 !important;
@@ -302,7 +302,7 @@
 
         .answer{
             margin-top: 2.4rem !important;
-            
+
             .answer-input{
                 height: 14.8rem !important;
                 width: 100% !important;
@@ -423,9 +423,9 @@
             }
 
             .alternative-answers {
-                margin-top: 2.4rem; 
-                position: relative; 
-                font-size: 2rem; 
+                margin-top: 2.4rem;
+                position: relative;
+                font-size: 2rem;
                 line-height: 180%;
 
                 ul{
@@ -475,7 +475,7 @@
                 .answer-status{
                     font-size: 1.7rem;
                     line-height: 118%;
-                    
+
                     i::before{
                         line-height: 118%;
                         font-size: 1.7rem;
@@ -486,7 +486,7 @@
                 .btn{
                     font-size: 1.9rem !important;
                     padding: 1.6rem 2rem !important;
-                    line-height: 126%;
+                    // line-height: 126%;
 
                     i{
                         &::before{
@@ -515,9 +515,9 @@
 
                     ul li {
                         line-height: 141%;
-                        padding-left: 1.5rem; 
+                        padding-left: 1.5rem;
 
-                        i{  
+                        i{
                             line-height: 141%;
                             &::before{
                                 font-size: 1.7rem !important;

@@ -194,14 +194,14 @@
             </div>
         </div>
         @endif
-        <!--
+        @if ($question['question']['type'] === 'YNQMA')
         <div class="card type-ya-tidak">
             <div class="card-header">
                 <div>
-                    <h5>SOAL 4</h5> <i class="kejar-dot"></i> <i class="kejar-ya-tidak"></i> <h5>Ya Tidak</h5>
+                    <h5>SOAL {{$questionNum}}</h5> <i class="kejar-dot"></i> <i class="kejar-ya-tidak"></i> <h5>Ya Tidak</h5>
                 </div>
                 <div>
-                    <button>
+                    <button data-toggle="modal" data-target="#update-ya-tidak" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                         <i class="kejar-edit"></i> Edit
                     </button>
                 </div>
@@ -209,43 +209,29 @@
             <div class="card-body">
                 <div class="direction-text">
                     <p class="">
-                        Bacalah wacana yang diberikan dengan seksama. Pilihlah benar atau salah untuk setiap pernyataan berikut sesuai dengan wacana. Petunjuk juga bisa menjadi sangat panjang sehingga ukuran formnya menjadi lebih besar dari yang semula disediakan seperti ini.
+                        {!! $question['question']['question'] !!}
                     </p>
                 </div>
                 <div class="question-answer-group">
                     <table class="question-answer-table">
+                        @foreach ($question['question']['choices'] as $choice)
                         <tr>
-                            <td>Ibu dan ayah pergi ke Taman Safari.</td>
-                            <td>Ya</td>
+                            <td>{!! $choice['question'] !!}</td>
+                            <td class="text-capitalize">{!! $choice['answer'] !!}</td>
                         </tr>
-                        <tr>
-                            <td>Taman Safari Indonesia terletak di Prigen, Pasuruan.</td>
-                            <td>Ya</td>
-                        </tr>
-                        <tr>
-                            <td>Taman Safari adalah tempat penangkaran Gajah Lampung.</td>
-                            <td>Tidak</td>
-                        </tr>
-                        <tr>
-                            <td>Ada berbagai pertunjukkan badut yang dapat disaksikan di Taman Safari. Ada berbagai pertunjukkan badut yang dapat disaksikan di Taman Safari. Ada berbagai pertunjukkan badut yang dapat disaksikan di Taman Safari.</td>
-                            <td>Ya</td>
-                        </tr>
+                        @endforeach
                     </table>
                 </div>
                 <div class="explanation-group">
                     <strong>Pembahasan</strong>
+
                     <div class="explanation-text">
-                        <p>
-                            <ul class="list-unstyled">
-                                <li>Huruf kapital digunakan pada awal kalimat.</li>
-                                <li>Huruf kapital digunakan pada huruf pertama nama.</li>
-                                <li>Kedua kalimat digabungkan dengan kata penghubung dan.</li>
-                            </ul>
-                        </p>
+                        {!! $question['question']['explanation'] !!}
                     </div>
                 </div>
             </div>
-        </div> -->
+        </div>
+        @endif
 
         @if ($question['question']['type'] === 'SSQ')
         <div class="card type-mengurutkan">
@@ -573,6 +559,8 @@
 @include('admin.questions.soalcerita.update._memasangkan')
 @include('admin.questions.soalcerita.create._teks_rumpang_PG')
 @include('admin.questions.soalcerita.update._teks_rumpang_PG')
+@include('admin.questions.soalcerita.create._ya_tidak')
+@include('admin.questions.soalcerita.update._ya_tidak')
 @endsection
 
 

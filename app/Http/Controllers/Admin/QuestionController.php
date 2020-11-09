@@ -568,6 +568,53 @@ class QuestionController extends Controller
                     ];
 
                     $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                } elseif ($questionType === 'YNQMA') {
+                    $choices = [];
+                    foreach ($request->question as $key => $value) {
+                        if ($value !== null || $request->answer[$key] !== null) {
+                            $choices[$key + 1] = [
+                                'question' => $value,
+                                'answer' => strtolower($request->answer[$key]) === 'ya' ? 'yes' : 'no',
+                            ];
+                        }
+                    }
+
+                    if (count($choices) > 0) {
+                        $collection = [
+                            'subject_id' => null,
+                            'topic_id' => null,
+                            'bank' => $gameParsed['short'],
+                            'question' => $request->keterangan_soal,
+                            'level' => 'LEVEL_1',
+                            'created_by' => session('user.id'),
+                            'type' => 'YNQMA',
+                            'choices' => $choices,
+                            'answer' => $choices,
+                        ];
+
+                        $question = $questionApi->store($collection);
+
+                        $updateData = [
+                            'explanation' => (string)$request->pembahasan,
+                            'explained_by' => session('user.id'),
+                            'tags' => ['explanation'],
+                            'note' => 'explanation',
+                        ];
+
+                        $questionApi->update($question['data']['id'], ['status' => '2']);
+                        $questionApi->update($question['data']['id'], $updateData);
+
+                        $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                        $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                        $payloadQS = [
+                            'question_id' => $question['data']['id'],
+                            'round_id' => $roundId,
+                            'order' => $questionTotal + 1,
+                        ];
+
+                        $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                    }
                 }
             }
         } catch (Throwable $th) {
@@ -624,9 +671,7 @@ class QuestionController extends Controller
         $roundId;
         $questionId;
         $questionType = is_null($request->question_type) ? false : $request->question_type;
-
         $questionApi = new QuestionApi;
-
         if ($game === 'menulisefektif') {
             try {
                 $answers = [];
@@ -875,6 +920,91 @@ class QuestionController extends Controller
 
                 $updateData = [
                     'explanation' => $request['explanation'],
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($questionType === 'MQ') {
+                $this->validate($request, [
+                    'question' => 'required',
+                ]);
+
+                $questionApi = new QuestionApi;
+
+                $choices = [];
+                $answers = [];
+                $alphabet = 'A';
+                foreach ($request['answer']['statement'] as $key => $statement) {
+                    if (!is_null($statement) && !is_null($request['answer']['setstatement'][$key])) {
+                        $choices[0][$alphabet] = $statement;
+                        $alphabet++;
+                    }
+                }
+
+                foreach ($request['answer']['setstatement'] as $key => $statement) {
+                    if (!is_null($statement) && !is_null($request['answer']['statement'][$key])) {
+                        $choices[1][$alphabet] = $statement;
+                        $answers[] = $alphabet;
+                        $alphabet++;
+                    }
+                }
+
+                $alphabet = 'A';
+                foreach ($answers as $key => $answer) {
+                    $answers[$alphabet] = $answer;
+                    unset($answers[$key]);
+                    $alphabet++;
+                }
+
+                if (count($choices[0]) <= 0 || count($answers) <= 0) {
+                    return redirect()->back();
+                }
+
+                $payload = [
+                    'question' => $request['question'],
+                    'choices' => $choices,
+                    'answer' => $answers,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => $request['explanation'],
+                    'explained_by' => session('user.id'),
+                    'tags' => ['explanation'],
+                    'note' => 'explanation',
+                ];
+
+                $questionApi->update($questionId, $updateData);
+            } elseif ($questionType === 'YNQMA') {
+                $questionApi = new QuestionApi;
+
+                $choices = [];
+                foreach ($request->question as $key => $value) {
+                    if ($value !== null || $request->answer[$key] !== null) {
+                        $choices[$key + 1] = [
+                            'question' => $value,
+                            'answer' => strtolower($request->answer[$key]) === 'ya' ? 'yes' : 'no',
+                        ];
+                    }
+                }
+
+                $payload = [
+                    'question' => (string)($request->keterangan_soal),
+                    'choices' => $choices,
+                    'answer' => $choices,
+                    'tags' => ['answer', 'question'],
+                    'created_by' => session('user.id'),
+                ];
+
+                $questionApi->update($questionId, $payload);
+
+                $updateData = [
+                    'explanation' => (string)$request->pembahasan,
                     'explained_by' => session('user.id'),
                     'tags' => ['explanation'],
                     'note' => 'explanation',

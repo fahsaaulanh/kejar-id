@@ -527,6 +527,13 @@
     }
 }
 
+
+.ya-tidak-input-table textarea {
+    max-height: 4.4rem;
+    overflow: hidden;
+    resize: none;
+}
+
 .add-btn {
     @include h5-reg;
     text-decoration: none !important;

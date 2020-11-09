@@ -32,6 +32,34 @@ $(document).on('click', '.btn-add', function(){
     }
 });
 
+$(document).on('click', '#btn-add-alternative-answer', function(){
+    var index = $('.form-group #new_answer textarea').length;
+    $('#new_answer').append('<div class="d-flex justify-content-start align-items-start"><textarea class="textarea-answer" name="question[answer][' + index + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (index+1) +'"></textarea><button class="btn-delete-answer" type="button"><i class="kejar-close"></i></button></div>');
+});
+
+$(document).on('click', '#btn-add-answer-pg', function(){
+    var totalField = $('.answer-list-table-pg tr').length;
+    if (totalField < 10) {
+        if (totalField == 2) {
+            $('.answer-list-table-pg tr').each(function(){
+                var secondField = $(this).children().eq(1);
+                var removeBtn = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                secondField.attr('colspan', 1);
+                secondField.removeClass('colspan-2');
+                $(this).append(removeBtn);
+            });
+        }
+        var number = resetFieldPg();
+        var td1 = '<td><div class="radio-group"><input type="radio" name="answer[key]"><i class="kejar-belum-dikerjakan"></i></div></td>';
+        var td2 = '<td><div class="ckeditor-group ckeditor-list"><textarea name="answer[description][]" class="editor-field" id="editor_field_'+ parseInt(number + 1) +'" placeholder="Ketik pilihan jawaban '+ parseInt(number + 1) +'"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
+        var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+        var newAnswer = '<tr>'+ td1 + td2 + td3 +'</tr>';
+        $('.answer-list-table-pg').append(newAnswer);
+        refreshCkEditor();
+    }
+});
+
+
 $(document).on('change', 'input[type=file]', function(){
     var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
 
@@ -73,7 +101,7 @@ $('.table-questions tbody tr, .table-toeic tbody tr').on('dblclick', 'td', funct
     $(modal).modal('show');
 });
 
-$('.copy-id').click(function (e) { 
+$('.copy-id').click(function (e) {
     e.preventDefault();
     textToClipboard($(this).data('id'));
 });
@@ -129,41 +157,35 @@ $(document).keydown(function(e){
 });
 
 function checkActive(){
-    $('.ckeditor-btn-1').each(function(){
-        var ckeditorBtnGroup = $(this);
-        var ckeditorDiv = ckeditorBtnGroup.prev();
+    if ($('.ck-toolbar__items button:eq(0)').hasClass('ck-on')) {
+        $('.bold-btn').addClass('active');
+    } else {
+        $('.bold-btn').removeClass('active');
+    }
 
-        if (ckeditorDiv.find('.ck-toolbar__items button:eq(0)').hasClass('ck-on')) {
-            ckeditorBtnGroup.find('.bold-btn').addClass('active');
-        } else {
-            ckeditorBtnGroup.find('.bold-btn').removeClass('active');
-        }
+    if ($('.ck-toolbar__items button:eq(1)').hasClass('ck-on')) {
+        $('.italic-btn').addClass('active');
+    } else {
+        $('.italic-btn').removeClass('active');
+    }
 
-        if (ckeditorDiv.find('.ck-toolbar__items button:eq(1)').hasClass('ck-on')) {
-            ckeditorBtnGroup.find('.italic-btn').addClass('active');
-        } else {
-            ckeditorBtnGroup.find('.italic-btn').removeClass('active');
-        }
+    if ($('.ck-toolbar__items button:eq(2)').hasClass('ck-on')) {
+        $('.underline-btn').addClass('active');
+    } else {
+        $('.underline-btn').removeClass('active');
+    }
 
-        if (ckeditorDiv.find('.ck-toolbar__items button:eq(2)').hasClass('ck-on')) {
-            ckeditorBtnGroup.find('.underline-btn').addClass('active');
-        } else {
-            ckeditorBtnGroup.find('.underline-btn').removeClass('active');
-        }
+    if ($('.ck-toolbar__items button:eq(3)').hasClass('ck-on')) {
+        $('.bullet-list-btn').addClass('active');
+    } else {
+        $('.bullet-list-btn').removeClass('active');
+    }
 
-        if (ckeditorDiv.find('.ck-toolbar__items button:eq(3)').hasClass('ck-on')) {
-            ckeditorBtnGroup.find('.bullet-list-btn').addClass('active');
-        } else {
-            ckeditorBtnGroup.find('.bullet-list-btn').removeClass('active');
-        }
-
-        if (ckeditorDiv.find('.ck-toolbar__items button:eq(4)').hasClass('ck-on')) {
-            ckeditorBtnGroup.find('.number-list-btn').addClass('active');
-        } else {
-            ckeditorBtnGroup.find('.number-list-btn').removeClass('active');
-        }
-
-    });
+    if ($('.ck-toolbar__items button:eq(4)').hasClass('ck-on')) {
+        $('.number-list-btn').addClass('active');
+    } else {
+        $('.number-list-btn').removeClass('active');
+    }
 }
 
 $(document).on('click', '.btn-delete-answer', function(){
@@ -191,7 +213,7 @@ $(document).on('dblclick', '.question-list-item', function(){
             var answerTextArea = '';
             for (var i = 0; i < response.answer.length; i++) {
                 if (i == 0) {
-                    answerTextArea += '<textarea class="textarea-answer" name="question[answer][' + i + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (i + 1) +'" required>'+ response.answer[i] +'</textarea>';  
+                    answerTextArea += '<textarea class="textarea-answer" name="question[answer][' + i + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (i + 1) +'" required>'+ response.answer[i] +'</textarea>';
                 } else {
                     answersData += '<tr><td colspan="2"><input type="hidden" name="question[answer][0]" value="'+ response.answer +'"><div contenteditable="true" class="inputgrow-field" placeholder="Ketik alternatif jawaban 1">'+ response.answer +'</div></td></tr>';
                 }
@@ -402,8 +424,34 @@ $(document).on('click', '.add-btn', function(){
     }
 });
 
+btnManagement();
+
 $(document).on('focus', '.ckeditor-list .ck-content', function(){
     $(this).parents().closest('.ck-editor').next().removeClass('d-none');
 }).on('blur', '.ckeditor-list .ck-content', function(){
     $(this).parents().closest('.ck-editor').next().addClass('d-none');
 });
+
+function refreshCkEditor() {
+    const ckEditorData = [];
+    for (var i = 0; i < ckEditorField.length; i++) {
+        ckEditorData[i] = ckEditorField[i].getData();
+        ckEditorField[i].destroy();
+    }
+    ckEditorField = [];
+    initalizeCkeditor();
+    for (var i = 0; i < ckEditorField.length; i++) {
+        ckEditorField[i].setData(ckEditorData[i]);
+    }
+    btnManagement();
+    ckEditorField.filter(function(val){return val});
+}
+
+
+function btnManagement(){
+    $(document).on('focus', '.ckeditor-list .ck-content', function(){
+        $(this).parents().closest('.ck-editor').next().removeClass('d-none');
+    }).on('blur', '.ckeditor-list .ck-content', function(){
+        $(this).parents().closest('.ck-editor').next().addClass('d-none');
+    });
+}
