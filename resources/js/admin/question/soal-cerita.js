@@ -270,6 +270,49 @@ $(document).on('click', '.add-btn', function(){
             initializeEditor(index, element);
         });
     }
+    if (type == 'next-rumpang-pg') {
+        var prevType = $(this).parent().prev();
+        var choicesLength = parseInt(modal.find('.form-group.bagian-rumpang').length + modal.find('.form-group.lanjutan-teks').length);
+        if (prevType.hasClass('bagian-rumpang')) {
+            var td1 = '<td><div class="ckeditor-group ckeditor-list"><textarea class="textarea-field ckeditor-field" name="choices['+ choicesLength +']" placeholder="Ketik teks" ck-type="teks-rumpang-pg"></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
+            var td2 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+            var textLanjutan = '<div class="form-group ck-height-9 ckeditor-list lanjutan-teks"><label>Lanjutan Teks Soal</label><table class="text-list-table-rmpg" data-type="tabel-lanjut-text"><colgroup><col class="first-td"/><col class="second-td"/></colgroup><tr>'+ td1 + td2 +'</tr></table></div>';
+            $(textLanjutan).insertBefore($(this).parent());
+            clearEditorField();
+            modal.find('.ckeditor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+            addTypeRmpg($(this));
+        } else {
+            var row = '';
+            for (var i = 0; i < 4; i++) {
+                var td1 = '<td><div class="radio-group"><input type="radio" name="choices['+ choicesLength +'][answer]" value="'+ i +'"><i class="kejar-belum-dikerjakan"></i></div></td>';
+                var td2 = '<td><textarea name="choices['+ choicesLength +'][description][]" hidden></textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban '+ parseInt(i + 1) +'"></div></td>';
+                var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                row += '<tr>'+ td1 + td2 + td3 +'</tr>';
+            }
+            var bagianRumpang = '<div class="form-group bagian-rumpang"><div class="d-flex justify-content-between align-items-start"><div><label>Jawaban</label><p>Semua alternatif jawaban dianggap benar.</p></div><button class="remove-btn" type="button" data-type="bagian-rumpang"><i class="kejar-close"></i></button></div><table class="answer-list-table-rmpg" data-type="tabel-rumpang-pg">'+ row +'</table><button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="jawaban-rumpang-pg"><i class="kejar-add"></i> Tambah Pilihan Jawaban</button></div>';
+            $(bagianRumpang).insertBefore($(this).parent());
+            addTypeRmpg($(this));
+        }
+        setTimeout(function(){ radioRmpgManagement(); }, 50);
+    } else if (type == 'jawaban-rumpang-pg') {
+        var totalField = $(this).prev().find('tr').length;
+        var index = $(this).prev().index('.answer-list-table-rmpg');
+        if (totalField == 2) {
+            $(this).prev().find('tr').each(function(){
+                var removeBtn = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                $(this).append(removeBtn);
+            });
+        }
+        var td1 = '<td><div class="radio-group"><input type="radio" name="choices['+ index +'][answer]" value="'+ totalField +'"><i class="kejar-belum-dikerjakan"></i></div></td>';
+        var td2 = '<td><textarea name="choices['+ index +'][description][]" hidden></textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban '+ parseInt(totalField + 1) +'"></div></td>';
+        var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+        var newAnswer = '<tr>'+ td1 + td2 + td3 +'</tr>';
+        $(this).prev().append(newAnswer);
+        setTimeout(function(){ radioRmpgManagement(); }, 50);
+    }
+
 });
 
 $(document).on('click', '.edit-btn', function(){
@@ -351,6 +394,59 @@ $(document).on('click', '.edit-btn', function(){
                 modal.find('.ckeditor-field').each((index, element) => {
                     initializeEditor(index, element);
                 });
+                modal.modal('show');
+            }
+        });
+    }
+
+    if (type == '#edit-teks-rumpang-pg') {
+        $.ajax({
+            url: url,
+            method: "GET",
+            success:function(response){
+                modal.find('form').attr('action', url);
+                modal.find('textarea[name=question]').val(response.question);
+                modal.find('textarea[name=explanation]').val(response.explanation);
+                var elementGroup = '';
+                var numberChoices = 1;
+                var firstRumpang = modal.find('.bagian-rumpang').eq(0);
+                for (var i = 0; i < response.choices.length; i++) {
+                    if (i == 0) {
+                        var dataElement = '';
+                        for (var j = 0; j < Object.keys(response.choices[i].choices).length; j++) {
+                            var checkedRadio = response.answer[i] == String.fromCharCode(parseInt(65 + j)) ? 'checked' : '';
+                            if (Object.keys(response.choices[i].choices).length > 2) {
+                                dataElement += '<tr><td><div class="radio-group"><input type="radio" name="choices['+ i +'][answer]" value="'+ j +'" '+ checkedRadio +'><i class="kejar-belum-dikerjakan"></i></div></td><td><textarea name="choices['+ i +'][description][]" hidden>'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban '+ parseInt(j + 1) +'">'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
+                            } else {
+                                dataElement += '<tr><td><div class="radio-group"><input type="radio" name="choices['+ i +'][answer]" value="'+ j +'" '+ checkedRadio +'><i class="kejar-belum-dikerjakan"></i></div></td><td><textarea name="choices['+ i +'][description][]" hidden>'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban '+ parseInt(j + 1) +'">'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</div></td></tr>';
+                            }
+                        }
+                        firstRumpang.find('.answer-list-table-rmpg').html(dataElement);
+                    } else {
+                        var teksLanjutanTd1 = '<td><div class="ckeditor-group ckeditor-list"><textarea class="textarea-field ckeditor-field" name="choices['+ numberChoices +']" placeholder="Ketik teks" ck-type="teks-rumpang-pg">'+ response.choices[i].question +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
+                        var teksLanjutanTd2 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                        elementGroup += '<div class="form-group ck-height-9 ckeditor-list lanjutan-teks"><label>Lanjutan Teks Soal</label><table class="text-list-table-rmpg" data-type="tabel-lanjut-text"><colgroup><col class="first-td"/><col class="second-td"/></colgroup><tr>'+ teksLanjutanTd1 + teksLanjutanTd2 +'</tr></table></div>';
+                        numberChoices++;
+                        if (Object.keys(response.choices[i].choices).length > 0) {
+                            var bagianRumpangRow = '';
+                            for (var j = 0; j < Object.keys(response.choices[i].choices).length; j++) {
+                                var checkedRadio = response.answer[i] == String.fromCharCode(parseInt(65 + j)) ? 'checked' : '';
+                                var bagianRumpangTd1 = '<td><div class="radio-group"><input type="radio" name="choices['+ numberChoices +'][answer]" value="'+ j +'" '+ checkedRadio +'><i class="kejar-belum-dikerjakan"></i></div></td>';
+                                var bagianRumpangTd2 = '<td><textarea name="choices['+ numberChoices +'][description][]" hidden>'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban '+ parseInt(j + 1) +'">'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</div></td>';
+                                var bagianRumpangTd3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                                bagianRumpangRow += '<tr>'+ bagianRumpangTd1 + bagianRumpangTd2 + bagianRumpangTd3 +'</tr>';
+                            }
+                            elementGroup += '<div class="form-group bagian-rumpang"><div class="d-flex justify-content-between align-items-start"><div><label>Jawaban</label><p>Semua alternatif jawaban dianggap benar.</p></div><button class="remove-btn" type="button" data-type="bagian-rumpang"><i class="kejar-close"></i></button></div><table class="answer-list-table-rmpg" data-type="tabel-rumpang-pg">'+ bagianRumpangRow +'</table><button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="jawaban-rumpang-pg"><i class="kejar-add"></i> Tambah Pilihan Jawaban</button></div>';
+                            numberChoices++;
+                        }
+                    }
+                }
+                $(elementGroup).insertAfter(firstRumpang);
+                modal.find('.ckeditor-field').each((index, element) => {
+                    initializeEditor(index, element);
+                });
+                setTimeout(function(){ radioRmpgManagement(); }, 50);
+                addTypeRmpg(modal.find('.add-btn[data-type=next-rumpang-pg]'));
                 modal.modal('show');
             }
         });
@@ -445,6 +541,59 @@ $(document).on('click', '.remove-btn', function(){
             });
         }
     }
+    if (typeBtn == 'bagian-rumpang') {
+        $(this).parents('.bagian-rumpang').remove();
+        clearEditorField();
+        modal.find('.ckeditor-field').each((index, element) => {
+            initializeEditor(index, element);
+        });
+        addTypeRmpg($('.add-btn[data-type=next-rumpang-pg]'));
+        setTimeout(function(){ radioRmpgManagement(); }, 50);
+    } else {
+        if (type == 'tabel-lanjut-text') {
+            $(this).parents('.lanjutan-teks').remove();
+            clearEditorField();
+            modal.find('.ckeditor-field').each((index, element) => {
+                initializeEditor(index, element);
+            });
+            addTypeRmpg($('.add-btn[data-type=next-rumpang-pg]'));
+        } else if (type == 'tabel-rumpang-pg') {
+            var trList = $(this).parents('.answer-list-table-rmpg');
+            $(this).parents('tr').remove();
+            var number = 0;
+            trList.find('tr').each(function(){
+                $(this).find('input[type=radio]').val(number);
+                $(this).find('div[contenteditable=true]').attr('placeholder', 'Ketik pilihan jawaban ' + parseInt(number + 1));
+                number++;
+            });
+            var totalField = trList.find('tr').length;
+            if (totalField == 2) {
+                trList.find('tr').each(function(){
+                    $(this).children().eq(2).remove();
+                });
+            }
+        }
+        setTimeout(function(){ radioRmpgManagement(); }, 50);
+    }
+});
+
+$('#create-teks-rumpang-pg').on('show.bs.modal', (e) => {
+    e.stopImmediatePropagation();
+    $('#create-soal-cerita-question-modal').modal('hide');
+    $(e.target).find('.ckeditor-field').each((index, element) => {
+        initializeEditor(index, element);
+    });
+});
+
+$('#edit-teks-rumpang-pg').on('hide.bs.modal', () => {
+    $('.bagian-rumpang').each(function(){
+        if (!$(this).hasClass('first-rumpang')) {
+            $(this).remove();
+        }
+    });
+    $('.lanjutan-teks').each(function(){
+        $(this).remove();
+    });
 });
 
 $('#create-menceklis-daftar').on('show.bs.modal', (e) => {
@@ -476,6 +625,25 @@ function radioPgManagement(){
             $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
         }
     });
+}
+
+function radioRmpgManagement(){
+    $('.answer-list-table-rmpg input[type=radio]').each(function(){
+        if ($(this).is(':checked')) {
+            $(this).parents('td').next().find('div[contenteditable=true]').addClass('active');
+        } else {
+            $(this).parents('td').next().find('div[contenteditable=true]').removeClass('active');
+        }
+    });
+}
+
+function addTypeRmpg(element) {
+    var prevType = element.parent().prev();
+    if (prevType.hasClass('bagian-rumpang')) {
+        element.html('<i class="kejar-add"></i> Tambah Lanjutan Teks');
+    } else {
+        element.html('<i class="kejar-add"></i> Tambah Bagian Rumpang');
+    }
 }
 
 var ckEditorField = [];

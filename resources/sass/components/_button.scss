@@ -477,3 +477,16 @@
         left: calc(50% - 145px/2);
     }
 }
+
+.remove-btn{
+    display: inline-block;
+    border: 0;
+    height: 4rem;
+    font-size: 2rem;
+    text-align: center;
+    background-color: transparent;
+
+    &:focus{
+        outline: 0;
+    }
+}

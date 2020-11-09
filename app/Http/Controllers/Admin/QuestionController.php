@@ -491,6 +491,83 @@ class QuestionController extends Controller
                     ];
 
                     $roundQuestionApi->store($question['data']['id'], $payloadQS);
+                } elseif ($questionType === 'IQ') {
+                    $choices = [];
+                    $answers = [];
+                    $num = 0;
+                    foreach ($request['choices'] as $key1 => $data) {
+                        $alphabet = 'A';
+                        if ($key1 === 0) {
+                            $choices[$num]['question'] = $request['question'];
+                            foreach ($data['description'] as $key2 => $choice) {
+                                if (intval($data['answer']) === $key2) {
+                                    $answers[] = $alphabet;
+                                }
+
+                                $choices[$num]['choices'][$alphabet] = $choice;
+                                $alphabet++;
+                            }
+
+                            $choices[$num]['choices'] = $choices[$num]['choices'];
+                            $choices[$num] = $choices[$num];
+                            $num++;
+                        } else {
+                            if (!is_array($data)) {
+                                $choices[$num]['question'] = $data;
+                                $choices[$num]['choices'] = null;
+                            } else {
+                                foreach ($data['description'] as $key2 => $choice) {
+                                    if (intval($data['answer']) === $key2) {
+                                        $answers[] = $alphabet;
+                                    }
+
+                                    $choices[$num]['choices'][$alphabet] = $choice;
+                                    $alphabet++;
+                                }
+
+                                $num++;
+                            }
+                        }
+                    }
+
+                    foreach ($choices as $key => $choice) {
+                        $choices[$key]['choices'] = (object)$choice['choices'];
+                    }
+
+                    $collection = [
+                        'subject_id' => null,
+                        'topic_id' => null,
+                        'bank' => $gameParsed['short'],
+                        'question' => $request['question'],
+                        'level' => 'LEVEL_1',
+                        'created_by' => session('user.id'),
+                        'type' => 'IQ',
+                        'choices' => (object)$choices,
+                        'answer' => $answers,
+                    ];
+
+                    $question = $questionApi->store($collection);
+
+                    $updateData = [
+                        'explanation' => (string)$request['explanation'],
+                        'explained_by' => session('user.id'),
+                        'tags' => ['explanation'],
+                        'note' => 'explanation',
+                    ];
+
+                    $questionApi->update($question['data']['id'], ['status' => '2']);
+                    $questionApi->update($question['data']['id'], $updateData);
+
+                    $roundQuestionMeta = $roundQuestionApi->getAll($roundId, $request->page ?? 1)['meta'] ?? [];
+                    $questionTotal = $roundQuestionMeta['total'] ?? 0;
+
+                    $payloadQS = [
+                        'question_id' => $question['data']['id'],
+                        'round_id' => $roundId,
+                        'order' => $questionTotal + 1,
+                    ];
+
+                    $roundQuestionApi->store($question['data']['id'], $payloadQS);
                 }
             }
         } catch (Throwable $th) {
@@ -547,10 +624,11 @@ class QuestionController extends Controller
         $roundId;
         $questionId;
         $questionType = is_null($request->question_type) ? false : $request->question_type;
+
+        $questionApi = new QuestionApi;
+
         if ($game === 'menulisefektif') {
             try {
-                $questionApi = new QuestionApi;
-
                 $answers = [];
                 foreach ($request['question.answer'] as $answer) {
                     if (!is_null($answer)) {
@@ -589,8 +667,6 @@ class QuestionController extends Controller
             ]);
 
             try {
-                $questionApi = new QuestionApi;
-
                 $payload = [
                     'question'=> (string)strtolower($request->question),
                     'answer'=> (string)strtolower($request->answer),
@@ -608,8 +684,6 @@ class QuestionController extends Controller
                     'question' => 'required',
                     'answer' => 'required',
                 ]);
-
-                $questionApi = new QuestionApi;
 
                 $choices = [];
                 $alphabet = 'A';
@@ -647,8 +721,6 @@ class QuestionController extends Controller
 
                 $questionApi->update($questionId, $updateData);
             } elseif ($questionType === 'TFQMA') {
-                $questionApi = new QuestionApi;
-
                 $choices = [];
                 foreach ($request->pertanyaan as $key => $value) {
                     if ($value !== null || $request->status_pertanyaan[$key] !== null) {
@@ -678,7 +750,6 @@ class QuestionController extends Controller
 
                 $questionApi->update($questionId, $updateData);
             } elseif ($questionType === 'SSQ') {
-                $questionApi = new QuestionApi;
                 $choices = [];
                 foreach ($request->answer as $key => $value) {
                     if ($value['key'] !== null && $value['description'] !== null) {
@@ -708,7 +779,6 @@ class QuestionController extends Controller
 
                 $questionApi->update($questionId, $updateData);
             } elseif ($questionType === 'CQ') {
-                $questionApi = new QuestionApi;
                 $this->validate($request, [
                     'question' => 'required',
                 ]);
@@ -750,40 +820,47 @@ class QuestionController extends Controller
                 ];
 
                 $questionApi->update($questionId, $updateData);
-            } elseif ($questionType === 'MQ') {
-                $this->validate($request, [
-                    'question' => 'required',
-                ]);
-
-                $questionApi = new QuestionApi;
-
+            } elseif ($questionType === 'IQ') {
                 $choices = [];
                 $answers = [];
-                $alphabet = 'A';
-                foreach ($request['answer']['statement'] as $key => $statement) {
-                    if (!is_null($statement) && !is_null($request['answer']['setstatement'][$key])) {
-                        $choices[0][$alphabet] = $statement;
-                        $alphabet++;
+                $num = 0;
+                foreach ($request['choices'] as $key1 => $data) {
+                    $alphabet = 'A';
+                    if ($key1 === 0) {
+                        $choices[$num]['question'] = $request['question'];
+                        foreach ($data['description'] as $key2 => $choice) {
+                            if (intval($data['answer']) === $key2) {
+                                $answers[] = $alphabet;
+                            }
+
+                            $choices[$num]['choices'][$alphabet] = $choice;
+                            $alphabet++;
+                        }
+
+                        $choices[$num]['choices'] = $choices[$num]['choices'];
+                        $choices[$num] = $choices[$num];
+                        $num++;
+                    } else {
+                        if (!is_array($data)) {
+                            $choices[$num]['question'] = $data;
+                            $choices[$num]['choices'] = null;
+                        } else {
+                            foreach ($data['description'] as $key2 => $choice) {
+                                if (intval($data['answer']) === $key2) {
+                                    $answers[] = $alphabet;
+                                }
+
+                                $choices[$num]['choices'][$alphabet] = $choice;
+                                $alphabet++;
+                            }
+
+                            $num++;
+                        }
                     }
                 }
 
-                foreach ($request['answer']['setstatement'] as $key => $statement) {
-                    if (!is_null($statement) && !is_null($request['answer']['statement'][$key])) {
-                        $choices[1][$alphabet] = $statement;
-                        $answers[] = $alphabet;
-                        $alphabet++;
-                    }
-                }
-
-                $alphabet = 'A';
-                foreach ($answers as $key => $answer) {
-                    $answers[$alphabet] = $answer;
-                    unset($answers[$key]);
-                    $alphabet++;
-                }
-
-                if (count($choices[0]) <= 0 || count($answers) <= 0) {
-                    return redirect()->back();
+                foreach ($choices as $key => $choice) {
+                    $choices[$key]['choices'] = (object)$choice['choices'];
                 }
 
                 $payload = [
