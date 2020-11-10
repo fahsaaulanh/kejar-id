@@ -503,6 +503,38 @@ function checkAnswer() {
         });
     }
 
+    // Check if the current question type is esai
+    if ($(parentElement).data('type') === 'esai') {
+        var answer = $(parentElement).find('.ck-content').html();
+        var type = $(parentElement).data('type');
+
+        let data = {
+            'id' : $(parentElement).data('id'),
+            'task_id' : $('.question-list').data('task'),
+            'answer' : answer,
+            'repeatance' : $(parentElement).data('repeat'),
+            'type': type
+        }
+
+        
+        // Send ajax request
+        AjaxRequest(data, (res) => {
+
+            $(parentElement).find('._esai_session').first().css('display', 'block');
+
+            $(parentElement).find('._esai_explanation div').html(`${res.explanation}`);
+
+            $(parentElement).find('.ck-content').css({'pointer-event': 'disabled'});
+
+            if (answer === '<p data-placeholder="Ketik jawaban di sini..." class="ck-placeholder"><br data-cke-filler="true"></p>') {
+                wrongAnswer();
+            }
+
+            buttonFunction(parentElement);
+
+        });
+    }
+
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
 
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
@@ -675,6 +707,25 @@ function wrongAnswer() {
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._merinci_session').css('display', 'none');
             $(cloned).find('._merinci_session').find('ul').remove();
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
+
+    if ($(currentQuestion).data('type') === 'esai') {
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+
+            $(cloned).find('._esai_input').each((index, element) => {
+                $(element).prop('disabled', false).val('');
+            });
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._esai_session').css('display', 'none');
+            $(cloned).find('._esai_session').find('ul').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('disabled _check_button');
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
@@ -877,3 +928,186 @@ $(document).on('input', '._merinci_input', (e) => {
     }
 });
 // End Merinci
+// Esai
+
+$(document).on('input keyup', '.ck-content', function(){
+
+    var currentElement = $('.question-group:visible');
+
+    if ($(this).text() != '') {
+        $(currentElement).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._question_button').prop('disabled', true);
+    }
+});
+
+$('.esai_answer').find('textarea').each((index, element) => {
+    initalizeEditor(index, element);
+});
+
+
+$(document).on('click', '.ckeditor-btn-1 .bold-btn', function(){
+    $(this).parent().prev().find('.ck-toolbar__items button:eq(0)').click();
+    checkActive();
+});
+
+$(document).on('click', '.ckeditor-btn-1 .italic-btn', function(){
+    $(this).parent().prev().find('.ck-toolbar__items button:eq(1)').click();
+    checkActive();
+});
+
+$(document).on('click', '.ckeditor-btn-1 .underline-btn', function(){
+    $(this).parent().prev().find('.ck-toolbar__items button:eq(2)').click();
+    checkActive();
+});
+
+$(document).on('click', '.ckeditor-btn-1 .bullet-list-btn', function(){
+    $(this).parent().prev().find('.ck-toolbar__items button:eq(3)').click();
+    checkActive();
+});
+
+$(document).on('click', '.ckeditor-btn-1 .number-list-btn', function(){
+    $(this).parent().prev().find('.ck-toolbar__items button:eq(4)').click();
+    checkActive();
+});
+
+$(document).on('click', '.ck-content p, .ck-content ul li, .ck-content ol li', function(){
+    checkActive();
+});
+
+$(document).keydown(function(e){
+    checkActive();
+});
+
+function checkActive(){
+    $('.ckeditor-btn-1').each(function(){
+        var ckeditorBtnGroup = $(this);
+        var ckeditorDiv = ckeditorBtnGroup.prev();
+
+        if (ckeditorDiv.find('.ck-toolbar__items button:eq(0)').hasClass('ck-on')) {
+            ckeditorBtnGroup.find('.bold-btn').addClass('active');
+        } else {
+            ckeditorBtnGroup.find('.bold-btn').removeClass('active');
+        }
+
+        if (ckeditorDiv.find('.ck-toolbar__items button:eq(1)').hasClass('ck-on')) {
+            ckeditorBtnGroup.find('.italic-btn').addClass('active');
+        } else {
+            ckeditorBtnGroup.find('.italic-btn').removeClass('active');
+        }
+
+        if (ckeditorDiv.find('.ck-toolbar__items button:eq(2)').hasClass('ck-on')) {
+            ckeditorBtnGroup.find('.underline-btn').addClass('active');
+        } else {
+            ckeditorBtnGroup.find('.underline-btn').removeClass('active');
+        }
+
+        if (ckeditorDiv.find('.ck-toolbar__items button:eq(3)').hasClass('ck-on')) {
+            ckeditorBtnGroup.find('.bullet-list-btn').addClass('active');
+        } else {
+            ckeditorBtnGroup.find('.bullet-list-btn').removeClass('active');
+        }
+
+        if (ckeditorDiv.find('.ck-toolbar__items button:eq(4)').hasClass('ck-on')) {
+            ckeditorBtnGroup.find('.number-list-btn').addClass('active');
+        } else {
+            ckeditorBtnGroup.find('.number-list-btn').removeClass('active');
+        }
+
+    });
+}
+
+$(document).on('mousedown', '.ckeditor-list .bold-btn', function(){
+    thisEl = $(this);
+    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
+});
+
+$(document).on('mousedown', '.ckeditor-list .italic-btn', function(){
+    thisEl = $(this);
+    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
+});
+
+$(document).on('mousedown', '.ckeditor-list .underline-btn', function(){
+    thisEl = $(this);
+    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
+});
+
+$(document).on('mousedown', '.ckeditor-list .bullet-list-btn', function(){
+    thisEl = $(this);
+    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
+});
+
+$(document).on('mousedown', '.ckeditor-list .number-list-btn', function(){
+    thisEl = $(this);
+    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
+});
+
+$(document).on('mousedown', '.ckeditor-list .photo-btn', function(){
+    thisEl = $(this);
+    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
+});
+
+$(document).on('input', '.answer-list-table-pg input[type=radio]', function() {
+    radioPgManagement();
+});
+
+$(document).on('focus', '.ckeditor-list .ck-content', function(){
+    $(this).parents().closest('.ck-editor').next().removeClass('d-none');
+}).on('blur', '.ckeditor-list .ck-content', function(){
+    $(this).parents().closest('.ck-editor').next().addClass('d-none');
+});
+
+function initalizeEditor(index, element) {
+    ClassicEditor
+    .create( element, {
+        toolbar: {
+            items: [
+                'bold',
+                'italic',
+                'underline',
+                'bulletedList',
+                'numberedList',
+            ]
+        },
+        language: 'en',
+        image: {
+            styles: [
+                'alignLeft', 'alignCenter', 'alignRight'
+            ],
+            resizeOptions: [
+                {
+                    name: 'imageResize:original',
+                    label: 'Original',
+                    value: null
+                },
+                {
+                    name: 'imageResize:50',
+                    label: '50%',
+                    value: '50'
+                },
+                {
+                    name: 'imageResize:75',
+                    label: '75%',
+                    value: '75'
+                }
+            ],
+            toolbar: [
+                'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                '|',
+                'imageResize',
+            ],
+        },
+        licenseKey: '',
+    } )
+    .then( editor => {
+        
+    } )
+    .catch( error => {
+        console.error( 'Oops, something went wrong!' );
+        console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+        console.warn( 'Build id: nekgv7mmfgzn-cehsg6b07p1b' );
+        console.error( error );
+    } );
+    
+}
+// End Esai

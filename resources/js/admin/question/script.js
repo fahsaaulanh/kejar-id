@@ -336,6 +336,20 @@ $('#create-menulis-efektif-question-modal').on('show.bs.modal', (e) => {
     });
 });
 
+$('#create-menulis-efektif-question-modal').on('hide.bs.modal', (e) => {
+    clearTheEditors();
+});
+
+$('#update-menulis-efektif-question-modal').on('show.bs.modal', (e) => {
+    $(e.target).find('.textarea-question').each((index, element) => {
+        generateEditor(index, element);
+    });
+});
+
+$('#update-menulis-efektif-question-modal').on('hide.bs.modal', (e) => {
+    clearTheEditors();
+});
+
 $(document).on('mousedown', '.ckeditor-list .bold-btn', function(){
     thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
@@ -346,9 +360,8 @@ $(document).on('mousedown', '.ckeditor-list .italic-btn', function(){
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
 
-$(document).on('mousedown', '.ckeditor-list .underline-btn', function(){
-    thisEl = $(this);
-    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
+$('#update-menulis-efektif-question-modal').on('hide.bs.modal', (e) => {
+    clearTheEditors();
 });
 
 $(document).on('mousedown', '.ckeditor-list .bullet-list-btn', function(){

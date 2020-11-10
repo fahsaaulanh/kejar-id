@@ -665,6 +665,15 @@
     user-select: none;
 }
 
+.es-question{
+    margin-top: 3.2rem;
+    user-select: none;
+}
+
+.es-answer{
+    margin-bottom: 6rem;
+}
+
 .ur-answer{
     margin-bottom: 6rem;
 
@@ -751,6 +760,7 @@
 
 .check-btn-group{
     width: 100%;
+    margin-bottom: 8rem;
 
     .check-btn{
         @include h5;
@@ -785,7 +795,7 @@
     color: #202020;
 }
 
-._mengurutkan_direction {
+._esai_direction {
     color: black;
     margin-bottom: 2.4rem;
 }
@@ -937,6 +947,11 @@
     padding-bottom: 1.6rem;
 }
 
+._esai_direction {
+    color: black;
+    margin-bottom: 2.4rem;
+}
+
 ._question_button {
     margin: 5.6rem 0rem;
     padding: 1.2rem 1.6rem;
@@ -993,6 +1008,24 @@
     border: 2px solid #A6D1FF;
 }
 
+._esai_question *{
+    color: $black-1;
+}
+
+._esai_input {
+    padding: 1rem 1.2rem;
+    margin: 1.6rem 0rem;
+    width: 43.2rem;
+    display: block;
+    border: 2px solid #EBF1F6;
+    outline: none;
+}
+
+._esai_input:focus,
+._esai_input:active {
+    border: 2px solid #A6D1FF;
+}
+
 @media screen and (max-width: 768px) {
     ._benar_salah_options {
         width: 100%;
@@ -1011,6 +1044,10 @@
     }
 
     ._merinci_input {
+        width: 100%;
+    }
+
+    ._esai_input {
         width: 100%;
     }
 }
@@ -1308,6 +1345,20 @@
     }
 
     ._merinci_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+    }
+}
+
+._esai_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._esai_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
     }
