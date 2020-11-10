@@ -58,7 +58,12 @@
                     @if ($question['type'] === 'SSQ')
                         <!-- SSQ / Mengurutkan -->
                         @include('student.exams.question_type._mengurutkan')
-                    @endif                    
+                    @endif 
+                    
+                    @if ($question['type'] === 'MQ')
+                        <!-- MQ/Memasangkan -->
+                        @include('student.exams.question_type._memasangkan')
+                    @endif
                 @endforeach
 
             </form>

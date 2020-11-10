@@ -294,6 +294,87 @@ function checkAnswer() {
         });
     }
 
+    // Check if the current question type is memasangkan
+    if ($(parentElement).data('type') === 'memasangkan') {
+        var answers = Array();
+        let type = $(parentElement).data('type');
+
+        var qKeys = Array();
+        var aKeys = Array();
+
+        $(parentElement).find('._memasangkan_jawaban_key').each((index, element) => {
+            qKeys.push($(element).data('key'));
+        });
+
+        var nulVal = 0;
+
+        $(parentElement).find('._memasangkan_jawaban_key').each((index, element) => {
+            aKeys.push($(element).val().toUpperCase());
+
+            if ($(element).val() === '') {
+                nulVal++;
+            }
+        });
+
+        var temp = {};
+        for (let i = 0; i < qKeys.length; i++) {
+            temp[qKeys[i]] = aKeys[i];
+        }
+        answers.push(temp);
+
+        answers = answers[0];
+
+        let data = {
+            'id' : $(parentElement).data('id'),
+            'task_id' : $('.question-list').data('task'),
+            'answer' : answers,
+            'repeatance' : $(parentElement).data('repeat'),
+            'type': type
+        }
+
+        // Send ajax request
+        AjaxRequest(data, (res) => {
+
+            var list = '';
+
+            $(parentElement).find('._memasangkan_pertanyaan div:nth-child(2)').each((index, element) => {
+                list += `
+                    <tr>
+                        <td>${$(element).html()}</td>
+                        <td><i class="kejar-arrow-right"></i></td>
+                        <td>Lorem ipsum dolor sit amet.</td>
+                    </tr>
+                `;
+            });
+
+
+            var html = `
+                <div class="_memasangkan_jawaban_benar">
+                    <table>
+                        ${list}
+                    </table>
+                </div>
+            `;
+        
+            $(parentElement).find('._memasangkan_right_answers').append(html);
+
+            $(parentElement).find('._memasangkan_session').first().css('display', 'block');
+
+            $(parentElement).find('._memasangkan_explanation div').html(`${res.explanation}`);
+
+            $(parentElement).find('._memasangkan_answer input').each((index, element) => {
+                $(element).prop('disabled', true);
+            });
+
+            if (res.status === false) {
+                wrongAnswer();
+            }
+
+            buttonFunction(parentElement);
+
+        });
+    }
+
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
 
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
@@ -303,9 +384,9 @@ function checkAnswer() {
 
 function buttonFunction(parentElement) {
     if ($(parentElement).next().length > 0) {
-        $(parentElement).find('._question_button').addClass('_next_button').html('LANJUT <i class="kejar kejar-next"></i>');
+        $(parentElement).find('._question_button').addClass('_next_button').html('LANJUT <i class="kejar kejar-next"></i>').prop('disabled', false);
     } else {
-        $(parentElement).find('._question_button').addClass('_soal_cerita_finish').html('SELESAI <i class="kejar kejar-next"></i>');
+        $(parentElement).find('._question_button').addClass('_soal_cerita_finish').html('SELESAI <i class="kejar kejar-next"></i>').prop('disabled', false);
     }
 }
 
@@ -408,6 +489,26 @@ function wrongAnswer() {
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._mengurutkan_session').css('display', 'none');
             $(cloned).find('._mengurutkan_session').find('._mengurutkan_answers').remove();
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
+
+    if ($(currentQuestion).data('type') === 'memasangkan') {
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+
+            $(cloned).find('._memasangkan_answer input').each((index, element) => {
+                $(element).prop('disabled', false).removeAttr('checked');
+                $(element).val('');
+            });
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._memasangkan_session').css('display', 'none');
+            $(cloned).find('._memasangkan_session').find('._memasangkan_right_answers div').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('disabled _check_button');
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
@@ -550,3 +651,26 @@ $('.question-group').on('input', 'input[type=number]', function(){
 
 });
 // End Mengurutkan
+
+// Pilihan Ganda
+
+$(document).on('input', 'input[type=text]', function(){
+    var currentElement = $('.question-group:visible');
+
+    var numInput = 0;
+    $(currentElement).find('input[type=text]').each(function(){
+        if ($(this).val() != '') {
+            numInput++;
+        } else {
+            numInput--;
+        }
+    });
+
+    if (numInput == $(currentElement).find('input[type=text').length) {
+        $(currentElement).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._question_button').prop('disabled', true);
+    }
+});
+
+// End Pilihan Ganda
