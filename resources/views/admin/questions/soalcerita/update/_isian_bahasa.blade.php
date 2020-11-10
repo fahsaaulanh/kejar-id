@@ -1,4 +1,4 @@
-<div class="modal fade modal-large" id="edit-isian-bahasa">
+<div class="modal fade modal-large" id="update-isian-bahasa">
     <div class="modal-dialog" role="document">
         <form method="POST" novalidate>
             @csrf

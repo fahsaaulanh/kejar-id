@@ -1,18 +1,19 @@
-<div class="modal fade modal-large" id="create-teks-rumpang-pg">
+<div class="modal fade modal-large" id="update-merinci">
     <div class="modal-dialog" role="document">
-        <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="POST" novalidate>
+        <form action="" method="POST">
             @csrf
-            <input type="hidden" name="question_type" value="IQ">
+            @method('PATCH')
+            <input type="hidden" name="question_type" value="BDCQMA">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Input Soal Teks Rumpang PG</h5>
+                    <h5 class="modal-title">Input Soal Merinci</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group ck-height-9 ckeditor-list">
-                        <label>Teks Soal</label>
+                        <label>Soal</label>
                         <textarea class="textarea-field ckeditor-field" name="question" placeholder="Ketik soal" required></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
@@ -35,37 +36,14 @@
                             </button>
                         </div>
                     </div>
-                    <div class="form-group bagian-rumpang">
-                        <label>Jawaban</label>
-                        <p>Semua alternatif jawaban dianggap benar.</p>
-                        <table class="answer-list-table-rmpg" data-type="tabel-rumpang-pg">
-                            @for ($i = 0; $i < 4; $i++)
-                            <tr>
-                                <td>
-                                    <div class="radio-group">
-                                        <input type="radio" name="choices[0][answer]" value="{{ $i }}">
-                                        <i class="kejar-belum-dikerjakan"></i>
-                                    </div>
-                                </td>
-                                <td>
-                                    <textarea name="choices[0][description][]" hidden></textarea>
-                                    <div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban {{ $i + 1 }}"></div>
-                                </td>
-                                <td>
-                                    <button class="remove-btn" type="button">
-                                        <i class="kejar-close"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            @endfor
-                        </table>
-                        <button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="jawaban-rumpang-pg">
-                            <i class="kejar-add"></i> Tambah Pilihan Jawaban
-                        </button>
-                    </div>
                     <div class="form-group">
-                        <button class="btn btn-add lg add-btn" type="button" data-type="next-rumpang-pg">
-                            <i class="kejar-add"></i> Tambah Lanjutan Teks
+                        <label>Jawaban</label>
+                        <p>Jawaban merupakan rincian (berbeda-beda antar jawaban).</p>
+                        <table class="answer-list-table-rc merinci-input-table" data-type="merinci">
+
+                        </table>
+                        <button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="merinci">
+                            <i class="kejar-add"></i> Tambah Jawaban
                         </button>
                     </div>
                     <div class="form-group ck-height-9 ckeditor-list">

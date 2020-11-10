@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Permainan - ' . $task['score'])
+@section('title', 'Result : ' . $game['title'] . ' - ' . $round['title'])
 
 @section('header')
 @endsection

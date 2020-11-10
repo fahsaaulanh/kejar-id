@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'Soal Cerita')
+@section('title', $game['title'] . ' - ' . $round['title'])
 
 @section('content')
 
@@ -217,7 +217,7 @@
                                 @foreach ($question['question']['choices'] as $choice)
                                 <tr>
                                     <td>{!! $choice['question'] !!}</td>
-                                    <td class="text-capitalize">{!! $choice['answer'] !!}</td>
+                                    <td class="text-capitalize">{!! $choice['answer'] === 'yes' ? 'Ya' : 'Tidak' !!}</td>
                                 </tr>
                                 @endforeach
                             </table>
@@ -454,7 +454,7 @@
                             <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-bahasa"></i> <h5>Isian Bahasa</h5>
                         </div>
                         <div>
-                            <button class="edit-btn" data-target="#edit-isian-bahasa" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                            <button class="edit-btn" data-toggle="modal" data-target="#update-isian-bahasa" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                                 <i class="kejar-edit"></i> Edit
                             </button>
                         </div>
@@ -490,7 +490,7 @@
                             <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-teks-merinci"></i> <h5>Merinci</h5>
                         </div>
                         <div>
-                            <button class="edit-btn" data-target="#edit-merinci" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                        <button class="edit-btn" data-toggle="modal" data-target="#update-merinci" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                                 <i class="kejar-edit"></i> Edit
                             </button>
                         </div>
@@ -525,7 +525,7 @@
                             <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-esai"></i> <h5>Esai</h5>
                         </div>
                         <div>
-                            <button class="edit-btn" data-target="#edit-esai" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                            <button class="edit-btn" data-toggle="modal" data-target="#update-esai" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                                 <i class="kejar-edit"></i> Edit
                             </button>
                         </div>
@@ -598,8 +598,8 @@
 @include('admin.questions.soalcerita.update._ya_tidak')
 @include('admin.questions.soalcerita.create._isian_matematika')
 @include('admin.questions.soalcerita.update._isian_matematika')
-@include('admin.questions.soalcerita.create._melengkapi_tabel')
-@include('admin.questions.soalcerita.update._melengkapi_tabel')
+@include('admin.questions.soalcerita.create._melengkapi_table')
+@include('admin.questions.soalcerita.update._melengkapi_table')
 @include('admin.questions.soalcerita.create._isian_bahasa')
 @include('admin.questions.soalcerita.update._isian_bahasa')
 @include('admin.questions.soalcerita.create._merinci')
