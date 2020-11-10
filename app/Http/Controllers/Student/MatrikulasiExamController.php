@@ -63,6 +63,18 @@ class MatrikulasiExamController extends Controller
             $answer = $answers;
         }
 
+        if ($request->type === 'mengurutkan') {
+            $answers = [];
+            foreach ($request->answer as $key => $value) {
+                $answers[$key] = [
+                    'answer' => intval($value['answer']),
+                    'question' => $value['question'],
+                ];
+            }
+
+            $answer = $answers;
+        }
+
         $task = $taskApi
                 ->answer($request->task_id, $request->id, $answer ?? 'null')['data'] ?? [];
         
