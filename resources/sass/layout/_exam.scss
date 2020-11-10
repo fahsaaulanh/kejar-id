@@ -660,6 +660,70 @@
     margin-bottom: 2.4rem;
 }
 
+.ur-question{
+    margin-top: 3.2rem;
+    user-select: none;
+}
+
+.ur-answer{
+    margin-bottom: 6rem;
+
+    div{
+        margin-bottom: 1.6rem;
+    }
+
+    input{
+        text-align: right;
+        width: 6.4rem !important;
+    }
+
+    p{
+        margin-left: 1.6rem !important;
+        margin-bottom: 0 !important;
+    }
+}
+
+.check-btn-group{
+    width: 100%;
+
+    .check-btn{
+        @include h5;
+        width: 16rem;
+        height: 4.4rem;
+        padding: 1.2rem 1.6rem;
+        color: $white;
+        background-color: $grey-13;
+        text-transform: uppercase;
+        border-radius: 0;
+
+        i:before{
+            color: $white;
+        }
+
+        &.active{
+            background-color: $magenta;
+        }
+    }
+}
+
+.question-group {
+    display: none;
+}
+
+.question-group:nth-child(1) {
+    display: block;
+}
+
+._soal_cerita_direction {
+    margin-top: 0.8rem;
+    color: #202020;
+}
+
+._mengurutkan_direction {
+    color: black;
+    margin-bottom: 2.4rem;
+}
+
 ._ya_tidak {
     box-shadow: 0px -2px 0px #EBF1F6, inset 0px -2px 0px #EBF1F6;
     padding: 1.6rem 0rem;
@@ -752,6 +816,15 @@
     }
 }
 
+._mengurutkan_question * {
+    color: $black-1;
+}
+
+._mengurutkan_question_text {
+    margin-bottom: 0px !important;
+}
+
+
 ._question_button {
     margin: 5.6rem 0rem;
     padding: 1.2rem 1.6rem;
@@ -775,6 +848,25 @@
     font-size: 1.5rem;
 }
 
+._mengurutkan_answer {
+    margin-bottom: 6rem;
+
+    div{
+        margin-bottom: 1.6rem;
+    }
+
+    input{
+        text-align: center;
+        width: 6.4rem !important;
+    }
+
+    p{
+        margin-left: 1.6rem !important;
+        margin-bottom: 0 !important;
+        color: $black-1;
+    }
+}
+
 @media screen and (max-width: 768px) {
     ._benar_salah_options {
         width: 100%;
@@ -786,6 +878,10 @@
         width: 100%;
         justify-content: flex-start;
         padding-top: 1.6rem;
+    }
+
+    ._mengurutkan_input {
+        width: 100%;
     }
 }
 
@@ -902,5 +998,42 @@
     ._pilihan_ganda_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
+    }
+}
+
+._mengurutkan_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._mengurutkan_answers {
+        ._mengurutkan_answer_item {
+            box-shadow: inset 0px -2px 0px #EBF1F6;
+            div {
+                padding: 1rem 0rem;
+
+                * {
+                    color: $black-1;
+                }
+
+                &:nth-child(1) {
+                    min-width: 5.6rem !important;
+                    max-width: 5.6rem !important;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    ._mengurutkan_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+
+        * {
+            color: $black-1;
+        }
     }
 }

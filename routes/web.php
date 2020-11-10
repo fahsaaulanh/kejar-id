@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/modal', 'HomeController@modal');
 Route::get('/', 'HomeController@index');
 Route::get('/login', 'LoginController@index');
 Route::post('/login', 'LoginController@login');

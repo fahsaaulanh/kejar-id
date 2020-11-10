@@ -54,6 +54,11 @@
                         <!-- Type MCQSA/Pilihan Ganda -->
                         @include('student.exams.question_type._pilihan_ganda')
                     @endif
+
+                    @if ($question['type'] === 'SSQ')
+                        <!-- SSQ / Mengurutkan -->
+                        @include('student.exams.question_type._mengurutkan')
+                    @endif                    
                 @endforeach
 
             </form>
