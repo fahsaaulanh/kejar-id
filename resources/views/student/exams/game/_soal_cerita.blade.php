@@ -64,6 +64,11 @@
                         <!-- MQ/Memasangkan -->
                         @include('student.exams.question_type._memasangkan')
                     @endif
+
+                    @if ($question['type'] === 'CTQ')
+                        <!-- Type CTQ/Melengkapi Tabel -->
+                        @include('student.exams.question_type._melengkapi_tabel')
+                    @endif
                 @endforeach
 
             </form>

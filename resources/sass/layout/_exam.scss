@@ -586,7 +586,7 @@
     margin-top: 0.8rem;
 }
 
-._isian_matematika_direction {
+._melengkapi_tabel_direction {
     margin-top: 3.2rem;
     color: black;
     margin-bottom: 2.4rem;
@@ -890,6 +890,46 @@
     margin-bottom: 0px !important;
 }
 
+._melengkapi_tabel_direction {
+    margin-top: 3.2rem;
+    color: black;
+    margin-bottom: 2.4rem;
+}
+
+._melengkapi_tabel_tabel {
+    width: 100%;
+}
+
+._melengkapi_tabel_tabel thead {
+    background: #F4F6F9;
+}
+
+._melengkapi_tabel_tabel thead th {
+    padding: 1rem 1.6rem;
+    padding-left: 3.2rem;
+}
+
+._melengkapi_tabel_tabel thead th:nth-child(1) {
+    padding-left: 1.6rem;
+}
+
+._melengkapi_tabel_tabel tr td {
+    min-width: 16rem;
+    max-width: 32rem;
+    padding: 0.8rem 0rem 0.8rem 1.6rem;
+
+    p {
+        margin-bottom: 0px;
+    }
+}
+
+._melengkapi_tabel_tabel tr:nth-child(1) td {
+    padding-top: 1.6rem;
+}
+
+._melengkapi_tabel_tabel tr:nth-last-child(1) td {
+    padding-bottom: 1.6rem;
+}
 
 ._question_button {
     margin: 5.6rem 0rem;
@@ -1007,6 +1047,18 @@
 
     &:disabled {
         background: white;
+        pointer-events: none;
+    }
+}
+
+._melengkapi_tabel_input {
+    padding: 1rem 1.2rem;
+    margin: 3px auto;
+    width: 100%;
+    border: 2px solid #EBF1F6;
+    outline: none;
+
+    &:disabled {
         pointer-events: none;
     }
 }
@@ -1170,5 +1222,55 @@
         * {
             color: $black-1;
         }
+    }
+}
+
+._melengkapi_tabel_input:focus,
+._melengkapi_tabel_input:active {
+    border: 2px solid #A6D1FF;
+}
+
+._melengkapi_tabel_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._melengkapi_tabel_table_session {
+        width: auto;
+
+        thead {
+            background: $white-2;
+
+            th {
+                padding: 1rem 0.8rem;
+                max-width: 16.2rem;
+                min-width: 16.2rem;
+                border: solid 2px #EBF1F6;
+            }
+        }
+
+        tbody {
+
+            td {
+                padding: 1rem 0.8rem;
+                border: solid 2px #EBF1F6;
+            }
+
+            ._melengkapi_tabel_td_question {
+                background: $white;
+            }
+
+            ._melengkapi_tabel_td_answer {
+                background: $grey-15;
+            }
+        }
+    }
+
+    ._melengkapi_tabel_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
     }
 }
