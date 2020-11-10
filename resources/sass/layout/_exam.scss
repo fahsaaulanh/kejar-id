@@ -1026,6 +1026,32 @@
     border: 2px solid #A6D1FF;
 }
 
+._isian_bahasa_textarea {
+    padding: 1rem 1.2rem;
+    margin: 1.6rem 0rem;
+    width: 100%;
+    display: block;
+    border: 2px solid #EBF1F6;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    min-height: 6.8rem;
+}
+
+._isian_bahasa_textarea:focus,
+._isian_bahasa_textarea:active {
+    border: 2px solid #A6D1FF;
+}
+
+._isian_bahasa_textarea[placeholder]:empty::before {
+    content: attr(placeholder);
+    color: #7C92A7; 
+}
+
+._isian_bahasa_textarea[placeholder]:empty:focus::before {
+    content: "";
+}
+
 @media screen and (max-width: 768px) {
     ._benar_salah_options {
         width: 100%;
@@ -1048,6 +1074,10 @@
     }
 
     ._esai_input {
+        width: 100%;
+    }
+
+    ._isian_bahasa_textarea {
         width: 100%;
     }
 }
@@ -1361,5 +1391,28 @@
     ._esai_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
+    }
+}
+
+._isian_bahasa_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin-bottom: 0px;
+    }
+
+    ._isian_bahasa_right_answers table tr td {
+        vertical-align: top;
+        padding: 0.8rem;
+    }
+
+    ._isian_bahasa_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+
+        p {
+            color: $black-1;
+        }
     }
 }
