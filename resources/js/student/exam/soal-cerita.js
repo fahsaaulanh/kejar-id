@@ -453,22 +453,13 @@ function checkAnswer() {
         });
     }
 
-    // Check if the current question type is melengkapi_tabel
-    if ($(parentElement).data('type') === 'melengkapi_tabel') {
+    // Check if the current question type is merinci
+    if ($(parentElement).data('type') === 'merinci') {
         var arrayAnswers = Array();
         let type = $(parentElement).data('type');
 
-        $(parentElement).find('table tbody tr').each((index, tr) => {
-            var row = [];
-            $(tr).find('td').each((ind, td) => {
-                if ($(td).find('input').length > 0) {
-                    row.push({ "type": "answer", "value": $(td).find('input').val().toLowerCase() });
-                } else {
-                    row.push({ "type": "question", "value": $(td).html() });
-                }
-            });
-            arrayAnswers.push(row);
-            row = [];
+        $(parentElement).find('._merinci_input').each((index, data) => {
+            arrayAnswers.push($(data).val());
         });
 
         let data = {
@@ -482,43 +473,24 @@ function checkAnswer() {
         // Send ajax request
         AjaxRequest(data, (res) => {
 
-            var header = $(parentElement).find('._melengkapi_tabel_tabel thead tr').html();
             var body = ``;
             res.answer.forEach(dat => {
-                body += `<tr>`;
-                dat.forEach(td => {
-                    if (td.type === 'question') {
-                        body += `<td class="_melengkapi_tabel_td_question">
-                                    ${ td.value }
-                                </td>`;
-                    } else {
-                        body += `<td class="_melengkapi_tabel_td_answer">
-                                    ${ td.value }
-                                </td>`;
-                    }
-                });
-                body += `</tr>`;
+                body += `<li>${dat}</li>`;
             });
+
             var html = `
-                <div class="table-responsive-md">
-                    <table class="_melengkapi_tabel_table_session">
-                        <thead>
-                            ${ header }
-                        </thead>
-                        <tbody>
-                            ${ body }
-                        </tbody>
-                    </table>
-                </div>
+                <ul>
+                    ${body}
+                </ul>
             `;
         
-            $(parentElement).find('._melengkapi_tabel_right_answers').append(html);
+            $(parentElement).find('._merinci_right_answers').append(html);
 
-            $(parentElement).find('._melengkapi_tabel_session').first().css('display', 'block');
+            $(parentElement).find('._merinci_session').first().css('display', 'block');
 
-            $(parentElement).find('._melengkapi_tabel_explanation div').html(`${res.explanation}`);
+            $(parentElement).find('._merinci_explanation div').html(`${res.explanation}`);
 
-            $(parentElement).find('._melengkapi_tabel_input').each((index, element) => {
+            $(parentElement).find('._merinci_input').each((index, element) => {
                 $(element).prop('disabled', true);
             });
 
@@ -684,6 +656,25 @@ function wrongAnswer() {
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._melengkapi_tabel_session').css('display', 'none');
             $(cloned).find('._melengkapi_tabel_session').find('.table-responsive-md').remove();
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
+
+    if ($(currentQuestion).data('type') === 'merinci') {
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+
+            $(cloned).find('._merinci_input').each((index, element) => {
+                $(element).prop('disabled', false).val('');
+            });
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._merinci_session').css('display', 'none');
+            $(cloned).find('._merinci_session').find('ul').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('disabled _check_button');
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
@@ -867,3 +858,22 @@ $(document).on('input', '._melengkapi_tabel_input', (e) => {
     }
 });
 // End Melengkapi Tabel
+
+// Merinci
+$(document).on('input', '._merinci_input', (e) => {
+    var currentQuestion = $('.question-group:visible');
+    var count = 0;
+
+    $(currentQuestion).find("._merinci_input").each((index, element) => {
+        if (element.value === "") {
+            count++;
+        }
+    });
+
+    if( count === 0 ) {
+        $(currentQuestion).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentQuestion).find('._question_button').prop('disabled', true);
+    }
+});
+// End Merinci
