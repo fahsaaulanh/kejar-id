@@ -12,12 +12,6 @@ $('#create-question').on('show.bs.modal', event => {
     $('#upload-questions').modal('hide');
 });
 
-// $(document).on('click', '.btn-add', function(){
-//     var index = $('.table-form tbody tr').length;
-
-//     $('.table-form').find('tbody').append('<tr><td><input type="text" placeholder="Ketik soal" name="question[' + index + '][question]" class="form-control"></td><td><input type="text" placeholder="Ketik jawaban" name="question['+ index +'][answer]" class="form-control"></td></tr>');
-// });
-
 $(document).on('click', '#btn-add-alternative-answer', function(){
     var index = $('.form-group #new_answer textarea').length;
     $('#new_answer').append('<div class="d-flex justify-content-start align-items-start"><textarea class="textarea-answer" name="question[answer][' + index + ']" id="answer" cols="30" rows="3" placeholder="Ketik alternatif jawaban '+ (index+1) +'"></textarea><button class="btn-delete-answer" type="button"><i class="kejar-close"></i></button></div>');
@@ -562,7 +556,9 @@ $(document).on('click', '.edit-btn', function(){
                                 var checkedRadio = response.answer[i] == String.fromCharCode(parseInt(65 + j)) ? 'checked' : '';
                                 var bagianRumpangTd1 = '<td><div class="radio-group"><input type="radio" name="choices['+ numberChoices +'][answer]" value="'+ j +'" '+ checkedRadio +'><i class="kejar-belum-dikerjakan"></i></div></td>';
                                 var bagianRumpangTd2 = '<td><textarea name="choices['+ numberChoices +'][description][]" hidden>'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</textarea><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban '+ parseInt(j + 1) +'">'+ response.choices[i].choices[String.fromCharCode(parseInt(65 + j))] +'</div></td>';
-                                var bagianRumpangTd3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                                if (Object.keys(response.choices[i].choices).length > 2) {
+                                    var bagianRumpangTd3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
+                                }
                                 bagianRumpangRow += '<tr>'+ bagianRumpangTd1 + bagianRumpangTd2 + bagianRumpangTd3 +'</tr>';
                             }
                             elementGroup += '<div class="form-group bagian-rumpang"><div class="d-flex justify-content-between align-items-start"><div><label>Jawaban</label><p>Semua alternatif jawaban dianggap benar.</p></div><button class="remove-btn" type="button" data-type="bagian-rumpang"><i class="kejar-close"></i></button></div><table class="answer-list-table-rmpg" data-type="tabel-rumpang-pg">'+ bagianRumpangRow +'</table><button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="jawaban-rumpang-pg"><i class="kejar-add"></i> Tambah Pilihan Jawaban</button></div>';
@@ -1651,28 +1647,3 @@ $('#update-isian-bahasa').on('show.bs.modal', (e) => {
         }
     });
 });
-
-
-// if (type == '#edit-isian-bahasa') {
-//     $.ajax({
-//         url: url,
-//         method: "GET",
-//         success:function(response){
-//             modal.find('form').attr('action', url);
-//             modal.find('textarea[name=question]').val(response.question);
-//             modal.find('textarea[name=explanation]').val(response.explanation);
-//             var answersData = '<colgroup><col class="first-col"/><col class="second-col"/></colgroup>';
-//             for (var i = 0; i < response.answer.length; i++) {
-//                 if (i == 0) {
-//                     answersData += '<tr><td colspan="2"><input type="hidden" name="answer['+ i +']" value="'+ response.answer[i] +'"><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik alternatif jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td></tr>';
-//                     answersData += '<tr><td><input type="hidden" name="answer['+ i +']" value="'+ response.answer[i] +'"><div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik alternatif jawaban '+ parseInt(i + 1) +'">'+ response.answer[i] +'</div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
-//                 }
-//             }
-//             modal.find('.answer-list-table-ib').html(answersData);
-//             modal.find('.ckeditor-field').each((index, element) => {
-//                 initializeEditor(index, element);
-//             });
-//             modal.modal('show');
-//         }
-//     });
-// }

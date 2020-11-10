@@ -321,7 +321,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body editor-display">
                         <div class="direction-text">
                             {!! $question['question']['question'] !!}
                         </div>

@@ -41,7 +41,7 @@
                         <table class="melengkapi-tabel-input-table" data-type="melengkapi_tabel">
 
                         </table>
-                        <a href="#" class="add-btn" id="add-btn"><i class="kejar-add"></i> <span>Tambah Jawaban</span></a>
+                        <a href="#" class="add-btn" id="add-btn" data-type="melengkapi_tabel"><i class="kejar-add"></i> <span>Tambah Jawaban</span></a>
                     </div>
                     <div class="form-group ckeditor-list">
                         <label for="keterangan-soal">Pembahasan</label>
