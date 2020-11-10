@@ -535,6 +535,52 @@ function checkAnswer() {
         });
     }
 
+    // Check if the current question type is isian_bahasan
+    if ($(parentElement).data('type') === 'isian_bahasa') {
+        var answer = $(parentElement).find('._isian_bahasa_textarea').text();
+        let type = $(parentElement).data('type');
+
+        let data = {
+            'id' : $(parentElement).data('id'),
+            'task_id' : $('.question-list').data('task'),
+            'answer' : answer,
+            'repeatance' : $(parentElement).data('repeat'),
+            'type': type
+        }
+
+        // Send ajax request
+        AjaxRequest(data, (res) => {
+            var body = ``;
+            for (let index = 0; index < res.answer.length; index++) {
+                body += `<tr><td><i class="kejar-soal-benar"></i></td>
+                        <td>${ res.answer[index] }</td></tr>`;
+            }
+
+            var html = `
+                <table>
+                    ${ body }
+                </table>
+            `;
+        
+            $(parentElement).find('._isian_bahasa_right_answers').append(html);
+
+            $(parentElement).find('._isian_bahasa_session').first().css('display', 'block');
+
+            $(parentElement).find('._isian_bahasa_explanation div').html(`${res.explanation}`);
+
+            $(parentElement).find('._isian_bahasa_input').each((index, element) => {
+                $(element).prop('disabled', true);
+            });
+
+            if (res.status === false) {
+                wrongAnswer();
+            }
+
+            buttonFunction(parentElement);
+
+        });
+    }
+
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
 
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
@@ -726,6 +772,23 @@ function wrongAnswer() {
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._esai_session').css('display', 'none');
             $(cloned).find('._esai_session').find('ul').remove();
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
+
+    if ($(currentQuestion).data('type') === 'isian_bahasa') {
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+
+            $(cloned).find('._isian_bahasa_textarea').html('');
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._isian_bahasa_session').css('display', 'none');
+            $(cloned).find('._isian_bahasa_session ._isian_bahasa_right_answers table').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('disabled _check_button');
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
@@ -1111,3 +1174,15 @@ function initalizeEditor(index, element) {
     
 }
 // End Esai
+// Isian Bahasa
+
+$(document).on('input', '._isian_bahasa_textarea', (e) => {
+    var currentQuestion = $('.question-group:visible');
+    
+    if( $(e.target)[0].innerText !== "" ) {
+        $('._question_button').prop('disabled', false);
+    } else {
+        $('._question_button').prop('disabled', true);
+    }
+});
+// End Isian Bahasa

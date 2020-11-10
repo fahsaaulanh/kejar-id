@@ -77,8 +77,12 @@
 
                     @if ($question['type'] === 'EQ')
                         <!-- Type EQ/Esai -->
-
                         @include('student.exams.question_type._esai')
+                    @endif
+
+                    @if ($question['type'] === 'QSAT')
+                        <!-- Type CTQ/Melengkapi Tabel -->
+                        @include('student.exams.question_type._isian_bahasa')
                     @endif
                 @endforeach
 
