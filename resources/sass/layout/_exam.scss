@@ -683,6 +683,72 @@
     }
 }
 
+._memasangkan_direction{
+    color: $black-1;
+}
+
+._memasangkan_question{
+    margin-top: 3.2rem;
+    margin-bottom: 5rem;
+    user-select: none;
+
+    * {
+        color: $black-1
+    }
+}
+
+._memasangkan_pertanyaan {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+
+    div:nth-child(1) {
+        min-width: 6.4rem !important;
+        max-width: 6.4rem !important;
+        text-align: right;
+        padding: 1rem 1.6rem;
+        box-sizing: border-box;
+    }
+
+    div:nth-child(2) {
+        padding: 1rem 1.6rem;
+        box-sizing: border-box;
+    }
+
+    p {
+        display: block;
+        margin-bottom: 0px !important;
+    }
+}
+
+._memasangkan_jawaban {
+
+    div {
+        box-sizing: border-box;
+        padding: 1rem 1.6rem;
+    }
+
+    margin-bottom: 1.6rem;
+}
+
+._memasangkan_answer{
+    margin-bottom: 6rem;
+
+    div{
+        p{
+            margin-bottom: 0 !important;
+        }
+    }
+
+    input{
+        text-align: right;
+        width: 6.4rem !important;
+    }
+
+    * {
+        color: $black-1;
+    }
+}
+
 .check-btn-group{
     width: 100%;
 
@@ -1032,6 +1098,75 @@
         margin-top: 2.4rem;
         margin-bottom: 4rem;
 
+        * {
+            color: $black-1;
+        }
+    }
+}
+
+._question_button {
+    margin: 5.6rem 0rem;
+    padding: 1.2rem 1.6rem;
+    display: flex;
+    cursor: pointer;
+    column-gap: 1.1rem;
+    align-items: center;
+    border: none;
+    background: $magenta;
+    color: white;
+    font-size: 1.5rem;
+}
+
+._question_button:disabled {
+    background: $grey-13;
+    pointer-events: none;
+}
+
+._question_button i::before{
+    color: $white;
+    font-size: 1.5rem;
+}
+
+._memasangkan_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._memasangkan_jawaban_benar {
+        table {
+            tr {
+                td{
+                    padding: 1rem 0rem;
+                    box-shadow: inset 0px -2px 0px #EBF1F6;
+
+                    * {
+                        color: $black-1;
+                    }
+
+                    &:nth-child(2) {
+                        width: 5.2rem;
+
+                        i::before {
+                            font-size: 2rem;
+                        }
+                    }
+
+                    &:first-child, &:last-child {
+                        width: 45.4rem;
+                    }
+                }
+                
+            }
+        }
+    }
+
+    ._memasangkan_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+        
         * {
             color: $black-1;
         }
