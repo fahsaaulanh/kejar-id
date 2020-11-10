@@ -74,6 +74,12 @@
                         <!-- Type BDCQMA/Merinci -->
                         @include('student.exams.question_type._merinci')    
                     @endif
+
+                    @if ($question['type'] === 'EQ')
+                        <!-- Type EQ/Esai -->
+
+                        @include('student.exams.question_type._esai')
+                    @endif
                 @endforeach
 
             </form>
@@ -85,5 +91,6 @@
 
 @push('script')
 <!-- Major Script -->
+<script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script>
 <script src="{{ mix('/js/student/exam/soal-cerita.js') }}"></script>
 @endpush

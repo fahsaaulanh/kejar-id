@@ -45,7 +45,7 @@ class ChangePasswordController extends Controller
             $checkPhoto = session()->get('user.userable.photo');
 
             if (!$checkPhoto) {
-                Session::flash('changePhotoOnBoarding', true);
+                Session::flash('user.changePhotoOnBoarding', true);
             }
 
             Session::flash('message', 'Ubah password berhasil!');
