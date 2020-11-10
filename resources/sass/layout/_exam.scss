@@ -896,6 +896,12 @@
     margin-bottom: 2.4rem;
 }
 
+._merinci_direction {
+    margin-top: 3.2rem;
+    color: black;
+    margin-bottom: 2.4rem;
+}
+
 ._melengkapi_tabel_tabel {
     width: 100%;
 }
@@ -973,6 +979,20 @@
     }
 }
 
+._merinci_input {
+    padding: 1rem 1.2rem;
+    margin: 1.6rem 0rem;
+    width: 43.2rem;
+    display: block;
+    border: 2px solid #EBF1F6;
+    outline: none;
+}
+
+._merinci_input:focus,
+._merinci_input:active {
+    border: 2px solid #A6D1FF;
+}
+
 @media screen and (max-width: 768px) {
     ._benar_salah_options {
         width: 100%;
@@ -987,6 +1007,10 @@
     }
 
     ._mengurutkan_input {
+        width: 100%;
+    }
+
+    ._merinci_input {
         width: 100%;
     }
 }
@@ -1270,6 +1294,20 @@
     }
 
     ._melengkapi_tabel_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+    }
+}
+
+._merinci_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._merinci_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
     }

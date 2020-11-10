@@ -69,6 +69,11 @@
                         <!-- Type CTQ/Melengkapi Tabel -->
                         @include('student.exams.question_type._melengkapi_tabel')
                     @endif
+
+                    @if ($question['type'] === 'BDCQMA')
+                        <!-- Type BDCQMA/Merinci -->
+                        @include('student.exams.question_type._merinci')    
+                    @endif
                 @endforeach
 
             </form>
