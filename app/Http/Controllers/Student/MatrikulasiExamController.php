@@ -99,6 +99,15 @@ class MatrikulasiExamController extends Controller
             $answer = $answers;
         }
 
+        if ($request->type === 'menceklis') {
+            $answer = [];
+            foreach ($task['choices'] as $key => $value) {
+                if (in_array($key, $task['correct_answer'])) {
+                    $answer[] = $value;
+                }
+            }
+        }
+
         return response()->json([
             'status' => $status,
             'answer' => $answer,
@@ -161,8 +170,19 @@ class MatrikulasiExamController extends Controller
             $stageId = $result['stageId'];
             $roundId = $result['roundId'];
             $game = $result['game'];
+
+            $roundApi = new RoundApi;
+
+            $round = $roundApi->getDetail($roundId)['data'] ?? [];
     
-            return view('student.results.index', compact('task', 'nextRound', 'stageId', 'roundId', 'game'));
+            $gameApi = new Game;
+
+            $gameData = $gameApi->parse($game);
+
+            return view(
+                'student.results.index',
+                compact('task', 'nextRound', 'stageId', 'roundId', 'game', 'round', 'gameData'),
+            );
         } catch (Throwable $th) {
             return redirect("/student/games/$game/stages/$stageId/rounds");
         }

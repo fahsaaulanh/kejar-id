@@ -581,6 +581,64 @@ function checkAnswer() {
         });
     }
 
+    // Check if the current question is Menceklis
+    if ($(parentElement).data('type') === 'menceklis') {
+        var answers = Array();
+        let type = $(parentElement).data('type');
+
+        $(parentElement).find('input:checked').each((index, element) => {
+            answers.push($(element).val());
+        });
+
+        let data = {
+            'id' : $(parentElement).data('id'),
+            'task_id' : $('.question-list').data('task'),
+            'answer' : answers,
+            'repeatance' : $(parentElement).data('repeat'),
+            'type': type
+        }
+
+        // Send ajax request
+        AjaxRequest(data, (res) => {
+            var body = ``;
+            for (let index = 0; index < res.answer.length; index++) {
+                body += `
+                    <li class="d-flex align-items-start mb-1">
+                        <div>
+                            <i class="kejar-checked-box mr-2"></i>
+                        </div>
+                        <div>
+                            ${res.answer[index]}
+                        </div>
+                    </li>
+                `;
+            }
+
+            var html = `
+                <ul class="list-unstyled">
+                    ${ body }
+                </ul>
+            `;
+        
+            $(parentElement).find('._menceklis_right_answers').append(html);
+
+            $(parentElement).find('._menceklis_session').first().css('display', 'block');
+
+            $(parentElement).find('._menceklis_explanation div').html(`${res.explanation}`);
+
+            $(parentElement).find('._menceklis_input').each((index, element) => {
+                $(element).prop('disabled', true);
+            });
+
+            if (res.status === false) {
+                wrongAnswer();
+            }
+
+            buttonFunction(parentElement);
+
+        });
+    }
+
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
 
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
@@ -791,6 +849,28 @@ function wrongAnswer() {
             $(cloned).find('._isian_bahasa_session ._isian_bahasa_right_answers table').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
+
+    if ($(currentQuestion).data('type') === 'menceklis') {
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+
+            $(cloned).find('input:checked').each((index, element) => {
+                $(element).next('i').attr('class', 'kejar kejar-check-box');
+                $(element).prop('checked', false);
+            });
+
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._menceklis_session').css('display', 'none');
+            $(cloned).find('._menceklis_session ._menceklis_right_answers ul').remove();
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -1186,3 +1266,22 @@ $(document).on('input', '._isian_bahasa_textarea', (e) => {
     }
 });
 // End Isian Bahasa
+
+// Menceklis Dari Daftar
+$(document).on('click', '.md-checkbox-answer input', function(){
+
+    currentQuestion = $('.question-group:visible');
+    var iconEl = $(this).next();
+    if ($(this).is(':checked')) {
+        iconEl.attr('class', 'kejar kejar-checked-box');
+    } else {
+        iconEl.attr('class', 'kejar kejar-check-box');
+    }
+    
+    if ($(currentQuestion).find('input:checked').length != 0) {
+        $(currentQuestion).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentQuestion).find('._question_button').prop('disabled', true);
+    }
+});
+// End Menceklis Dari Daftar
