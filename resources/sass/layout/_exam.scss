@@ -1416,3 +1416,100 @@
         }
     }
 }
+
+.md-question{
+    margin-top: 3.2rem;
+}
+
+.md-answer{
+    margin-bottom: 6rem;
+
+    .md-checkbox-answer{
+        @include h5;
+        display: block;
+        position: relative;
+        padding-left: 3.5rem;
+        margin-bottom: 2.4rem;
+        font-weight: normal;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        i {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 2.2rem;
+            
+            &:before{
+                color: $blue;
+            }
+        }
+    }
+}
+
+.check-btn-group{
+    width: 100%;
+
+    .check-btn{
+        @include h5;
+        width: 16rem;
+        height: 4.4rem;
+        padding: 1.2rem 1.6rem;
+        color: $white;
+        background-color: $grey-13;
+        text-transform: uppercase;
+        border-radius: 0;
+
+        i:before{
+            color: $white;
+        }
+
+        &.active{
+            background-color: $magenta;
+        }
+    }
+}
+
+
+// Menceklis
+
+._menceklis_direction {
+    margin-top: 3.2rem;
+    color: black;
+    margin-bottom: 2.4rem;
+}
+
+._menceklis_question{
+    margin-top: 3.2rem;
+    margin-bottom: 2.4rem;
+    user-select: none;
+    
+    * {
+        color: $black-1 !important;
+    }
+}
+
+._menceklis_session {
+    display: none;
+    padding-bottom: 3rem;
+
+    p {
+        margin: 0rem !important;
+    }
+
+    ._menceklis_explanation {
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+    }
+}

@@ -84,6 +84,11 @@
                         <!-- Type CTQ/Melengkapi Tabel -->
                         @include('student.exams.question_type._isian_bahasa')
                     @endif
+
+                    @if ($question['type'] === 'CQ')
+                        <!-- Type /Menceklis Dari Daftar -->
+                        @include('student.exams.question_type._menceklis_daftar')
+                    @endif
                 @endforeach
 
             </form>
