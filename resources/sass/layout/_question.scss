@@ -78,6 +78,12 @@
                 display: flex;
             }
         }
+
+        .card-body {
+            * {
+                color: $black-1 !important;
+            }
+        }
     }
 
     .card-header {
@@ -338,6 +344,10 @@
                     line-height: normal;
                 }
             }
+        }
+
+        img {
+            width: 15.9rem !important;
         }
     }
 
@@ -640,4 +650,11 @@
             display: none !important;
         }
     }
+}
+
+// Fix Modal Header
+.modal-header {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    padding-bottom: 1rem !important;
 }

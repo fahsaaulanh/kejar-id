@@ -500,11 +500,21 @@ class QuestionController extends Controller
                         if ($key1 === 0) {
                             $choices[$num]['question'] = $request['question'];
                             foreach ($data['description'] as $key2 => $choice) {
+                                if (!isset($data['answer'])) {
+                                    return redirect()->back()->with(
+                                        'message',
+                                        'Jawaban belum dipilih. Gagal Menambahkan Data!',
+                                    );
+                                }
+
                                 if (intval($data['answer']) === $key2) {
                                     $answers[] = $alphabet;
                                 }
 
-                                $choices[$num]['choices'][$alphabet] = $choice;
+                                if ($choice) {
+                                    $choices[$num]['choices'][$alphabet] = $choice;
+                                }
+
                                 $alphabet++;
                             }
 
@@ -521,7 +531,10 @@ class QuestionController extends Controller
                                         $answers[] = $alphabet;
                                     }
 
-                                    $choices[$num]['choices'][$alphabet] = $choice;
+                                    if ($choice) {
+                                        $choices[$num]['choices'][$alphabet] = $choice;
+                                    }
+
                                     $alphabet++;
                                 }
 
@@ -1113,11 +1126,21 @@ class QuestionController extends Controller
                     if ($key1 === 0) {
                         $choices[$num]['question'] = $request['question'];
                         foreach ($data['description'] as $key2 => $choice) {
+                            if (!isset($data['answer'])) {
+                                return redirect()->back()->with(
+                                    'message',
+                                    'Jawaban belum dipilih. Gagal Menambahkan Data!',
+                                );
+                            }
+                            
                             if (intval($data['answer']) === $key2) {
                                 $answers[] = $alphabet;
                             }
 
-                            $choices[$num]['choices'][$alphabet] = $choice;
+                            if ($choice) {
+                                $choices[$num]['choices'][$alphabet] = $choice;
+                            }
+
                             $alphabet++;
                         }
 
@@ -1134,7 +1157,10 @@ class QuestionController extends Controller
                                     $answers[] = $alphabet;
                                 }
 
-                                $choices[$num]['choices'][$alphabet] = $choice;
+                                if ($choice) {
+                                    $choices[$num]['choices'][$alphabet] = $choice;
+                                }
+
                                 $alphabet++;
                             }
 
