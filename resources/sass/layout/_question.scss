@@ -658,3 +658,34 @@
     padding-right: 1rem !important;
     padding-bottom: 1rem !important;
 }
+
+.image {
+    position: relative;
+}
+
+.image.image_resized {
+    max-width: 100%;
+    display: block;
+    box-sizing: border-box;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+}
+
+.image img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    min-width: 50px;
+}
+
+.image-style-align-right {
+    float: right !important;
+}
+
+.image-style-align-left {
+    float: left !important;
+}
+
+.image-style-align-center{
+    margin: auto !important;
+}
