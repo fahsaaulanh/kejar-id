@@ -89,6 +89,11 @@
                         <!-- Type /Menceklis Dari Daftar -->
                         @include('student.exams.question_type._menceklis_daftar')
                     @endif
+
+                    @if ($question['type'] === 'IQ')
+                        <!-- Type /Teks Rumpang -->
+                        @include('student.exams.question_type._teks_rumpang_PG')
+                    @endif
                 @endforeach
 
             </form>

@@ -30,6 +30,15 @@ class MatrikulasiExamController extends Controller
 
         $gameApi = new Game;
 
+        if ($gameApi->parse($game)['uri'] === 'soalcerita') {
+            return view(
+                'student.exams.game._soal_cerita',
+                compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan', 'round'),
+            );
+        }
+
+        $gameApi = new Game;
+
         session()->forget('old_answer');
 
         $view = $gameApi->parse($game)['uri'] === 'soalcerita' ?
@@ -104,6 +113,15 @@ class MatrikulasiExamController extends Controller
             foreach ($task['choices'] as $key => $value) {
                 if (in_array($key, $task['correct_answer'])) {
                     $answer[] = $value;
+                }
+            }
+        }
+
+        if ($request->type === 'rumpang') {
+            $answer = [];
+            foreach ($task['correct_answer'] as $key => $value) {
+                if (array_key_exists($value, $task['choices'][$key]['choices'])) {
+                    $answer[] = $task['choices'][$key]['choices'][$value];
                 }
             }
         }
