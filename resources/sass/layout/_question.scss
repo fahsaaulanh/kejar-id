@@ -346,8 +346,8 @@
             }
         }
 
-        img {
-            width: 15.9rem !important;
+        .image_resized {
+            display: inline-block;
         }
     }
 
@@ -410,6 +410,7 @@
 
             tr {
                 td {
+                    max-width: 10rem;
                     border: 1px solid #EBF1F6 !important;
                     padding: 1rem ,8rem;
 
@@ -688,4 +689,8 @@
 
 .image-style-align-center{
     margin: auto !important;
+}
+
+pre {
+    white-space: pre-wrap !important;
 }
