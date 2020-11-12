@@ -639,6 +639,53 @@ function checkAnswer() {
         });
     }
 
+    // Check if the current question is Teks Rumpang
+    if ($(parentElement).data('type') === 'rumpang') {
+        var answers = Array();
+        let type = $(parentElement).data('type');
+
+        $(parentElement).find('input[name="answer"]').each((index, element) => {
+            answers.push($(element).val());
+        });
+
+        let data = {
+            'id' : $(parentElement).data('id'),
+            'task_id' : $('.question-list').data('task'),
+            'answer' : answers,
+            'repeatance' : $(parentElement).data('repeat'),
+            'type': type
+        }
+
+        // Send ajax request
+        AjaxRequest(data, (res) => {
+            var body = ``;
+            res.answer.forEach((el) => {
+                body += `${el}, `;
+            });
+
+            body = body.slice(0, -2);
+
+            var html = `<p>${body}</p>`;
+        
+            $(parentElement).find('._rumpang_right_answers').append(html);
+
+            $(parentElement).find('._rumpang_session').first().css('display', 'block');
+
+            $(parentElement).find('._rumpang_explanation div').html(`${res.explanation}`);
+
+            $(parentElement).find('.dropdown-toggle').each((index, element) => {
+                $(element).prop('disabled', true);
+            });
+
+            if (res.status === false) {
+                wrongAnswer();
+            }
+
+            buttonFunction(parentElement);
+
+        });
+    }
+
     $(parentElement).attr('data-repeatance', $(parentElement).data('repeatance') + 1);
 
     $(parentElement).first().find('._question_button').removeClass('_check_button disabled');
@@ -868,6 +915,30 @@ function wrongAnswer() {
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._menceklis_session').css('display', 'none');
             $(cloned).find('._menceklis_session ._menceklis_right_answers ul').remove();
+            $(cloned).find('._question_button').removeClass('_next_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
+            $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
+    
+            $('.question-list').append(cloned);
+        }
+    }
+
+    if ($(currentQuestion).data('type') === 'rumpang') {
+        console.log('wrong');
+        if ($(currentQuestion).data('repeatance') < 2) {
+            var cloned = $(currentQuestion).clone(false);
+
+            $(cloned).find('.dropdown').each((index, element) => {
+                $(element).find('.dropdown-toggle').prop('disabled', false);
+                $(element).find('input').val('');
+                $(element).find('button').html('<div class="d-flex justify-content-between align-items-center"><span>...</span><i class="kejar kejar-dropdown"></i></div>');
+            });
+
+            $(cloned).css('display', 'none');
+            $(cloned).attr('data-repeat', 'true');
+            $(cloned).find('._rumpang_session').css('display', 'none');
+            $(cloned).find('._rumpang_session ._rumpang_right_answers p').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
             $(cloned).find('._question_button').addClass('_check_button');
             $(cloned).find('._question_button').prop('disabled', true);
@@ -1285,3 +1356,39 @@ $(document).on('click', '.md-checkbox-answer input', function(){
     }
 });
 // End Menceklis Dari Daftar
+
+
+// Teks Rumpang PG
+
+$(document).on('click', '.dropdown-item', function(){
+    var currentElement = $('.question-group:visible');
+    var type = $(this).data('type');
+    var value = $(this).data('value');
+    if (type == 'answer') {
+        $(this).parent().prev().find('span').text($(this).text());
+        $(this).parents('.dropdown').find('input').val(value);
+    }
+
+    var totalAnswer = 0;
+    $(currentElement).find('.answer-field').each(function(){
+        totalAnswer += $(this).val() != '' ? 1 : 0;
+    });
+
+    if (totalAnswer == $(currentElement).find('.answer-field').length) {
+        $(currentElement).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._question_button').prop('disabled', true);
+    }
+});
+
+$(document).ready(function(){
+    var currentElement = $('.question-group:visible');
+
+    $(currentElement).find('.rmpg-question-answer p').each(function(){
+        var content = '<div class="question-group">' + $(this).html() + '</div>';
+        $(content).insertAfter($(this));
+        $(this).remove();
+    });
+});
+
+// End Teks Rumpang PG
