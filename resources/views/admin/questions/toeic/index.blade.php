@@ -45,7 +45,7 @@
         {{-- Deskripsi Ronde --}}
         <div class="page-description-item description">
             <h5>Deskripsi Ronde</h5>
-            <p>{{$round['description']}}</p>
+            <pre>{{$round['description']}}</pre>
         </div>
         {{-- Materi --}}
         <div class="page-description-item material">

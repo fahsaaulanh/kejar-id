@@ -44,9 +44,11 @@ class MatrikulasiExamController extends Controller
         $view = $gameApi->parse($game)['uri'] === 'soalcerita' ?
             'student.exams.game._soal_cerita' : 'student.exams.index';
 
+        $gameData = $gameApi->parse($game);
+        
         return view(
             $view,
-            compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan', 'round'),
+            compact('game', 'stageId', 'roundId', 'questions', 'taskId', 'timespan', 'round', 'gameData'),
         );
     }
 
