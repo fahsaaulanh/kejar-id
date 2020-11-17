@@ -49,7 +49,7 @@
 
         <div class="page-description-item material">
             <h5>Materi</h5>
-            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{{$round['material']}}</pre>
+            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }} editor-display">{!!$round['material']!!}</pre>
         </div>
 
         <div class="page-description-item direction">
@@ -410,7 +410,7 @@
                                 {!! $question['question']['question'] !!}
                             </p>
                         </div>
-                        <div class="table-responsive-md">
+                        <div class="table-responsive">
                             <table class="table table-borderless">
                                 <thead>
                                     @foreach ($question['question']['choices']['header'] as $header)

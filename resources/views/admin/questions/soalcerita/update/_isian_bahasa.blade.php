@@ -1,5 +1,5 @@
-<div class="modal fade modal-large" id="update-isian-bahasa">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="update-isian-bahasa">
+    <div class="modal-dialog modal-fix" role="document">
         <form method="POST" novalidate>
             @csrf
             @method('PATCH')

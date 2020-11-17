@@ -28,20 +28,27 @@
 }
 
 .ck-content {
+    word-break: break-word;
+
+    .image.image_resized {
+        margin: 10px 0px;
+    }
+
+
     p{
         font-size: 1.5rem !important;
-        color: $grey-6 !important;
         font-family: $font-family-monospace !important;
+        margin-bottom: 1rem;
     }
 
     i{
         font-family: $font-family-monospace !important;
         font-style: italic !important;
-        line-height: 1.6rem !important;
     }
 
-    ol li, ul li{
-        color: $grey-6 !important;
+    * {
+        color: $black-1 !important;
+        line-height: normal !important;
     }
 }
 

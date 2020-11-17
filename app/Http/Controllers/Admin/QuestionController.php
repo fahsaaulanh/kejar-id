@@ -722,6 +722,10 @@ class QuestionController extends Controller
                             'note' => 'explanation',
                         ];
 
+                        if (!isset($question['data'])) {
+                            return redirect()->back()->with('message', 'Maaf, data yang diberikan tidak sesuai!');
+                        }
+                        
                         $questionApi->update($question['data']['id'], ['status' => '2']);
                         $questionApi->update($question['data']['id'], $updateData);
 

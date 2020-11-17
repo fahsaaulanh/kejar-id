@@ -45,12 +45,12 @@
         {{-- Deskripsi Ronde --}}
         <div class="page-description-item description">
             <h5>Deskripsi Ronde</h5>
-            <p>{{$round['description']}}</p>
+            <pre>{{$round['description']}}</pre>
         </div>
         {{-- Materi --}}
         <div class="page-description-item material editor-display">
             <h5>Materi</h5>
-            <div class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</div>
+            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</pre>
         </div>
         {{-- Petunjuk soal --}}
         <div class="page-description-item direction">

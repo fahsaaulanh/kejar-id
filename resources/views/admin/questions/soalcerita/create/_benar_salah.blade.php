@@ -169,7 +169,7 @@
                                 </td>
                             </tr>
                         </table>
-                        <a href="#" class="add-btn" id="add-btn"><i class="kejar-add"></i> <span>Tambah Pernyataan</span></a>
+                        <a href="#" class="add-btn" id="add-btn" data-type="benar_salah"><i class="kejar-add"></i> <span>Tambah Pernyataan</span></a>
                     </div>
                     <div class="form-group ckeditor-list">
                         <label for="keterangan-soal">Pembahasan</label>

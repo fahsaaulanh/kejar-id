@@ -2,28 +2,6 @@ const { includes } = require("lodash");
 
 var timer = $('.question-list').data('timer') * 1000;
 
-$(document).on('click', '._benar_salah_radio', (e) => {
-    var radios = $(e.target).parents('.question-group').find('._benar_salah_radio').length;
-    var radiosQuestions = radios / 2;
-
-    if ($(e.target).parents('.question-group').find('._benar_salah_radio:checked').length >= radiosQuestions) {
-        $(e.target).parents('.question-group').find('._check_button').removeClass('disabled');
-    } else {
-        $(e.target).parents('.question-group').find('._check_button').addClass('disabled');
-    }
-});
-
-$(document).on('click', '._ya_tidak_radio', (e) => {
-    var radios = $(e.target).parents('.question-group').find('._ya_tidak_radio').length;
-    var radiosQuestions = radios / 2;
-
-    if ($(e.target).parents('.question-group').find('._ya_tidak_radio:checked').length >= radiosQuestions) {
-        $(e.target).parents('.question-group').find('._check_button').removeClass('disabled');
-    } else {
-        $(e.target).parents('.question-group').find('._check_button').addClass('disabled');
-    }
-});
-
 $(document).on('click', '._check_button', function(e) {
     e.preventDefault();
 
@@ -84,14 +62,17 @@ function checkAnswer() {
         AjaxRequest(data, (res) => {
             var html = '';
             for (let i = 0; i < res.answer.length; i++) {
-                html += `<div class='d-flex flex-wrap flex-nowrap justify-content-between align-items-center _ya_tidak_right_answers_item'><div class='_ya_tidak_question_answer'>${res.answer[i].question}</div><div class='_ya_tidak_options_right_answer'>${res.answer[i].answer === 'yes' ? 'Ya' : 'Tidak'}</div></div>`;
+                html += `<div class='d-flex flex-wrap flex-nowrap justify-content-between align-items-center _benar_salah_right_answers_item'>
+                    <div class='_benar_salah_question_answer'>${res.answer[i].question}</div>
+                    <div class='_benar_salah_options_right_answer'>${res.answer[i].answer === true ? 'Benar' : 'Salah'}</div>
+                </div>`;
             }
             $(parentElement).find('._benar_salah_right_answers').html(html);
             $(parentElement).find('._benar_salah_session').first().css('display', 'block');
 
-            $(parentElement).find('._ya_tidak_explanation div').html(`${res.explanation}`);
+            $(parentElement).find('._benar_salah_explanation div').html(`${res.explanation}`);
 
-            $(parentElement).find('._ya_tidak_radio').each((index, element) => {
+            $(parentElement).find('._benar_salah_radio').each((index, element) => {
                 $(element).prop('disabled', true);
             });
 
@@ -714,16 +695,15 @@ function wrongAnswer() {
         if ($(currentQuestion).data('repeatance') < 2) {
             var cloned = $(currentQuestion).clone(false);
 
-            $(cloned).find('._ya_tidak_options').each((index, element) => {
+            $(cloned).find('._benar_salah_options').each((index, element) => {
                 $(element).find('input').prop('disabled', false).prop('checked', false);
-                $(element).find('._answer_tidak_option').prop('id', 'answer_tidak_' + $('.question-list .question-group').length + '[' + parseInt(index + 1) + ']').parent().find('label').prop('for', 'answer_tidak_' + $('.question-list .question-group').length + '[' + parseInt(index + 1) + ']');
-                $(element).find('._answer_ya_option').prop('id', 'answer_ya_' + $('.question-list .question-group').length + '[' + parseInt(index + 1) + ']').parent().find('label').prop('for', 'answer_ya_' + $('.question-list .question-group').length + '[' + parseInt(index + 1) + ']');
             });
             $(cloned).css('display', 'none');
             $(cloned).attr('data-repeat', 'true');
-            $(cloned).find('._ya_tidak_session').css('display', 'none');
+            $(cloned).find('._benar_salah_session').css('display', 'none');
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
             $('.question-list').append(cloned);
         }
@@ -742,7 +722,8 @@ function wrongAnswer() {
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._ya_tidak_session').css('display', 'none');
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -761,7 +742,8 @@ function wrongAnswer() {
             $(cloned).find('._isian_matematika_session').css('display', 'none');
             $(cloned).find('._isian_matematika_session').find('._isian_matematika_question').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -782,7 +764,8 @@ function wrongAnswer() {
             $(cloned).find('._pilihan_ganda_session').css('display', 'none');
             $(cloned).find('._pilihan_ganda_session').find('._pilihan_ganda_right_answers div').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -794,14 +777,15 @@ function wrongAnswer() {
             var cloned = $(currentQuestion).clone(false);
 
             $(cloned).find('input').each((index, element) => {
-                $(element).prop('disabled', false).val('');
+                $(element).val('').prop('disabled', false);
             });
             $(cloned).css('display', 'none');
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._mengurutkan_session').css('display', 'none');
             $(cloned).find('._mengurutkan_session').find('._mengurutkan_answers').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -821,7 +805,8 @@ function wrongAnswer() {
             $(cloned).find('._memasangkan_session').css('display', 'none');
             $(cloned).find('._memasangkan_session').find('._memasangkan_right_answers div').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -840,7 +825,8 @@ function wrongAnswer() {
             $(cloned).find('._melengkapi_tabel_session').css('display', 'none');
             $(cloned).find('._melengkapi_tabel_session').find('.table-responsive-md').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -859,7 +845,8 @@ function wrongAnswer() {
             $(cloned).find('._merinci_session').css('display', 'none');
             $(cloned).find('._merinci_session').find('ul').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -878,7 +865,8 @@ function wrongAnswer() {
             $(cloned).find('._esai_session').css('display', 'none');
             $(cloned).find('._esai_session').find('ul').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -895,7 +883,8 @@ function wrongAnswer() {
             $(cloned).find('._isian_bahasa_session').css('display', 'none');
             $(cloned).find('._isian_bahasa_session ._isian_bahasa_right_answers table').remove();
             $(cloned).find('._question_button').removeClass('_next_button');
-            $(cloned).find('._question_button').addClass('disabled _check_button');
+            $(cloned).find('._question_button').addClass('_check_button');
+            $(cloned).find('._question_button').prop('disabled', true);
             $(cloned).find('._question_button').html('CEK JAWABAN <i class="kejar kejar-next"></i>');
     
             $('.question-list').append(cloned);
@@ -994,9 +983,9 @@ $(document).on('input', '._isian_matematika_input', (e) => {
     });
 
     if( count === 0 ) {
-        $(parentElement).find('._question_button').removeClass('disabled');
+        $(parentElement).find('._question_button').prop('disabled', false);
     } else {
-        $(parentElement).find('._question_button').addClass('disabled');
+        $(parentElement).find('._question_button').prop('disabled', true);
     }
 
     inputAutoWith();
@@ -1060,24 +1049,22 @@ Array.prototype.remove = function() {
 // End Pilihan Ganda
 
 // Mengurutkan
-$('.question-group').on('input', 'input[type=number]', function(){
+$(document).on('input', '._mengurutkan_answer input', function(){
     var currentElement = $('.question-group:visible');
 
-    if ($(currentElement).data('type') === 'mengurutkan') {
-        var inEl = 0;
-        $(currentElement).find('input[type=number]').each(function(){
-            if ($(this).val() === '') {
-                inEl -= 1;
-            } else {
-                inEl += 1;
-            }
-        });
-    
-        if (inEl === $(currentElement).find('input').length) {
-            $(currentElement).find('._question_button').prop('disabled', false);
+    var inEl = 0;
+    $(currentElement).find('input').each(function(){
+        if ($(this).val() === '') {
+            inEl -= 1;
         } else {
-            $(currentElement).find('._question_button').prop('disabled', true);
+            inEl += 1;
         }
+    });
+
+    if (inEl === $(currentElement).find('input').length) {
+        $(currentElement).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._question_button').prop('disabled', true);
     }
 
 });
@@ -1392,3 +1379,37 @@ $(document).ready(function(){
 });
 
 // End Teks Rumpang PG
+
+// Benar Salah
+$(document).on('click', '._benar_salah_option label', (e) => {
+    var currentElement = $('.question-group:visible');
+
+    $(e.currentTarget).prev('input').prop('checked', true);
+
+    var radios = $(currentElement).find('._benar_salah_radio').length;
+    var radiosQuestions = radios / 2;
+
+    if ($(currentElement).find('._benar_salah_radio:checked').length >= radiosQuestions) {
+        $(currentElement).find('._check_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._check_button').prop('disabled', true);
+    }
+});
+// End Benar Salah
+
+// Ya Tidak
+$(document).on('click', '._ya_tidak_options label', (e) => {
+    var currentElement = $('.question-group:visible');
+
+    $(e.currentTarget).prev('input').prop('checked', true);
+
+    var radios = $(currentElement).find('._ya_tidak_radio').length;
+    var radiosQuestions = radios / 2;
+
+    if ($(currentElement).find('._ya_tidak_radio:checked').length >= radiosQuestions) {
+        $(currentElement).find('._check_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._check_button').prop('disabled', true);
+    }
+});
+// End Ya Tidak

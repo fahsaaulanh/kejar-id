@@ -1,5 +1,5 @@
-<div class="modal fade modal-large" id="update-mengurutkan">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="update-mengurutkan">
+    <div class="modal-dialog modal-fix" role="document">
         <form action="" method="POST">
             @csrf
             @method('PATCH')

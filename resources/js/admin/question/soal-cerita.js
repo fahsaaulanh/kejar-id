@@ -1647,3 +1647,13 @@ $('#update-isian-bahasa').on('show.bs.modal', (e) => {
         }
     });
 });
+
+// Edit Materi TextEditor Init
+
+$('#update-material').on('show.bs.modal', (e) => {
+    $(e.currentTarget).find('.editor-field').each((element, index) => {
+        initializeEditor(element, index);
+    });
+});
+
+// End Edit Materi TextEditor Init

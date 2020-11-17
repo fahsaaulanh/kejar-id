@@ -17,7 +17,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-cancel" data-dismiss="modal">Batal</button>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#create-melengkapi-tabel">Lanjut</button>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#create-melengkapi-tabel" data-backdrop="static">Lanjut</button>
             </div>
         </div>
     </div>
@@ -62,22 +62,24 @@
                     </div>
                     <div class="form-group">
                         <label for="pertanyaan">Jawaban</label>
-                        <table class="melengkapi-tabel-input-table" data-type="melengkapi_tabel">
-                            <tr>
-                                <td>
-                                    <input type="text" placeholder="Ketik judul kolom" class="form-control">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Ketik judul kolom" class="form-control">
-                                </td>
-                                <td>
-                                    <input type="text" placeholder="Ketik judul kolom" class="form-control">
-                                </td>
-                                <td>
-                                    <button class="remove-btn"><i class="kejar-close"></i></button>
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="melengkapi-tabel-input-table" data-type="melengkapi_tabel">
+                                <tr>
+                                    <td>
+                                        <input type="text" placeholder="Ketik judul kolom" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Ketik judul kolom" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" placeholder="Ketik judul kolom" class="form-control">
+                                    </td>
+                                    <td>
+                                        <button class="remove-btn"><i class="kejar-close"></i></button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                         <a href="#" class="add-btn" id="add-btn" data-type="melengkapi_tabel"><i class="kejar-add"></i> <span>Tambah Jawaban</span></a>
                     </div>
                     <div class="form-group ckeditor-list">
