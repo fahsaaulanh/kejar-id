@@ -1,5 +1,5 @@
-<div class="modal fade modal-large" id="create-pilihan-ganda">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="create-pilihan-ganda">
+    <div class="modal-dialog  modal-fix" role="document">
         <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="POST" novalidate>
             @csrf
             <input type="hidden" name="question_type" value="MCQSA">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="form-group">
                         <label>Jawaban</label>
-                        <p>Semua alternatif jawaban dianggap benar.</p>
+                        <p>Pilih satu jawaban benar.</p>
                         <table class="answer-list-table-pg" data-type="pilihan-ganda">
                             @for ($i = 0; $i < 4; $i++)
                             <tr>

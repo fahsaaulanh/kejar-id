@@ -1,5 +1,5 @@
-<div class="modal fade modal-large" id="edit-pilihan-ganda">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="edit-pilihan-ganda">
+    <div class="modal-dialog modal-fix" role="document">
         <form method="POST" novalidate>
             @csrf
             @method('PATCH')
@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <label>Jawaban</label>
-                        <p>Semua alternatif jawaban dianggap benar.</p>
+                        <p>Pilih satu jawaban benar.</p>
                         <table class="answer-list-table-pg" data-type="pilihan-ganda"></table>
                         <button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="pilihan-ganda">
                             <i class="kejar-add"></i> Tambah Pilihan Jawaban

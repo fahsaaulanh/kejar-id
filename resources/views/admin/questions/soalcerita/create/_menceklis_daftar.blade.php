@@ -1,5 +1,5 @@
-<div class="modal fade modal-large" id="create-menceklis-daftar">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="create-menceklis-daftar">
+    <div class="modal-dialog  modal-fix" role="document">
         <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="POST" novalidate>
             @csrf
             <input type="hidden" name="question_type" value="CQ">

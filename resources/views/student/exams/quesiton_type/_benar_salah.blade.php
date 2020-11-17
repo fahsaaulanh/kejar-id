@@ -10,16 +10,18 @@
         </div>
         <div class="_benar_salah_options">
             <div>
-                <input type="radio" class="_benar_salah_radio _answer_benar_option" name="answer[{{$x}}]" id="answer_benar_{{$key}}[{{ $x }}]" value="benar"> <label for="answer_benar_{{$key}}[{{ $x }}]"><i></i> Benar</label>
+                <input type="radio" class="_benar_salah_radio _answer_benar_option" name="answer[{{$x}}]" value="benar">
+                <label><i></i> Benar</label>
             </div>
             <div>
-                <input type="radio" class="_benar_salah_radio _answer_salah_option" name="answer[{{$x}}]" id="answer_salah_{{$key}}[{{ $x }}]" value="salah"> <label for="answer_salah_{{$key}}[{{ $x }}]"><i></i> Salah</label>
+                <input type="radio" class="_benar_salah_radio _answer_salah_option" name="answer[{{$x}}]" value="salah"> 
+                <label><i></i> Salah</label>
             </div>
         </div>
     </div>
     @endforeach
 
-    <button class="_question_button _check_button disabled">CEK JAWABAN <i class="kejar kejar-next"></i></button>
+    <button class="_question_button _check_button" disabled>CEK JAWABAN <i class="kejar kejar-next"></i></button>
 
 
     <div class="_benar_salah_session">

@@ -16,7 +16,7 @@
     </div>
     
     
-    <button class="_question_button _check_button disabled">CEK JAWABAN <i class="kejar kejar-next"></i></button>
+    <button class="_question_button _check_button" disabled>CEK JAWABAN <i class="kejar kejar-next"></i></button>
 
 
     <div class="_isian_matematika_session">

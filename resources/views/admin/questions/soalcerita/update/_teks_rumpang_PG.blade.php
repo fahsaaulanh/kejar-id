@@ -1,5 +1,5 @@
-<div class="modal fade modal-large" id="edit-teks-rumpang-pg">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="edit-teks-rumpang-pg">
+    <div class="modal-dialog modal-fix" role="document">
         <form method="POST" novalidate>
             @csrf
             @method('PATCH')

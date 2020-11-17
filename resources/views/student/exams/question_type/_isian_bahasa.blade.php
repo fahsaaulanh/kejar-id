@@ -7,7 +7,7 @@
         <div contenteditable="true" class="_isian_bahasa_textarea editor-display" placeholder="..."></div>
     </div>
 
-    <button class="_question_button _check_button disabled" disabled>CEK JAWABAN <i class="kejar kejar-next"></i></button>
+    <button class="_question_button _check_button" disabled>CEK JAWABAN <i class="kejar kejar-next"></i></button>
 
     <div class="_isian_bahasa_session">
         <div class="_isian_bahasa_right_answers">

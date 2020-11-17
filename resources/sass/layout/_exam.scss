@@ -575,6 +575,37 @@
 
 .question-group {
     display: none;
+
+    .image {
+        position: relative;
+    }
+    
+    .image.image_resized, .image {
+        max-width: 100%;
+        display: inline-block;
+        box-sizing: border-box;
+        margin-left: 0.3rem;
+        margin-right: 0.3rem;
+    }
+    
+    .image img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        min-width: 50px;
+    }
+    
+    .image-style-align-right {
+        float: right !important;
+    }
+    
+    .image-style-align-left {
+        float: left !important;
+    }
+    
+    .image-style-align-center{
+        margin: auto !important;
+    }    
 }
 
 .question-group:nth-child(1) {
@@ -929,7 +960,7 @@
     padding-left: 1.6rem;
 }
 
-._melengkapi_tabel_tabel tr td {
+._melengkapi_tabel_tabel tr td, ._melengkapi_tabel_session tr td {
     min-width: 16rem;
     max-width: 32rem;
     padding: 0.8rem 0rem 0.8rem 1.6rem;
