@@ -1,4 +1,4 @@
-#create-soal-cerita-question-modal {
+#create-soal-cerita-question-modal, #question-type {
 
     .modal-dialog {
         max-width: 56.8rem;
@@ -456,7 +456,6 @@
         clear: both;
         text-align: center;
         margin: 1em auto;
-        background: orange;
 
         &.image_resized {
             max-width: 100%;
@@ -511,10 +510,11 @@
 
             .ck-editor__main {
                 box-sizing: border-box;
-                min-height: 4rem !important;
+                min-height: 4.6rem !important;
 
                 .ck-content {
                     padding: 0px 1,8rem !important;
+                    box-sizing: border-box;
 
                     p {
                         line-height: normal;
@@ -538,7 +538,7 @@
                     color: $black-1;
                     border: 2px solid #EBF1F6;
                     box-shadow: none !important;
-                    min-height: 4.4rem;
+                    min-height: 5rem;
                     width: 11.6rem;
                     display: flex;
                     align-items: center;

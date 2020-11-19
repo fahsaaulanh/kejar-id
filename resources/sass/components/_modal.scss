@@ -707,6 +707,10 @@
 .modal-fix-lg {
     min-width: 1024px;
 
+    @media screen and (max-width: 76.8rem) {
+        min-width: 100%;
+    }
+
     .modal-footer {
         justify-content: flex-end !important;
 

@@ -1,19 +1,19 @@
-<div class="modal fade" id="create-teks-rumpang-pg">
-    <div class="modal-dialog  modal-fix" role="document">
-        <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="POST" novalidate>
+<div class="modal fade" id="create-pilihan-ganda">
+    <div class="modal-dialog modal-fix" role="document">
+        <form action="{{ url('/admin/'. $game['uri'] . '/packages/' . $package['id'] . '/units/' . $unit['id'] . '/questions') }}" method="POST" novalidate>
             @csrf
-            <input type="hidden" name="question_type" value="IQ">
+            <input type="hidden" name="question_type" value="MCQSA">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Input Soal Teks Rumpang PG</h5>
+                    <h5 class="modal-title">Input Soal Pilihan Ganda</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="kejar kejar-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group ck-height-9 ckeditor-list">
-                        <label>Teks Soal</label>
-                        <textarea class="textarea-field ckeditor-field" name="question" placeholder="Ketik soal" required></textarea>
+                        <label>Soal</label>
+                        <textarea class="textarea-field editor-field" name="question" placeholder="Ketik soal" required></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
@@ -35,21 +35,42 @@
                             </button>
                         </div>
                     </div>
-                    <div class="form-group bagian-rumpang">
+                    <div class="form-group">
                         <label>Jawaban</label>
                         <p>Pilih satu jawaban benar.</p>
-                        <table class="answer-list-table-rmpg" data-type="tabel-rumpang-pg">
+                        <table class="answer-list-table-pg" data-type="pilihan-ganda">
                             @for ($i = 0; $i < 4; $i++)
                             <tr>
                                 <td>
                                     <div class="radio-group">
-                                        <input type="radio" name="choices[0][answer]" value="{{ $i }}">
+                                        <input type="radio" name="answer" value="{{ $i }}">
                                         <i class="kejar-belum-dikerjakan"></i>
                                     </div>
                                 </td>
                                 <td>
-                                    <textarea name="choices[0][description][]" hidden></textarea>
-                                    <div contenteditable="true" class="answer-field disable-editor" placeholder="Ketik pilihan jawaban {{ $i + 1 }}"></div>
+                                    <div class="ckeditor-group ckeditor-list">
+                                        <textarea name="choices[{{ $i }}]" class="editor-field" placeholder="Ketik pilihan jawaban {{ $i + 1 }}" ck-type="pilihan-ganda" required></textarea>
+                                        <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
+                                            <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
+                                                <i class="kejar-bold"></i>
+                                            </button>
+                                            <button type="button" class="italic-btn" title="Italic (Ctrl + I)">
+                                                <i class="kejar-italic"></i>
+                                            </button>
+                                            <button type="button" class="underline-btn" title="Underline (Ctrl + U)">
+                                                <i class="kejar-underlined"></i>
+                                            </button>
+                                            <button type="button" class="bullet-list-btn" title="Bulleted list">
+                                                <i class="kejar-bullet"></i>
+                                            </button>
+                                            <button type="button" class="number-list-btn" title="Number list">
+                                                <i class="kejar-number"></i>
+                                            </button>
+                                            <button type="button" class="photo-btn" title="Masukkan foto">
+                                                <i class="kejar-photo"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
                                     <button class="remove-btn" type="button">
@@ -59,18 +80,13 @@
                             </tr>
                             @endfor
                         </table>
-                        <button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="jawaban-rumpang-pg">
+                        <button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="pilihan-ganda">
                             <i class="kejar-add"></i> Tambah Pilihan Jawaban
-                        </button>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-add lg add-btn" type="button" data-type="next-rumpang-pg">
-                            <i class="kejar-add"></i> Tambah Lanjutan Teks
                         </button>
                     </div>
                     <div class="form-group ck-height-9 ckeditor-list">
                         <label>Pembahasan</label>
-                        <textarea class="textarea-field ckeditor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
+                        <textarea class="textarea-field editor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
