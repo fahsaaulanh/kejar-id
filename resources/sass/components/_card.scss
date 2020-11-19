@@ -26,14 +26,20 @@
     width: 100%;
     align-items: center;
 
+    .col-12:first-child {
+        margin-top: 0;
+    }
+
+    .col-12 {
+        margin-top: 7.2rem;
+    }
+
     .content-header{
-        margin: 3rem auto;
 
         .content-title{
             @include h1;
-            margin: 0rem 3rem;
             font-weight: bold;
-            text-align: center;
+            text-align: start;
             color: $black;
         }
     }
@@ -52,9 +58,11 @@
             }
         }
 
+
         .card-deck{
-            justify-content: center;
+            justify-content: flex-start;
             display: flex;
+            flex-basis: 33rem;
             flex-flow: row wrap;
 
             .card{
@@ -64,8 +72,8 @@
                 text-align: center;
                 color: $black;
                 margin-top: 4rem;
-                max-width: 34.4rem;
-                min-width: 22.4rem;
+                max-width: 33rem;
+                min-width: 33rem;
 
                 .card-body{
                     padding: 2rem 1.25rem;
@@ -86,6 +94,12 @@
                         line-height: 2.4rem;
                     }
                 }
+            }
+        }
+
+        @media screen and (max-width: 38.4rem) {
+            .card-deck {
+                justify-content: center;
             }
         }
     }
