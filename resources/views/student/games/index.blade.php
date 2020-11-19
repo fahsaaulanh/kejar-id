@@ -139,6 +139,15 @@
                                     </div>
                                 </a>
                             </div>
+                            <div class="card-deck">
+                                <a href="{{ url('/student/games/soalcerita/stages') }}" class="card">
+                                    <img src="{{ asset('assets/images/home/soal-cerita.jpg') }}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Soal Cerita</h5>
+                                        <p class="card-text">Lebih cerdas menyelesaikan permasalahan di kehidupan sehari-hari dengan kemampuan matematika.</p>
+                                    </div>
+                                </a>
+                            </div>
                             @env(['staging', 'local'])
                             <div class="card-deck">
                                 <a href="{{ url('/student/games/menulisefektif/stages') }}" class="card">
@@ -146,13 +155,6 @@
                                     <div class="card-body">
                                         <h5 class="card-title">Menulis Efektif</h5>
                                         <p class="card-text">Menulis kata yang tepat agar menjadi kalimat yang efektif.</p>
-                                    </div>
-                                </a>
-                                <a href="{{ url('/student/games/soalcerita/stages') }}" class="card">
-                                    <img src="{{ asset('assets/images/home/soal-cerita.jpg') }}" class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Soal Cerita</h5>
-                                        <p class="card-text">Lebih cerdas menyelesaikan permasalahan di kehidupan sehari-hari dengan kemampuan matematika.</p>
                                     </div>
                                 </a>
                             </div>
