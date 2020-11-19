@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 // User Service
+
+use App\Services\AcademicCalendar;
+use App\Services\AssessmentGroup;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -62,15 +65,12 @@ class HomeController extends Controller
     public function teacher(Request $request)
     {
         $user = $request->session()->get('user', null);
+        $academicCalendar = new AcademicCalendar;
+        $academicYear = $academicCalendar->currentAcademicYear(true);
 
         if ($user === null) {
             return redirect('/login');
         }
-
-        $miniAssesmentGroup = [
-            'PTS-semester-ganjil-2020-2021' => 'PTS Semester Ganjil 2020-2021',
-            'PTS-susulan-semester-ganjil-2020-2021' => 'PTS Susulan Semester Ganjil 2020-2021',
-        ];
 
         $wikramaId = [
             // staging
@@ -82,11 +82,12 @@ class HomeController extends Controller
             '6286566b-a2ce-4649-9c0c-078c434215af', // garut
         ];
 
-        return view('teacher.games.index')
+        return view('teacher.dashboard.index')
                ->with('user', $user)
                ->with('wikramaId', $wikramaId)
-               ->with('miniAssesmentGroup', $miniAssesmentGroup)
-               ->with('reportAccess', $this->reportAccess);
+            //    ->with('miniAssesmentGroup', $miniAssesmentGroup)
+               ->with('reportAccess', $this->reportAccess)
+               ->with('academicYear', $academicYear);
     }
 
     public function student(Request $request)
@@ -107,8 +108,34 @@ class HomeController extends Controller
         return redirect('/login');
     }
 
-    public function example()
+    public function getAssessmentGroups()
     {
-        return view('example.withHeader');
+        $assessmentGroupApi = new AssessmentGroup;
+        $academicCalendar = new AcademicCalendar;
+        $user = $this->request->session()->get('user', null);
+
+        $filter = [
+            'filter[school_year]' => $academicCalendar->currentAcademicYear(),
+            'filter[school_id]' => $user['userable']['school_id'],
+        ];
+
+        return $assessmentGroupApi->index($filter);
+    }
+
+    public function createAssessmentGroup()
+    {
+        $assessmentGroupApi = new AssessmentGroup;
+        $academicCalendar = new AcademicCalendar;
+
+        $user = $this->request->session()->get('user', null);
+        $title = $this->request->input('title', null);
+
+        $payload = [
+            'title' => $title,
+            'school_id' => $user['userable']['school_id'],
+            'school_year' => $academicCalendar->currentAcademicYear(),
+        ];
+
+        return $assessmentGroupApi->create($payload);
     }
 }

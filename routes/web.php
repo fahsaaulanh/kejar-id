@@ -97,6 +97,11 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('teacher')->group(function () {
 
+            // API
+            Route::get('/api/assessment-groups', 'HomeController@getAssessmentGroups');
+            Route::post('/api/assessment-groups', 'HomeController@createAssessmentGroup');
+            //
+
             // Mini Assesments
 
             Route::get('mini-assessment/view/{id}', 'Teacher\MiniAssessmentController@view');
