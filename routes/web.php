@@ -88,6 +88,30 @@ Route::middleware('session')->group(function () {
                     });
                 });
             });
+
+            // Paket
+            Route::prefix('{game}/packages')->group(function () {
+                Route::get('/', 'Admin\PackageController@index');
+                Route::post('/', 'Admin\PackageController@store');
+                Route::patch('/{packageId}/order', 'Admin\PackageController@order');
+
+                Route::prefix('{packageId}/units')->group(function () {
+                    Route::get('/', 'Admin\UnitController@index');
+                    Route::post('/', 'Admin\UnitController@store');
+                    Route::patch('/order', 'Admin\UnitController@order');
+                    Route::patch('/update-package', 'Admin\PackageController@update');
+
+                    Route::prefix('{unitId}')->group(function () {
+                        Route::get('/', 'Admin\LiterasiController@index');
+                        Route::patch('/', 'Admin\UnitController@update');
+                        Route::prefix('/questions')->group(function () {
+                            Route::post('/', 'Admin\LiterasiController@store');
+                            Route::get('{questionId}', 'Admin\LiterasiController@show');
+                            Route::patch('{questionId}', 'Admin\LiterasiController@update');
+                        });
+                    });
+                });
+            });
         });
     });
 

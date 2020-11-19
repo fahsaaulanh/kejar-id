@@ -33,3 +33,40 @@
         }
     }
 }
+
+.btn-after-before {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 3.2rem;
+
+    a {
+        @include h5-reg;
+        display: flex;
+        align-items: flex-start;
+        column-gap: 1.2rem;
+        text-decoration: none !important;
+
+        i::before {
+            font-size: 1.8rem;
+        }
+
+        &.inactive {
+            color: $grey-8;
+            pointer-events: none;
+            cursor: default;
+
+            i::before {
+                color: $grey-8;
+            }
+        }
+
+        &.active {
+            color: $grey-3;
+
+            i::before {
+                color: $grey-3;
+            }
+        }
+    }
+}

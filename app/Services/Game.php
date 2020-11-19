@@ -41,6 +41,18 @@ class Game
             'uri' => 'soalcerita',
             'result' => 'soal',
         ],
+        'AKMNUMERASI' => [
+            'short' => 'AKM Numerasi',
+            'title' => 'AKM Numerasi',
+            'uri' => 'akmnumerasi',
+            'result' => 'akmnumerasi',
+        ],
+        'AKMLITERASI' => [
+            'short' => 'AKM Literasi',
+            'title' => 'AKM Literasi',
+            'uri' => 'akmliterasi',
+            'result' => 'akmliterasi',
+        ],
     ];
 
     public function parse($game)

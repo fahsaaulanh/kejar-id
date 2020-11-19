@@ -1,6 +1,6 @@
 <div class="modal fade" id="create-teks-rumpang-pg">
-    <div class="modal-dialog  modal-fix" role="document">
-        <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="POST" novalidate>
+    <div class="modal-dialog modal-fix" role="document">
+        <form action="{{ url('/admin/'. $game['uri'] . '/packages/' . $package['id'] . '/units/' . $unit['id'] . '/questions') }}" method="POST" novalidate>
             @csrf
             <input type="hidden" name="question_type" value="IQ">
             <div class="modal-content">
@@ -13,7 +13,7 @@
                 <div class="modal-body">
                     <div class="form-group ck-height-9 ckeditor-list">
                         <label>Teks Soal</label>
-                        <textarea class="textarea-field ckeditor-field" name="question" placeholder="Ketik soal" required></textarea>
+                        <textarea class="textarea-field editor-field" name="question" placeholder="Ketik soal" required></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="form-group ck-height-9 ckeditor-list">
                         <label>Pembahasan</label>
-                        <textarea class="textarea-field ckeditor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
+                        <textarea class="textarea-field editor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>

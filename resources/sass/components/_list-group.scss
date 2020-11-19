@@ -475,3 +475,43 @@
     border-top: 0;
     border-bottom: 0.2rem solid $grey-13;
 }
+
+
+.list-group-item {
+
+    &:first-child {
+        .list-group-order-buttons .btn-icon:first-child {
+            display: none;
+        }
+    }
+
+    &:last-child {
+        .list-group-order-buttons .btn-icon:last-child {
+            display: none;
+        }
+    }
+
+    .kejar-belum-mengerjakan::before {
+        color: red;
+    }
+
+    .kejar-sudah-dikerjakan::before {
+        color: $green-2;
+    }
+
+    .list-group-order-buttons {
+        display: none;
+    }
+
+    &:hover {
+        .list-group-order-buttons {
+            display: block;
+
+            .sort-up,
+            .sort-down {
+                display: block;
+            }
+        }
+
+    }
+}
