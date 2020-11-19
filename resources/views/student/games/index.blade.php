@@ -138,8 +138,6 @@
                                         <p class="card-text">Kuasi 4000 kosakata yang sering muncul pada TOEIC.</p>
                                     </div>
                                 </a>
-                            </div>
-                            <div class="card-deck">
                                 <a href="{{ url('/student/games/soalcerita/stages') }}" class="card">
                                     <img src="{{ asset('assets/images/home/soal-cerita.jpg') }}" class="card-img-top" alt="...">
                                     <div class="card-body">
