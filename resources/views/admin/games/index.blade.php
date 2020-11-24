@@ -43,8 +43,6 @@
                                 <p class="card-text">Lebih percaya diri menulis dan berbicara dalam Bahasa Inggris karena kosakata yang kaya.</p>
                             </div>
                         </a>
-                    </div>
-                    <div class="card-deck">
                         <a href="{{ url('/admin/toeicwords/stages') }}" class="card">
                             <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
                             <div class="card-body">
@@ -66,8 +64,6 @@
                                 <p class="card-text">Lebih cerdas menyelesaikan permasalahan di kehidupan sehari-hari dengan kemampuan matematika.</p>
                             </div>
                         </a>
-                    </div>
-                    <div class="card-deck">
                         <a href="{{ url('/admin/akmnumerasi/packages') }}" class="card">
                             <img src="{{ asset('assets/images/home/menulis-efektif.jpg') }}" class="card-img-top" alt="...">
                             <div class="card-body">

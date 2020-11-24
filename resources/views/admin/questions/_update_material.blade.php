@@ -12,10 +12,10 @@
                 <form action="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id']) }}" method="post" id="update-material-form">
                     @csrf
                     @method('PATCH')
-                    <div class="form-group">
+                    <div class="form-group ck-height-9 ckeditor-list">
                         <label for="material" class="font-weight-bold">Materi</label>
-                        <textarea name="material" class="form-control" id="material" placeholder="Ketik materi ronde" required>{{ $round['material'] }}</textarea>
-                        <div class="ckeditor-btn-group ckeditor-btn-1">
+                        <textarea name="material" class="form-control" id="material" placeholder="Buat Materi" required>{!! $round['material'] === 'Buat Materi' ? '' : $round['material'] !!}</textarea>
+                        <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
                             </button>

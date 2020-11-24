@@ -576,6 +576,10 @@
 .question-group {
     display: none;
 
+    * {
+        color: $black-1;
+    }
+
     .image {
         position: relative;
     }
@@ -619,7 +623,7 @@
 
 ._melengkapi_tabel_direction {
     margin-top: 3.2rem;
-    color: black;
+    color: $black-1;
     margin-bottom: 2.4rem;
 }
 
@@ -639,7 +643,7 @@
 }
 
 ._benar_salah ._benar_salah_options input[type='radio']:checked ~ label {
-    color: black !important;
+    color: $black-1 !important;
 }
 
 ._benar_salah p, ._benar_salah label {
@@ -653,7 +657,7 @@
 }
 
 ._benar_salah_question p {
-    color: black !important;
+    color: $black-1 !important;
 }
 
 ._benar_salah_options{
@@ -666,11 +670,10 @@
 }
 
 ._ya_tidak_options input {
-    opacity: 0;
+    
 }
 
-._ya_tidak_options input ~ label i::after {
-    content: '\e931';
+._ya_tidak_options input ~ label i::before {
     color: #7C92A7;
     position: absolute;
     margin-left: -2rem;
@@ -678,8 +681,7 @@
     font-size: 1.6rem;
 }
 
-._ya_tidak_options input:checked ~ label i::after {
-    content: '\e930';
+._ya_tidak_options input:checked ~ label i::before {
     color: #3167F6;
     font-size: 1.6rem;
     margin-top: 0px;
@@ -687,7 +689,7 @@
 
 ._ya_tidak_direction {
     margin-top: 3.2rem;
-    color: black;
+    color: $black-1;
     margin-bottom: 2.4rem;
 }
 
@@ -827,7 +829,7 @@
 }
 
 ._esai_direction {
-    color: black;
+    color: $black-1;
     margin-bottom: 2.4rem;
 }
 
@@ -847,7 +849,7 @@
 }
 
 ._ya_tidak ._ya_tidak_options input[type='radio']:checked ~ label {
-    color: black !important;
+    color: $black-1 !important;
 }
 
 ._ya_tidak p, ._ya_tidak label {
@@ -860,8 +862,8 @@
     padding-right: 1.6rem;
 }
 
-._ya_tidak_question p {
-    color: black !important;
+._ya_tidak_question * {
+    color: $black-1 !important;
 }
 
 ._ya_tidak_options{
@@ -933,13 +935,13 @@
 
 ._melengkapi_tabel_direction {
     margin-top: 3.2rem;
-    color: black;
+    color: $black-1;
     margin-bottom: 2.4rem;
 }
 
 ._merinci_direction {
     margin-top: 3.2rem;
-    color: black;
+    color: $black-1;
     margin-bottom: 2.4rem;
 }
 
@@ -979,7 +981,7 @@
 }
 
 ._esai_direction {
-    color: black;
+    color: $black-1;
     margin-bottom: 2.4rem;
 }
 
@@ -1159,13 +1161,28 @@
     }
 }
 
+._isian_matematika_question,
+._isian_matematika_direction {
+
+    vertical-align: middle;
+
+    * {
+        color: $black-1 !important;
+    }
+
+    .image.image_resized {
+        display: inline-block !important;
+    }
+}
+
 ._isian_matematika_input,
 ._isian_matematika_input_session {
-    width: 11.2rem;
+    width: 3.7em;
     padding: 1rem 1.2rem;
     margin: 3px auto;
     border: 2px solid #EBF1F6;
     outline: none;
+    text-align: center;
 
     &:disabled {
         background: white;
@@ -1195,6 +1212,12 @@
 ._isian_matematika_question_text {
     margin: auto 1.6rem;
     padding: 1rem 0px;
+    color: $black-1;
+    display: inline;
+
+    * {
+        display: inline !important;
+    }
 
     p {
         display: inline;
@@ -1518,7 +1541,7 @@
 
 ._menceklis_direction {
     margin-top: 3.2rem;
-    color: black;
+    color: $black-1;
     margin-bottom: 2.4rem;
 }
 
@@ -1552,6 +1575,10 @@
 
 ._rumpang_question{
     margin-top: 2.4rem;
+
+    p {
+        display: inline;
+    }
 }
 
 .rmpg-question-answer{
@@ -1574,6 +1601,8 @@
         margin-bottom: 1.6rem;
         min-width: 19.2rem;
         display: inline-block;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
 
         .btn-select{
             display: inline-block;

@@ -1,6 +1,6 @@
 <!-- Modal -->
-<div class="modal fade modal-large" id="create-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="create-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fix" role="document">
         <form action="{{ url('/admin/'. $game['uri'] . '/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions') }}" method="post">
             @csrf
             <div class="modal-content">

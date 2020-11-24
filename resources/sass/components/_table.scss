@@ -691,12 +691,10 @@
             }
 
             input:checked ~ i:before{
-                content: "\e930";
                 color: $green-2;
             }
 
             input:not(:checked) ~ i:before{
-                content: "\e931";
                 color: #7d8083;
             }
         }
@@ -930,12 +928,10 @@
             }
 
             input:checked ~ i:before{
-                content: "\e933";
                 color: $green-2;
             }
 
             input:not(:checked) ~ i:before{
-                content: "\e932";
                 color: #7d8083;
             }
         }
@@ -1018,12 +1014,10 @@
             }
 
             input:checked ~ i:before{
-                content: "\e933";
                 color: $green-2;
             }
 
             input:not(:checked) ~ i:before{
-                content: "\e932";
                 color: #7d8083;
             }
         }
@@ -1101,12 +1095,10 @@
             }
 
             input:checked ~ i:before{
-                content: "\e930";
                 color: $green-2;
             }
 
             input:not(:checked) ~ i:before{
-                content: "\e931";
                 color: #7d8083;
             }
         }

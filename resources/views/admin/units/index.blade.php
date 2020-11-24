@@ -23,7 +23,6 @@
             <span class="breadcrumb-item active" href="{{ url('admin/' . $game['uri'] . '/packages/' . $package['id'] . '/units/') }}">Paket {{ $package['order'] }}</span>
         </nav>
         <h2 class="mb-08rem edit-title">{{ $package['title'] }}</h2>
-        <span class="copy-id" data-id="{{ $package['id'] }}"  data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salid ID Paket</span>
     </div>
 
     <h5 class="mb-08rem">Deskripsi Paket</h5>
@@ -37,8 +36,15 @@
         @forelse($units as $unit)
         <div class="list-group-item" data-id="{{ $unit['id'] }}">
             <a href="{{ url()->current() . '/' . $unit['id'] }}">
-                <i class="kejar-link" data-id="{{ $unit['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
-                <span class="order-number"></span> {{ $unit['title'] }}
+                <div>
+                    <div>
+                        <i class="kejar-link" data-id="{{ $unit['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
+                        <span class="order-number"></span> 
+                    </div>
+                    <div>
+                        {{ $unit['title'] }}
+                    </div>
+                </div>
             </a>
             <div class="round-order-buttons">
                 @if($unit['status'] == 'PUBLISHED')
@@ -47,7 +53,7 @@
                 </span>
                 @else
                 <span class="btn-icon order-status">
-                    <i class="kejar-belum-mengerjakan"></i>
+                    <i class="kejar-belum-mengerjakan-2"></i>
                 </span>
                 @endif
                 @if (count($units) > 1)

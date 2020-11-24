@@ -47,9 +47,11 @@
             <p>{{$round['description']}}</p>
         </div>
 
-        <div class="page-description-item material">
+        <div class="page-description-item material editor-display">
             <h5>Materi</h5>
-            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }} editor-display">{!!$round['material']!!}</pre>
+            <div>
+                <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</pre>
+            </div>
         </div>
 
         <div class="page-description-item direction">

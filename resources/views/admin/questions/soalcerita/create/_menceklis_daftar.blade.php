@@ -44,7 +44,7 @@
                                 <td>
                                     <div class="check-group">
                                         <input type="checkbox" name="answer[]" value="{{ $i }}">
-                                        <i class="kejar-belum-dikerjakan"></i>
+                                        <i class="kejar-check-box"></i>
                                     </div>
                                 </td>
                                 <td>

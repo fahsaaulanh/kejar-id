@@ -33,7 +33,6 @@
     <!-- Title -->
     <div class="page-title">
         <h2 class="mb-08rem edit-title">{{ $unit['title'] }}</h2>
-        <span class="copy-id" data-id="{{ $unit['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!">Salin ID Unit</span>
     </div>
 
     <!-- Description -->

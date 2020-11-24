@@ -32,7 +32,7 @@
                 <p class="command-text">{{ $round['direction'] }}</p>
             </div>
             @if ($game !== 'menulisefektif')
-            <form class="question-list" id="question-list" method="POST" action="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/' . $taskId . '/finishes') }}" id="process" data-total="{{ count($questions) }}" data-task="{{ $taskId }}" data-check="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/check') }}" data-timer="{{ $timespan }}">
+            <form class="question-list" id="question-list" data-type="{{ $game }}" method="POST" action="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/' . $taskId . '/finishes') }}" id="process" data-total="{{ count($questions) }}" data-task="{{ $taskId }}" data-check="{{ url('student/games/' . $game . '/stages/' . $stageId . '/rounds/' . $roundId . '/check') }}" data-timer="{{ $timespan }}">
                 @foreach($questions as $key => $question)
                 <div class="question-item" data-index="{{ $key }}" data-number="{{ ++$key }}" data-repeatance="0" data-id="{{ $question['id'] }}">
                     <!-- Notification -->
@@ -127,11 +127,11 @@
 @if ($game == 'menulisefektif')
 <script src="{{ mix('/js/student/exam/menulis-efektif.js') }}"></script>
 @else
-<script src="{{ mix('/js/student/exam/script.js') }}"></script>
-@endif
-
 @if($game == 'obr')
     <script src="{{ mix('/js/check-for-tex.js') }}" defer></script>
 @endif
+<script src="{{ mix('/js/student/exam/script.js') }}"></script>
+@endif
+
 
 @endpush

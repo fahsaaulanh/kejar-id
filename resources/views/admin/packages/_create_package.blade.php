@@ -26,8 +26,8 @@
                 <div class="modal-footer">
                     <div></div>
                     <div>
-                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </div>
             </div>

@@ -23,8 +23,15 @@
             @forelse($stages as $stage)
             <div class="list-group-item">
                 <a href="{{ url('student/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds') }}">
-                    <i class="kejar-right"></i>
-                    <span>Babak {{ $stage['order'] }} : </span> <span>{{ $stage['title'] }}</span>
+                    <div class="d-flex">
+                        <div>
+                            <i class="kejar-right"></i>
+                            Babak {{ $stage['order'] }} :
+                        </div>
+                        <div>
+                            {{ $stage['title'] }}
+                        </div>
+                    </div>
                 </a>
                 <!-- <div class="hover-only"> -->
                     <div class="stage-order-buttons done-status">

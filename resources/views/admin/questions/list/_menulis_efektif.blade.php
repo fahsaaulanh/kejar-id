@@ -49,7 +49,9 @@
 
         <div class="page-description-item material editor-display">
             <h5>Materi</h5>
-            <div class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</div>
+            <div>
+                <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</pre>
+            </div>
         </div>
 
         <div class="page-description-item direction">
@@ -77,7 +79,7 @@
                     <h5>SOAL {{ $questionNum }}</h5> <i class="kejar-dot"></i> <i class="kejar-isian-bahasa"></i> <h5>Isian Bahasa</h5>
                 </div>
                 <div>
-                    <button class="btn-edit" data-target="#update-menulis-efektif-question-modal" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                    <button class="btn-edit" data-toggle="modal" data-target="#update-menulis-efektif-question-modal" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                         <i class="kejar-edit"></i> Edit
                     </button>
                 </div>

@@ -50,7 +50,9 @@
         {{-- Materi --}}
         <div class="page-description-item material editor-display">
             <h5>Materi</h5>
-            <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!!$round['material']!!}</pre>
+            <div>
+                <pre class="{{ $round['material'] == 'Buat Materi' ? 'material-default' : '' }}">{!! $round['material'] !!}</pre>
+            </div>
         </div>
         {{-- Petunjuk soal --}}
         <div class="page-description-item direction">

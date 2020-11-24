@@ -47,12 +47,19 @@
         </div>
 
         <!-- List of Stages (Admin)-->
-        <div class="list-group" data-url="{{ secure_url('admin/'. $game['uri'] . '/stages/') }}" data-token="{{ csrf_token() }}">
+        <div class="list-group" data-url="{{ url('admin/'. $game['uri'] . '/stages/') }}" data-token="{{ csrf_token() }}">
             @forelse ($stages as $stage)
             <div class="list-group-item" data-id="{{ $stage['id'] }}">
                 <a href="{{ url('admin/' . $game['uri'] . '/stages/' . $stage['id']) }}/rounds">
-                    <i class="kejar-link" data-id="{{ $stage['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
-                    <span class="stage-number">Babak </span> : {{ $stage['title'] }}
+                    <div>
+                        <div class="">
+                            <i class="kejar-link" data-id="{{ $stage['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
+                            <span class="stage-number">Babak </span> : 
+                        </div>
+                        <div>
+                            {{ $stage['title'] }}
+                        </div>
+                    </div>
                 </a>
                 @if ($stagesCount > 1)
                     <div class="stage-order-buttons">

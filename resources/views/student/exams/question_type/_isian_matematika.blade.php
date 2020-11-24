@@ -3,7 +3,7 @@
 
     <div class="_isian_matematika_direction">{!! $question['question'] !!}</div>
     
-    <div class="_isian_matematika_question">
+    <div class="_isian_matematika_question editor-display">
         @for ($x = 0; $x < count($question['choices']['first']); $x++)
             @if ($question['choices']['first'][$x] !== null)
                 <span class="_isian_matematika_question_text">{!! $question['choices']['first'][$x] !!}</span>
@@ -20,7 +20,7 @@
 
 
     <div class="_isian_matematika_session">
-        <div class="_isian_matematika_right_answers">
+        <div class="_isian_matematika_right_answers editor-display">
             <label>Jawaban Benar:</label>
         </div>
         <div class="_isian_matematika_explanation">

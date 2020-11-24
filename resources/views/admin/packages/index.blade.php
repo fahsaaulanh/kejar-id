@@ -31,8 +31,15 @@
             @forelse ($packages as $package)
             <div class="list-group-item" data-id="{{ $package['id'] }}">
                 <a href="{{ url('admin/' . $game['uri'] . '/packages/' . $package['id'] . '/units') }}">
-                    <i class="kejar-link" data-id="{{ $package['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
-                    <span class="order-number"></span> {{ $package['title'] }}
+                    <div class="">
+                        <div>
+                            <i class="kejar-link" data-id="{{ $package['id'] }}" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
+                            <span class="order-number"></span> 
+                        </div>
+                        <div>
+                            {{ $package['title'] }}
+                        </div>
+                    </div>
                 </a>
                 @if (count($packages) > 1)
                     <div class="list-group-order-buttons">

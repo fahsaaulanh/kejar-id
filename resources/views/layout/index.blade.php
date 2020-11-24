@@ -72,7 +72,7 @@
                     </div>
                     <div class="modal-footer justify-content-end">
                         <div>
-                            <a href="#" class="btn btn-cancel" data-dismiss="modal">Batal</a>
+                            <a href="#" class="btn btn-transparent text-dark" data-dismiss="modal">Batal</a>
                             <a href="{{ url('/logout') }}" class="btn btn-danger btn-logout">Keluar</a>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
     <script src="{{ mix('/js/app.js') }}"></script>
 
     @stack('script')
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script>
+    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117909356-4"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.7/cropper.js" integrity="sha512-giNJUOlLO0dY67uM6egCyoEHV/pBZ048SNOoPH4d6zJNnPcrRkZcxpo3gsNnsy+MI8hjKk/NRAOTFVE/u0HtCQ==" crossorigin="anonymous"></script> -->
     <script>
         window.dataLayer = window.dataLayer || [];

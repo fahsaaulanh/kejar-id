@@ -50,8 +50,15 @@
         @forelse($rounds as $round)
         <div class="list-group-item" data-id="{{ $round['id'] }}">
             <a href="{{ url()->current() . '/' . $round['id'] }}">
-                <i class="kejar-link" data-id="{{ $round['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
-                <span class="order-number"></span> : {{ $round['title'] }}
+                <div class="flex">
+                    <div>
+                        <i class="kejar-link" data-id="{{ $round['id'] }}" data-container="body" data-toggle="popover" data-placement="top" data-content="ID disalin!"></i>
+                        <span class="order-number"></span> : 
+                    </div>
+                    <div>
+                        {{ $round['title'] }}
+                    </div>
+                </div>
             </a>
             <div class="round-order-buttons">
                 @if($round['status'] == 'PUBLISHED')
@@ -60,7 +67,7 @@
                 </span>
                 @else
                 <span class="btn-icon order-status">
-                    <i class="kejar-belum-mengerjakan1"></i>
+                    <i class="kejar-belum-mengerjakan-2"></i>
                 </span>
                 @endif
                 <button type="button" class="btn-icon sort-up">
