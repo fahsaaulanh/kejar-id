@@ -6,9 +6,20 @@
     </div>
 
     <div class="_mengurutkan_answer">
-        @foreach($question['choices'] as $choice)
+        @php
+            $cho = [];
+            foreach($question['choices'] as $key => $choice) {
+                $cho[] = [
+                   'key' => $key,
+                   'answer' => $choice['answer'],
+                   'question' => $choice['question'],
+                ];
+            }
+            shuffle($cho);
+        @endphp
+        @foreach($cho as $key => $choice)
         <div class="d-flex justify-content-start align-items-center">
-            <input type="number" inputmode="tel" class="form-control" placeholder="...">
+            <input type="number" inputmode="tel" class="form-control" placeholder="..." data-key="{{$choice['key']}}">
             <div class="_mengurutkan_question_text editor-display">
                 {!! $choice['question'] !!}
             </div>

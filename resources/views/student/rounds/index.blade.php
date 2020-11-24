@@ -27,8 +27,15 @@
         @forelse ($rounds as $key => $round)
         <div class="list-group-item">
             <a href="{{ url('student/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}">
-                <i class="kejar-round"></i>
-                <span>Ronde {{ $round['order'] }} : </span><span class="question-round"> {{ $round['title'] }}</span>
+                <div class="d-flex">
+                    <div>
+                        <i class="kejar-round"></i>
+                        <span>Ronde {{ $round['order'] }} : </span>
+                    </div>
+                    <div>
+                        <span class="question-round"> {{ $round['title'] }}</span>
+                    </div>
+                </div>
             </a>
             @if($round['score'] !== null)
                 @if ($round['score'] == 100.00)
@@ -86,7 +93,7 @@
             <div class="stage-order-buttons">
                 <div class="play-button">
                     <a href="{{ url('student/games/' . $game['uri'] . '/stages/' . $stage['id'] . '/rounds/'. $round['id'] . '/onboardings') }}" class="btn-next">
-                        Main <i class="kejar-next"></i>
+                        Main <i class="kejar-play"></i>
                     </a>
                 </div>
             </div>

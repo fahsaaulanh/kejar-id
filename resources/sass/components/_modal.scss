@@ -614,6 +614,7 @@
 
     .modal-content{
         padding: 0rem;
+
         .modal-header{
             display: flex !important;
             align-items: center;
@@ -634,7 +635,7 @@
         .modal-body{
             position: relative;
             margin: 0rem;
-            padding: 3.2rem !important;
+            padding: 0rem 3.2rem !important;
             p{
                 font-size: 1.5rem;
                 font-weight: normal;

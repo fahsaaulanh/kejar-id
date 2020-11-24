@@ -7,6 +7,7 @@
 }
 
 .star-item {
+    height: 2rem;
     display: flex;
 }
 
@@ -106,7 +107,7 @@
     i {
         padding: 0 !important;
         margin-right: 0.8rem !important;
-        line-height: 2rem;
+        line-height: normal;
         font-size: 2rem;
         top: 0.3rem;
         left: 0.2rem;
@@ -208,7 +209,7 @@
     i {
         padding: 0 !important;
         margin-right: 0.8rem !important;
-        line-height: 2rem;
+        line-height: normal;
         font-size: 2rem;
         top: 0.3rem;
         left: 0.2rem;
@@ -228,7 +229,7 @@
 }
 
 .list-group-item {
-    height: 4.8rem;
+    min-height: 4.8rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -237,6 +238,31 @@
     background-color: $grey-15;
     border: none;
     border-radius: 0 !important;
+
+    * {
+        line-height: normal;
+        vertical-align: text-top;
+    }
+
+    a > div {
+        display: table-row;
+
+        div {
+            display: table-cell;
+        }
+
+        i::before {
+            vertical-align: text-top;
+        }
+
+        div:first-child {
+            white-space: nowrap;
+        }
+
+        div:last-child {
+            padding-left: 8px;
+        }
+    }
 
     &:hover {
         background-color: $blue-tp;
@@ -309,7 +335,7 @@
     i {
         padding: 0 !important;
         margin-right: 0.8rem !important;
-        line-height: 2rem;
+        line-height: normal;
         font-size: 2rem;
         top: 0.3rem;
         left: 0.2rem;
@@ -324,7 +350,20 @@
     }
 
     @media screen and (max-width: $mobile-breakpoint) {
-        padding: 3rem 1.6rem !important;
+        padding: 1.4rem 1.6rem;
+
+        a > div {
+            flex-wrap: wrap;
+
+            div {
+                width: 100%;
+
+                &:last-child {
+                    padding-left: 0px;
+                }
+            }
+        }
+
     }
 }
 
@@ -410,7 +449,7 @@
     i {
         padding: 0 !important;
         margin-right: 0.8rem !important;
-        line-height: 2rem;
+        line-height: normal;
         font-size: 2rem;
         top: 0.3rem;
         left: 0.2rem;
@@ -491,7 +530,7 @@
         }
     }
 
-    .kejar-belum-mengerjakan::before {
+    .kejar-belum-mengerjakan-2::before {
         color: red;
     }
 
@@ -501,6 +540,7 @@
 
     .list-group-order-buttons {
         display: none;
+        min-width: 5rem;
     }
 
     &:hover {

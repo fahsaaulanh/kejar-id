@@ -1,3 +1,5 @@
+const { ajax } = require("jquery");
+
 $('#upload-questions').on('show.bs.modal', event => {
     $('#create-question').modal('hide');
 });
@@ -315,10 +317,12 @@ function generateEditor(index, element) {
 }
 
 $('#update-material').on('show.bs.modal', (e) => {
+    var text = $(e.target).find('textarea').html().replace(/\n/g, "<br />");
+    $(e.target).find('textarea').html(text);
     generateEditor(0, $(e.target).find('textarea')[0]);
 });
 
-$('#update-material').on('hide.bs.modal', (e) => {
+$('#update-material').on('hidden.bs.modal', (e) => {
     clearTheEditors();
 });
 
@@ -341,9 +345,43 @@ $('#create-menulis-efektif-question-modal').on('hide.bs.modal', (e) => {
 });
 
 $('#update-menulis-efektif-question-modal').on('show.bs.modal', (e) => {
-    $(e.target).find('.textarea-question').each((index, element) => {
-        generateEditor(index, element);
+
+    var url = $(e.relatedTarget).data('url');
+    $(e.target).find('form').attr('action', url);
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "JSON",
+        success: function (response) {
+            var html = `
+            <colgroup>
+                <col class="first-col"/>
+                <col class="second-col"/>
+            </colgroup>`;
+
+            for (let index = 0; index < Object.keys(response.answer).length; index++) {
+                html += `<tr>
+                    <td ${index === 0 ? 'colspan="2"' : ''}>
+                        <input type="hidden" name="question[answer][]" value="${response.answer[index]}">
+                        <div contenteditable="true" class="inputgrow-field" placeholder="Ketik alternatif jawaban ${index + 1}">${response.answer[index]}</div>
+                    </td>
+                    ${index !== 0 ? '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>' : ''}
+                </tr>`;
+            }
+
+            $(e.target).find('textarea[name="question[question]"]').text(response.question);
+            $(e.target).find('textarea[name="question[explanation]"]').text(response.explanation);
+
+            $(e.target).find('table').html(html);
+
+            $(e.target).find('.textarea-question').each((index, element) => {
+                generateEditor(index, element);
+            });
+        }
+        
     });
+
 });
 
 $('#update-menulis-efektif-question-modal').on('hide.bs.modal', (e) => {

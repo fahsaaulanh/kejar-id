@@ -189,6 +189,10 @@ $(document).on('input', '.answer-list-table-md input[type=checkbox]', function()
     checkBoxMdManagement('check');
 });
 
+$(document).on('input', '.answer-list-table-rmpg input[type=radio]', function() {
+    radioRmpgManagement();
+});
+
 $(document).on('focus', '.ckeditor-list .ck-content', function(){
     $(this).parents().closest('.ck-editor').next().removeClass('d-none');
 }).on('blur', '.ckeditor-list .ck-content', function(){
@@ -247,7 +251,7 @@ $(document).on('click', '.add-btn', function(){
                 $(this).append(removeBtn);
             });
         }
-        var td1 = '<td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ totalField +'"><i class="kejar-belum-dikerjakan"></i></div></td>';
+        var td1 = '<td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ totalField +'"><i class="kejar-check-box"></i></div></td>';
         var td2 = '<td><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ totalField +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(totalField + 1) +'" ck-type="menceklis-daftar" required></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
         var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
         var newAnswer = '<tr>'+ td1 + td2 + td3 +'</tr>';
@@ -482,9 +486,9 @@ $(document).on('click', '.edit-btn', function(){
                 for (var i = 0; i < Object.keys(response.choices).length; i++) {
                     var checkedBox = response.answer.includes(String.fromCharCode(parseInt(65 + i))) == true ? 'checked' : '';
                     if (Object.keys(response.choices).length > 2) {
-                        answersData += '<tr><td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ i +'" '+ checkedBox +'><i class="kejar-belum-dikerjakan"></i></div></td><td><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ i +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(i + 1) +' }}" ck-type="menceklis-daftar" required>'+ response.choices[String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
+                        answersData += '<tr><td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ i +'" '+ checkedBox +'><i class="kejar-check-box"></i></div></td><td><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ i +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(i + 1) +' }}" ck-type="menceklis-daftar" required>'+ response.choices[String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td><td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td></tr>';
                     } else {
-                        answersData += '<tr><td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ i +'" '+ checkedBox +'><i class="kejar-belum-dikerjakan"></i></div></td><td colspan="2" class="colspan-2"><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ i +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(i + 1) +' }}" ck-type="menceklis-daftar" required>'+ response.choices[String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td></tr>';
+                        answersData += '<tr><td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ i +'" '+ checkedBox +'><i class="kejar-check-box"></i></div></td><td colspan="2" class="colspan-2"><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ i +']" class="editor-field ckeditor-field" placeholder="Ketik pilihan jawaban '+ parseInt(i + 1) +' }}" ck-type="menceklis-daftar" required>'+ response.choices[String.fromCharCode(parseInt(65 + i))] +'</textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td></tr>';
                     }
                 }
                 modal.find('.answer-list-table-md').html(answersData);
@@ -921,8 +925,10 @@ $('.modal').on('hide.bs.modal', (e) => {
 function radioPgManagement(){
     $('.answer-list-table-pg input[type=radio]').each(function(){
         if ($(this).is(':checked')) {
+            $(this).next('i').removeClass('kejar-belum-dikerjakan').addClass('kejar-radio-button');
             $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
         } else {
+            $(this).next('i').removeClass('kejar-radio-button').addClass('kejar-belum-dikerjakan');
             $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
         }
     });
@@ -931,8 +937,10 @@ function radioPgManagement(){
 function radioRmpgManagement(){
     $('.answer-list-table-rmpg input[type=radio]').each(function(){
         if ($(this).is(':checked')) {
+            $(this).next('i').removeClass('kejar-belum-dikerjakan').addClass('kejar-radio-button');
             $(this).parents('td').next().find('div[contenteditable=true]').addClass('active');
         } else {
+            $(this).next('i').removeClass('kejar-radio-button').addClass('kejar-belum-dikerjakan');
             $(this).parents('td').next().find('div[contenteditable=true]').removeClass('active');
         }
     });
@@ -1022,8 +1030,10 @@ function checkBoxMdManagement(type){
     if (type == 'check') {
         $('.answer-list-table-md input[type=checkbox]').each(function(){
             if ($(this).is(':checked')) {
+                $(this).next('i').removeClass('kejar-check-box').addClass('kejar-checked-box');
                 $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
             } else {
+                $(this).next('i').removeClass('kejar-checked-box').addClass('kejar-check-box');
                 $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
             }
         });
@@ -1062,6 +1072,31 @@ function initializeEditor(index, element) {
                     value: null
                 },
                 {
+                    name: 'imageResize:20',
+                    label: '20%',
+                    value: '20'
+                },
+                {
+                    name: 'imageResize:25',
+                    label: '25%',
+                    value: '25'
+                },
+                {
+                    name: 'imageResize:30',
+                    label: '30%',
+                    value: '30'
+                },
+                {
+                    name: 'imageResize:35',
+                    label: '35%',
+                    value: '35'
+                },
+                {
+                    name: 'imageResize:40',
+                    label: '40%',
+                    value: '40'
+                },
+                {
                     name: 'imageResize:50',
                     label: '50%',
                     value: '50'
@@ -1070,7 +1105,7 @@ function initializeEditor(index, element) {
                     name: 'imageResize:75',
                     label: '75%',
                     value: '75'
-                }
+                },
             ],
             toolbar: [
                 'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
@@ -1651,6 +1686,8 @@ $('#update-isian-bahasa').on('show.bs.modal', (e) => {
 // Edit Materi TextEditor Init
 
 $('#update-material').on('show.bs.modal', (e) => {
+    var text = $(e.target).find('textarea').html().replace(/\n/g, "<br />");
+    $(e.target).find('textarea').html(text);
     $(e.currentTarget).find('.editor-field').each((element, index) => {
         initializeEditor(element, index);
     });

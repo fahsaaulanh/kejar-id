@@ -11,19 +11,19 @@
         <div class="ckeditor-list ck-height-9">
             <textarea name="esai_answer[]" cols="30" rows="4" class="w-100" placeholder="Ketik jawaban di sini..."></textarea>
             <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
-                <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
+                <button type="button" class="bold-btn" title="Bold (Ctrl + B)" tabindex="-1">
                     <i class="kejar-bold"></i>
                 </button>
-                <button type="button" class="italic-btn" title="Italic (Ctrl + I)">
+                <button type="button" class="italic-btn" title="Italic (Ctrl + I)" tabindex="-1">
                     <i class="kejar-italic"></i>
                 </button>
-                <button type="button" class="underline-btn" title="Underline (Ctrl + U)">
+                <button type="button" class="underline-btn" title="Underline (Ctrl + U)" tabindex="-1">
                     <i class="kejar-underlined"></i>
                 </button>
-                <button type="button" class="bullet-list-btn" title="Bulleted list">
+                <button type="button" class="bullet-list-btn" title="Bulleted list" tabindex="-1">
                     <i class="kejar-bullet"></i>
                 </button>
-                <button type="button" class="number-list-btn" title="Number list">
+                <button type="button" class="number-list-btn" title="Number list" tabindex="-1">
                     <i class="kejar-number"></i>
                 </button>
             </div>

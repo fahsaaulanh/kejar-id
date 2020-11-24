@@ -1,6 +1,6 @@
 <!-- Modal -->
-<div class="modal fade modal-large" id="update-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="update-menulis-efektif-question-modal" tabindex="-1" role="dialog" aria-labelledby="create-menulis-efektif-question-modal" aria-hidden="true" style="overflow-y: auto;">
+    <div class="modal-dialog modal-fix" role="document">
         <form method="post">
             @csrf
             @method('PATCH')

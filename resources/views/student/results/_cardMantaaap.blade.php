@@ -19,14 +19,3 @@
         </div>
     </div>
 </div>
-<script>
-    $('.close-icon').on('click', function() {
-        window.location.href = "{{URL::to('/student/games')}}"
-    });
-    $('.btn-restart').on('click', function() {
-        window.location.href = "{{URL::to('/student/games')}}"
-    });
-    $('.btn-next').on('click', function() {
-        window.location.href = "{{URL::to('/student/games')}}"
-    });
-</script>

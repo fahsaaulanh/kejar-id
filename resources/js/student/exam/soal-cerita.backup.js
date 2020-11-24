@@ -1,14 +1,26 @@
-// Start Count Down
-$(window).on('load', function() {
-    countDown();
-});
-// End Start Count Down
+const { includes } = require("lodash");
 
-// Timer
 var timer = $('.question-list').data('timer') * 1000;
-// End Timer
 
-// Count Down
+$(document).on('click', '._check_button', function(e) {
+    e.preventDefault();
+
+    checkAnswer();
+});
+
+$('.question-list').on('click', '._next_button', function(e) {
+    e.preventDefault();
+    nextQuestion(e);
+});
+
+function nextQuestion(e) {
+    countDown();
+
+    $(e.target).parents('.question-group').css('display', 'none');
+    $('.active.number').text($(e.target).parents('.question-group').next().data('number'));
+    $(e.target).parents('.question-group').next().css('display', 'block');
+}
+
 function countDown() {
     $('.timer-length').css({'background': '#4DC978', 'width' : '100%'});
     $('.timer-length').animate({
@@ -17,46 +29,11 @@ function countDown() {
         checkAnswer();
     });
 }
-// End Count Down
 
-// Stop Count Down
 function countDownStop() {
     $('.timer-length').stop();
 }
-// End Stop Count Down
 
-// Check Button Clicked
-$(document).on('click', '._check_button', function(e) {
-    e.preventDefault();
-
-    checkAnswer();
-});
-// End Check Button Clicked
-
-// Next Button Clicked
-$('.question-list').on('click', '._next_button', function(e) {
-    e.preventDefault();
-    nextQuestion(e);
-});
-// End Next Button Clicked
-
-// Soal Cerita Finish Clicked
-$(document).on('click', '#question-list ._soal_cerita_finish', function() {
-    finish();
-});
-// End Soal Cerita Finish Clicked
-
-// Function Next Question
-function nextQuestion(e) {
-    countDown();
-
-    $(e.target).parents('.question-group').css('display', 'none');
-    $('.active.number').text($(e.target).parents('.question-group').next().data('number'));
-    $(e.target).parents('.question-group').next().css('display', 'block');
-}
-// End Function Next Question
-
-// Check Answer
 function checkAnswer() {
     countDownStop();
 
@@ -246,8 +223,9 @@ function checkAnswer() {
         var arrayAnswers = {};
         let type = $(parentElement).data('type');
 
+        let ind = 1;
         $(parentElement).find('input').each((index, data) => {
-            arrayAnswers[$(data).data('key')] = {
+            arrayAnswers[ind++] = {
                 'question' : $(data).next('._mengurutkan_question_text').html(),
                 'answer' : $(data).val()
             };
@@ -527,11 +505,7 @@ function checkAnswer() {
 
             $(parentElement).find('._esai_explanation div').html(`${res.explanation}`);
 
-            console.log(arrayEditor);
-
-            arrayEditor[$(parentElement).index()].isReadOnly = true;
-
-            $(parentElement).find('.ck-editor').attr('contenteditable', false);
+            $(parentElement).find('.ck-content').css({'pointer-event': 'disabled'});
 
             if (answer === '<p data-placeholder="Ketik jawaban di sini..." class="ck-placeholder"><br data-cke-filler="true"></p>') {
                 wrongAnswer();
@@ -575,7 +549,9 @@ function checkAnswer() {
 
             $(parentElement).find('._isian_bahasa_explanation div').html(`${res.explanation}`);
 
-            $(parentElement).find('._isian_bahasa_textarea').attr('contentEditable', false);
+            $(parentElement).find('._isian_bahasa_input').each((index, element) => {
+                $(element).prop('disabled', true);
+            });
 
             if (res.status === false) {
                 wrongAnswer();
@@ -697,9 +673,7 @@ function checkAnswer() {
 
 
 }
-// End Check Answer
 
-// Button Function
 function buttonFunction(parentElement) {
     if ($(parentElement).next().length > 0) {
         $(parentElement).find('._question_button').addClass('_next_button').html('LANJUT <i class="kejar kejar-next"></i>').prop('disabled', false);
@@ -707,9 +681,10 @@ function buttonFunction(parentElement) {
         $(parentElement).find('._question_button').addClass('_soal_cerita_finish').html('SELESAI <i class="kejar kejar-next"></i>').prop('disabled', false);
     }
 }
-// End Button Function
 
-// Wrong Answer
+function rightAnswer() {
+}
+
 function wrongAnswer() {
     countDownStop();
 
@@ -903,7 +878,6 @@ function wrongAnswer() {
             var cloned = $(currentQuestion).clone(false);
 
             $(cloned).find('._isian_bahasa_textarea').html('');
-            $(cloned).find('._isian_bahasa_textarea').attr('contentEditable', true);
             $(cloned).css('display', 'none');
             $(cloned).attr('data-repeat', 'true');
             $(cloned).find('._isian_bahasa_session').css('display', 'none');
@@ -963,9 +937,11 @@ function wrongAnswer() {
         }
     }
 }
-// End Wrong Answer
 
-// Ajax Request
+$(document).ready(() => {
+    countDown();
+});
+
 function AjaxRequest(data, res) {
     var urlCheck = $('.question-list').data('check');
 
@@ -984,52 +960,16 @@ function AjaxRequest(data, res) {
         }
     });
 }
-// End Ajax Request
 
-// Finish
+$(document).on('click', '#question-list ._soal_cerita_finish', function() {
+    finish();
+});
+
 function finish() {
     var form = $('#question-list');
     $(form).prepend('<input class="d-none" name="_token" value="' + $('input[name="_token"]').val() +'">');
     $(form).submit();
 }
-// End Finish
-
-// FUNCTION
-
-// Input Auto Width
-function inputAutoWith() {
-    elementWidth("._isian_matematika_input");
-    elementWidth("._isian_matematika_input_session");
-}
-// End Input Auto Width
-
-// Element Width
-function elementWidth(className) {
-    var parentWidth;
-
-    $(className).each((index, element) => {
-        var defaultWith;
-        if ($(document).width() <= 768) {
-            defaultWith = 40;
-            parentWidth = $('div.col-md-10.col-sm-12').width() - 30;
-        } else {
-            defaultWith = 30;
-            parentWidth = $('div.col-md-10.col-sm-12').width();
-        }
-
-        $(element).width(() => {
-            var inputWidth = $(element).val().length * 9 + 4 >= defaultWith ? ($(element).val().length * 9 + 4) : defaultWith;
-            inputWidth = inputWidth > parentWidth ? parentWidth : inputWidth; 
-            console.log(inputWidth);
-            return inputWidth;
-        });
-    });
-}
-// Element Width
-
-// END FUNCTION
-
-// CUSTOM
 
 // Isian Matematika
 $(document).on('input', '._isian_matematika_input', (e) => {
@@ -1050,6 +990,34 @@ $(document).on('input', '._isian_matematika_input', (e) => {
 
     inputAutoWith();
 });
+
+inputAutoWith();
+
+function inputAutoWith() {
+    elementWidth("._isian_matematika_input");
+    elementWidth("._isian_matematika_input_session");
+}
+
+function elementWidth(className) {
+    var parentWidth;
+
+    $(className).each((index, element) => {
+        var defaultWith;
+        if ($(document).width() <= 768) {
+            defaultWith = 40;
+            parentWidth = $('div.col-md-10.col-sm-12').width() - 30;
+        } else {
+            defaultWith = 84;
+            parentWidth = $('div.col-md-10.col-sm-12').width();
+        }
+
+        $(element).width(() => {
+            var inputWidth = $(element).val().length * 9 + 4 >= defaultWith ? ($(element).val().length * 9 + 4) : defaultWith;
+            inputWidth = inputWidth > parentWidth ? parentWidth : inputWidth; 
+            return inputWidth;
+        });
+    });
+}
 // End Isian Matematika
 
 // Pilihan Ganda
@@ -1101,6 +1069,29 @@ $(document).on('input', '._mengurutkan_answer input', function(){
 
 });
 // End Mengurutkan
+
+// Pilihan Ganda
+
+$(document).on('input', 'input[type=text]', function(){
+    var currentElement = $('.question-group:visible');
+
+    var numInput = 0;
+    $(currentElement).find('input[type=text]').each(function(){
+        if ($(this).val() != '') {
+            numInput++;
+        } else {
+            numInput--;
+        }
+    });
+
+    if (numInput == $(currentElement).find('input[type=text').length) {
+        $(currentElement).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._question_button').prop('disabled', true);
+    }
+});
+
+// End Pilihan Ganda
 
 // Melengkapi Tabel
 $(document).on('input', '._melengkapi_tabel_input', (e) => {
@@ -1154,129 +1145,6 @@ $(document).on('input keyup', '.ck-content', function(){
 $('.esai_answer').find('textarea').each((index, element) => {
     initalizeEditor(index, element);
 });
-// End Esai
-
-// Isian Bahasa
-$(document).on('input', '._isian_bahasa_textarea', (e) => {
-    var currentQuestion = $('.question-group:visible');
-    
-    if( $(e.target)[0].innerText !== "" ) {
-        $('._question_button').prop('disabled', false);
-    } else {
-        $('._question_button').prop('disabled', true);
-    }
-});
-// End Isian Bahasa
-
-// Menceklis Dari Daftar
-$(document).on('click', '.md-checkbox-answer input', function(){
-
-    currentQuestion = $('.question-group:visible');
-    var iconEl = $(this).next();
-    if ($(this).is(':checked')) {
-        iconEl.attr('class', 'kejar kejar-checked-box');
-    } else {
-        iconEl.attr('class', 'kejar kejar-check-box');
-    }
-    
-    if ($(currentQuestion).find('input:checked').length != 0) {
-        $(currentQuestion).find('._question_button').prop('disabled', false);
-    } else {
-        $(currentQuestion).find('._question_button').prop('disabled', true);
-    }
-});
-// End Menceklis Dari Daftar
-
-// Teks Rumpang PG
-$(document).on('click', '.dropdown-item', function(){
-    var currentElement = $('.question-group:visible');
-    var type = $(this).data('type');
-    var value = $(this).data('value');
-    if (type == 'answer') {
-        $(this).parent().prev().find('span').text($(this).text());
-        $(this).parents('.dropdown').find('input').val(value);
-    }
-
-    var totalAnswer = 0;
-    $(currentElement).find('.answer-field').each(function(){
-        totalAnswer += $(this).val() != '' ? 1 : 0;
-    });
-
-    if (totalAnswer == $(currentElement).find('.answer-field').length) {
-        $(currentElement).find('._question_button').prop('disabled', false);
-    } else {
-        $(currentElement).find('._question_button').prop('disabled', true);
-    }
-});
-
-$(document).ready(function(){
-    var currentElement = $('.question-group:visible');
-
-    $(currentElement).find('.rmpg-question-answer p').each(function(){
-        var content = '<div class="question-group">' + $(this).html() + '</div>';
-        $(content).insertAfter($(this));
-        $(this).remove();
-    });
-});
-// End Teks Rumpang PG
-
-// Benar Salah
-$(document).on('click', '._benar_salah_options label', (e) => {
-    var currentElement = $('.question-group:visible');
-
-    $(e.currentTarget).prev('input').prop('checked', true);
-
-    var radios = $(currentElement).find('._benar_salah_radio').length;
-    var radiosQuestions = radios / 2;
-
-    if ($(currentElement).find('._benar_salah_radio:checked').length >= radiosQuestions) {
-        $(currentElement).find('._check_button').prop('disabled', false);
-    } else {
-        $(currentElement).find('._check_button').prop('disabled', true);
-    }
-});
-// End Benar Salah
-
-// Ya Tidak
-$(document).on('click', '._ya_tidak_options label', (e) => {
-    var currentElement = $('.question-group:visible');
-
-    $(e.currentTarget).prev('input').prop('checked', true);
-
-    var radios = $(currentElement).find('._ya_tidak_radio').length;
-    var radiosQuestions = radios / 2;
-
-    if ($(currentElement).find('._ya_tidak_radio:checked').length >= radiosQuestions) {
-        $(currentElement).find('._check_button').prop('disabled', false);
-    } else {
-        $(currentElement).find('._check_button').prop('disabled', true);
-    }
-});
-// End Ya Tidak
-
-// Memasangkan
-$(document).on('._memasangkan_answer input', 'input', (e) => {
-    var currentElement = $('.question-group:visible');
-
-    var countInput = $(currentElement).find('._memasangkan_answer input').length;
-    var num = 0;
-    $(currentElement).find('._memasangkan_answer input').each((index, element) => {
-        if ($(element).val() !== '') {
-            num++;
-        }
-    });
-
-    if (num === countInput) {
-        $(currentElement).find('._check_button').prop('disabled', false);
-    } else {
-        $(currentElement).find('._check_button').prop('disabled', true);
-    }
-});
-// End Memasangkan
-
-// END CUSTOM
-
-// CKEDITOR
 
 
 $(document).on('click', '.ckeditor-btn-1 .bold-btn', function(){
@@ -1390,8 +1258,6 @@ $(document).on('focus', '.ckeditor-list .ck-content', function(){
     $(this).parents().closest('.ck-editor').next().addClass('d-none');
 });
 
-var arrayEditor = [];
-
 function initalizeEditor(index, element) {
     ClassicEditor
     .create( element, {
@@ -1435,7 +1301,7 @@ function initalizeEditor(index, element) {
         licenseKey: '',
     } )
     .then( editor => {
-        arrayEditor[index] = editor;
+        
     } )
     .catch( error => {
         console.error( 'Oops, something went wrong!' );
@@ -1445,4 +1311,104 @@ function initalizeEditor(index, element) {
     } );
     
 }
-// END CKEDITOR
+// End Esai
+// Isian Bahasa
+$(document).on('input', '._isian_bahasa_textarea', (e) => {
+    var currentQuestion = $('.question-group:visible');
+    
+    if( $(e.target)[0].innerText !== "" ) {
+        $('._question_button').prop('disabled', false);
+    } else {
+        $('._question_button').prop('disabled', true);
+    }
+});
+// End Isian Bahasa
+
+// Menceklis Dari Daftar
+$(document).on('click', '.md-checkbox-answer input', function(){
+
+    currentQuestion = $('.question-group:visible');
+    var iconEl = $(this).next();
+    if ($(this).is(':checked')) {
+        iconEl.attr('class', 'kejar kejar-checked-box');
+    } else {
+        iconEl.attr('class', 'kejar kejar-check-box');
+    }
+    
+    if ($(currentQuestion).find('input:checked').length != 0) {
+        $(currentQuestion).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentQuestion).find('._question_button').prop('disabled', true);
+    }
+});
+// End Menceklis Dari Daftar
+
+
+// Teks Rumpang PG
+
+$(document).on('click', '.dropdown-item', function(){
+    var currentElement = $('.question-group:visible');
+    var type = $(this).data('type');
+    var value = $(this).data('value');
+    if (type == 'answer') {
+        $(this).parent().prev().find('span').text($(this).text());
+        $(this).parents('.dropdown').find('input').val(value);
+    }
+
+    var totalAnswer = 0;
+    $(currentElement).find('.answer-field').each(function(){
+        totalAnswer += $(this).val() != '' ? 1 : 0;
+    });
+
+    if (totalAnswer == $(currentElement).find('.answer-field').length) {
+        $(currentElement).find('._question_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._question_button').prop('disabled', true);
+    }
+});
+
+$(document).ready(function(){
+    var currentElement = $('.question-group:visible');
+
+    $(currentElement).find('.rmpg-question-answer p').each(function(){
+        var content = '<div class="question-group">' + $(this).html() + '</div>';
+        $(content).insertAfter($(this));
+        $(this).remove();
+    });
+});
+
+// End Teks Rumpang PG
+
+// Benar Salah
+$(document).on('click', '._benar_salah_option label', (e) => {
+    var currentElement = $('.question-group:visible');
+
+    $(e.currentTarget).prev('input').prop('checked', true);
+
+    var radios = $(currentElement).find('._benar_salah_radio').length;
+    var radiosQuestions = radios / 2;
+
+    if ($(currentElement).find('._benar_salah_radio:checked').length >= radiosQuestions) {
+        $(currentElement).find('._check_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._check_button').prop('disabled', true);
+    }
+});
+// End Benar Salah
+
+// Ya Tidak
+$(document).on('click', '._ya_tidak_options label', (e) => {
+    var currentElement = $('.question-group:visible');
+
+    $(e.currentTarget).prev('input').prop('checked', true);
+
+    var radios = $(currentElement).find('._ya_tidak_radio').length;
+    var radiosQuestions = radios / 2;
+
+    if ($(currentElement).find('._ya_tidak_radio:checked').length >= radiosQuestions) {
+        $(currentElement).find('._check_button').prop('disabled', false);
+    } else {
+        $(currentElement).find('._check_button').prop('disabled', true);
+    }
+});
+// End Ya Tidak
