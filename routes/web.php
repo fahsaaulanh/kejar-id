@@ -126,6 +126,23 @@ Route::middleware('session')->group(function () {
             Route::post('/api/assessment-groups', 'HomeController@createAssessmentGroup');
             //
 
+            // Assessments
+            Route::get('{assessmentGroupId}/subject', 'Teacher\AssessmentController@subjects');
+            Route::get(
+                '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
+                'Teacher\AssessmentController@assessment',
+            );
+            Route::post(
+                '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
+                'Teacher\AssessmentController@createMiniAssessment',
+            );
+            Route::patch(
+                '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{miniAssessmentId}',
+                'Teacher\AssessmentController@settingMiniAssessment',
+            );
+
+            //
+
             // Mini Assesments
 
             Route::get('mini-assessment/view/{id}', 'Teacher\MiniAssessmentController@view');
