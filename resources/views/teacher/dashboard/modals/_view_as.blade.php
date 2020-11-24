@@ -13,19 +13,19 @@
             </div>
             <div class="modal-body">
                 <div class="row px-2">
-                    <button id="select-ma-subject-teachers" class="col btn-ma-view-as text-dark mr-3">
+                    <a id="select-ma-subject-teachers" class="text-decoration-none col btn-ma-view-as text-dark mr-3">
                         <div class="icon">
                             <i class="kejar-guru"></i>
                         </div>
                         <span class="caption">Guru Mapel</span>
-                    </button>
-                    <button id="select-ma-pengawas" class="col btn-ma-view-as text-dark mr-3">
+                    </a>
+                    <a id="select-ma-pengawas" class="text-decoration-none col btn-ma-view-as text-dark mr-3">
                         <div class="icon">
                             <i class="kejar-guru"></i>
                         </div>
                         <span class="caption">Pengawas</span>
-                    </button>
-                    <button id="select-ma-student-counselor" class="col btn-ma-view-as text-dark">
+                    </a>
+                    <a id="select-ma-student-counselor" class="text-decoration-none col btn-ma-view-as text-dark">
                         <div class="icon">
                             <i class="kejar-wali-kelas"></i>
                         </div>
@@ -34,7 +34,7 @@
                         @else
                         <span class="caption">Wali Kelas</span>
                         @endif
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

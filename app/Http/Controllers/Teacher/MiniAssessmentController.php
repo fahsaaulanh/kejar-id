@@ -760,7 +760,6 @@ class MiniAssessmentController extends Controller
             $data[$key]['finished'] = true;
         }
 
-        // dd($data);
         $payload['data'] = $data;
         $payload['meta'] = $students['meta'];
 

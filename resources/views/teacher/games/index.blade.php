@@ -95,16 +95,6 @@
                         <h1 class="content-title">Pilih penilaian...</h1>
                     </div>
                     <div class="content-body">
-                        @forelse($miniAssesmentGroup as $key => $v)
-                            <div class="card-deck pl-4 pr-4 pb-4">
-                                <div class="list-card-menu-item col-12" data-id="#">
-                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#ma-view-as" onclick="selectMA('{{$key}}')">
-                                        <h3><i class="kejar-penilaian" ></i> {{$v}}</h3>
-                                    </a>
-                                </div>
-                            </div>
-                        @empty
-                        @endforelse
                     </div>
                 </div>
             @endif
@@ -179,12 +169,6 @@
         readURL(this);
     });
 
-    function selectMA(val) {
-        var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teachers/mini-assessment') !!}"+"/"+val;
-        var urlStudentCounselor = "{!! URL::to('/teacher/student-counselor/mini-assessment') !!}"+"/"+val+"/list";
-        $("#select-ma-subject-teachers").attr("href", urlSubjectTeachers);
-        $("#select-ma-student-counselor").attr("href", urlStudentCounselor);
-    }
 </script>
 
 @if(session('user.PasswordMustBeChanged') === true || session('user.changePhotoOnBoarding') === true)

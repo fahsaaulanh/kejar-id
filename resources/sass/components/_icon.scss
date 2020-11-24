@@ -21,7 +21,7 @@ i, .icomoon-liga {
   font-variant: normal;
   text-transform: none;
   line-height: 1;
-  
+
   /* Enable Ligatures ================ */
   letter-spacing: 0;
   -webkit-font-feature-settings: "liga";
@@ -39,650 +39,654 @@ i, .icomoon-liga {
 
 .kejar-a-bold-ellipse {
   &:before {
-    content: $icon-a-bold-ellipse;     
+    content: $icon-a-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-a-ellipse {
   &:before {
-    content: $icon-a-ellipse;     
+    content: $icon-a-ellipse;
     color: #334e68;
   }
 }
+.kejar-drag-vertical:before{
+  content: '\e92e';
+  color: #334e68;
+}
 .kejar-add {
   &:before {
-    content: $icon-add;     
+    content: $icon-add;
     color: #334e68;
   }
 }
 .kejar-alternatif {
   &:before {
-    content: $icon-alternatif;     
+    content: $icon-alternatif;
     color: #334e68;
   }
 }
 .kejar-application {
   &:before {
-    content: $icon-application;     
+    content: $icon-application;
     color: #334e68;
   }
 }
 .kejar-arrow-left {
   &:before {
-    content: $icon-arrow-left;     
+    content: $icon-arrow-left;
     color: #334e68;
   }
 }
 .kejar-arrow-right {
   &:before {
-    content: $icon-arrow-right;     
+    content: $icon-arrow-right;
     color: #334e68;
   }
 }
 .kejar-arsip-asesmen-bold {
   &:before {
-    content: $icon-arsip-asesmen-bold;     
+    content: $icon-arsip-asesmen-bold;
     color: #334e68;
   }
 }
 .kejar-arsip-asesmen {
   &:before {
-    content: $icon-arsip-asesmen;     
+    content: $icon-arsip-asesmen;
     color: #334e68;
   }
 }
 .kejar-b-bold-ellipse {
   &:before {
-    content: $icon-b-bold-ellipse;     
+    content: $icon-b-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-b-ellipse {
   &:before {
-    content: $icon-b-ellipse;     
+    content: $icon-b-ellipse;
     color: #334e68;
   }
 }
 .kejar-back {
   &:before {
-    content: $icon-back;     
+    content: $icon-back;
     color: #334e68;
   }
 }
 .kejar-belum-dikerjakan {
   &:before {
-    content: $icon-belum-dikerjakan;     
+    content: $icon-belum-dikerjakan;
     color: #334e68;
   }
 }
 .kejar-belum-mengerjakan-2 {
   &:before {
-    content: $icon-belum-mengerjakan-2;     
+    content: $icon-belum-mengerjakan-2;
     color: #334e68;
   }
 }
 .kejar-belum-mengerjakan-3 {
   &:before {
-    content: $icon-belum-mengerjakan-3;     
+    content: $icon-belum-mengerjakan-3;
     color: #334e68;
   }
 }
 .kejar-belum-mengerjakan-small {
   &:before {
-    content: $icon-belum-mengerjakan-small;     
+    content: $icon-belum-mengerjakan-small;
     color: #334e68;
   }
 }
 .kejar-belum-mengerjakan {
   &:before {
-    content: $icon-belum-mengerjakan;     
+    content: $icon-belum-mengerjakan;
     color: #334e68;
   }
 }
 .kejar-benar-salah {
   &:before {
-    content: $icon-benar-salah;     
+    content: $icon-benar-salah;
     color: #334e68;
   }
 }
 .kejar-bold {
   &:before {
-    content: $icon-bold;     
+    content: $icon-bold;
     color: #334e68;
   }
 }
 .kejar-bottom {
   &:before {
-    content: $icon-bottom;     
+    content: $icon-bottom;
     color: #334e68;
   }
 }
 .kejar-bullet {
   &:before {
-    content: $icon-bullet;     
+    content: $icon-bullet;
     color: #334e68;
   }
 }
 .kejar-c-bold-ellipse {
   &:before {
-    content: $icon-c-bold-ellipse;     
+    content: $icon-c-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-c-ellipse {
   &:before {
-    content: $icon-c-ellipse;     
+    content: $icon-c-ellipse;
     color: #334e68;
   }
 }
 .kejar-check-box {
   &:before {
-    content: $icon-check-box;     
+    content: $icon-check-box;
     color: #334e68;
   }
 }
 .kejar-checked-box {
   &:before {
-    content: $icon-checked-box;     
+    content: $icon-checked-box;
     color: #334e68;
   }
 }
 .kejar-checklist {
   &:before {
-    content: $icon-checklist;     
+    content: $icon-checklist;
     color: #334e68;
   }
 }
 .kejar-close {
   &:before {
-    content: $icon-close;     
+    content: $icon-close;
     color: #334e68;
   }
 }
 .kejar-d-bold-ellipse {
   &:before {
-    content: $icon-d-bold-ellipse;     
+    content: $icon-d-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-d-ellipse {
   &:before {
-    content: $icon-d-ellipse;     
+    content: $icon-d-ellipse;
     color: #334e68;
   }
 }
 .kejar-dot {
   &:before {
-    content: $icon-dot;     
+    content: $icon-dot;
     color: #334e68;
   }
 }
 .kejar-download {
   &:before {
-    content: $icon-download;     
+    content: $icon-download;
     color: #334e68;
   }
 }
 .kejar-drag-vertical {
   &:before {
-    content: $icon-drag-vertical;     
+    content: $icon-drag-vertical;
     color: #334e68;
   }
 }
 .kejar-dropdown {
   &:before {
-    content: $icon-dropdown;     
+    content: $icon-dropdown;
     color: #334e68;
   }
 }
 .kejar-e-bold-ellipse {
   &:before {
-    content: $icon-e-bold-ellipse;     
+    content: $icon-e-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-e-ellipse {
   &:before {
-    content: $icon-e-ellipse;     
+    content: $icon-e-ellipse;
     color: #334e68;
   }
 }
 .kejar-edit {
   &:before {
-    content: $icon-edit;     
+    content: $icon-edit;
     color: #334e68;
   }
 }
 .kejar-esai {
   &:before {
-    content: $icon-esai;     
+    content: $icon-esai;
     color: #334e68;
   }
 }
 .kejar-exit {
   &:before {
-    content: $icon-exit;     
+    content: $icon-exit;
     color: #334e68;
   }
 }
 .kejar-f-bold-ellipse {
   &:before {
-    content: $icon-f-bold-ellipse;     
+    content: $icon-f-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-f-ellipse {
   &:before {
-    content: $icon-f-ellipse;     
+    content: $icon-f-ellipse;
     color: #334e68;
   }
 }
 .kejar-file {
   &:before {
-    content: $icon-file;     
+    content: $icon-file;
     color: #334e68;
   }
 }
 .kejar-forward {
   &:before {
-    content: $icon-forward;     
+    content: $icon-forward;
     color: #334e68;
   }
 }
 .kejar-g-bold-ellipse {
   &:before {
-    content: $icon-g-bold-ellipse;     
+    content: $icon-g-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-g-ellipse {
   &:before {
-    content: $icon-g-ellipse;     
+    content: $icon-g-ellipse;
     color: #334e68;
   }
 }
 .kejar-guru {
   &:before {
-    content: $icon-guru;     
+    content: $icon-guru;
     color: #334e68;
   }
 }
 .kejar-h-bold-ellipse {
   &:before {
-    content: $icon-h-bold-ellipse;     
+    content: $icon-h-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-h-ellipse {
   &:before {
-    content: $icon-h-ellipse;     
+    content: $icon-h-ellipse;
     color: #334e68;
   }
 }
 .kejar-hide-password {
   &:before {
-    content: $icon-hide-password;     
+    content: $icon-hide-password;
     color: #334e68;
   }
 }
 .kejar-hide {
   &:before {
-    content: $icon-hide;     
+    content: $icon-hide;
     color: #334e68;
   }
 }
 .kejar-i-bold-ellipse {
   &:before {
-    content: $icon-i-bold-ellipse;     
+    content: $icon-i-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-i-ellipse {
   &:before {
-    content: $icon-i-ellipse;     
+    content: $icon-i-ellipse;
     color: #334e68;
   }
 }
 .kejar-info {
   &:before {
-    content: $icon-info;     
+    content: $icon-info;
     color: #334e68;
   }
 }
 .kejar-link {
   &:before {
-    content: $icon-link;     
+    content: $icon-link;
     color: #334e68;
   }
 }
 .kejar-isian-bahasa {
   &:before {
-    content: $icon-isian-bahasa;     
+    content: $icon-isian-bahasa;
     color: #334e68;
   }
 }
 .kejar-isian-matematika {
   &:before {
-    content: $icon-isian-matematika;     
+    content: $icon-isian-matematika;
     color: #334e68;
   }
 }
 .kejar-italic {
   &:before {
-    content: $icon-italic;     
+    content: $icon-italic;
     color: #334e68;
   }
 }
 .kejar-j-bold-ellipse {
   &:before {
-    content: $icon-j-bold-ellipse;     
+    content: $icon-j-bold-ellipse;
     color: #334e68;
   }
 }
 .kejar-j-ellipse {
   &:before {
-    content: $icon-j-ellipse;     
+    content: $icon-j-ellipse;
     color: #334e68;
   }
 }
 .kejar-latihan-to-bold {
   &:before {
-    content: $icon-latihan-to-bold;     
+    content: $icon-latihan-to-bold;
     color: #334e68;
   }
 }
 .kejar-left {
   &:before {
-    content: $icon-left;     
+    content: $icon-left;
     color: #334e68;
   }
 }
 .kejar-loading .path1 {
   &:before {
-    content: $icon-loading-path1;  
+    content: $icon-loading-path1;
     color: rgb(251, 251, 251);
   }
 }
 .kejar-loading .path2 {
   &:before {
-    content: $icon-loading-path2;  
-    margin-left: -1em;  
+    content: $icon-loading-path2;
+    margin-left: -1em;
     color: rgb(51, 78, 104);
   }
 }
 .kejar-log-out {
   &:before {
-    content: $icon-log-out;     
+    content: $icon-log-out;
     color: #334e68;
   }
 }
 .kejar-mapel-bold {
   &:before {
-    content: $icon-mapel-bold;     
+    content: $icon-mapel-bold;
     color: #334e68;
   }
 }
 .kejar-mapel {
   &:before {
-    content: $icon-mapel;     
+    content: $icon-mapel;
     color: #334e68;
   }
 }
 .kejar-mencocokkan {
   &:before {
-    content: $icon-mencocokkan;     
+    content: $icon-mencocokkan;
     color: #334e68;
   }
 }
 .kejar-mengurutkan-vertikal {
   &:before {
-    content: $icon-mengurutkan-vertikal;     
+    content: $icon-mengurutkan-vertikal;
     color: #334e68;
   }
 }
 .kejar-next {
   &:before {
-    content: $icon-next;     
+    content: $icon-next;
     color: #334e68;
   }
 }
 .kejar-number {
   &:before {
-    content: $icon-number;     
+    content: $icon-number;
     color: #334e68;
   }
 }
 .kejar-open-book {
   &:before {
-    content: $icon-open-book;     
+    content: $icon-open-book;
     color: #334e68;
   }
 }
 .kejar-paket-penilaian-bold {
   &:before {
-    content: $icon-paket-penilaian-bold;     
+    content: $icon-paket-penilaian-bold;
     color: #334e68;
   }
 }
 .kejar-paket-penilaian {
   &:before {
-    content: $icon-paket-penilaian;     
+    content: $icon-paket-penilaian;
     color: #334e68;
   }
 }
 .kejar-password {
   &:before {
-    content: $icon-password;     
+    content: $icon-password;
     color: #334e68;
   }
 }
 .kejar-pdf {
   &:before {
-    content: $icon-pdf;     
+    content: $icon-pdf;
     color: #334e68;
   }
 }
 .kejar-pengaturan-bold {
   &:before {
-    content: $icon-pengaturan-bold;     
+    content: $icon-pengaturan-bold;
     color: #334e68;
   }
 }
 .kejar-pengaturan {
   &:before {
-    content: $icon-pengaturan;     
+    content: $icon-pengaturan;
     color: #334e68;
   }
 }
 .kejar-pengawas-sekolah-bold {
   &:before {
-    content: $icon-pengawas-sekolah-bold;     
+    content: $icon-pengawas-sekolah-bold;
     color: #334e68;
   }
 }
 .kejar-pengawas-sekolah {
   &:before {
-    content: $icon-pengawas-sekolah;     
+    content: $icon-pengawas-sekolah;
     color: #334e68;
   }
 }
 .kejar-photo {
   &:before {
-    content: $icon-photo;     
+    content: $icon-photo;
     color: #334e68;
   }
 }
 .kejar-pilih-centang {
   &:before {
-    content: $icon-pilih-centang;     
+    content: $icon-pilih-centang;
     color: #334e68;
   }
 }
 .kejar-pilihan-ganda {
   &:before {
-    content: $icon-pilihan-ganda;     
+    content: $icon-pilihan-ganda;
     color: #334e68;
   }
 }
 .kejar-play {
   &:before {
-    content: $icon-play;     
+    content: $icon-play;
     color: #334e68;
   }
 }
 .kejar-profile {
   &:before {
-    content: $icon-profile;     
+    content: $icon-profile;
     color: #334e68;
   }
 }
 .kejar-radio-button {
   &:before {
-    content: $icon-radio-button;     
+    content: $icon-radio-button;
     color: #334e68;
   }
 }
 .kejar-reload {
   &:before {
-    content: $icon-reload;     
+    content: $icon-reload;
     color: #334e68;
   }
 }
 .kejar-right {
   &:before {
-    content: $icon-right;     
+    content: $icon-right;
     color: #334e68;
   }
 }
 .kejar-rombel-bold {
   &:before {
-    content: $icon-rombel-bold;     
+    content: $icon-rombel-bold;
     color: #334e68;
   }
 }
 .kejar-rombel {
   &:before {
-    content: $icon-rombel;     
+    content: $icon-rombel;
     color: #334e68;
   }
 }
 .kejar-round {
   &:before {
-    content: $icon-round;     
+    content: $icon-round;
     color: #334e68;
   }
 }
 .kejar-rumpang-pg {
   &:before {
-    content: $icon-rumpang-pg;     
+    content: $icon-rumpang-pg;
     color: #334e68;
   }
 }
 .kejar-sekolah-bold {
   &:before {
-    content: $icon-sekolah-bold;     
+    content: $icon-sekolah-bold;
     color: #334e68;
   }
 }
 .kejar-sekolah {
   &:before {
-    content: $icon-sekolah;     
+    content: $icon-sekolah;
     color: #334e68;
   }
 }
 .kejar-show-password {
   &:before {
-    content: $icon-show-password;     
+    content: $icon-show-password;
     color: #334e68;
   }
 }
 .kejar-show {
   &:before {
-    content: $icon-show;     
+    content: $icon-show;
     color: #334e68;
   }
 }
 .kejar-soal-benar {
   &:before {
-    content: $icon-soal-benar;     
+    content: $icon-soal-benar;
     color: #334e68;
   }
 }
 .kejar-stage {
   &:before {
-    content: $icon-stage;     
+    content: $icon-stage;
     color: #334e68;
   }
 }
 .kejar-sudah-dikerjakan-outline {
   &:before {
-    content: $icon-sudah-dikerjakan-outline;     
+    content: $icon-sudah-dikerjakan-outline;
     color: #334e68;
   }
 }
 .kejar-sudah-dikerjakan-small {
   &:before {
-    content: $icon-sudah-dikerjakan-small;     
+    content: $icon-sudah-dikerjakan-small;
     color: #334e68;
   }
 }
 .kejar-sudah-dikerjakan {
   &:before {
-    content: $icon-sudah-dikerjakan;     
+    content: $icon-sudah-dikerjakan;
     color: #334e68;
   }
 }
 .kejar-table {
   &:before {
-    content: $icon-table;     
+    content: $icon-table;
     color: #334e68;
   }
 }
 .kejar-tambah-siswa {
   &:before {
-    content: $icon-tambah-siswa;     
+    content: $icon-tambah-siswa;
     color: #334e68;
   }
 }
 .kejar-teks-merinci {
   &:before {
-    content: $icon-teks-merinci;     
+    content: $icon-teks-merinci;
     color: #334e68;
   }
 }
 .kejar-top {
   &:before {
-    content: $icon-top;     
+    content: $icon-top;
     color: #334e68;
   }
 }
 .kejar-underlined {
   &:before {
-    content: $icon-underlined;     
+    content: $icon-underlined;
     color: #334e68;
   }
 }
 .kejar-upload {
   &:before {
-    content: $icon-upload;     
+    content: $icon-upload;
     color: #334e68;
   }
 }
 .kejar-wali-kelas-bold {
   &:before {
-    content: $icon-wali-kelas-bold;     
+    content: $icon-wali-kelas-bold;
     color: #334e68;
   }
 }
 .kejar-wali-kelas {
   &:before {
-    content: $icon-wali-kelas;     
+    content: $icon-wali-kelas;
     color: #334e68;
   }
 }
 .kejar-ya-tidak {
   &:before {
-    content: $icon-ya-tidak;     
+    content: $icon-ya-tidak;
     color: #334e68;
   }
 }

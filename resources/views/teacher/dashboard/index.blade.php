@@ -138,7 +138,7 @@
         let html = "";
         data.forEach((d, index) => {
             html += (`
-                <div id="pts-${index}" class="card-pts mt-4" role="button" onclick="showModal(${index})">
+                <div id="pts-${index}" class="card-pts mt-4" role="button" onclick="selectMA('${d.id}')">
                     <h3>
                         <i class="kejar-penilaian text-purple mr-4"></i>
                         <span id="pts-1">${d.title}</span>
@@ -148,6 +148,16 @@
         })
 
         return html;
+    }
+
+    function selectMA(val) {
+        var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teachers/mini-assessment') !!}"+"/"+val;
+        var urlStudentCounselor = "{!! URL::to('/teacher/student-counselor/mini-assessment') !!}"+"/"+val+"/list";
+        var urlStudentSupervisor = "{!! URL::to('/teacher/supervisor/mini-assessment') !!}"+"/"+val;
+        $("#select-ma-subject-teachers").attr("href", urlSubjectTeachers);
+        $("#select-ma-student-counselor").attr("href", urlStudentCounselor);
+        $("#select-ma-pengawas").attr("href", urlStudentSupervisor);
+        $('#modal-viewAs').modal('show');
     }
 
     function getAssessmentGroups() {
