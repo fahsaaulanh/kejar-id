@@ -90,21 +90,30 @@
                             $loweredSchoolName = strtolower(session('user.userable.school_name'));
                             $isWikrama = strpos($loweredSchoolName, 'wikrama') !== false;
                         @endphp
-                        @if($isWikrama)
                         <div class="content-header">
-                            <h1 class="content-title">Pilih penilaian...</h1>
+                            <h1 class="content-title">Penilaian TP {{ $academicYear }}</h1>
                         </div>
                         <div class="content-body mb-144">
-                            <div id="pts"class="card-pts">
-                                <h3>
-                                    <i class="kejar-matrikulasi text-purple mr-4">kejar-penilaian</i>
-                                    <span id="pts-1">PTS Semester Ganjil 2020-2021</span>
-                                </h3>
+                            <div id="pts">
+
                             </div>
                         </div>
-                        @endif
                         <div class="content-header">
-                            <h1 class="content-title">Pilih permainan...</h1>
+                            <h1 class="content-title">Latihan AKM</h1>
+                        </div>
+                        <div class="content-body">
+                            <div class="card-deck justify-content-start">
+                                <a href="{{ url('/student/games/soalcerita/stages') }}" class="card">
+                                    <img src="{{ asset('assets/images/home/soal-cerita.jpg') }}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Soal Cerita</h5>
+                                        <p class="card-text">Lebih cerdas menyelesaikan permasalahan di kehidupan sehari-hari dengan kemampuan matematika.</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="content-header">
+                            <h1 class="content-title">Matrikulasi</h1>
                         </div>
                         <div class="content-body">
                             <div class="card-deck">
@@ -129,6 +138,8 @@
                                         <p class="card-text">Lebih percaya diri menulis dan berbicara dalam Bahasa Inggris karena kosakata yang kaya.</p>
                                     </div>
                                 </a>
+                            </div>
+                            <div class="card-deck justify-content-start">
                                 <a href="{{ url('/student/games/toeicwords/stages') }}" class="card">
                                     <img src="{{ asset('assets/images/home/toeic-words.jpg') }}" class="card-img-top" alt="...">
                                     <div class="card-body">
@@ -165,6 +176,9 @@
 <script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
 <script src="{{ mix('/js/student/games/script.js') }}"></script>
 <script type="text/javascript">
+
+getAssessmentGroups();
+
 $('.dropify').dropify({
     messages: {
         'default': 'Pilih Foto',
@@ -196,5 +210,74 @@ $('.dropify').dropify({
             });
         }, 200);
     }
+
+    function getAssessmentGroups() {
+        const url = "{!! URL::to('/student/api/assessment-groups') !!}";
+        const loading = `
+            <div class="px-4">
+                <div class="row align-items-center mt-2 alert alert-primary">
+                    <div class="spinner spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <h6 class="ml-2">Mengambil data penilaian.</h6>
+                </div>
+            </div>`;
+
+
+        const empty = `
+            <div class="alert alert-primary mt-2">
+                <h6>Tidak ada data penilaian.</h6>
+            </div>`
+
+        const retryButton = `
+            <div>
+                <p>Data gagal di dapatkan.</p>
+                <button id="retry-button" class="btn btn-primary">Coba Lagi</button>
+            </div>`
+
+        $("#pts").html(loading);
+
+        $.ajax({
+            method: 'get',
+            dataType: 'json',
+            url: url,
+            success: function (response) {
+                if(response.status == 200){
+                    data = response.data || [];
+                    if (data.length < 1) {
+                        $("#pts").html(empty);
+                        return;
+                    }
+
+                    $("#pts").html(processDataToHtml(response.data));
+                    return;
+                }
+            },
+            error: function (error) {
+                $("#pts").html(retryButton);
+                $("#retry-button").on('click', function() {
+                    getAssessmentGroups();
+                });
+            }
+        });
+    }
+
+    function processDataToHtml(data) {
+        let html = "";
+        data.forEach((d, index) => {
+            html += (`
+                <div id="pts-${index}" class="card-pts mt-4" role="button">
+                    <h3>
+                        <i class="kejar-penilaian text-purple mr-4"></i>
+                        <span id="pts-1">${d.title}</span>
+                    </h3>
+                </div>
+            `);
+        })
+
+        return html;
+    }
+
+
   </script>
 @endpush

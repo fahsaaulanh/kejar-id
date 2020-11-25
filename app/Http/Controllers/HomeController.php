@@ -93,12 +93,16 @@ class HomeController extends Controller
     public function student(Request $request)
     {
         $user = $request->session()->get('user', null);
+        $academicCalendar = new AcademicCalendar;
+        $academicYear = $academicCalendar->currentAcademicYear(true);
 
         if ($user === null) {
             return redirect('/login');
         }
 
-        return view('student.games.index', $user);
+        return view('student.games.index')
+                ->with('user', $user)
+                ->with('academicYear', $academicYear);
     }
 
     public function logout(Request $request)

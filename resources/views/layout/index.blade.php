@@ -25,8 +25,8 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ session('user.userable.name') }}
+                                <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <h6 class="pr-4">{{ session('user.userable.name') }}</h6>
                                     @if (session('user.role') === 'STUDENT')
                                         @if (!is_null(session('user.userable.photo')))
                                         <img src="" class="profile-pict" alt="">
@@ -34,7 +34,7 @@
                                         <img src="{{ asset('assets/images/general/photo-profile-default-circle.svg') }}" class="profile-pict" alt="">
                                         @endif
                                     @endif
-                                    <i class="kejar-dropdown"></i>
+                                    <i class="kejar-dropdown pl-2"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @if (session('user.role') === 'STUDENT')

@@ -229,6 +229,8 @@ Route::middleware('session')->group(function () {
         Route::prefix('student')->group(function () {
 
             Route::get('/', 'HomeController@index');
+            Route::get('/api/assessment-groups', 'HomeController@getAssessmentGroups');
+
             Route::prefix('/mini_assessment')->group(function () {
                 Route::get('/', 'Student\MiniAssessmentController@index');
                 Route::post('/view-detail', 'Student\MiniAssessmentController@viewDetail');
