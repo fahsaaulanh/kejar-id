@@ -50,7 +50,7 @@ class AssessmentController extends Controller
             $subjects['meta'] = [];
         }
 
-        return view('teacher.subjects.index')
+        return view('teacher.subject_teacher.subjects.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup['data']['title'])
             ->with('subjects', $subjects['data'])
@@ -72,13 +72,14 @@ class AssessmentController extends Controller
         ];
         $miniAssessments = $miniAssessmentApi->index($filterMA);
 
-        return view('teacher.assessment.index')
+        return view('teacher.subject_teacher.assessment.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
             ->with('miniAssessments', $miniAssessments['data'])
             ->with('miniAssessmentsMeta', $miniAssessments['meta'])
             ->with('subject', $subjectDetail['data'])
             ->with('grade', $grade)
+            ->with('type', 'assessment')
             ->with('message', 'Data success');
     }
 
