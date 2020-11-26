@@ -42,6 +42,7 @@ $deep-yellow: #FFD600;
 $teal-bg: #98D3E0;
 $green-tp: #F0FFF4;
 $red-tp: #FFF4F4;
+$green-bg: #D3EAC8;
 
 .text-black-1{
     color: $black-1 !important;
@@ -100,4 +101,12 @@ $red-tp: #FFF4F4;
     background-color: $blue-5 !important;
     z-index: -1 !important;
     overflow-y: auto !important;
+}
+
+.bg-green {
+    background-color: $green-bg !important;
+}
+
+.border-grey-13 {
+    border: 1px solid $grey-13;
 }
