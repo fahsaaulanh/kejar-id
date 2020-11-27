@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Services\Batch as BatchApi;
 use App\Services\Game;
+use App\Services\School;
 use App\Services\Stage as StageApi;
 use App\Services\StudentGroup as StudentApi;
 use Carbon\Carbon;
@@ -41,71 +42,132 @@ class StageController extends Controller
         $classApi = new StudentApi;
 
         $classResult = [];
-        foreach ($batchResult as $key => $data) {
-            if ($key !== 0) {
-                $classResponse = $classApi->index($schoolId, $data['id']);
-                $classResult = array_merge($classResult, $classResponse['data']);
-            }
+        foreach ($batchResult as $data) {
+            $classResponse = $classApi->index($schoolId, $data['id']);
+            $classResult = array_merge($classResult, $classResponse['data'] ?? []);
         }
 
+        $schoolService = new School;
+        $school = $schoolService->detail($schoolId);
         $classData = $classResult ?? [];
-        $classGrade = ['X', 'XI', 'XII'];
-        $classCount = [
-            'count_x' => 0,
-            'count_xi' => 0,
-            'count_xii' => 0,
-        ];
         $classList = [];
-        $number = 0;
-        if (count($classData) !== 0) {
-            foreach ($classData as $data) {
-                if (stripos($data['name'], $classGrade[2]) !== false) {
-                    $classList[$number] = [
-                        'class_id' => $data['id'],
-                        'class_batch_id' => $data['batch_id'],
-                        'class_grade' => $classGrade[2],
-                        'class_name' => $data['name'],
-                        'class_school_year' => $data['school_year'],
-                    ];
-                    $number += 1;
-                } elseif (stripos($data['name'], $classGrade[1]) !== false) {
-                    $classList[$number] = [
-                        'class_id' => $data['id'],
-                        'class_batch_id' => $data['batch_id'],
-                        'class_grade' => $classGrade[1],
-                        'class_name' => $data['name'],
-                        'class_school_year' => $data['school_year'],
-                    ];
-                    $number += 1;
-                } else {
-                    $classList[$number] = [
-                        'class_id' => $data['id'],
-                        'class_batch_id' => $data['batch_id'],
-                        'class_grade' => $classGrade[0],
-                        'class_name' => $data['name'],
-                        'class_school_year' => $data['school_year'],
-                    ];
-                    $number += 1;
+        $educational = $school['data']['educational_stage'];
+
+        if ($educational === 'SMP') {
+            $classGrade = ['7', '8', '9'];
+            $classCount = [
+                'count_7' => 0,
+                'count_8' => 0,
+                'count_9' => 0,
+            ];
+            
+            $number = 0;
+            if (count($classData) !== 0) {
+                foreach ($classData as $data) {
+                    if (stripos($data['name'], $classGrade[2]) !== false) {
+                        $classList[$number] = [
+                            'class_id' => $data['id'],
+                            'class_batch_id' => $data['batch_id'],
+                            'class_grade' => $classGrade[2],
+                            'class_name' => $data['name'],
+                            'class_school_year' => $data['school_year'],
+                        ];
+                        $number += 1;
+                    } elseif (stripos($data['name'], $classGrade[1]) !== false) {
+                        $classList[$number] = [
+                            'class_id' => $data['id'],
+                            'class_batch_id' => $data['batch_id'],
+                            'class_grade' => $classGrade[1],
+                            'class_name' => $data['name'],
+                            'class_school_year' => $data['school_year'],
+                        ];
+                        $number += 1;
+                    } else {
+                        $classList[$number] = [
+                            'class_id' => $data['id'],
+                            'class_batch_id' => $data['batch_id'],
+                            'class_grade' => $classGrade[0],
+                            'class_name' => $data['name'],
+                            'class_school_year' => $data['school_year'],
+                        ];
+                        $number += 1;
+                    }
+                }
+
+                usort(
+                    $classList,
+                    fn ($str1, $str2) => strnatcmp($str1['class_name'], $str2['class_name']),
+                );
+
+                foreach ($classList as $class) {
+                    if ($class['class_grade'] === '7') {
+                        $classCount['count_7'] += 1;
+                    } elseif ($class['class_grade'] === '8') {
+                        $classCount['count_8'] += 1;
+                    } else {
+                        $classCount['count_9'] += 1;
+                    }
                 }
             }
+        } else {
+            $classGrade = ['X', 'XI', 'XII'];
+            $classCount = [
+                'count_x' => 0,
+                'count_xi' => 0,
+                'count_xii' => 0,
+            ];
 
-            usort(
-                $classList,
-                fn ($str1, $str2) => strnatcmp($str1['class_name'], $str2['class_name']),
-            );
+            $number = 0;
+            if (count($classData) !== 0) {
+                foreach ($classData as $data) {
+                    if (stripos($data['name'], $classGrade[2]) !== false) {
+                        $classList[$number] = [
+                            'class_id' => $data['id'],
+                            'class_batch_id' => $data['batch_id'],
+                            'class_grade' => $classGrade[2],
+                            'class_name' => $data['name'],
+                            'class_school_year' => $data['school_year'],
+                        ];
+                        $number += 1;
+                    } elseif (stripos($data['name'], $classGrade[1]) !== false) {
+                        $classList[$number] = [
+                            'class_id' => $data['id'],
+                            'class_batch_id' => $data['batch_id'],
+                            'class_grade' => $classGrade[1],
+                            'class_name' => $data['name'],
+                            'class_school_year' => $data['school_year'],
+                        ];
+                        $number += 1;
+                    } else {
+                        $classList[$number] = [
+                            'class_id' => $data['id'],
+                            'class_batch_id' => $data['batch_id'],
+                            'class_grade' => $classGrade[0],
+                            'class_name' => $data['name'],
+                            'class_school_year' => $data['school_year'],
+                        ];
+                        $number += 1;
+                    }
+                }
 
-            foreach ($classList as $class) {
-                if ($class['class_grade'] === 'X') {
-                    $classCount['count_x'] += 1;
-                } elseif ($class['class_grade'] === 'XI') {
-                    $classCount['count_xi'] += 1;
-                } else {
-                    $classCount['count_xii'] += 1;
+                usort(
+                    $classList,
+                    fn ($str1, $str2) => strnatcmp($str1['class_name'], $str2['class_name']),
+                );
+
+                foreach ($classList as $class) {
+                    if ($class['class_grade'] === 'X') {
+                        $classCount['count_x'] += 1;
+                    } elseif ($class['class_grade'] === 'XI') {
+                        $classCount['count_xi'] += 1;
+                    } else {
+                        $classCount['count_xii'] += 1;
+                    }
                 }
             }
         }
 
-        return view('teacher.stages.index', compact('game', 'classList', 'classCount'));
+        return view('teacher.stages.index', compact('game', 'classList', 'classCount', 'educational'));
     }
 
     public function resultStage(Request $request, $game, $batchId, $studentGroupId)
