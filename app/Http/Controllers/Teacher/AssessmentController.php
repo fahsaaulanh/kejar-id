@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\AssessmentGroup as AssessmentGroupApi;
 use App\Services\MiniAssessment as miniAssessmentApi;
 use App\Services\School as SchoolApi;
+use App\Services\User as UserApi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -79,7 +80,7 @@ class AssessmentController extends Controller
             ->with('miniAssessmentsMeta', $miniAssessments['meta'])
             ->with('subject', $subjectDetail['data'])
             ->with('grade', $grade)
-            ->with('type', 'assessment')
+            ->with('type', 'mini')
             ->with('message', 'Data success');
     }
 
@@ -104,8 +105,8 @@ class AssessmentController extends Controller
             'start_time' => json_encode($t),
             'expiry_time' => json_encode($t->addMinutes($duration)),
             'pdf_password' => $request['pdf_password'],
-            'total_questions' => $request['total_questions'],
-            'choices_number' => $request['choices_number'],
+            'total_question' => $request['total_question'],
+            'total_choices' => $request['total_choices'],
         ];
         $create = $miniAssessmentApi->create($reqFile, $payload);
         if ($create) {
@@ -128,8 +129,8 @@ class AssessmentController extends Controller
             'start_time' => $miniAssessmentDetail['data']['start_time'],
             'expiry_time' => $miniAssessmentDetail['data']['expiry_time'],
             'pdf_password' => $request['pdf_password'],
-            'total_questions' => $request['total_questions'],
-            'choices_number' => $request['choices_number'],
+            'total_question' => $request['total_question'],
+            'total_choices' => $request['total_choices'],
         ];
         $update = $miniAssessmentApi->update($miniAssessmentId, $payload);
         if ($update) {
@@ -137,5 +138,121 @@ class AssessmentController extends Controller
         }
 
         return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal diperbaharui!']);
+    }
+
+    public function viewMini($id)
+    {
+        $miniAssessmentApi = new miniAssessmentApi;
+        $detail = $miniAssessmentApi->detail($id);
+        $data = [];
+        $data['detail'] = $detail['data'];
+        $data['detail']['created'] = '';
+        if ($data['detail']['validated']) {
+            $UserApi = new UserApi;
+            $teacher = $UserApi->detailTeacher($data['detail']['validated_by']);
+            $data['detail']['created'] = $teacher['data']['name'];
+        }
+
+        $data['time'] = $this->dateFormat($detail['data']['start_time'], 'd M Y') .
+            ', ' . $this->dateFormat($detail['data']['start_time'], 'H.i') .
+            ' - ' . $this->dateFormat($detail['data']['expiry_time'], 'H.i');
+
+        // $answersAPI = $miniAssessmentApi->answers($id);
+
+        $total_question = 50;
+        $total_choices = 5;
+
+
+        $choices1 = $this->choicesHtml($total_question, $total_choices, $id, 1);
+
+        $choices2 = $this->choicesHtml($total_question, $total_choices, $id, 2);
+
+
+        // if ($answersAPI['data']) {
+
+        // }
+
+        $data['choicesTab1'] = $choices1;
+        $data['choicesTab2'] = $choices2;
+
+        return response()->json($data);
+    }
+
+    public function choicesHtml($total, $number, $id, $tab)
+    {
+        $divider = (float) ($total / 2);
+        $divider = ceil($divider);
+
+        $view = '';
+        if ($tab === 1) {
+            for ($i = 1; $i <= $divider; $i++) {
+                $view .= '<div class="row px-4 mt-4">';
+                $view .= '<div class="pts-number">' . $i . '</div>';
+                $view .= '<div class="col">';
+                $view .= ' <div class="row">';
+
+                for ($c = 1; $c <= $number; $c++) {
+                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\ 
+                    onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
+                    id="pts-choice-' . $i . '-' . $c . '">';
+                    $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';
+                }
+
+                $view .= '<div id="pts-choice-load-' . $i . '" style="display:none"\
+                class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
+                $view .= '<div class="spinner-border" role="status">';
+                $view .= ' <span class="sr-only">Loading...</span>';
+                $view .= '</div>';
+                $view .= '</div>';
+
+                $view .= '<div id="pts-choice-success-' . $i . '"  style="display:none"\
+                class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
+                $view .= '<i class="kejar-soal-benar"></i></div>';
+
+                $view .= '</div>';
+                $view .= '</div>';
+                $view .= '</div>';
+            }
+
+            return $view;
+        }
+
+        for ($i = $divider + 1; $i <= $total; $i++) {
+            $view .= '<div class="row px-4 mt-4">';
+            $view .= '<div class="pts-number">' . $i . '</div>';
+            $view .= '<div class="col">';
+            $view .= ' <div class="row">';
+
+            for ($c = 1; $c <= $number; $c++) {
+                $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
+                onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
+                id="pts-choice-' . $i . '-' . $c . '">';
+                $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';
+            }
+
+            $view .= '<div id="pts-choice-load-' . $i . '" style="display:none"\
+            class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
+            $view .= '<div class="spinner-border" role="status">';
+            $view .= ' <span class="sr-only">Loading...</span>';
+            $view .= '</div>';
+            $view .= '</div>';
+
+            $view .= '<div id="pts-choice-success-' . $i . '" style="display:none"\
+            class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
+            $view .= '<i class="kejar-soal-benar"></i></div>';
+
+            $view .= '</div>';
+            $view .= '</div>';
+            $view .= '</div>';
+        }
+
+        return $view;
+    }
+
+    public function dateFormat($val, $format = 'Y/m/d H:i:s')
+    {
+        $date = date_create($val);
+
+        return date_format($date, $format);
     }
 }

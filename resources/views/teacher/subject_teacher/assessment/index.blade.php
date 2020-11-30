@@ -162,7 +162,7 @@
                     <h3 class="mb-4">Paket<span class="font-15 text-reguler">(total: {{$miniAssessmentsMeta['total']}})</span></h3>
                     @for($i=0; $i < count($miniAssessments); $i++)
                         <div class="w-100 bg-grey-15 mb-4 px-4 py-3">
-                            <a class="text-black-1 ">{{$miniAssessments[$i]['title']}}</a>
+                            <a data-toggle="modal" data-target="#viewAnswer" onclick="viewMA(`{{$miniAssessments[$i]['id']}}`)" class="text-black-1">{{$miniAssessments[$i]['title']}}</a>
                         </div>
                     @endfor
                     <button class="btn-upload font-15" data-toggle="modal" data-target="#add-ma">
@@ -179,13 +179,93 @@
 @include('teacher.subject_teacher.assessment.regular.update._pilihan_ganda')
 @include('teacher.subject_teacher.assessment.regular._delete_question')
 @include('teacher.subject_teacher.assessment.regular.update._duration')
+@include('teacher.subject_teacher.assessment.mini.answer._view_answer')
 
 
 @endsection
 
-
 @push('script')
 <script>
+    function viewMA(id) {
+
+        $('#loading-view').show();
+        $('#ma-content-view').hide();
+
+        const url = "{!! URL::to('/teacher/subject-teacher/mini-assessment/view') !!}" + "/" + id;
+        let data = new Object();
+
+        // data = {};
+
+        var form = new URLSearchParams(data);
+        var request = new Request(url, {
+            method: 'GET',
+            // body: form,
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            })
+        });
+
+        fetch(request)
+            .then(response => response.json())
+            .then(function(data) {
+
+                var naskahHtml = '<div onclick="viewNaskah(' + data.detail.pdf + ')" class="pts-btn-pdf" role="button">\
+                <i class="kejar-pdf"></i>\
+                <h4 class="text-reguler ml-4">Lihat Naskah Soal</h4></div>';
+
+                $('.headGroup').html(data.group);
+                $('.title-view').html(data.detail.title);
+                $('.duration-view').html(`${data.detail.duration} Menit`);
+                $('#token').html(data.detail.id);
+                $('#headTime').html(data.time);
+                $('#ma-id').val(id);
+                $('#headSubject-view').html(`{{ $subject['name'] }}`);
+                $('.view-naskah').html(naskahHtml);
+
+                $('.tab-1-view').html(data.choicesTab1);
+                $('.tab-2-view').html(data.choicesTab2);
+
+                if (data.detail.validated == 1) {
+                    $('#viewButton').html('<p>Telah divalidasi oleh ' + data.detail.created + '.</p>');
+                } else {
+                    $('#viewButton').html('<button class="btn btn-revise" onclick="modalValidation()">Validasi</button>');
+                }
+
+                $('#loading-view').hide();
+                $('#ma-content-view').show();
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+
+    function viewNaskah(pdf) {
+        if (typeof window !== undefined) {
+            window.open(pdf, '_blank');
+        }
+    }
+
+    async function onClickAnswerPG(order, choice, id, number) {
+        console.log({order, choice, id, number});
+        for (let i = 1; i < number; i++) {
+            $(`#pts-choice-${order}-${i}`).removeClass('active');
+        }
+
+        $(`#pts-choice-${order}-${choice}`).addClass('active');
+
+        $(`#pts-choice-load-${order}`).delay(1000).show(500); 
+
+        await setTimeout(function() {
+            $(`#pts-choice-load-${order}`).show();
+        }, 3000);
+
+        await setTimeout(function() {
+            $(`#pts-choice-load-${order}`).hide();
+            $(`#pts-choice-success-${order}`).show();
+        }, 3000);
+    }
+    
     function showLoadingCreate(){
         $("#LoadingCreate").show();
     }

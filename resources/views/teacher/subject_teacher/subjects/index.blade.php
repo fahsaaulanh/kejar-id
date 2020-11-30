@@ -6,13 +6,13 @@
     <div class="container">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/games') }}">
+        <a class ="btn-back" href="{{ url('/subject-teacher/games') }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
+            <a class="breadcrumb-item" href="{{ url('/subject-teacher/games') }}">Beranda</a>
             <span class="breadcrumb-item active">{{$assessmentGroup}}</span>
         </nav>
 
@@ -93,7 +93,7 @@
                     @for($i=0; $i < 3; $i++)
                         <div class="list-group" data-url="#" data-token="{{ csrf_token() }}">
                             <div class="list-group-item-dropdown">
-                                <a href="{{ URL('teacher/'.$assessmentGroupId.'/subject/'.$v['id'].'/1'.$i.'/assessment') }}" class="col-12">
+                                <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$v['id'].'/1'.$i.'/assessment') }}" class="col-12">
                                     <span class="ml-5">Kelas 1{{$i}}</span>
                                     <i class="kejar-right float-right"></i>
                                 </a>

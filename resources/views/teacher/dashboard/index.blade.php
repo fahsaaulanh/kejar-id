@@ -151,7 +151,7 @@
     }
 
     function selectMA(val) {
-        var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teachers/mini-assessment') !!}"+"/"+val;
+        var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teacher/') !!}"+"/"+val+"/subject";
         var urlStudentCounselor = "{!! URL::to('/teacher/student-counselor/mini-assessment') !!}"+"/"+val+"/list";
         var urlStudentSupervisor = "{!! URL::to('/teacher/supervisor/mini-assessment') !!}"+"/"+val;
         $("#select-ma-subject-teachers").attr("href", urlSubjectTeachers);

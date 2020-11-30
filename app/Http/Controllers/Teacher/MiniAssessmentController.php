@@ -160,15 +160,15 @@ class MiniAssessmentController extends Controller
                 $students[$key]['name'] = $v['name'];
                 $students[$key]['nis'] = $v['nis'];
                 $StudentGroup =
-                $StudentGroupApi->detailWithoutBatch($v['student_group_id']);
+                    $StudentGroupApi->detailWithoutBatch($v['student_group_id']);
                 $students[$key]['student_group'] = ($StudentGroup['data']['name'] ?? '');
 
                 // view
                 $view .= '<tr>';
-                    $view .= '<td>'.$v['name'].'</td>';
-                    $view .= '<td id="score-'.$v['id'].'">'.($StudentGroup['data']['name'] ?? '').'</td>';
-                    $view .= '<td id="score-loading-'.$v['id'].'"
-                                colspan="'. $countSubject .'">
+                $view .= '<td>' . $v['name'] . '</td>';
+                $view .= '<td id="score-' . $v['id'] . '">' . ($StudentGroup['data']['name'] ?? '') . '</td>';
+                $view .= '<td id="score-loading-' . $v['id'] . '"
+                                colspan="' . $countSubject . '">
                         <div class="spinner-border mr-1" role="status">
                             <span class="sr-only">Loading...</span>
                         </div> Loading</td>';
@@ -246,7 +246,7 @@ class MiniAssessmentController extends Controller
         ];
         $scores = $miniAssessmentApi->result($req['studentId'], $filterScore);
         if (!$scores['data']) {
-            return response()->json(['status'=>404]);
+            return response()->json(['status' => 404]);
         }
 
         $scoreArray = [];
@@ -277,12 +277,12 @@ class MiniAssessmentController extends Controller
             }
 
             $score[$subjectId] = $scoreData;
-            $view .= '<td>'.$scoreData['nr'].'</td>';
-            $view .= '<td>'.$scoreData['na'].'</td>';
+            $view .= '<td>' . $scoreData['nr'] . '</td>';
+            $view .= '<td>' . $scoreData['na'] . '</td>';
         }
 
         $data = [
-            'status'=> 200,
+            'status' => 200,
             'data' => $score,
             'html' => $view,
         ];
@@ -304,18 +304,18 @@ class MiniAssessmentController extends Controller
         }
 
         return view('teacher.mini_assessments.subjects.subject_teachers.index')
-               ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
-               ->with('subject', $subject['data'])
-               ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
-               ->with(
-                   'miniAssessmentGroupId',
-                   $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
-               )
-               ->with('subject', $subject['data'])
-               ->with('type', $type)
-               ->with('subjectId', $subjectId)
-               ->with('grade', $grade)
-               ->with('reportAccess', $this->reportAccess);
+            ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
+            ->with('subject', $subject['data'])
+            ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
+            ->with(
+                'miniAssessmentGroupId',
+                $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
+            )
+            ->with('subject', $subject['data'])
+            ->with('type', $type)
+            ->with('subjectId', $subjectId)
+            ->with('grade', $grade)
+            ->with('reportAccess', $this->reportAccess);
     }
 
     public function alphabet($val)
@@ -331,6 +331,118 @@ class MiniAssessmentController extends Controller
 
         return date_format($date, $format);
     }
+
+    // tes view
+    public function viewTes($id)
+    {
+        $miniAssessmentApi = new miniAssessmentApi;
+        $detail = $miniAssessmentApi->detail($id);
+        $data = [];
+        $data['detail'] = $detail['data'];
+        $data['detail']['created'] = '';
+        if ($data['detail']['validated']) {
+            $UserApi = new UserApi;
+            $teacher = $UserApi->detailTeacher($data['detail']['validated_by']);
+            $data['detail']['created'] = $teacher['data']['name'];
+        }
+
+        $data['time'] = $this->dateFormat($detail['data']['start_time'], 'd M Y') .
+            ', ' . $this->dateFormat($detail['data']['start_time'], 'H.i') .
+            ' - ' . $this->dateFormat($detail['data']['expiry_time'], 'H.i');
+
+        $data['group'] = $this->miniAssessmentGroups($data['detail']['group'], 'header');
+        // $answersAPI = $miniAssessmentApi->answers($id);
+
+        $total_questions = 50;
+        $choices_number = 5;
+
+
+        $choices1 = $this->choicesHtml($total_questions, $choices_number, $id, 1);
+
+        $choices2 = $this->choicesHtml($total_questions, $choices_number, $id, 2);
+
+
+        // if ($answersAPI['data']) {
+
+        // }
+
+        $data['choicesTab1'] = $choices1;
+        $data['choicesTab2'] = $choices2;
+
+        return response()->json($data);
+    }
+
+    public function choicesHtml($total, $number, $id, $tab)
+    {
+        $divider = (float) ($total / 2);
+        $divider = ceil($divider);
+
+        $view = '';
+        if ($tab === 1) {
+            for ($i = 1; $i <= $divider; $i++) {
+                $view .= '<div class="row px-4 mt-4">';
+                $view .= '<div class="pts-number">' . $i . '</div>';
+                $view .= '<div class="col">';
+                $view .= ' <div class="row">';
+
+                for ($c = 1; $c <= $number; $c++) {
+                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\ 
+                    onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
+                    id="pts-choice-' . $i . '-' . $c . '">';
+                    $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';
+                }
+
+                $view .= '<div id="pts-choice-load-' . $i . '" style="display:none"\
+                class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
+                $view .= '<div class="spinner-border" role="status">';
+                $view .= ' <span class="sr-only">Loading...</span>';
+                $view .= '</div>';
+                $view .= '</div>';
+
+                $view .= '<div id="pts-choice-success-' . $i . '"  style="display:none"\
+                class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
+                $view .= '<i class="kejar-soal-benar"></i></div>';
+
+                $view .= '</div>';
+                $view .= '</div>';
+                $view .= '</div>';
+            }
+
+            return $view;
+        }
+
+        for ($i = $divider + 1; $i <= $total; $i++) {
+            $view .= '<div class="row px-4 mt-4">';
+            $view .= '<div class="pts-number">' . $i . '</div>';
+            $view .= '<div class="col">';
+            $view .= ' <div class="row">';
+
+            for ($c = 1; $c <= $number; $c++) {
+                $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
+                onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
+                id="pts-choice-' . $i . '-' . $c . '">';
+                $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';
+            }
+
+            $view .= '<div id="pts-choice-load-' . $i . '" style="display:none"\
+            class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
+            $view .= '<div class="spinner-border" role="status">';
+            $view .= ' <span class="sr-only">Loading...</span>';
+            $view .= '</div>';
+            $view .= '</div>';
+
+            $view .= '<div id="pts-choice-success-' . $i . '" style="display:none"\
+            class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
+            $view .= '<i class="kejar-soal-benar"></i></div>';
+
+            $view .= '</div>';
+            $view .= '</div>';
+            $view .= '</div>';
+        }
+
+        return $view;
+    }
+    // end tes view
 
     public function view($id)
     {
@@ -454,20 +566,45 @@ class MiniAssessmentController extends Controller
         $view = '<div class="list-group" data-url="#" id="packageData">';
         if ($count > 0) {
             foreach ($list as $v) {
-                $view .= '<div class="list-group-item" data-id="' . $v['id'] . '">';
-                $view .= '<a href="javascript:void(0)" class="col-12">';
-                $view .= '<i class="kejar-penilaian" data-id="' . $v['id'] . '"';
-                $view .= 'data-container="body" data-toggle="popover" data-placement="top"';
-                $view .= ' data-content="ID disalin!"></i> <span data-toggle="modal" data-target="#view-ma"';
-                $view .= ' onclick="viewMA(\'' . $v['id'] . '\')">' . $v['title'] . '</span>';
+                // $view .= '<div class="list-group-item" data-id="' . $v['id'] . '">';
+                // $view .= '<a href="javascript:void(0)" class="col-12">';
+                // $view .= '<i class="kejar-penilaian" data-id="' . $v['id'] . '"';
+                // $view .= 'data-container="body" data-toggle="popover" data-placement="top"';
+                // $view .= ' data-content="ID disalin!"></i> <span data-toggle="modal" data-target="#viewAnswer"';
+                // $view .= ' onclick="viewMATes(\'' . $v['id'] . '\')">' . $v['title'] . '</span>';
 
+                // if ($v['validated'] === 1) {
+                //     $view .= '<i class="kejar-sudah-dikerjakan text-green-2 float-right" data-toggle="modal"';
+                //     $view .= ' onclick="viewMATes(\'' . $v['id'] . '\')" data-target="#viewAnswer"></i>';
+
+                // }
+
+                // $view .= '</a>';
+                // $view .= '</div>';
+                
+                // tes view
                 if ($v['validated'] === 1) {
+                    $view .= '<div class="list-group-item" data-id="' . $v['id'] . '">';
+                    $view .= '<a href="javascript:void(0)" class="col-12">';
+                    $view .= '<i class="kejar-penilaian" data-id="' . $v['id'] . '"';
+                    $view .= 'data-container="body" data-toggle="popover" data-placement="top"';
+                    $view .= ' data-content="ID disalin!"></i> <span data-toggle="modal" data-target="#view-ma"';
+                    $view .= ' onclick="viewMA(\'' . $v['id'] . '\')">' . $v['title'] . '</span>';
                     $view .= '<i class="kejar-sudah-dikerjakan text-green-2 float-right" data-toggle="modal"';
-                    $view .= ' onclick="viewMA(\'' . $v['id'] . '\')" data-target="#view-ma"></i>';
+                    $view .= ' onclick="viewMA(\'' . $v['id'] . '\')" data-target="#viewAnswer"></i>';
+                    $view .= '</a>';
+                    $view .= '</div>';
+                } else {
+                    $view .= '<div class="list-group-item" data-id="' . $v['id'] . '">';
+                    $view .= '<a href="javascript:void(0)" class="col-12">';
+                    $view .= '<i class="kejar-penilaian" data-id="' . $v['id'] . '"';
+                    $view .= 'data-container="body" data-toggle="popover" data-placement="top"';
+                    $view .= ' data-content="ID disalin!"></i> <span data-toggle="modal" data-target="#viewAnswer"';
+                    $view .= ' onclick="viewMATes(\'' . $v['id'] . '\')">' . $v['title'] . '</span>';
+                    $view .= '</a>';
+                    $view .= '</div>';
                 }
-
-                $view .= '</a>';
-                $view .= '</div>';
+                // end tes view
             }
         } else {
             $view .= '<h5 class="text-center">Tidak ada data</h5>';
@@ -553,22 +690,22 @@ class MiniAssessmentController extends Controller
         if ($count > 0) {
             foreach ($list as $v) {
                 $view .= '<div class="list-group-item">';
-                    $view .= '<a href="/teacher/subject-teachers/mini-assessment/'
-                                .$req['miniAssessmentGroupValue'].'/subject/'.$req['subjectId'].
-                                '/'.$req['grade'].'/batch/'.$v['batch_id'].'/score/'.$v['id'].'" class="col-10">';
-                        $view .= '<i class="kejar-rombel"></i>';
-                        $view .= '<span>'.$v['name'].'</span>';
-                    $view .= '</a>';
-                    $param = "'".$req['miniAssessmentGroupValue']."',".
-                             "'".$req['subjectId']."',".
-                             "'".$req['grade']."',".
-                             "'".$v['batch_id']."',".
-                             "'".$v['id']."',".
-                             "'".$v['name']."'";
-                    $view .= '<span class="col row" style="cursor:pointer"
-                    onclick="attendanceForm('.$param.')" >
+                $view .= '<a href="/teacher/subject-teachers/mini-assessment/'
+                    . $req['miniAssessmentGroupValue'] . '/subject/' . $req['subjectId'] .
+                    '/' . $req['grade'] . '/batch/' . $v['batch_id'] . '/score/' . $v['id'] . '" class="col-10">';
+                $view .= '<i class="kejar-rombel"></i>';
+                $view .= '<span>' . $v['name'] . '</span>';
+                $view .= '</a>';
+                $param = "'" . $req['miniAssessmentGroupValue'] . "'," .
+                    "'" . $req['subjectId'] . "'," .
+                    "'" . $req['grade'] . "'," .
+                    "'" . $v['batch_id'] . "'," .
+                    "'" . $v['id'] . "'," .
+                    "'" . $v['name'] . "'";
+                $view .= '<span class="col row" style="cursor:pointer"
+                    onclick="attendanceForm(' . $param . ')" >
                     <i class="kejar-edit float-right col-1">';
-                    $view .= '</i><small class="col pl-2">Absensi</small></span>';
+                $view .= '</i><small class="col pl-2">Absensi</small></span>';
                 $view .= '</div>';
             }
         } else {
@@ -607,7 +744,7 @@ class MiniAssessmentController extends Controller
             $data[$key]['presence'] = 1;
             $data[$key]['value'] = 1;
             if (isset($presence['data'][0])) {
-                $data[$key]['presence'] = "'".$presence['data'][0]['id']."'";
+                $data[$key]['presence'] = "'" . $presence['data'][0]['id'] . "'";
                 $data[$key]['value'] = ($presence['data'][0]['status'] === 1 ? 0 : 1);
             }
 
@@ -632,18 +769,18 @@ class MiniAssessmentController extends Controller
         $list = $data['data'];
         $view = '';
         foreach ($list as $key => $v) {
-            $presenceParams = "'".$v['id']."',".$v['presence'].','.$v['value'];
+            $presenceParams = "'" . $v['id'] . "'," . $v['presence'] . ',' . $v['value'];
             $presenceText = ($v['value'] === 1 ? 'Tandai' : 'Hadir');
 
             $presence = '<span class="btn btn-link btn-lg
-            text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+            text-decoration-none" onclick="changePresence(' . $presenceParams . ')">' . $presenceText . '</span>';
 
             $view .= '<tr class="tr-score-report">';
-                $view .= '<td class="text-center">'.($key+1).'</td>';
-                $view .= '<td>'.$v['name'].'</td>';
-                $view .= '<td>'.$v['nis'].'</td>';
+            $view .= '<td class="text-center">' . ($key + 1) . '</td>';
+            $view .= '<td>' . $v['name'] . '</td>';
+            $view .= '<td>' . $v['nis'] . '</td>';
 
-                $view .= '<td><div id="presenceBtn-'. $v['id'] .'">'.$presence.'</div></td>';
+            $view .= '<td><div id="presenceBtn-' . $v['id'] . '">' . $presence . '</div></td>';
             $view .= '</tr>';
         }
 
@@ -685,18 +822,18 @@ class MiniAssessmentController extends Controller
         }
 
         return view('teacher.mini_assessments.subjects.subject_teachers.study_group_report.view')
-                ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
-                ->with(
-                    'miniAssessmentGroupId',
-                    $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
-                )
-                ->with('subject', $subject['data'])
-                ->with('StudentGroupDetail', $StudentGroupDetail['data'])
-                ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
-                ->with('subjectId', $subjectId)
-                ->with('type', $type)
-                ->with('batchId', $batchId)
-                ->with('grade', $grade);
+            ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
+            ->with(
+                'miniAssessmentGroupId',
+                $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
+            )
+            ->with('subject', $subject['data'])
+            ->with('StudentGroupDetail', $StudentGroupDetail['data'])
+            ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
+            ->with('subjectId', $subjectId)
+            ->with('type', $type)
+            ->with('batchId', $batchId)
+            ->with('grade', $grade);
     }
 
     public function scoreBystudentGroupData(Request $req)
@@ -735,7 +872,7 @@ class MiniAssessmentController extends Controller
             $data[$key]['presence'] = 1;
             $data[$key]['value'] = 1;
             if (isset($presence['data'][0])) {
-                $data[$key]['presence'] = "'".$presence['data'][0]['id']."'";
+                $data[$key]['presence'] = "'" . $presence['data'][0]['id'] . "'";
                 $data[$key]['value'] = ($presence['data'][0]['status'] === 1 ? 0 : 1);
             }
 
@@ -784,43 +921,43 @@ class MiniAssessmentController extends Controller
         $list = $data['data'];
         $view = '';
         foreach ($list as $key => $v) {
-            $presenceParams = "'".$v['id']."',".$v['presence'].','.$v['value'];
+            $presenceParams = "'" . $v['id'] . "'," . $v['presence'] . ',' . $v['value'];
             $presenceText = ($v['value'] === 1 ? 'Tandai' : 'Hadir');
 
             $presence = '<span class="btn btn-link btn-lg
-            text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+            text-decoration-none" onclick="changePresence(' . $presenceParams . ')">' . $presenceText . '</span>';
 
             if ($v['finished']) {
                 $diff = Carbon::parse($v['score']['start_time'])
                     ->diffInMinutes($v['score']['finish_time']);
                 $view .= '<tr class="tr-score-report">';
-                    $view .= '<td class="text-center">'.($key+1).'</td>';
-                    $view .= '<td>'.$v['name'].'</td>';
-                    $view .= '<td>'.$v['nis'].'</td>';
+                $view .= '<td class="text-center">' . ($key + 1) . '</td>';
+                $view .= '<td>' . $v['name'] . '</td>';
+                $view .= '<td>' . $v['nis'] . '</td>';
 
-                    $view .= '<td><div id="presenceBtn-'. $v['id'] .'">'.$presence.'</div></td>';
+                $view .= '<td><div id="presenceBtn-' . $v['id'] . '">' . $presence . '</div></td>';
 
-                    $view .= '<td style="width:500px">';
-                        // Note
-                        $note = "'".$v['score']['id']."','".
-                                $v['score']['student_note']."','".
-                                $v['score']['teacher_note']."','".
-                                $v['nis']."','".
-                                $v['name']."'";
-                        $view .= '<div id="note-data-'.$v['score']['id'].'">';
-                            $view .= '<span style="cursor: pointer;" class="text-muted"
-                                onclick="changeNote('.$note.')">';
-                                $view .= $this->noteData($v['score']['teacher_note']);
-                            $view .= '</span>';
-                        $view .= '</div>';
+                $view .= '<td style="width:500px">';
+                // Note
+                $note = "'" . $v['score']['id'] . "','" .
+                    $v['score']['student_note'] . "','" .
+                    $v['score']['teacher_note'] . "','" .
+                    $v['nis'] . "','" .
+                    $v['name'] . "'";
+                $view .= '<div id="note-data-' . $v['score']['id'] . '">';
+                $view .= '<span style="cursor: pointer;" class="text-muted"
+                                onclick="changeNote(' . $note . ')">';
+                $view .= $this->noteData($v['score']['teacher_note']);
+                $view .= '</span>';
+                $view .= '</div>';
 
-                    $view .= '</td>';
-                    $view .= '<td>'.$diff.'</td>';
-                    $view .= '<td>'.$v['score']['score']['recommendation_score'].'</td>';
-                    $view .= '<td class="column-white" id="score-td-'.$v['score']['id'].'">';
-                        $view .= '<div class="row m-0 p-0" style="width:180px">';
-                            $view .= '<div class="col">';
-                                $view .= '<input type="number"
+                $view .= '</td>';
+                $view .= '<td>' . $diff . '</td>';
+                $view .= '<td>' . $v['score']['score']['recommendation_score'] . '</td>';
+                $view .= '<td class="column-white" id="score-td-' . $v['score']['id'] . '">';
+                $view .= '<div class="row m-0 p-0" style="width:180px">';
+                $view .= '<div class="col">';
+                $view .= '<input type="number"
                                         onchange="handleChange(this);"
                                         onkeyup="handleChange(this);"
                                         id="score-input-' . $v['score']['id'] . '"
@@ -838,11 +975,11 @@ class MiniAssessmentController extends Controller
                 $view .= '</tr>';
             } else {
                 $view .= '<tr>';
-                    $view .= '<td class="text-center">'.($key+1).'</td>';
-                    $view .= '<td>'.$v['name'].'</td>';
-                    $view .= '<td>'.$v['nis'].'</td>';
-                    $view .= '<td><div id="presenceBtn-'. $v['id'] .'">'.$presence.'</div></td>';
-                    $view .= '<td colspan="4">Belum mengerjakan</td>';
+                $view .= '<td class="text-center">' . ($key + 1) . '</td>';
+                $view .= '<td>' . $v['name'] . '</td>';
+                $view .= '<td>' . $v['nis'] . '</td>';
+                $view .= '<td><div id="presenceBtn-' . $v['id'] . '">' . $presence . '</div></td>';
+                $view .= '<td colspan="4">Belum mengerjakan</td>';
                 $view .= '</tr>';
             }
         }
@@ -870,10 +1007,10 @@ class MiniAssessmentController extends Controller
             $req['presence'] = $create['data']['id'];
         }
 
-        $presenceParams = "'".$req['id']."','".$req['presence']."',".($req->value === '1' ? 0 : 1);
+        $presenceParams = "'" . $req['id'] . "','" . $req['presence'] . "'," . ($req->value === '1' ? 0 : 1);
         $presenceText = ($req->value === '1' ? 'Hadir' : 'Tandai');
         $presence = '<span class="btn btn-link btn-lg text-decoration-none"
-        onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+        onclick="changePresence(' . $presenceParams . ')">' . $presenceText . '</span>';
 
         return response()->json(['id' => $req->id, 'btn' => $presence, 'req' => $req->all()]);
     }
