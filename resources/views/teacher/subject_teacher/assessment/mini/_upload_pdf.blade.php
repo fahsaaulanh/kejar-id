@@ -57,13 +57,13 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="question" class="font-weight-bold">Banyaknya Soal</label>
-                                    <input type="number" class="form-control" name="total_questions" placeholder="Ketik jumlah soal" required="" autocomplete="off">
+                                    <input type="number" class="form-control" name="total_question" placeholder="Ketik jumlah soal" required="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="answer" class="font-weight-bold">Pilihan Jawaban</label>
-                                    <select name="choices_number" class="form-control">
+                                    <select name="total_choices" class="form-control">
                                         <option value=3>3</option>
                                         <option value=4 {{($grade < 10 ? 'selected' : '')}}>4</option>
                                         <option value=5 {{($grade >= 10 ? 'selected' : '')}}>5</option>
@@ -80,9 +80,9 @@
                             </div>
                         </div>
                     @else
-                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['total_questions'] ?? 0)}} name="total_questions" placeholder="Ketik jumlah soal" autocomplete="off">
+                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['total_question'] ?? 0)}} name="total_question" placeholder="Ketik jumlah soal" autocomplete="off">
                     <input type="hidden" class="form-control" value={{($miniAssessments[0]['duration'] ?? 0)}} name="duration" placeholder="Ketik durasi" autocomplete="off">
-                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['choices_number'] ?? 0)}} name="choices_number" placeholder="Pilihan jawaban" autocomplete="off">
+                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['total_choices'] ?? 0)}} name="total_choices" placeholder="Pilihan jawaban" autocomplete="off">
                     <input type="hidden" class="form-control" value={{($miniAssessments[0]['pdf_password'] ?? '')}} name="pdf_password" placeholder="Ketik token/password" autocomplete="off">
                     @endif
                 </div>

@@ -127,19 +127,23 @@ Route::middleware('session')->group(function () {
             //
 
             // Assessments
-            Route::get('{assessmentGroupId}/subject', 'Teacher\AssessmentController@subjects');
-            Route::get(
-                '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
-                'Teacher\AssessmentController@assessment',
-            );
-            Route::post(
-                '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
-                'Teacher\AssessmentController@createMiniAssessment',
-            );
-            Route::patch(
-                '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{miniAssessmentId}',
-                'Teacher\AssessmentController@settingMiniAssessment',
-            );
+            Route::prefix('subject-teacher')->group(function () {
+                Route::get('{assessmentGroupId}/subject', 'Teacher\AssessmentController@subjects');
+                Route::get(
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
+                    'Teacher\AssessmentController@assessment',
+                );
+                Route::post(
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
+                    'Teacher\AssessmentController@createMiniAssessment',
+                );
+                Route::patch(
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{miniAssessmentId}',
+                    'Teacher\AssessmentController@settingMiniAssessment',
+                );
+
+                Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewMini');
+            });
 
             //
 
