@@ -7,7 +7,6 @@ use App\Services\AssessmentGroup as AssessmentGroupApi;
 use App\Services\MiniAssessment as miniAssessmentApi;
 use App\Services\School as SchoolApi;
 use App\Services\User as UserApi;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AssessmentController extends Controller
@@ -70,13 +69,15 @@ class AssessmentController extends Controller
         $filterMA = [
             'filter[grade]' => $grade,
             'filter[group]' => $assessmentGroupId,
+            'filter[subject_id]' => $subjectId,
         ];
         $miniAssessments = $miniAssessmentApi->index($filterMA);
+        $dataAssessment = ($miniAssessments['data'] ?? []);
 
         return view('teacher.subject_teacher.assessment.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
-            ->with('miniAssessments', $miniAssessments['data'])
+            ->with('miniAssessments', $dataAssessment)
             ->with('miniAssessmentsMeta', $miniAssessments['meta'])
             ->with('subject', $subjectDetail['data'])
             ->with('grade', $grade)
@@ -94,19 +95,18 @@ class AssessmentController extends Controller
                 'file_name' => $request['pdf_name'],
             ],
         ];
-        $dif = Carbon::now('UTC')->diffInHours(date('Y-m-d H:i:s'));
-        $t = Carbon::now()->addHours($dif + 1);
+        $now = DATE('Y-m-d H:i:s');
         $payload = [
             'title' => $request['title'],
             'duration' => $request['duration'],
             'subject_id' => $subjectId,
             'grade' => $grade,
             'group' => $assessmentGroupId,
-            'start_time' => json_encode($t),
-            'expiry_time' => json_encode($t->addMinutes($duration)),
+            'start_time' => $now,
+            'expiry_time' => $now,
             'pdf_password' => $request['pdf_password'],
             'total_question' => $request['total_question'],
-            'total_choices' => $request['total_choices'],
+            'total_choices' => $request['choices_number'],
         ];
         $create = $miniAssessmentApi->create($reqFile, $payload);
         if ($create) {
@@ -192,7 +192,7 @@ class AssessmentController extends Controller
                 $view .= ' <div class="row">';
 
                 for ($c = 1; $c <= $number; $c++) {
-                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\ 
+                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
                     onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
                     id="pts-choice-' . $i . '-' . $c . '">';
                     $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Exports\MiniAssessment\ScoreBystudentGroupExport;
 use App\Http\Controllers\Controller;
+use App\Services\AssessmentGroup as AssessmentGroupApi;
 use App\Services\Batch as BatchApi;
 use App\Services\MiniAssessment as miniAssessmentApi;
 use App\Services\School as SchoolApi;
@@ -42,22 +43,21 @@ class MiniAssessmentController extends Controller
 
     public function miniAssessmentGroups($val, $type = 'title')
     {
-        $miniAssessmentGroup = $type === 'value' ? [
-            'PTS-semester-ganjil-2020-2021' => 'pts ganjil 2020-2021',
-            'PTS-susulan-semester-ganjil-2020-2021' => 'pts susulan ganjil 2020-2021',
-        ] : [
-            'PTS-semester-ganjil-2020-2021' => 'PTS Semester Ganjil 2020-2021',
-            'PTS-susulan-semester-ganjil-2020-2021' => 'PTS Susulan Semester Ganjil 2020-2021',
-        ];
+        $AssessmentGroupApi = new AssessmentGroupApi;
+        $detail = $AssessmentGroupApi->detail($val);
+        $ret = '';
 
-        if ($type === 'header') {
-            $miniAssessmentGroup = [
-                'pts ganjil 2020-2021' => 'PTS Semester Ganjil 2020-2021',
-                'pts susulan ganjil 2020-2021' => 'PTS Susulan Semester Ganjil 2020-2021',
+        if ($detail['status'] === 200) {
+            $data = $detail['data'];
+            $types = [
+                'title' => $data['title'],
+                'value' => $data['id'],
+                'header' => $data['title'],
             ];
+            $ret = $types[$type];
         }
 
-        return $miniAssessmentGroup[$val];
+        return $ret;
     }
 
     public function subjects(Request $req, $type, $miniAssessmentGroupValue)
