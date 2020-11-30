@@ -38,7 +38,7 @@
             </script>
         @endif
 
-        <form onsubmit="event.preventDefault(); searchName();">
+        <form method="get" action="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject') }}">
             <div class="row mb-5">
                 <div class="col-10">
                     <div class="input-group">
@@ -47,7 +47,7 @@
                                 <i class="kejar-search text-muted"></i>
                             </h2>
                         </span>
-                        <input class="form-control py-2 border-left-0 border" placeholder="Cari mapel..." id="subject_name" type="search" value="{{(request()->name ?? '')}}">
+                        <input name="name" value="{{(request()->name ?? '')}}" class="form-control py-2 border-left-0 border" placeholder="Cari mapel..." id="subject_name" type="search">
                     </div>
                 </div>
                 <div class="col-2">
@@ -59,11 +59,11 @@
         </form>
 
         <!-- Pagination -->
-        <nav class="navigation mt-5">
-            <div>
-                <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} mapel</span>
-            </div>
-            @if($subjectMeta && ($subjectMeta['total'] > 20))
+        @if($subjectMeta && ($subjectMeta['total'] > 20))
+            <nav class="navigation mt-5">
+                <div>
+                    <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} mapel</span>
+                </div>
                 <ul class="pagination">
                     <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
                         <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
@@ -77,8 +77,8 @@
                         <a class="page-link" href="?page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
                     </li>
                 </ul>
-            @endif()
-        </nav>
+            </nav>
+        @endif()
 
         <!-- List of Stages (Teacher)-->
         <div class="list-group" data-url="#" data-token="{{ csrf_token() }}">
@@ -107,11 +107,11 @@
         </div>
 
         <!-- Pagination -->
-        <nav class="navigation mt-5">
-            <div>
-                <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} mapel</span>
-            </div>
-            @if($subjectMeta && ($subjectMeta['total'] > 20))
+        @if($subjectMeta && ($subjectMeta['total'] > 20))
+            <nav class="navigation mt-5">
+                <div>
+                    <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} mapel</span>
+                </div>
                 <ul class="pagination">
                     <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
                         <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
@@ -125,32 +125,12 @@
                         <a class="page-link" href="?page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
                     </li>
                 </ul>
-            @endif()
-        </nav>
+            </nav>
+        @endif()
 
     </div>
 @endsection
 
 
 @push('script')
-<script>
-    function searchName(){
-        var loc = window.location.href
-        var web = window.location.href.split('?');
-        var search = $('#subject_name').val();
-        if(loc.includes('name') == true){
-            web = web.map(item => {
-                if(item.includes('name') == true){
-                    item ="name=" + search;
-                }
-                return item
-            })
-            web = web.join("?");
-        }else{
-            web.push("name=" + search)
-        }
-        console.log(web)
-        location.replace(web);
-    }
-</script>
 @endpush

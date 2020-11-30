@@ -25,7 +25,7 @@
                     @endif
                 </div>
             </div>
-            <form action="{{ URL('teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment') }}" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
                     <input type="hidden" name="title" value="Paket {{$miniAssessmentsMeta['total'] + 1}}" />

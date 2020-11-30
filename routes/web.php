@@ -141,7 +141,6 @@ Route::middleware('session')->group(function () {
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{miniAssessmentId}',
                     'Teacher\AssessmentController@settingMiniAssessment',
                 );
-
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewMini');
             });
 

@@ -132,7 +132,17 @@
                     }
                 }
             }
+
+            &.table-normal{
+                tbody tr{
+                    td {
+                        vertical-align: top !important;
+                    }
+                }
+            }
+
         }
+
 
         &::-webkit-scrollbar {
             height: 0.8rem;

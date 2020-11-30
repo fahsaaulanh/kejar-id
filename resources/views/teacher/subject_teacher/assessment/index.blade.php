@@ -6,14 +6,14 @@
     <div class="container">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/games') }}">
+        <a class ="btn-back" href="{{ url('/teacher/subject-teacher/'.$assessmentGroupId.'/subject') }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
-            <span class="breadcrumb-item active">{{$assessmentGroup}}</span>
+            <a class="breadcrumb-item" href="{{ url('/teacher/subject-teacher/'.$assessmentGroupId.'/subject') }}">{{$assessmentGroup}}</a>
             <span class="breadcrumb-item active">{{$subject['name']}}</span>
         </nav>
 
@@ -49,7 +49,7 @@
             </button>
         @endif
 
-        <ul class="nav nav-tabs mt-8" id="myTab" role="tablist">
+        <ul class="nav nav-justified nav-tab-kejar  mt-8" id="myTab" role="tablist">
             <li class="nav-item w-50 text-center" role="presentation">
                 <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Penugasan dan Nilai</a>
             </li>
@@ -121,10 +121,10 @@
                         <div class="w-100 border-grey-13 px-4 py-3">
                             <h5 class="pb-8">Jawablah pertanyaan berikut!</h5>
                             <div class="pb-8">
-                                Pada suatu hari, hiduplah dua orang bersaudara bernama Ana dan Elsa. 
-                                Mereka berdua tinggal pada sebuah istana di negeri yang bernama Arandelle. 
-                                Sejak kecil, Ana dan Elsa senang bermain bersama. 
-                                Permainan favorit mereka adalah membuat manusia salju. Mereka juga senang bercerita. 
+                                Pada suatu hari, hiduplah dua orang bersaudara bernama Ana dan Elsa.
+                                Mereka berdua tinggal pada sebuah istana di negeri yang bernama Arandelle.
+                                Sejak kecil, Ana dan Elsa senang bermain bersama.
+                                Permainan favorit mereka adalah membuat manusia salju. Mereka juga senang bercerita.
                                 Mereka saling menyayangi. Jawaban yang tepat adalah ...
                             </div>
                             <div class="pb-8">
@@ -173,7 +173,9 @@
         </div>
     </div>
 @include('teacher.subject_teacher.assessment.mini._upload_pdf')
-@include('teacher.subject_teacher.assessment.mini._setting_package')
+@if(count($miniAssessments) > 0)
+    @include('teacher.subject_teacher.assessment.mini._setting_package')
+@endif
 @include('teacher.subject_teacher.assessment.mini._info_token')
 @include('teacher.subject_teacher.assessment.regular.create._pilihan_ganda')
 @include('teacher.subject_teacher.assessment.regular.update._pilihan_ganda')
@@ -254,7 +256,7 @@
 
         $(`#pts-choice-${order}-${choice}`).addClass('active');
 
-        $(`#pts-choice-load-${order}`).delay(1000).show(500); 
+        $(`#pts-choice-load-${order}`).delay(1000).show(500);
 
         await setTimeout(function() {
             $(`#pts-choice-load-${order}`).show();
@@ -265,7 +267,7 @@
             $(`#pts-choice-success-${order}`).show();
         }, 3000);
     }
-    
+
     function showLoadingCreate(){
         $("#LoadingCreate").show();
     }

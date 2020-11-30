@@ -10,7 +10,7 @@
                         <i class="kejar kejar-close"></i>
                     </button>
                 </div>
-                <form action="{{ URL('teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/'.$miniAssessments[0]['id']) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/'.$miniAssessments[0]['id']) }}" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         @method('PATCH')
                         @csrf
@@ -23,13 +23,13 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="question" class="font-weight-bold">Banyaknya Soal</label>
-                                    <input type="number" class="form-control" value={{($miniAssessments[0]['total_questions'] ?? 0)}} name="total_questions" placeholder="Ketik jumlah soal" required="" autocomplete="off">
+                                    <input type="number" class="form-control" value={{($miniAssessments[0]['total_question'] ?? 0)}} name="total_question" placeholder="Ketik jumlah soal" required="" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="answer" class="font-weight-bold">Pilihan Jawaban</label>
-                                    <select name="choices_number" class="form-control" value={{($miniAssessments[0]['choices_number'] ?? 0)}}>
+                                    <select name="total_choices" class="form-control" value={{($miniAssessments[0]['total_choices'] ?? 0)}}>
                                         <option value=0 disabled {{(isset($miniAssessments[0]['choices_number']) == false ? 'selected' : '')}}>Pilih jumlah jawaban</option>
                                         <option value=3>3</option>
                                         <option value=4>4</option>
