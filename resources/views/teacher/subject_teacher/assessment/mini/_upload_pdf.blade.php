@@ -3,8 +3,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div>
-                    <h5 class="modal-title">{{(count($miniAssessments) == 0 ? 'Unggah Naskah Soal': 'Tambah Paket Soal')}}</h5>
-                    <h6>Paket {{$miniAssessmentsMeta['total'] + 1}}</h6>
+                    <h5 class="modal-title">{{(count($assessments) == 0 ? 'Unggah Naskah Soal': 'Tambah Paket Soal')}}</h5>
+                    <h6>Paket {{$assessmentsMeta['total'] + 1}}</h6>
                 </div>
                 <button class="close modal-close" data-dismiss="modal">
                     <i class="kejar kejar-close"></i>
@@ -15,7 +15,7 @@
                     <i class="kejar-info"></i>
                 </div>
                 <div class="col">
-                    @if(count($miniAssessments) == 0)
+                    @if(count($assessments) == 0)
                         <h6 class="text-grey-3 py-2">Semua soal pada naskah yang diinput harus berbentuk Pilihan Ganda.</h6>
                     @else
                         <h6 class="text-grey-3 py-2">
@@ -28,7 +28,8 @@
             <form action="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment') }}" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
-                    <input type="hidden" name="title" value="Paket {{$miniAssessmentsMeta['total'] + 1}}" />
+                    <input type="hidden" name="title" value="Paket {{$assessmentsMeta['total'] + 1}}" />
+                    <input type="hidden" id="astype" name="type" value="" />
                     <div class="row mb-4">
                         <div class="col-12">
                             <label for="pdf_name" class="font-weight-bold">Naskah Soal</label>
@@ -47,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    @if(count($miniAssessments) == 0)
+                    @if(count($assessments) == 0)
                         <div class="form-group">
                             <label for="token" class="font-weight-bold">Token/Password PDF</label>
                             <h6 class="mb-2">Ketik token/password yang digunakan pada naskah PDF (jika ada). <a class="btn-link bg-white" data-toggle="modal" data-target="#info_token">Pelajari</a></h6>
@@ -80,10 +81,11 @@
                             </div>
                         </div>
                     @else
-                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['total_question'] ?? 0)}} name="total_question" placeholder="Ketik jumlah soal" autocomplete="off">
-                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['duration'] ?? 0)}} name="duration" placeholder="Ketik durasi" autocomplete="off">
-                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['total_choices'] ?? 0)}} name="total_choices" placeholder="Pilihan jawaban" autocomplete="off">
-                    <input type="hidden" class="form-control" value={{($miniAssessments[0]['pdf_password'] ?? '')}} name="pdf_password" placeholder="Ketik token/password" autocomplete="off">
+                    <input type="hidden" value={{($assessments[0]['type'] ?? 0)}} name="type" />
+                    <input type="hidden" value={{$question}} name="total_question" placeholder="Ketik jumlah soal" autocomplete="off" />
+                    <input type="hidden" value={{($assessments[0]['duration'] ?? 0)}} name="duration" placeholder="Ketik durasi" autocomplete="off" />
+                    <input type="hidden" value={{$choices}} name="total_choices" placeholder="Pilihan jawaban" autocomplete="off" />
+                    <input type="hidden" value="{{($assessments[0]['pdf_password'] ?? '')}}" name="pdf_password" placeholder="Ketik token/password" autocomplete="off" />
                     @endif
                 </div>
                 <div class="modal-footer">

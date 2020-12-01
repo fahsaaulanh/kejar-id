@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Services\Assessment as AssessmentApi;
 use App\Services\AssessmentGroup as AssessmentGroupApi;
-use App\Services\MiniAssessment as miniAssessmentApi;
 use App\Services\School as SchoolApi;
 use App\Services\User as UserApi;
 use Illuminate\Http\Request;
@@ -65,29 +65,34 @@ class AssessmentController extends Controller
 
         $subjectDetail = $schoolApi->subjectDetail($schoolId, $subjectId);
 
-        $miniAssessmentApi = new miniAssessmentApi;
+        $AssessmentApi = new AssessmentApi;
         $filterMA = [
             'filter[grade]' => $grade,
             'filter[group]' => $assessmentGroupId,
             'filter[subject_id]' => $subjectId,
         ];
-        $miniAssessments = $miniAssessmentApi->index($filterMA);
-        $dataAssessment = ($miniAssessments['data'] ?? []);
+        $assessments = $AssessmentApi->index($filterMA);
+        $dataAssessment = ($assessments['data'] ?? []);
+
+        $dataQuestion = (count($dataAssessment) > 0 ? $AssessmentApi->questions($dataAssessment[0]['id']) : []);
+        $dataChoices = (count($dataQuestion) > 0 ? $dataQuestion['data'][0]['choices'] : []);
 
         return view('teacher.subject_teacher.assessment.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
-            ->with('miniAssessments', $dataAssessment)
-            ->with('miniAssessmentsMeta', $miniAssessments['meta'])
+            ->with('assessments', $dataAssessment)
+            ->with('question', count($dataQuestion['data'] ?? []))
+            ->with('choices', count($dataChoices))
+            ->with('assessmentsMeta', $assessments['meta'])
             ->with('subject', $subjectDetail['data'])
             ->with('grade', $grade)
-            ->with('type', 'mini')
+            ->with('type', ($dataAssessment[0]['type'] ?? ''))
             ->with('message', 'Data success');
     }
 
     public function createMiniAssessment(Request $request, $assessmentGroupId, $subjectId, $grade)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
+        $AssessmentApi = new AssessmentApi;
         $reqFile = [
             [
                 'file_extension' => 'pdf',
@@ -95,20 +100,17 @@ class AssessmentController extends Controller
                 'file_name' => $request['pdf_name'],
             ],
         ];
-        $now = DATE('Y-m-d H:i:s');
         $payload = [
-            'title' => $request['title'],
             'duration' => $request['duration'],
             'subject_id' => $subjectId,
             'grade' => $grade,
-            'group' => $assessmentGroupId,
-            'start_time' => $now,
-            'expiry_time' => $now,
+            'assessment_group_id' => $assessmentGroupId,
+            'type' => $request['type'],
             'pdf_password' => $request['pdf_password'],
             'total_question' => $request['total_question'],
-            'total_choices' => $request['choices_number'],
+            'total_choices' => $request['total_choices'],
         ];
-        $create = $miniAssessmentApi->create($reqFile, $payload);
+        $create = $AssessmentApi->create($reqFile, $payload);
         if ($create) {
             return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil tersimpan!']);
         }
@@ -116,23 +118,21 @@ class AssessmentController extends Controller
         return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal tersimpan!']);
     }
 
-    public function settingMiniAssessment(Request $request, $assessmentGroupId, $subjectId, $grade, $miniAssessmentId)
+    public function settingMiniAssessment(Request $request, $assessmentGroupId, $subjectId, $grade, $assessmentId)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
-        $miniAssessmentDetail = $miniAssessmentApi->detail($miniAssessmentId);
+        $AssessmentApi = new AssessmentApi;
+        $assessmentDetail = $AssessmentApi->detail($assessmentId);
         $payload = [
-            'title' => $miniAssessmentDetail['data']['title'],
             'duration' => $request['duration'],
             'subject_id' => $subjectId,
             'grade' => $grade,
-            'group' => $assessmentGroupId,
-            'start_time' => $miniAssessmentDetail['data']['start_time'],
-            'expiry_time' => $miniAssessmentDetail['data']['expiry_time'],
+            'assessment_group_id' => $assessmentGroupId,
+            'type' => $assessmentDetail['data']['type'],
             'pdf_password' => $request['pdf_password'],
             'total_question' => $request['total_question'],
             'total_choices' => $request['total_choices'],
         ];
-        $update = $miniAssessmentApi->update($miniAssessmentId, $payload);
+        $update = $AssessmentApi->update($assessmentId, $payload);
         if ($update) {
             return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil diperbaharui!']);
         }
@@ -142,8 +142,8 @@ class AssessmentController extends Controller
 
     public function viewMini($id)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
-        $detail = $miniAssessmentApi->detail($id);
+        $AssessmentApi = new AssessmentApi;
+        $detail = $AssessmentApi->detail($id);
         $data = [];
         $data['detail'] = $detail['data'];
         $data['detail']['created'] = '';
@@ -157,7 +157,7 @@ class AssessmentController extends Controller
             ', ' . $this->dateFormat($detail['data']['start_time'], 'H.i') .
             ' - ' . $this->dateFormat($detail['data']['expiry_time'], 'H.i');
 
-        // $answersAPI = $miniAssessmentApi->answers($id);
+        // $answersAPI = $AssessmentApi->answers($id);
 
         $total_question = 50;
         $total_choices = 5;

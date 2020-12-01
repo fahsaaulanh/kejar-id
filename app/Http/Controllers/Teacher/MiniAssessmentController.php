@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Teacher;
 
 use App\Exports\MiniAssessment\ScoreBystudentGroupExport;
 use App\Http\Controllers\Controller;
+use App\Services\Assessment as assessmentApi;
 use App\Services\AssessmentGroup as AssessmentGroupApi;
 use App\Services\Batch as BatchApi;
-use App\Services\MiniAssessment as miniAssessmentApi;
 use App\Services\School as SchoolApi;
 use App\Services\StudentCounselor as StudentCounselorApi;
 use App\Services\StudentGroup as StudentGroupApi;
@@ -240,7 +240,7 @@ class MiniAssessmentController extends Controller
     {
         $subjectIds = array_keys($req->subjects);
 
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
         $filterScore = [
             'per_page' => count($req->subjects),
         ];
@@ -335,7 +335,7 @@ class MiniAssessmentController extends Controller
     // tes view
     public function viewTes($id)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
         $detail = $miniAssessmentApi->detail($id);
         $data = [];
         $data['detail'] = $detail['data'];
@@ -386,7 +386,7 @@ class MiniAssessmentController extends Controller
                 $view .= ' <div class="row">';
 
                 for ($c = 1; $c <= $number; $c++) {
-                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\ 
+                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
                     onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
                     id="pts-choice-' . $i . '-' . $c . '">';
                     $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';
@@ -446,7 +446,7 @@ class MiniAssessmentController extends Controller
 
     public function view($id)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
         $detail = $miniAssessmentApi->detail($id);
         $data = [];
         $data['detail'] = $detail['data'];
@@ -543,7 +543,7 @@ class MiniAssessmentController extends Controller
 
     public function packageData(Request $req)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
         $group = $this->miniAssessmentGroups($req->miniAssessmentGroupValue, 'value');
         $filter = [
             'filter[subject_id]' => $req->subjectId,
@@ -581,7 +581,7 @@ class MiniAssessmentController extends Controller
 
                 // $view .= '</a>';
                 // $view .= '</div>';
-                
+
                 // tes view
                 if ($v['validated'] === 1) {
                     $view .= '<div class="list-group-item" data-id="' . $v['id'] . '">';
@@ -794,7 +794,7 @@ class MiniAssessmentController extends Controller
             'validate_by' => session()->get('user.id'),
         ];
 
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
         $miniAssessmentApi->updateValidation($req->id, $payload);
 
         return redirect()->back()->with(
@@ -847,7 +847,7 @@ class MiniAssessmentController extends Controller
         $students = $UserApi->students($filter);
 
         $data = [];
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
 
         if (!$students['data']) {
             $view = '<tr>
@@ -1017,7 +1017,7 @@ class MiniAssessmentController extends Controller
 
     public function updateScore(Request $req)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
         if (!$req->score) {
             $req->score = 0;
         }
@@ -1072,7 +1072,7 @@ class MiniAssessmentController extends Controller
 
     public function updateNote(Request $req)
     {
-        $miniAssessmentApi = new miniAssessmentApi;
+        $miniAssessmentApi = new assessmentApi;
         $id = $req->id;
         $payload = $req->all();
         unset($payload['id']);
