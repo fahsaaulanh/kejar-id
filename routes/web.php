@@ -138,7 +138,7 @@ Route::middleware('session')->group(function () {
                     'Teacher\AssessmentController@createMiniAssessment',
                 );
                 Route::patch(
-                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{miniAssessmentId}',
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{assessmentId}',
                     'Teacher\AssessmentController@settingMiniAssessment',
                 );
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewMini');
