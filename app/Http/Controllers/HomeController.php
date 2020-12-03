@@ -20,7 +20,7 @@ class HomeController extends Controller
             }
 
             if ($user['role'] === 'STUDENT') {
-                return redirect('/student/games');
+                return redirect('/student/dashboard');
             }
 
             if ($user['role'] === 'ADMIN') {
@@ -83,11 +83,11 @@ class HomeController extends Controller
         ];
 
         return view('teacher.dashboard.index')
-               ->with('user', $user)
-               ->with('wikramaId', $wikramaId)
+            ->with('user', $user)
+            ->with('wikramaId', $wikramaId)
             //    ->with('miniAssesmentGroup', $miniAssesmentGroup)
-               ->with('reportAccess', $this->reportAccess)
-               ->with('academicYear', $academicYear);
+            ->with('reportAccess', $this->reportAccess)
+            ->with('academicYear', $academicYear);
     }
 
     public function student(Request $request)
@@ -100,9 +100,9 @@ class HomeController extends Controller
             return redirect('/login');
         }
 
-        return view('student.games.index')
-                ->with('user', $user)
-                ->with('academicYear', $academicYear);
+        return view('student.dashboard.index')
+            ->with('user', $user)
+            ->with('academicYear', $academicYear);
     }
 
     public function logout(Request $request)

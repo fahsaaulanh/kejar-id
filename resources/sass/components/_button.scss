@@ -50,7 +50,7 @@
     }
 }
 
-.btn-delete-answer{
+.btn-delete-answer {
     display: inline-block;
     border: 0;
     background-color: transparent;
@@ -145,6 +145,7 @@
     &:hover {
         color: $blue-2 !important;
         text-decoration: none;
+
         i {
             &:before {
                 color: $blue-2;
@@ -180,9 +181,11 @@
 
     &.order-status {
         display: block;
+
         i.kejar-belum-mengerjakan1::before {
             color: $red-2;
         }
+
         i.kejar-sudah-dikerjakan::before {
             color: $green-2;
         }
@@ -223,6 +226,7 @@
     &:hover {
         color: $blue-2 !important;
         text-decoration: none;
+
         i {
             &:before {
                 color: $blue-2;
@@ -267,11 +271,11 @@
     }
 }
 
-.play-button{
+.play-button {
     display: flex;
     justify-content: flex-end;
 
-    .btn-next{
+    .btn-next {
         display: inline-block;
         width: 7.5rem !important;
         height: 2rem;
@@ -287,33 +291,35 @@
         color: $white;
         background: $purple;
 
-        i{
+        i {
             display: block !important;
             margin-left: 0.5rem !important;
             margin-top: -0.6rem !important;
-            &:before{
+
+            &:before {
                 color: $white;
                 font-size: 2rem;
             }
         }
 
-        &:hover{
+        &:hover {
             background: $purple-2;
         }
     }
 }
 
-.btn-group-between{
+.btn-group-between {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .btn-page-management{
+    .btn-page-management {
         text-align: right;
         width: 30rem;
         height: 3.5rem;
         line-height: 3.5rem;
-        a{
+
+        a {
             display: inline-block;
             width: 14rem;
             height: 100%;
@@ -324,26 +330,30 @@
             line-height: 2rem;
             color: $grey-8;
 
-            i:before{
+            i:before {
                 color: $grey-8;
             }
 
-            &:hover{
+            &:hover {
                 text-decoration: none;
                 color: $grey-8;
-                i:before{
+
+                i:before {
                     color: $grey-8;
                 }
             }
 
-            &.active{
+            &.active {
                 color: $grey-3;
-                i:before{
+
+                i:before {
                     color: $grey-3;
                 }
-                &:hover{
+
+                &:hover {
                     color: $blue-2;
-                    i:before{
+
+                    i:before {
                         color: $blue-2;
                     }
                 }
@@ -356,7 +366,6 @@
     display: flex;
     flex-direction: row;
     padding: 1.6rem 2rem !important;
-    text-transform: uppercase;
     text-align: center;
     vertical-align: middle;
     align-items: center;
@@ -364,17 +373,126 @@
     color: $white;
     background: $purple;
 
-    i{
+    i {
         display: block !important;
-        font-size: 1.6rem !important;
+        font-size: 2.6rem !important;
         margin-top: 0.2rem !important;
-        &:before{
+
+        &:before {
             color: $white;
             font-size: 2.4rem;
         }
     }
 
-    &:hover{
+    &:hover {
+        background: $purple-2;
+    }
+}
+
+.save-answer {
+    i:before {
+        color: $green-2;
+        font-size: 2.2rem;
+    }
+}
+
+.assesment-btn-exit {
+    display: flex;
+    align-items: center;
+
+    .kejar-exit {
+        color: #ffffff;
+    }
+}
+
+.assesment-btn-question {
+    display: none;
+    flex-direction: row;
+    height: 3.2rem;
+    width: 18.2rem;
+    padding: 0.8rem 1.2rem !important;
+    margin-bottom: 1.6rem;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    border-radius: 0;
+    color: $grey-3;
+    background: $grey-15;
+
+    h5 {
+        padding-left: 8px;
+        font-size: 1.3rem;
+    }
+
+    i {
+        display: block !important;
+        font-size: 1.6rem !important;
+        margin-top: 0.2rem !important;
+
+        &:before {
+            color: $grey-3;
+            font-size: 1.4rem;
+        }
+    }
+
+    &:hover {
+        background: $purple-2;
+    }
+}
+
+.assesment-btn-next {
+    display: flex;
+    flex-direction: row;
+    height: 3.6rem;
+    padding: 1.6rem 2rem;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    border-radius: 0;
+    color: $white;
+    background: $green-2;
+
+    i {
+        display: block !important;
+        font-size: 1.6rem !important;
+        margin-top: 0.2rem !important;
+
+        &:before {
+            color: $white;
+            font-size: 2rem;
+        }
+    }
+
+    &:hover {
+        background: $purple-2;
+    }
+}
+
+.assesment-btn-before {
+    display: flex;
+    flex-direction: row;
+    height: 3.6rem;
+    padding: 0.8rem 1.6rem;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    border-radius: 0;
+    color: $white;
+    background: #DBE4EC;
+    ;
+
+    i {
+        display: block !important;
+        // font-size: 1.6rem !important;
+        margin-top: 0.2rem !important;
+
+        &:before {
+            color: $white;
+            font-size: 2rem;
+        }
+    }
+
+    &:hover {
         background: $purple-2;
     }
 }
@@ -387,17 +505,18 @@
     color: $blue;
     background: $blue-tp2;
 
-    i{
+    i {
         display: block !important;
         font-size: 1.6rem !important;
         margin-top: 0.2rem !important;
-        &:before{
+
+        &:before {
             color: $blue;
             font-size: 1.6rem;
         }
     }
 
-    &:hover{
+    &:hover {
         background: $blue-tp;
     }
 }
@@ -408,6 +527,7 @@
     height: 3.2rem;
     justify-content: flex-end;
     width: 3.2rem;
+    font-weight: 700;
 }
 
 .pts-choice {
@@ -441,15 +561,47 @@
     color: $grey-3 !important;
 }
 
-#logout{
-    .btn-logout{
-        &:hover{
+.assessment-choice {
+    display: flex;
+    width: 2rem;
+    align-items: center;
+    margin-left: 2rem;
+    cursor: pointer;
+    font-size: 15px;
+    justify-content: center;
+    height: 2rem;
+    color: $blue;
+    border: 2px solid $blue;
+    border-radius: 50%;
+    transition: background-color 0.2s, color 0.2s;
+
+    &.active {
+        background-color: $grey-3;
+        border: 2px solid $grey-3;
+        color: $white;
+        transition: background-color 0.2s, color 0.2s;
+    }
+}
+
+.assessment-choice-check {
+    display: flex;
+    width: 6.8rem;
+    align-items: center;
+    cursor: pointer;
+    justify-content: center;
+    height: 3.2rem;
+    color: $grey-3 !important;
+}
+
+#logout {
+    .btn-logout {
+        &:hover {
             color: $white !important;
         }
     }
 }
 
-.btn-ma-view-as{
+.btn-ma-view-as {
     background-color: $blue-tp2;
     height: 160px;
     width: 160px;
@@ -460,7 +612,7 @@
     justify-content: flex-start;
     border-width: 0;
 
-    .icon{
+    .icon {
         text-align: center;
         width: 64px;
         height: 64px;
@@ -477,7 +629,7 @@
     }
 }
 
-.remove-btn{
+.remove-btn {
     display: inline-block;
     border: 0;
     height: 4rem;
@@ -485,7 +637,7 @@
     text-align: center;
     background-color: transparent;
 
-    &:focus{
+    &:focus {
         outline: 0;
     }
 }

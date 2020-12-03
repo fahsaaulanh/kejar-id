@@ -59,6 +59,10 @@
 
 @endsection
 
+@include('student.subjects._schedule_not_started')
+@include('student.subjects._schedule_over')
+@include('student.subjects._task_done')
+
 @push('script')
 <script>
 
@@ -67,7 +71,7 @@
     window.document.title = `${title}`;
 
     function viewDetail(id, name) {
-        $("#view-detail").modal('show');
+        // $("#view-detail").modal('show');
         $("#viewDetailContent").html(`
             <div class="row justify-content-center">
                 <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
@@ -85,7 +89,7 @@
             </div>
         `);
 
-        const url = "{!! URL::to('/student/mini_assessment/view-detail') !!}";
+        const url = "{!! URL::to('/student/subjects/view-detail') !!}";
         let data  = new Object();
 
         data = {
@@ -141,7 +145,7 @@
             </div>
         `);
 
-        const url = "{!! URL::to('/student/mini_assessment/get-subject') !!}";
+        const url = "{!! URL::to('/student/subjects/get-subject') !!}";
         let data  = new Object();
 
         data = {
@@ -171,7 +175,7 @@
                             <div class="row bg-light py-2 w-100 justify-content-center">\
                                 <h4 class="text-reguler">\
                                 Periksa Koneksi Anda. \
-                                <a href="/student/mini_assessment" class="btn btn-primary btn-lg">\
+                                <a href="/student/12344123/subjects" class="btn btn-primary btn-lg">\
                                 Tampilkan Daftar Mapel </a></h4>\
                             </div>\
                         </div>';
@@ -180,9 +184,9 @@
     }
     subjectIndex();
 
-    function goExam(id, title){
+    function Onboarding(id, title){
         localStorage.setItem('detail_title', title);
-        window.location.href = `/student/mini_assessment/${id}`;
+        window.location.href = `/student/subjects/12342113`;
     }
 </script>
 @endpush

@@ -9,7 +9,16 @@
     padding: 0 2.4rem 0 1.6rem;
     background-color: $black-1;
     min-height: 4rem;
-  }
+}
+
+.navbar-assesment {
+    padding: 0 3.2rem;
+}
+
+.assesment-picture{
+    width: 3.2rem;
+    height: 3.2rem;
+}
 
 .navbar-brand {
     display: flex;
@@ -27,10 +36,10 @@
     }
 }
 
-.navbar-nav{
+.navbar-nav {
 
 
-    .nav-link{
+    .nav-link {
         @include h6-reg;
 
         @media screen and (max-width: $mobile-breakpoint) {
@@ -38,35 +47,37 @@
             padding-bottom: 1rem;
         }
 
-        &:hover{
+        &:hover {
             color: $grey-15 !important;
         }
     }
 
-    .dropdown-menu{
+    .dropdown-menu {
         color: $grey-3;
         border-radius: 8px;
 
-        .dropdown-item{
+        .dropdown-item {
 
-            i{
-                &:before{
+            i {
+                &:before {
                     @include h5-reg;
                 }
             }
+
             @include h5-reg;
             padding: 1rem 1.2rem;
         }
     }
 }
 
-.nav-tab-kejar{
-    .nav-item{
-        .nav-link{
+.nav-tab-kejar {
+    .nav-item {
+        .nav-link {
             color: $black-1 !important;
             padding-bottom: 10px;
             box-shadow: inset 0px -2px 0px #EBF1F6;
-            &.active{
+
+            &.active {
                 color: $blue !important;
                 box-shadow: inset 0px -2px 0px #3167F6;
                 padding-bottom: 10px;

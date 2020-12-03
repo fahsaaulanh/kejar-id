@@ -1,12 +1,91 @@
-*{
+* {
     font-family: 'Roboto Mono';
 }
 
-.exam{
+// New exam Assessment Regular
+.drawer-exam {
+    min-width: 20.8rem;
+    padding: 1.8rem 1.6rem 1.8rem 2rem;
+    height: calc(100vh - 40px);
+    max-height: 100vh;
+    overflow: auto;
+}
+
+.list-number {
+    width: 4.8rem;
+    height: 4rem;
+    border: 1px solid #7C92A7;
+    border-radius: 4px;
+    text-align: center;
+    padding-top: 6px;
+}
+
+.list-number.active{
+    border: 1px solid $blue !important;
+    color: $blue!important;
+    font-weight: 700;
+}
+
+.list-number.selected{
+    background-color: #BDD0E3;
+    color: $white;
+    font-weight: 700;
+    border: 1px solid #BDD0E3;
+}
+
+.container-list-number {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+    grid-gap: 20px 12px;
+    margin-top: 1.8rem;
+}
+
+.content-exam {
+    padding: 4rem;
+}
+
+@media screen and (max-width: 768px) {
+    .assesment-btn-question {
+        display: flex !important;
+    }
+
+    .drawer-exam {
+        position: absolute;
+        background: white;
+    }
+    .content-exam {
+        padding: 2rem;
+    }
+
+    .assesment-btn-next{
+        padding: 1.6rem 1rem!important;
+    }
+
+    .assesment-btn-before{
+        padding: 0.8rem 1rem!important;
+    }
+}
+
+
+
+@media screen and (max-width: 1200px) and (min-width: 769px) {
+    .assesment-btn-question {
+        display: flex !important;
+    }
+
+    .drawer-exam {
+        position: absolute;
+        background: white;
+    }
+
+}
+
+
+.exam {
     padding: 0 1.5rem !important;
 
     /* Timer Stick */
-    .timer-stick{
+    .timer-stick {
         background: #EBF1F6;
         display: block;
         height: 12px;
@@ -16,12 +95,12 @@
         right: 0;
         position: fixed;
         z-index: 10;
-        -moz-box-shadow:    inset 0px 0px 10px 0.2px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow: inset 0px 0px 10px 0.2px rgba(0, 0, 0, 0.05);
         -webkit-box-shadow: inset 0px 0px 10px 0.2px rgba(0, 0, 0, 0.05);
-        box-shadow:         inset 0px 0px 10px 0.2px rgba(0, 0, 0, 0.05);
+        box-shadow: inset 0px 0px 10px 0.2px rgba(0, 0, 0, 0.05);
     }
 
-    .timer-stick .timer-length{
+    .timer-stick .timer-length {
         background: #4DC978;
         width: 100%;
         display: block;
@@ -29,23 +108,23 @@
     }
 
     /* Exam Navbar */
-    .exam-navbar{
+    .exam-navbar {
         margin-top: 44px;
     }
 
-    .exam-navbar .question-amount{
+    .exam-navbar .question-amount {
         font-size: 15px;
         color: #7c92a7 !important;
     }
 
-    .exam-navbar .question-amount .active{
+    .exam-navbar .question-amount .active {
         color: #202020;
         font-weight: bold;
     }
 
     /* Link Logout */
 
-    .exam-navbar .link-logout a{
+    .exam-navbar .link-logout a {
         color: #334E68;
         font-size: 15px;
         display: flex;
@@ -53,20 +132,19 @@
         text-decoration: none;
     }
 
-    .exam-navbar .link-logout a i{
+    .exam-navbar .link-logout a i {
         margin-right: 5px;
     }
 
     /* Command Text */
-    .command{
+    .command {
         margin-top: 8px;
         font-size: 15px;
         color: #202020;
     }
 
     /* Notification */
-    .notification
-    {
+    .notification {
         position: absolute;
         left: 0;
         right: 0;
@@ -78,11 +156,11 @@
         align-items: center;
         justify-content: center;
 
-        .notification-text{
+        .notification-text {
             @include h3;
 
-            i{
-                &:before{
+            i {
+                &:before {
                     @include h3;
                     font-size: 15px;
                 }
@@ -95,24 +173,28 @@
 
     }
 
-    .notification-success, .notification-failed{
+    .notification-success,
+    .notification-failed {
         display: none;
     }
 
-    .notification-success, .notification-success i::before{
+    .notification-success,
+    .notification-success i::before {
         color: #4DC978;
     }
 
-    .notification-failed, .notification-failed i::before{
+    .notification-failed,
+    .notification-failed i::before {
         color: #FF4343;
     }
 
     /* Question */
-    .question{
+    .question {
         margin: 0px auto;
         margin-top: 81px;
     }
-    .question .question-text{
+
+    .question .question-text {
         text-align: center;
         font-size: 64px;
         line-height: initial;
@@ -120,12 +202,12 @@
     }
 
     /* Answer Input */
-    .answer{
+    .answer {
         margin-top: 32px;
         display: block;
     }
 
-    .answer .answer-input{
+    .answer .answer-input {
         border: 0px;
         border-bottom: 4px solid #A6D1FF;
         font-size: 64px;
@@ -138,14 +220,14 @@
     }
 
     /* Next Button */
-    .next-button{
+    .next-button {
         margin: 5.6rem auto;
         padding: 12px 16px;
         font-size: 17px;
         text-align: center;
     }
 
-    .next-button .btn-next{
+    .next-button .btn-next {
         background: #F13392;
         border-radius: 0px;
         color: #f2f2f2;
@@ -154,53 +236,56 @@
         font-weight: bold;
     }
 
-    .next-button .btn-next  i::before{
+    .next-button .btn-next i::before {
         color: white;
         font-size: 25px;
     }
 
     @media screen and (max-width: 1200px) {
-        .question .question-text{
-            font-size: 48px;
-        }
-        .answer .answer-input{
+        .question .question-text {
             font-size: 48px;
         }
 
-        .next-button .btn-next{
+        .answer .answer-input {
+            font-size: 48px;
+        }
+
+        .next-button .btn-next {
             padding: 16px 20px;
         }
 
-        .next-button .btn-next{
+        .next-button .btn-next {
             font-size: 19px;
         }
 
-        .timer-stick{
+        .timer-stick {
             width: 100%;
         }
 
-        .next-button .btn-next  i::before{
+        .next-button .btn-next i::before {
             color: white;
             font-size: 19px;
         }
+
     }
 
 
     @media screen and (max-width: $mobile-breakpoint) {
-        .exam-navbar{
+        .exam-navbar {
             margin-top: 20px;
         }
 
         /* Question */
-        .question .question-text{
+        .question .question-text {
             font-size: 28px;
         }
+
         /* Answer Input */
-        .answer .answer-input{
+        .answer .answer-input {
             font-size: 28px !important;
         }
 
-        .timer-stick{
+        .timer-stick {
             width: 100%;
         }
 
@@ -208,28 +293,29 @@
             margin: 4rem auto;
         }
 
-        .next-button .btn-next{
+        .next-button .btn-next {
             padding: 12px 16px;
         }
-        .next-button .btn-next{
+
+        .next-button .btn-next {
             font-size: 17px;
         }
 
-        .next-button .btn-next  i::before{
+        .next-button .btn-next i::before {
             color: white;
             font-size: 17px;
         }
     }
 
-    .question-item{
+    .question-item {
         display: none;
     }
 
-    .question-item:first-child{
+    .question-item:first-child {
         display: block;
     }
 
-    .btn-next-disabled{
+    .btn-next-disabled {
         background: #EBF1F6 !important;
         color: #ffffff !important;
         pointer-events: none;
@@ -238,54 +324,57 @@
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* Firefox */
     input[type=number] {
-      -moz-appearance: textfield;
+        -moz-appearance: textfield;
     }
+
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* Firefox */
     input[type=number] {
-      -moz-appearance: textfield;
+        -moz-appearance: textfield;
     }
+
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* Firefox */
     input[type=number] {
-      -moz-appearance: textfield;
+        -moz-appearance: textfield;
     }
+
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* Firefox */
     input[type=number] {
-      -moz-appearance: textfield;
+        -moz-appearance: textfield;
     }
 
 
-    .menulis-efektif{
-        .question{
+    .menulis-efektif {
+        .question {
             margin-top: 6.4rem !important;
 
-            .question-text{
+            .question-text {
                 font-size: 2rem !important;
                 font-weight: 500 !important;
                 line-height: 180% !important;
@@ -300,10 +389,10 @@
 
         }
 
-        .answer{
+        .answer {
             margin-top: 2.4rem !important;
 
-            .answer-input{
+            .answer-input {
                 height: 14.8rem !important;
                 width: 100% !important;
                 font-size: 2rem !important;
@@ -318,54 +407,57 @@
                 outline: none !important;
                 color: $black-1 !important;
 
-                &.benar{
+                &.benar {
                     background: $green-tp;
                 }
 
-                &.salah{
+                &.salah {
                     background: $red-tp;
                 }
             }
         }
 
-        .exam-button{
+        .exam-button {
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
             margin: 5.6rem auto;
 
-            .answer-status{
+            .answer-status {
                 font-weight: bold;
                 line-height: 112%;
                 font-size: 2.5rem;
                 display: flex;
                 align-items: center;
 
-                i{
+                i {
                     margin-right: 0.8rem;
-                    &::before{
+
+                    &::before {
                         font-size: 2.5rem;
                     }
                 }
 
-                &.benar{
+                &.benar {
                     color: $green;
-                    i::before{
+
+                    i::before {
                         color: $green;
                     }
                 }
 
-                &.salah{
+                &.salah {
                     color: $red-2;
-                    i{
-                        &::before{
+
+                    i {
+                        &::before {
                             color: $red-2;
                         }
                     }
                 }
             }
 
-            .btn{
+            .btn {
                 display: none;
                 background: $magenta;
                 padding: 2rem 2.4rem !important;
@@ -376,19 +468,20 @@
                 align-items: center !important;
                 line-height: 112%;
 
-                i{
+                i {
                     margin-left: 1.6rem !important;
-                    &::before{
+
+                    &::before {
                         font-size: 2.5rem !important;
                         color: $white !important;
                     }
                 }
 
-                &:disabled{
+                &:disabled {
                     background: $grey-13 !important;
                 }
 
-                &:hover{
+                &:hover {
                     background: $magenta-2;
                 }
             }
@@ -398,7 +491,7 @@
             display: none;
             margin-bottom: 5.6rem;
 
-            h5{
+            h5 {
                 display: block;
                 font-weight: bold;
                 font-size: 2rem;
@@ -406,17 +499,17 @@
                 color: $grey-3;
             }
 
-            .explanation-text{
+            .explanation-text {
                 font-size: 2rem;
                 font-weight: normal;
                 line-height: 180%;
                 color: $black-1;
 
-                ul{
+                ul {
                     padding: 0px;
                     list-style: none;
 
-                    li:before{
+                    li:before {
                         content: '- ';
                     }
                 }
@@ -428,20 +521,21 @@
                 font-size: 2rem;
                 line-height: 180%;
 
-                ul{
+                ul {
                     padding: 0px;
                     list-style: none;
 
-                    li{
+                    li {
                         padding-left: 2rem;
-                        margin: 1.2rem;;
+                        margin: 1.2rem;
+                        ;
 
-                        i{
+                        i {
                             position: absolute;
                             left: 0;
                             line-height: 180%;
 
-                            &::before{
+                            &::before {
                                 font-size: 2.5rem;
                                 color: $green;
                             }
@@ -451,65 +545,65 @@
             }
         }
 
-        @media screen and (max-width: $mobile-breakpoint){
-            .question{
+        @media screen and (max-width: $mobile-breakpoint) {
+            .question {
                 margin-top: 4.4rem !important;
 
-                .question-text{
+                .question-text {
                     font-size: 1.5rem !important;
                     line-height: 200% !important;
                 }
             }
 
-            .answer{
+            .answer {
                 .answer-input {
                     font-size: 1.5rem !important;
                     line-height: 200% !important;
                 }
             }
 
-            .exam-button{
+            .exam-button {
                 margin-top: 4rem;
                 margin-bottom: 2.4rem;
 
-                .answer-status{
+                .answer-status {
                     font-size: 1.7rem;
                     line-height: 118%;
 
-                    i::before{
+                    i::before {
                         line-height: 118%;
                         font-size: 1.7rem;
                     }
 
                 }
 
-                .btn{
+                .btn {
                     font-size: 1.9rem !important;
                     padding: 1.6rem 2rem !important;
                     // line-height: 126%;
 
-                    i{
-                        &::before{
+                    i {
+                        &::before {
                             font-size: 1.9rem !important;
                         }
                     }
                 }
             }
 
-            .pembahasan{
+            .pembahasan {
                 margin-bottom: 4rem;
 
-                h5{
+                h5 {
                     font-size: 1.7rem;
                     line-height: 141%;
                 }
 
-                pre{
+                pre {
                     font-size: 1.7rem;
                     line-height: 141%;
                 }
 
-                .alternative-answers{
+                .alternative-answers {
                     font-size: 1.7rem;
                     line-height: 141%;
 
@@ -517,9 +611,10 @@
                         line-height: 141%;
                         padding-left: 1.5rem;
 
-                        i{
+                        i {
                             line-height: 141%;
-                            &::before{
+
+                            &::before {
                                 font-size: 1.7rem !important;
                             }
 
@@ -542,7 +637,7 @@
     padding: 2.4rem 3.2rem;
     margin-top: 6.4rem;
 
-    .toeic-description-text{
+    .toeic-description-text {
         font-size: 2.2rem !important;
         text-align: center;
         font-weight: normal !important;
@@ -583,33 +678,34 @@
     .image {
         position: relative;
     }
-    
-    .image.image_resized, .image {
+
+    .image.image_resized,
+    .image {
         max-width: 100%;
         display: inline-block;
         box-sizing: border-box;
         margin-left: 0.3rem;
         margin-right: 0.3rem;
     }
-    
+
     .image img {
         display: block;
         margin: 0 auto;
         max-width: 100%;
         min-width: 50px;
     }
-    
+
     .image-style-align-right {
         float: right !important;
     }
-    
+
     .image-style-align-left {
         float: left !important;
     }
-    
-    .image-style-align-center{
+
+    .image-style-align-center {
         margin: auto !important;
-    }    
+    }
 }
 
 .question-group:nth-child(1) {
@@ -637,7 +733,7 @@
     cursor: pointer;
 }
 
-._benar_salah ._benar_salah_options input[type='radio'] ~ label {
+._benar_salah ._benar_salah_options input[type='radio']~label {
     color: #7C92A7;
     cursor: pointer;
 }
@@ -646,12 +742,13 @@
     color: $black-1 !important;
 }
 
-._benar_salah p, ._benar_salah label {
+._benar_salah p,
+._benar_salah label {
     font-weight: normal !important;
     margin: 0px !important;
 }
 
-._benar_salah_question{
+._benar_salah_question {
     width: 72.8rem;
     padding-right: 1.6rem;
 }
@@ -660,7 +757,7 @@
     color: $black-1 !important;
 }
 
-._benar_salah_options{
+._benar_salah_options {
     display: flex;
     justify-content: space-between;
 }
@@ -670,7 +767,7 @@
 }
 
 ._ya_tidak_options input {
-    
+
 }
 
 ._ya_tidak_options input ~ label i::before {
@@ -693,43 +790,43 @@
     margin-bottom: 2.4rem;
 }
 
-.ur-question{
+.ur-question {
     margin-top: 3.2rem;
     user-select: none;
 }
 
-.es-question{
+.es-question {
     margin-top: 3.2rem;
     user-select: none;
 }
 
-.es-answer{
+.es-answer {
     margin-bottom: 6rem;
 }
 
-.ur-answer{
+.ur-answer {
     margin-bottom: 6rem;
 
-    div{
+    div {
         margin-bottom: 1.6rem;
     }
 
-    input{
+    input {
         text-align: right;
         width: 6.4rem !important;
     }
 
-    p{
+    p {
         margin-left: 1.6rem !important;
         margin-bottom: 0 !important;
     }
 }
 
-._memasangkan_direction{
+._memasangkan_direction {
     color: $black-1;
 }
 
-._memasangkan_question{
+._memasangkan_question {
     margin-top: 3.2rem;
     margin-bottom: 5rem;
     user-select: none;
@@ -772,16 +869,16 @@
     margin-bottom: 1.6rem;
 }
 
-._memasangkan_answer{
+._memasangkan_answer {
     margin-bottom: 6rem;
 
-    div{
-        p{
+    div {
+        p {
             margin-bottom: 0 !important;
         }
     }
 
-    input{
+    input {
         text-align: right;
         width: 6.4rem !important;
     }
@@ -791,11 +888,11 @@
     }
 }
 
-.check-btn-group{
+.check-btn-group {
     width: 100%;
     margin-bottom: 8rem;
 
-    .check-btn{
+    .check-btn {
         @include h5;
         width: 16rem;
         height: 4.4rem;
@@ -805,11 +902,11 @@
         text-transform: uppercase;
         border-radius: 0;
 
-        i:before{
+        i:before {
             color: $white;
         }
 
-        &.active{
+        &.active {
             background-color: $magenta;
         }
     }
@@ -843,7 +940,7 @@
     cursor: pointer;
 }
 
-._ya_tidak ._ya_tidak_options input[type='radio'] ~ label {
+._ya_tidak ._ya_tidak_options input[type='radio']~label {
     color: #7C92A7;
     cursor: pointer;
 }
@@ -852,12 +949,13 @@
     color: $black-1 !important;
 }
 
-._ya_tidak p, ._ya_tidak label {
+._ya_tidak p,
+._ya_tidak label {
     font-weight: normal !important;
     margin: 0px !important;
 }
 
-._ya_tidak_question{
+._ya_tidak_question {
     width: 72.8rem;
     padding-right: 1.6rem;
 }
@@ -866,7 +964,7 @@
     color: $black-1 !important;
 }
 
-._ya_tidak_options{
+._ya_tidak_options {
     display: flex;
     justify-content: space-between;
 }
@@ -875,23 +973,24 @@
     width: 10rem;
 }
 
-._pilihan_ganda_direction{
+._pilihan_ganda_direction {
     color: $black-1;
     margin: 0.8rem 0rem;
 }
 
-._pilihan_ganda_question{
+._pilihan_ganda_question {
     margin-top: 3.2rem;
 
-    *, p {
+    *,
+    p {
         color: $black-1;
     }
 }
 
-._pilihan_ganda_answer{
+._pilihan_ganda_answer {
     margin-bottom: 6rem;
 
-    ._pilihan_ganda_radio_answer{
+    ._pilihan_ganda_radio_answer {
         @include h5;
         display: block;
         position: relative;
@@ -917,8 +1016,8 @@
             top: 0;
             left: 0;
             font-size: 2.2rem;
-            
-            &:before{
+
+            &:before {
                 color: $blue;
             }
         }
@@ -962,7 +1061,8 @@
     padding-left: 1.6rem;
 }
 
-._melengkapi_tabel_tabel tr td, ._melengkapi_tabel_session tr td {
+._melengkapi_tabel_tabel tr td,
+._melengkapi_tabel_session tr td {
     min-width: 16rem;
     max-width: 32rem;
     padding: 0.8rem 0rem 0.8rem 1.6rem;
@@ -1003,7 +1103,7 @@
     pointer-events: none;
 }
 
-._question_button i::before{
+._question_button i::before {
     color: white;
     font-size: 1.5rem;
 }
@@ -1011,16 +1111,16 @@
 ._mengurutkan_answer {
     margin-bottom: 6rem;
 
-    div{
+    div {
         margin-bottom: 1.6rem;
     }
 
-    input{
+    input {
         text-align: center;
         width: 6.4rem !important;
     }
 
-    p{
+    p {
         margin-left: 1.6rem !important;
         margin-bottom: 0 !important;
         color: $black-1;
@@ -1041,7 +1141,7 @@
     border: 2px solid #A6D1FF;
 }
 
-._esai_question *{
+._esai_question * {
     color: $black-1;
 }
 
@@ -1078,7 +1178,7 @@
 
 ._isian_bahasa_textarea[placeholder]:empty::before {
     content: attr(placeholder);
-    color: #7C92A7; 
+    color: #7C92A7;
 }
 
 ._isian_bahasa_textarea[placeholder]:empty:focus::before {
@@ -1091,7 +1191,7 @@
         justify-content: flex-start;
         padding-top: 1.6rem;
     }
-    
+
     ._ya_tidak_options {
         width: 100%;
         justify-content: flex-start;
@@ -1275,6 +1375,7 @@
     ._mengurutkan_answers {
         ._mengurutkan_answer_item {
             box-shadow: inset 0px -2px 0px #EBF1F6;
+
             div {
                 padding: 1rem 0rem;
 
@@ -1319,7 +1420,7 @@
     pointer-events: none;
 }
 
-._question_button i::before{
+._question_button i::before {
     color: $white;
     font-size: 1.5rem;
 }
@@ -1335,7 +1436,7 @@
     ._memasangkan_jawaban_benar {
         table {
             tr {
-                td{
+                td {
                     padding: 1rem 0rem;
                     box-shadow: inset 0px -2px 0px #EBF1F6;
 
@@ -1351,11 +1452,12 @@
                         }
                     }
 
-                    &:first-child, &:last-child {
+                    &:first-child,
+                    &:last-child {
                         width: 45.4rem;
                     }
                 }
-                
+
             }
         }
     }
@@ -1363,7 +1465,7 @@
     ._memasangkan_explanation {
         margin-top: 2.4rem;
         margin-bottom: 4rem;
-        
+
         * {
             color: $black-1;
         }
@@ -1471,14 +1573,14 @@
     }
 }
 
-.md-question{
+.md-question {
     margin-top: 3.2rem;
 }
 
-.md-answer{
+.md-answer {
     margin-bottom: 6rem;
 
-    .md-checkbox-answer{
+    .md-checkbox-answer {
         @include h5;
         display: block;
         position: relative;
@@ -1504,19 +1606,19 @@
             top: 0;
             left: 0;
             font-size: 2.2rem;
-            
-            &:before{
+
+            &:before {
                 color: $blue;
             }
         }
     }
 }
 
-.check-btn-group{
+.check-btn-group {
     width: 100%;
     margin-bottom: 8rem;
 
-    .check-btn{
+    .check-btn {
         @include h5;
         width: 16rem;
         height: 4.4rem;
@@ -1526,11 +1628,11 @@
         text-transform: uppercase;
         border-radius: 0;
 
-        i:before{
+        i:before {
             color: $white;
         }
 
-        &.active{
+        &.active {
             background-color: $magenta;
         }
     }
@@ -1545,11 +1647,11 @@
     margin-bottom: 2.4rem;
 }
 
-._menceklis_question{
+._menceklis_question {
     margin-top: 3.2rem;
     margin-bottom: 2.4rem;
     user-select: none;
-    
+
     * {
         color: $black-1 !important;
     }
@@ -1573,7 +1675,7 @@
     margin-top: 0.8rem;
 }
 
-._rumpang_question{
+._rumpang_question {
     margin-top: 2.4rem;
 
     p {
@@ -1581,22 +1683,23 @@
     }
 }
 
-.rmpg-question-answer{
+.rmpg-question-answer {
     margin-bottom: 6rem;
     width: 100%;
 
-    .question-group{
+    .question-group {
         margin-right: 1.6rem;
         line-height: 4.4rem;
         display: inline;
-        i{
+
+        i {
             font-family: $font-family-monospace !important;
             font-size: 1.5rem !important;
             font-style: italic !important;
         }
     }
 
-    .dropdown{
+    .dropdown {
         margin-right: 1.6rem;
         margin-bottom: 1.6rem;
         min-width: 19.2rem;
@@ -1604,7 +1707,7 @@
         margin-top: 1rem;
         margin-bottom: 1rem;
 
-        .btn-select{
+        .btn-select {
             display: inline-block;
             min-height: 4.4rem;
             width: 100%;
@@ -1614,30 +1717,30 @@
             background-color: transparent;
             text-align: left;
             padding: 0 1.6rem;
-    
-            span{
+
+            span {
                 color: $grey-6;
                 white-space: pre-wrap;
             }
-    
-            i{
+
+            i {
                 font-size: 2.2rem;
-    
-                &:before{
+
+                &:before {
                     color: $blue;
                 }
             }
-    
-            &::after{
+
+            &::after {
                 display: none;
             }
 
-            &:focus{
+            &:focus {
                 outline: 0;
             }
         }
 
-        .dropdown-menu{
+        .dropdown-menu {
             border: 0;
             border-radius: 0;
             background-color: $white;
@@ -1645,7 +1748,7 @@
             width: 100%;
             transform: translate3d(0rem, 5rem, 0rem) !important;
 
-            .dropdown-item{
+            .dropdown-item {
                 min-height: 5.6rem;
                 font-size: 1.5rem;
                 line-height: 2rem;
@@ -1653,7 +1756,7 @@
                 padding: 1.8rem 2rem;
                 white-space: pre-wrap;
 
-                &:hover{
+                &:hover {
                     color: $purple;
                     background-color: $blue-tp2;
                 }

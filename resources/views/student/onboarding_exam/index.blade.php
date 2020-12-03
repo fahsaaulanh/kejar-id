@@ -1,0 +1,70 @@
+@extends('layout.index')
+
+@section('title', 'On Boarding')
+
+@section('content')
+<div class="container">
+    <!-- Link Back -->
+    <a class="btn-back" href="{{ url('student/12344123/subjects') }}">
+        <i class="kejar-back"></i>Kembali
+    </a>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="{{ url('student/dashboard') }}">Beranda</a>
+        <a class="breadcrumb-item" id="breadcrumb-1" href="{{ url('student/12344123/subjects') }}"></a>
+    </nav>
+    <!-- Title -->
+    <div class="page-title">
+        <h2 id="title" class="mb-08rem"></h2>
+    </div>
+
+    <!-- Content -->
+
+    <div class="mt-8">
+        <h5>Durasi</h5>
+        <!-- Dynamic Data -->
+        <h5 id="duration" class="text-reguler">{{ $task ?? '120' }} menit</h5>
+    </div>
+
+    <div class="mt-8">
+        <h5>Banyaknya Soal</h5>
+        <!-- Dynamic Data -->
+        <h5 id="total-question" class="text-reguler">{{ $task ?? '50 butir' }} soal</h5>
+    </div>
+
+    <div class="mt-8">
+        <h5>Token</h5>
+        <p>Masukkan token yang telah dibagikan oleh guru.</p>
+        <!-- Dynamic Data -->
+        <input type="text" placeholder="Ketik Token" />
+    </div>
+
+    <div class="mt-8 onboarding-page-pts">
+        @include('student.onboarding_exam._rule_assessment')
+    </div>
+
+    <!-- Button -->
+    <!-- <div class="stage-order-buttons"> -->
+    <div class="row justify-content-end px-4 mt-9">
+        <div id="play" class="pts-btn-next" role="button">
+            <h3>Mulai</h3>
+            <i class="kejar-play"></i>
+        </div>
+    </div>
+    <!-- </div> -->
+</div>
+@endsection
+
+@push('script')
+<script>
+    $('#breadcrumb-1').html(localStorage.getItem('pts_title') || '');
+    $('#title').html(localStorage.getItem('detail_title') || 'Bahasa Indonesia');
+    $('title').html('On Boarding - ' + localStorage.getItem('pts_title') || '');
+
+    $('#play').on('click', function() {
+        if (typeof window !== 'undefined') {
+            window.location.href = "/student/cb6f4e41-9593-4ee9-84d1-633a19113072/subjects/0837e19d-8e52-4f2e-8c02-4ec0b3aa1b96/exam?save=true"
+        }
+    });
+</script>
+@endpush

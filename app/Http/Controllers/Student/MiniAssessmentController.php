@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use App\Services\MiniAssessment;
+use App\Services\Assessment;
+use App\Services\AssessmentGroup;
 use App\Services\School;
 use App\Services\School as SchoolApi;
 use App\Services\Task;
@@ -57,131 +58,186 @@ class MiniAssessmentController extends Controller
             return redirect('/login');
         }
 
-        return view('student.mini_assessment.subjects.index', $data);
+        return view('student.subjects.index', $data);
     }
 
     public function detail($subject_id)
     {
-        $maService = new MiniAssessment;
+        $subject_id;
+        $this->getGrade();
+
+        return view('student.onboarding_exam.index');
+
+        // $maService = new Assessment;
+        // $taskService = new Task;
+
+        // if ($grade === 0) {
+        //     return redirect('/login');
+        // }
+
+        // $refresh = $this->request->query('refresh', 'false');
+        // $save = $this->request->query('save', 'false');
+
+        // $filter = [
+        //     'filter[subject_id]' => $subject_id,
+        //     'filter[grade]' => $grade,
+        //     'per_page' => 50,
+        // ];
+
+        // $task = $this->request->session()->get('task', null);
+        // $user = $this->request->session()->get('user', null);
+
+        // $filterTask = [
+        //     'filter[subject_id]' => $subject_id,
+        //     'filter[finished]' => 'true',
+        // ];
+
+        // $responseTask = $taskService->tasksMiniAssessment($user['userable']['id'], $filterTask);
+        // $tasksDone = $responseTask['error'] ? [] : $responseTask['data'] ?? [];
+
+        // if (count($tasksDone) > 0) {
+        //     return redirect('/student/mini_assessment');
+        // }
+
+        // $answers = $this->request->session()->get('answers', []);
+
+        // // Get if Local Storage has Cleared.
+        // if (!$task || $task['subject_id'] !== $subject_id || $refresh === 'true') {
+        //     $response = $maService->index($filter);
+
+        //     $datas = collect($response['data']);
+        //     $dataMA = $datas->random();
+
+        //     $responseQuestions = $taskService->questionsMiniAssessment($dataMA['id']);
+
+        //     // Add Some Key and Value Pair
+        //     $endTime = Carbon::parse($dataMA['expiry_time']);
+
+        //     $dataMA['duration'] = $dataMA['duration'];
+        //     $dataMA['start_fulldate'] = Carbon::parse($dataMA['start_time'])->format('Y-m-d H:i:s');
+        //     $dataMA['expiry_fulldate'] = Carbon::parse($dataMA['expiry_time'])->format('Y-m-d H:i:s');
+        //     $dataMA['start_date'] = Carbon::parse($dataMA['start_time'])->format('l, d F Y');
+        //     $dataMA['start_time'] = Carbon::parse($dataMA['start_time'])->format('H.i');
+        //     $dataMA['expiry_date'] = Carbon::parse($dataMA['expiry_time'])->format('l, d F Y');
+        //     $dataMA['expiry_time'] = Carbon::parse($dataMA['expiry_time'])->format('H.i');
+
+        //     $chr1 = chr(rand(97, 122));
+        //     $chr2 = chr(rand(97, 122));
+        //     $chr3 = chr(rand(97, 122));
+        //     $chr4 = chr(rand(97, 122));
+        //     $chr5 = chr(rand(97, 122));
+        //     $chr6 = chr(rand(97, 122));
+        //     $chr7 = chr(rand(97, 122));
+        //     $chr8 = chr(rand(97, 122));
+        //     //
+
+        //     $dataMA['random_char1'] = $chr1 . $chr2 . $chr3 . $chr4;
+        //     $dataMA['random_char2'] = $chr5 . $chr6 . $chr7 . $chr8;
+
+        //     // Save to Session as Temporary
+        //     $tasksSession = [
+        //         'subject_id' => $subject_id,
+        //         'mini_assessment' => $dataMA,
+        //         'task_id' => '',
+        //         'task' => [],
+        //         'answers' => $responseQuestions['data'] ?? [],
+        //     ];
+
+        //     $this->request->session()->put('task', $tasksSession);
+        //     $task = $tasksSession;
+        //     //
+        // }
+
+        // // Save To Database if variable $save is true
+        // if ($save === 'true') {
+        //     $responseTask = $taskService->startMiniAssessment($task['mini_assessment']['id']);
+
+        //     $addMinutes = $task['mini_assessment']['duration'];
+        //     $endTime = Carbon::now()->addMinutes($addMinutes)->addSeconds(5)->format('Y-m-d H:i:s');
+
+        //     $task['mini_assessment']['end_time'] = $endTime;
+
+        //     $tasksSession = [
+        //         'subject_id' => $subject_id,
+        //         'mini_assessment' => $task['mini_assessment'],
+        //         'task_id' => $responseTask['data']['id'] ?? '',
+        //         'task' => $responseTask['data'] ?? [],
+        //         'answers' => $task['answers'],
+        //     ];
+
+        //     $this->request->session()->put('task', $tasksSession);
+
+        //     return redirect("/student/mini_assessment/$subject_id/exam");
+        // }
+
+        // if (count($answers) > 0 && $refresh !== 'true') {
+        //     return redirect("/student/mini_assessment/$subject_id/exam");
+        // }
+
+        // //
+
+        // $pageData = [
+        //     'subject_id' => $subject_id,
+        //     'task' => $task,
+        // ];
+
+        // return view('student.mini_assessment.subjects.detail', $pageData);
+    }
+
+    public function beforeExam()
+    {
         $taskService = new Task;
-
-        $grade = $this->getGrade();
-
-        if ($grade === 0) {
-            return redirect('/login');
-        }
-
-        $refresh = $this->request->query('refresh', 'false');
+        $assessmentService = new Assessment;
+        $assessmentId = $this->request->query('assessment_id', null);
         $save = $this->request->query('save', 'false');
 
-        $filter = [
-            'filter[subject_id]' => $subject_id,
-            'filter[grade]' => $grade,
-            'per_page' => 50,
-        ];
+        $responseAssessment = $assessmentService->detail($assessmentId);
+        $responseQuestions = $taskService->questionsAssessment($assessmentId);
 
-        $task = $this->request->session()->get('task', null);
-        $user = $this->request->session()->get('user', null);
-
-        $filterTask = [
-            'filter[subject_id]' => $subject_id,
-            'filter[finished]' => 'true',
-        ];
-
-        $responseTask = $taskService->tasksMiniAssessment($user['userable']['id'], $filterTask);
-        $tasksDone = $responseTask['error'] ? [] : $responseTask['data'] ?? [];
-
-        if (count($tasksDone) > 0) {
-            return redirect('/student/mini_assessment');
+        if ($responseAssessment['error']) {
+            dd('ID Assessment Not Found');
         }
 
-        $answers = $this->request->session()->get('answers', []);
+        $questions = $responseQuestions['data'];
+        $assessment = $responseAssessment['data'];
+        $assessmentGroupId = $assessment['assessment_group_id'];
+        $subjectId = $assessment['subject_id'];
 
-        // Get if Local Storage has Cleared.
-        if (!$task || $task['subject_id'] !== $subject_id || $refresh === 'true') {
-            $response = $maService->index($filter);
-
-            $datas = collect($response['data']);
-            $dataMA = $datas->random();
-
-            $responseQuestions = $taskService->questionsMiniAssessment($dataMA['id']);
-
-            // Add Some Key and Value Pair
-            $endTime = Carbon::parse($dataMA['expiry_time']);
-
-            $dataMA['duration'] = $dataMA['duration'];
-            $dataMA['start_fulldate'] = Carbon::parse($dataMA['start_time'])->format('Y-m-d H:i:s');
-            $dataMA['expiry_fulldate'] = Carbon::parse($dataMA['expiry_time'])->format('Y-m-d H:i:s');
-            $dataMA['start_date'] = Carbon::parse($dataMA['start_time'])->format('l, d F Y');
-            $dataMA['start_time'] = Carbon::parse($dataMA['start_time'])->format('H.i');
-            $dataMA['expiry_date'] = Carbon::parse($dataMA['expiry_time'])->format('l, d F Y');
-            $dataMA['expiry_time'] = Carbon::parse($dataMA['expiry_time'])->format('H.i');
-
-            $chr1 = chr(rand(97, 122));
-            $chr2 = chr(rand(97, 122));
-            $chr3 = chr(rand(97, 122));
-            $chr4 = chr(rand(97, 122));
-            $chr5 = chr(rand(97, 122));
-            $chr6 = chr(rand(97, 122));
-            $chr7 = chr(rand(97, 122));
-            $chr8 = chr(rand(97, 122));
-            //
-
-            $dataMA['random_char1'] = $chr1 . $chr2 . $chr3 . $chr4;
-            $dataMA['random_char2'] = $chr5 . $chr6 . $chr7 . $chr8;
-
-            // Save to Session as Temporary
-            $tasksSession = [
-                'subject_id' => $subject_id,
-                'mini_assessment' => $dataMA,
-                'task_id' => '',
-                'task' => [],
-                'answers' => $responseQuestions['data'] ?? [],
-            ];
-
-            $this->request->session()->put('task', $tasksSession);
-            $task = $tasksSession;
-            //
-        }
-
-        // Save To Database if variable $save is true
         if ($save === 'true') {
-            $responseTask = $taskService->startMiniAssessment($task['mini_assessment']['id']);
+            $responseTask = $taskService->startAssessment($assessmentId);
+            if ($responseTask['error']) {
+                dd('Task Not Found');
+            }
 
-            $addMinutes = $task['mini_assessment']['duration'];
+            $task = $responseTask['data'];
+
+            $addMinutes = $assessment['duration'];
             $endTime = Carbon::now()->addMinutes($addMinutes)->addSeconds(5)->format('Y-m-d H:i:s');
 
-            $task['mini_assessment']['end_time'] = $endTime;
+            $assessment['end_time'] = $endTime;
+            $assessment['questions'] = $questions;
+
+            $answers = $this->getAnswer($task['id']);
 
             $tasksSession = [
-                'subject_id' => $subject_id,
-                'mini_assessment' => $task['mini_assessment'],
+                'subject_id' => $assessment['subject_id'],
+                'assessment' => $assessment,
                 'task_id' => $responseTask['data']['id'] ?? '',
                 'task' => $responseTask['data'] ?? [],
-                'answers' => $task['answers'],
+                'answers' => $answers,
             ];
 
             $this->request->session()->put('task', $tasksSession);
 
-            return redirect("/student/mini_assessment/$subject_id/exam");
+            return redirect("/student/assessment/$assessmentGroupId/subjects/$subjectId/exam");
+        } else {
+            dd($assessment);
         }
-
-        if (count($answers) > 0 && $refresh !== 'true') {
-            return redirect("/student/mini_assessment/$subject_id/exam");
-        }
-
-        //
-
-        $pageData = [
-            'subject_id' => $subject_id,
-            'task' => $task,
-        ];
-
-        return view('student.mini_assessment.subjects.detail', $pageData);
     }
 
     public function exam()
     {
+
         $user = $this->request->session()->get('user', null);
         $task = $this->request->session()->get('task', null);
 
@@ -189,39 +245,42 @@ class MiniAssessmentController extends Controller
             $this->request->session()->remove('task');
             $this->request->session()->remove('answers');
 
-            return redirect('/student/mini_assessment');
+            // TODO : Change this later after subject dynamic
+            return redirect('/student/dashboard');
         }
 
         if ($task['task_id'] === '') {
             $this->request->session()->remove('task');
             $this->request->session()->remove('answers');
 
-            return redirect('/student/mini_assessment');
+            // TODO : Change this later after subject dynamic
+            return redirect('/student/dashboard');
         }
 
-        $MiniAssessment = new MiniAssessment;
-        $cek = $MiniAssessment->result(
-            $user['userable']['id'],
-            [
-                'filter[subject_id]' => $task['subject_id'],
-                'filter[group]' => $task['mini_assessment']['group'],
-                'per_page' => 5,
-            ],
-        );
+        // TODO : Enable this later after dynamic
+        // $MiniAssessment = new Assessment;
+        // $cek = $MiniAssessment->result(
+        //     $user['userable']['id'],
+        //     [
+        //         'filter[subject_id]' => $task['subject_id'],
+        //         'filter[group]' => $task['mini_assessment']['group'],
+        //         'per_page' => 5,
+        //     ],
+        // );
 
-        if ($cek['error']) {
-            $this->request->session()->remove('task');
-            $this->request->session()->remove('answers');
+        // if ($cek['error']) {
+        //     $this->request->session()->remove('task');
+        //     $this->request->session()->remove('answers');
 
-            return redirect('/student/mini_assessment');
-        }
+        //     return redirect('/student/mini_assessment');
+        // }
 
-        if (isset($cek['data'][0]['finish_time']) && $cek['data'][0]['finish_time']) {
-            $this->request->session()->remove('task');
-            $this->request->session()->remove('answers');
+        // if (isset($cek['data'][0]['finish_time']) && $cek['data'][0]['finish_time']) {
+        //     $this->request->session()->remove('task');
+        //     $this->request->session()->remove('answers');
 
-            return redirect('/student/mini_assessment')->with('message', 'Jawaban telah dikumpulkan');
-        }
+        //     return redirect('/student/mini_assessment')->with('message', 'Jawaban telah dikumpulkan');
+        // }
 
         $answers = $this->getAnswer($task['task_id']);
 
@@ -229,7 +288,7 @@ class MiniAssessmentController extends Controller
             $this->request->session()->remove('task');
             $this->request->session()->remove('answers');
 
-            return redirect('/student/mini_assessment');
+            return redirect('/student/dashboard');
         }
 
         $this->request->session()->put('answers', $answers);
@@ -241,7 +300,9 @@ class MiniAssessmentController extends Controller
             'userable' => $user['userable'],
         ];
 
-        return view('student.mini_assessment.exam.index', $pageData);
+        // dd($pageData);
+
+        return view('student.assessment.exam.mini.index', $pageData);
     }
 
     private function schoolId()
@@ -284,7 +345,7 @@ class MiniAssessmentController extends Controller
             $view = '<div class="row px-7 mt-4">
                         <div class="row bg-light py-2 w-100 justify-content-center">
                             <h4 class="text-reguler">
-                            <a href="/student/mini_assessment" class="btn btn-primary btn-lg">
+                            <a href="/student/12312312/subjects" class="btn btn-primary btn-lg">
                             Tampilkan Daftar Mapel </a></h4>
                         </div>
                     </div>';
@@ -313,26 +374,41 @@ class MiniAssessmentController extends Controller
         $meta = $getView['meta'];
 
         $view = '';
-        $view .= '<div class="row">';
-            $view .= '<div class="col-12 p-0">';
-                $view .= '<h6 class="grey-6 text-reguler">Diurutkan A-Z.</h6>';
-            $view .= '</div>';
-        $view .= '</div>';
         foreach ($list as $v) {
-            $view .= '<div class="row mt-4">';
+            $view .= '<div class="row m-0 pt-4">';
 
-                $view .= '<div class="btn-accordion" role="button">';
+                $view .= '<div class="row m-0 btn-accordion-subject w-100" role="button">';
+                    $view .='<div class="row m-0 justify-content-between w-100">';
+                        $view .= '<div class="row m-0" onclick="viewDetail(\''.$v['id'].'\',\''.$v['name'].'\')">';
+                            $view .='<div class="col-md-1 p-0">';
+                                    $view .='<i class="kejar-mapel"></i>';
+                            $view .='</div>';
+                            $view .='<div class="row m-0 pl-4 flex-column">';
+                                $view .= '<div id="mapel">';
+                                    $view .= '<h4>'. $v['name'] .'</h4>';
+                                $view .= '</div>';
 
-                    $view .= '<div class="row" onclick="viewDetail(\''.$v['id'].'\',\''.$v['name'].'\')">';
-                        $view .= '<div class="col-md-6" id="mapel">';
-                            $view .= '<h4>'. $v['name'] .'</h4>';
-                        $view .= '</div>';
-                        $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
-                            $view .= '<div class="row justify-content-start justify-content-md-end
-                            justify-content-lg-end">';
+                                $view .= '<div class="pt-2">';
+                                    $view .= '<h6 class="text-grey-3"> Dimulai pada 19 Nov 2020, 09.00 </h6>';
+                                $view .= '</div>';
+
+                                $view .= '<div class="pt-2">';
+                                    $view .= '<h6 class="text-grey-3"> Berakhir pada 20 Nov 2020, 09.00 </h6>';
+                                $view .= '</div>';
+                            $view .='</div>';
+
+                            $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
+                                $view .= '<div class="row justify-content-start justify-content-md-end
+                                justify-content-lg-end">';
+                                $view .= '</div>';
                             $view .= '</div>';
+
                         $view .= '</div>';
-                    $view .= '</div>';
+
+                        $view .='<div>';
+                            $view .='<i class="kejar-right"></i>';
+                        $view .='</div>';
+                    $view .='</div>';
 
                 $view .= '</div>';
 
@@ -369,64 +445,66 @@ class MiniAssessmentController extends Controller
         return $view;
     }
 
-    public function viewDetail(Request $req)
-    {
-        $id = $req->id;
-        $data = [
-            'id' => $req->id,
-            'name' => $req->name,
-            'schedule' => '',
-            'finished' => 0,
-            'enabled' => 0,
-        ];
 
-        $user = $this->request->session()->get('user');
+    // public function viewDetail(Request $req)
+    // {
+    //     $id = $req->id;
+    //     $maGroup = $req->assessment_group_id;
+    //     $data = [
+    //         'id' => $req->id,
+    //         'name' => $req->name,
+    //         'schedule' => '',
+    //         'finished' => 0,
+    //         'enabled' => 0,
+    //     ];
 
-        $MiniAssessment = new MiniAssessment;
-        $maGroup = 'pts ganjil 2020-2021';
-        $grade = $this->getGrade();
-        $exam = $MiniAssessment->result(
-            $user['userable']['id'],
-            [
-                'filter[subject_id]' => $id,
-                'filter[group]' => $maGroup,
-                'per_page' => 1,
-            ],
-        );
+    //     $user = $this->request->session()->get('user');
+    //     $user = $this->request->in->get('user');
 
-        if (!$exam['error'] && isset($exam['data'][0])) {
-            $data['finished'] = 1;
-        } else {
-            // get package info
-            $package = $MiniAssessment->index([
-                'per_page' => 1,
-                'filter[subject_id]' => $id,
-                'filter[grade]' => $grade,
-            ]);
+    //     $MiniAssessment = new Assessment;
+    //     $grade = $this->getGrade();
+    //     $exam = $MiniAssessment->result(
+    //         $user['userable']['id'],
+    //         [
+    //             'filter[subject_id]' => $id,
+    //             'filter[group]' => $maGroup,
+    //             'per_page' => 1,
+    //         ],
+    //     );
 
-            if (!$package['error'] && isset($package['data'][0])) {
-                $packageDetail = $package['data'][0];
+    //     if (!$exam['error'] && isset($exam['data'][0])) {
+    //         $data['finished'] = 1;
+    //     } else {
+    //         // get package info
+    //         $package = $MiniAssessment->index([
+    //             'per_page' => 1,
+    //             'filter[subject_id]' => $id,
+    //             'filter[grade]' => $grade,
+    //         ]);
 
-                $time = Carbon::parse($packageDetail['start_time'])->format('l, d F Y').
-                '<br> '.Carbon::parse($packageDetail['start_time'])->format('H.i').
-                ' - '.Carbon::parse($packageDetail['expiry_time'])->format('H.i');
-                $data['schedule'] = $time;
+    //         if (!$package['error'] && isset($package['data'][0])) {
+    //             $packageDetail = $package['data'][0];
 
-                $now = Carbon::now()->format('Y-m-d H:i:s');
-                $start = Carbon::parse($packageDetail['start_time'])->format('Y-m-d H:i:s');
-                $end = Carbon::parse($packageDetail['expiry_time'])->format('Y-m-d H:i:s');
-                if ($now >= $start && $now <= $end) {
-                    $data['enabled'] = 1;
-                }
-            } else {
-                $data['schedule'] = 'Belum ada jadwal.';
-            }
-        }
+    //             $time = Carbon::parse($packageDetail['start_time'])->format('l, d F Y').
+    //             '<br> '.Carbon::parse($packageDetail['start_time'])->format('H.i').
+    //             ' - '.Carbon::parse($packageDetail['expiry_time'])->format('H.i');
+    //             $data['schedule'] = $time;
 
-        $view = $this->viewDetailHtml($data);
+    //             $now = Carbon::now()->format('Y-m-d H:i:s');
+    //             $start = Carbon::parse($packageDetail['start_time'])->format('Y-m-d H:i:s');
+    //             $end = Carbon::parse($packageDetail['expiry_time'])->format('Y-m-d H:i:s');
+    //             if ($now >= $start && $now <= $end) {
+    //                 $data['enabled'] = 1;
+    //             }
+    //         } else {
+    //             $data['schedule'] = 'Belum ada jadwal.';
+    //         }
+    //     }
 
-        return response()->json($view);
-    }
+    //     $view = $this->viewDetailHtml($data);
+
+    //     return response()->json($view);
+    // }
 
     public function viewDetailHtml($data)
     {
@@ -487,7 +565,7 @@ class MiniAssessmentController extends Controller
 
         $task = $this->request->session()->get('task');
 
-        $response = $taskService->setAnswerMiniAssessment($task['task_id'], $answerId, $payload);
+        $response = $taskService->setAnswerAssessment($task['task_id'], $answerId, $payload);
         if (!$response['error']) {
             $filtered = Arr::except($response['data'], ['correct_answer', 'is_correct']);
             $response['data'] = $filtered;
@@ -527,7 +605,7 @@ class MiniAssessmentController extends Controller
 
         $this->request->session()->put('answers', $answers);
 
-        return $taskService->finishMiniAssessment($task['task_id']);
+        return $taskService->finishAssessment($task['task_id']);
     }
 
     public function editNote()
@@ -542,7 +620,7 @@ class MiniAssessmentController extends Controller
             'student_note' => $note,
         ];
 
-        return $taskService->noteMiniAssessment($task['task_id'], $payloads);
+        return $taskService->noteAssessment($task['task_id'], $payloads);
     }
     // End Of API Function
 
@@ -551,7 +629,7 @@ class MiniAssessmentController extends Controller
         $this->request->session()->remove('task');
         $this->request->session()->remove('answers');
 
-        return redirect('/student/mini_assessment');
+        return redirect('/student/dashboard');
     }
 
     // Print Pdf
@@ -563,6 +641,7 @@ class MiniAssessmentController extends Controller
         $time = Carbon::now()->format('H:i');
 
         $schoolService = new School;
+        $assessmentGroupService = new AssessmentGroup;
 
         $task = $this->request->session()->get('task');
 
@@ -591,6 +670,9 @@ class MiniAssessmentController extends Controller
         }
 
         $responseSubject = $schoolService->subjectDetail($schoolId, $task['subject_id']);
+        $responseAssessmentGroup = $assessmentGroupService->detail($task['assessment']['assessment_group_id']);
+
+        $group = $responseAssessmentGroup['data']['title'] ?? '';
 
         $subject = $responseSubject['error'] ? '' : $responseSubject['data']['name'] ?? '';
 
@@ -602,14 +684,13 @@ class MiniAssessmentController extends Controller
             'date' => $date,
             'time' => $time,
             'subject' => $subject,
+            'group' => $group,
         ];
 
-        $pdf = PDF::loadview('student.mini_assessment.exam.answer', $pageData)
+        $pdf = PDF::loadview('student.assessment.exam.answer', $pageData)
             ->setPaper('a4', 'potrait');
 
-        $taskGroup = $task['mini_assessment']['group'];
-
-        $filename = $user['userable']['name'] . '-' . $taskGroup . '-' . $subject . '-' . $time . '.PDF';
+        $filename = $user['userable']['name'] . '-' . $group . '-' . $subject . '-' . $time . '.PDF';
 
         return $pdf->download($filename);
     }
@@ -620,7 +701,7 @@ class MiniAssessmentController extends Controller
     {
         $taskService = new Task;
 
-        $response = $taskService->answersMiniAssessment($taskId);
+        $response = $taskService->answersAssessment($taskId);
         $data = [];
 
         if ($response['error']) {
@@ -629,7 +710,7 @@ class MiniAssessmentController extends Controller
 
         if (!$response['error']) {
             foreach ($response['data'] as $val) {
-                $data[$val['mini_assessment_answer_id']] = [
+                $data[$val['question_id']] = [
                     'id' => $val['id'],
                     'answer' => $val['answer'],
                 ];

@@ -61,6 +61,18 @@ class Task extends Service
         return $this->showResponse($response);
     }
 
+    public function startAssessment($assessmentId)
+    {
+
+        $payload = [
+            'assessment_id' => $assessmentId,
+        ];
+
+        $response = $this->post('/tasks/assessments', $payload);
+
+        return $this->showResponse($response);
+    }
+
     public function startMiniAssessment($miniAssessmentId)
     {
 
@@ -84,9 +96,27 @@ class Task extends Service
         return $this->showResponse($response);
     }
 
+    public function questionsAssessment($assessmentsId)
+    {
+        $filter = [
+            'per_page' => 99,
+        ];
+
+        $response = $this->get("/libraries/assessments/$assessmentsId/questions", $filter);
+
+        return $this->showResponse($response);
+    }
+
     public function answersMiniAssessment($maTaskId)
     {
         $response = $this->get("/tasks/mini-assessments/$maTaskId/answers");
+
+        return $this->showResponse($response);
+    }
+
+    public function answersAssessment($taskId)
+    {
+        $response = $this->get("/tasks/assessments/$taskId/answers");
 
         return $this->showResponse($response);
     }
@@ -98,9 +128,23 @@ class Task extends Service
         return $this->showResponse($response);
     }
 
+    public function setAnswerAssessment($taskId, $answerId, $payload)
+    {
+        $response = $this->patch("/tasks/assessments/$taskId/answers/$answerId", $payload);
+
+        return $this->showResponse($response);
+    }
+
     public function finishMiniAssessment($maTaskId)
     {
         $response = $this->patch("/tasks/mini-assessments/$maTaskId");
+
+        return $this->showResponse($response);
+    }
+
+    public function finishAssessment($taskId)
+    {
+        $response = $this->patch("/tasks/assessments/$taskId");
 
         return $this->showResponse($response);
     }
@@ -115,6 +159,13 @@ class Task extends Service
     public function noteMiniAssessment($maTaskId, $payload)
     {
         $response = $this->patch("/tasks/mini-assessments/$maTaskId/note", $payload);
+
+        return $this->showResponse($response);
+    }
+
+    public function noteAssessment($taskId, $payload)
+    {
+        $response = $this->patch("/tasks/assessments/$taskId/note", $payload);
 
         return $this->showResponse($response);
     }

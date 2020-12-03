@@ -230,20 +230,19 @@ Route::middleware('session')->group(function () {
         // Khusus route student disini
 
         Route::prefix('student')->group(function () {
-
-            Route::get('/', 'HomeController@index');
+            // New Route
+            Route::get('/dashboard', 'HomeController@student');
             Route::get('/api/assessment-groups', 'HomeController@getAssessmentGroups');
+            Route::get('/dev/exam', 'Student\MiniAssessmentController@beforeExam');
 
-            Route::prefix('/mini_assessment')->group(function () {
+            Route::prefix('/subjects')->group(function () {
                 Route::get('/', 'Student\MiniAssessmentController@index');
                 Route::post('/view-detail', 'Student\MiniAssessmentController@viewDetail');
                 Route::post('/get-subject', 'Student\MiniAssessmentController@getSubject');
                 Route::get('/{subject_id}', 'Student\MiniAssessmentController@detail');
                 Route::get('/{subject_id}/exam', 'Student\MiniAssessmentController@exam');
                 Route::get('/exam/pdf', 'Student\MiniAssessmentController@print')->name('printAnswer');
-                Route::get('/exam/close', 'Student\MiniAssessmentController@close')->name('close');
-
-
+                Route::get('/exam/close', 'Student\MiniAssessmentController@close');
 
                 // Route For Call API
                 Route::get('/service/subjects', 'Student\MiniAssessmentController@subjects');
@@ -252,6 +251,38 @@ Route::middleware('session')->group(function () {
                 Route::post('/service/finish', 'Student\MiniAssessmentController@finish');
                 Route::get('/service/check', 'Student\MiniAssessmentController@checkAnswer');
                 Route::patch('/service/edit_note', 'Student\MiniAssessmentController@editNote');
+            });
+
+            Route::get('/', 'HomeController@index');
+
+            Route::prefix('/assessment')->group(function () {
+                Route::get('/close', 'Student\MiniAssessmentController@close')->name('close');
+                Route::get('/{assessment_group_id}/subjects', 'Student\MiniAssessmentController@index');
+                Route::get(
+                    '/{assessment_group_id}/subjects/{subject_id}/onboarding',
+                    'Student\MiniAssessmentController@detail',
+                );
+                Route::get(
+                    '/{assessment_group_id}/subjects/{subject_id}/exam',
+                    'Student\MiniAssessmentController@exam',
+                );
+
+                // Route For Call API
+                Route::get('/service/subjects', 'Student\MiniAssessmentController@subjects');
+                Route::get('/service/subjects/{subject_id}', 'Student\MiniAssessmentController@detail');
+                Route::post('/service/answer', 'Student\MiniAssessmentController@setAnswer');
+                Route::post('/service/finish', 'Student\MiniAssessmentController@finish');
+                Route::get('/service/check', 'Student\MiniAssessmentController@checkAnswer');
+                Route::patch('/service/edit_note', 'Student\MiniAssessmentController@editNote');
+                Route::get('/exam/pdf', 'Student\MiniAssessmentController@print')->name('printAnswer');
+            });
+
+            Route::prefix('/mini_assessment')->group(function () {
+                Route::get('/', 'Student\MiniAssessmentController@index');
+                Route::post('/view-detail', 'Student\MiniAssessmentController@viewDetail');
+                Route::post('/get-subject', 'Student\MiniAssessmentController@getSubject');
+                Route::get('/{subject_id}', 'Student\MiniAssessmentController@detail');
+                Route::get('/{subject_id}/exam', 'Student\MiniAssessmentController@exam');
             });
 
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
@@ -283,6 +314,7 @@ Route::middleware('session')->group(function () {
                 });
             });
         });
+
         Route::get('/{game}/{stageId}/{roundId}', 'Student\MatrikulasiExamController@index');
         Route::post('/{game}/{stageId}/{roundId}/check-answer', 'Student\MatrikulasiExamController@checkAnswer');
     });
