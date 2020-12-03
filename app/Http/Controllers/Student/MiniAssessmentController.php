@@ -410,35 +410,48 @@ class MiniAssessmentController extends Controller
                         $view .='</div>';
                     $view .='</div>';
 
-                $view .= '</div>';
+            $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
+            $view .= '<div class="row justify-content-start justify-content-md-end
+                                justify-content-lg-end">';
+            $view .= '</div>';
+            $view .= '</div>';
+
+            $view .= '</div>';
+
+            $view .= '<div>';
+            $view .= '<i class="kejar-right"></i>';
+            $view .= '</div>';
+            $view .= '</div>';
+
+            $view .= '</div>';
 
             $view .= '</div>';
         }
 
         if ($meta && $meta['total'] > 10) {
             $view .= '<nav class="navigation mt-5">';
-                $view .= '<div>';
-                    $view .= '<span class="pagination-detail">'. ($meta['to'] ?? 0)
-                            .' dari '. $meta['total'] .' mapel</span>';
-                $view .= '</div>';
-                $view .= '<ul class="pagination">';
-                    $view .= '<li class="page-item '.($page - 1 <= 0 ? 'disabled' : '').'">';
-                        $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.($page - 1).')"
+            $view .= '<div>';
+            $view .= '<span class="pagination-detail">' . ($meta['to'] ?? 0)
+                . ' dari ' . $meta['total'] . ' mapel</span>';
+            $view .= '</div>';
+            $view .= '<ul class="pagination">';
+            $view .= '<li class="page-item ' . ($page - 1 <= 0 ? 'disabled' : '') . '">';
+            $view .= '<a class="page-link" onclick="' . $paginationFunction . '(' . ($page - 1) . ')"
                               href="javascript:void(0)" tabindex="-1">&lt;</a>';
-                    $view .= '</li>';
+            $view .= '</li>';
 
-            for ($i=1; $i <= $meta['last_page']; $i++) {
-                $view .= '<li class="page-item '. ($page === $i ? 'active disabled' : '') .'">';
-                    $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.$i.')"
-                              href="javascript:void(0)">'.$i.'</a>';
+            for ($i = 1; $i <= $meta['last_page']; $i++) {
+                $view .= '<li class="page-item ' . ($page === $i ? 'active disabled' : '') . '">';
+                $view .= '<a class="page-link" onclick="' . $paginationFunction . '(' . $i . ')"
+                              href="javascript:void(0)">' . $i . '</a>';
                 $view .= '</li>';
             }
 
-                    $view .= '<li class="page-item '. ($page + 1).' > '.($meta['last_page'] ? 'disabled' : '' ).'">';
-                        $view .= '<a class="page-link" onclick="'.$paginationFunction.'('.($page + 1).')"
+            $view .= '<li class="page-item ' . ($page + 1) . ' > ' . ($meta['last_page'] ? 'disabled' : '') . '">';
+            $view .= '<a class="page-link" onclick="' . $paginationFunction . '(' . ($page + 1) . ')"
                                   href="javascript:void(0)">&gt;</a>';
-                    $view .= '</li>';
-                $view .= '</ul>';
+            $view .= '</li>';
+            $view .= '</ul>';
             $view .= '</nav>';
         }
 
@@ -509,43 +522,43 @@ class MiniAssessmentController extends Controller
     public function viewDetailHtml($data)
     {
         $view = '<div class="row">';
-            $view .= '<div class="col-12">';
-                $view .= '<h5>Nama Mapel</h5>';
-                $view .= '<p>'.$data['name'].'</p>';
-            $view .= '</div>';
+        $view .= '<div class="col-12">';
+        $view .= '<h5>Nama Mapel</h5>';
+        $view .= '<p>' . $data['name'] . '</p>';
+        $view .= '</div>';
         $view .= '</div>';
 
         if ($data['schedule']) {
             $view .= '<div class="row">';
-                $view .= '<div class="col-12">';
-                    $view .= '<h5>Jadwal</h5>';
-                    $view .= '<p>'.$data['schedule'].'</p>';
-                $view .= '</div>';
+            $view .= '<div class="col-12">';
+            $view .= '<h5>Jadwal</h5>';
+            $view .= '<p>' . $data['schedule'] . '</p>';
+            $view .= '</div>';
             $view .= '</div>';
         }
 
         if (($data['schedule'] && $data['schedule'] !== 'Belum ada jadwal.') || $data['finished'] === 1) {
             $view .= '<div class="row">';
-                $view .= '<div class="col-12">';
-                    $view .= '<h5>Status</h5>';
-                    $view .= '<p class="mt-2">';
-                        $view .= '<span class="badge-';
-                            $view .= ($data['finished'] === 1 ? 'done' : 'undone' );
-                        $view .= ' label">';
-                            $view .= ($data['finished'] === 1 ? 'SUDAH DIKERJAKAN' :
-                                        'BELUM DIKERJAKAN' );
-                        $view .= '</span>';
-                    $view .= '</p>';
-                $view .= '</div>';
+            $view .= '<div class="col-12">';
+            $view .= '<h5>Status</h5>';
+            $view .= '<p class="mt-2">';
+            $view .= '<span class="badge-';
+            $view .= ($data['finished'] === 1 ? 'done' : 'undone');
+            $view .= ' label">';
+            $view .= ($data['finished'] === 1 ? 'SUDAH DIKERJAKAN' :
+                'BELUM DIKERJAKAN');
+            $view .= '</span>';
+            $view .= '</p>';
+            $view .= '</div>';
             $view .= '</div>';
         }
 
         if ($data['enabled']) {
             $view .= '<div class="modal-footer text-right">';
-                $view .= '<div class="text-right col-md-12 p-0">';
-                        $view .= '<button class="btn btn-primary pull-right"
-                        onclick="goExam(\''.$data['id'].'\',\''.$data['name'].'\')">Kerjakan</button>';
-                $view .= '</div>';
+            $view .= '<div class="text-right col-md-12 p-0">';
+            $view .= '<button class="btn btn-primary pull-right"
+                        onclick="goExam(\'' . $data['id'] . '\',\'' . $data['name'] . '\')">Kerjakan</button>';
+            $view .= '</div>';
             $view .= '</div>';
         }
 

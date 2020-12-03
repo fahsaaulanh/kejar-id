@@ -233,10 +233,17 @@ Route::middleware('session')->group(function () {
         // Khusus route student disini
 
         Route::prefix('student')->group(function () {
-            // New Route
+
+            Route::get('/', 'HomeController@index');
             Route::get('/dashboard', 'HomeController@student');
             Route::get('/api/assessment-groups', 'HomeController@getAssessmentGroups');
-            Route::get('/dev/exam', 'Student\MiniAssessmentController@beforeExam');
+            Route::get('/{assessment_group_id}/subjects', 'Student\AssessmentController@schedules');
+            Route::post('/me/schedules/assessments', 'Student\AssessmentController@getSchedules');
+            Route::get(
+                '/{assessment_group_id}/subjects/{schedule_id}/onboarding',
+                'Student\AssessmentController@detail',
+            );
+
 
             Route::prefix('/subjects')->group(function () {
                 Route::get('/', 'Student\MiniAssessmentController@index');
@@ -320,5 +327,9 @@ Route::middleware('session')->group(function () {
 
         Route::get('/{game}/{stageId}/{roundId}', 'Student\MatrikulasiExamController@index');
         Route::post('/{game}/{stageId}/{roundId}/check-answer', 'Student\MatrikulasiExamController@checkAnswer');
+    });
+
+    // for global services
+    Route::middleware('service')->group(function () {
     });
 });

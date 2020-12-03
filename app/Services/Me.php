@@ -24,4 +24,18 @@ class Me extends Service
 
         return $this->showResponse($response);
     }
+
+    public function getAssessmentSchedules($filter = [])
+    {
+        $response = $this->get('/me/schedules/assessments', $filter);
+
+        return $this->showResponse($response);
+    }
+
+    public function assessmentScheduleDetail($id)
+    {
+        $response = $this->get("/me/schedules/assessments/$id");
+
+        return $this->showResponse($response);
+    }
 }
