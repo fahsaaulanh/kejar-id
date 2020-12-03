@@ -1,5 +1,5 @@
-.modal{
-    &#updateProfile{
+.modal {
+    &#updateProfile {
         overflow-x: hidden;
         overflow-y: auto;
 
@@ -17,41 +17,41 @@
             }
         }
 
-        .save-btn{
-            &:hover{
+        .save-btn {
+            &:hover {
                 color: $white !important;
             }
         }
 
-        .crop-area{
+        .crop-area {
             width: 100%;
             margin: 2.4rem 0;
 
-            .profile-pict-crop{
+            .profile-pict-crop {
                 width: 100%;
             }
         }
     }
-    &#editProfile{
-        .save-btn{
-            &:hover{
+    &#editProfile {
+        .save-btn {
+            &:hover {
                 color: $white !important;
             }
         }
 
-        .avatar-group{
+        .avatar-group {
             margin: 2.4rem 0;
             position: relative;
             width: 11.2rem;
 
-            .profile-pict{
+            .profile-pict {
                 width: 11.2rem;
                 height: 11.2rem;
                 object-fit: cover;
                 border-radius: 50%;
             }
 
-            .edit-pict-btn{
+            .edit-pict-btn {
                 position: absolute;
                 bottom: 0;
                 right: 0;
@@ -66,34 +66,34 @@
                 background-color: $grey-13;
                 z-index: 1;
 
-                i:before{
+                i:before {
                     color: $blue;
                 }
             }
         }
     }
 
-    #detailResultModal{
-        .modal-dialog{
+    #detailResultModal {
+        .modal-dialog {
             margin: 0 !important;
             max-height: 100vh;
 
-            .modal-content{
+            .modal-content {
                 bottom: 0px;
                 max-height: 504px;
                 overflow: hidden;
 
-                .modal-header{
+                .modal-header {
                     background: white !important;
                     z-index: 1;
                     padding: 1rem !important;
 
-                    .close{
+                    .close {
                         padding: 0 !important;
                     }
                 }
 
-                .modal-body{
+                .modal-body {
                     padding: 2.5rem 2.2rem !important;
                     max-height: 504px;
                     overflow: auto;
@@ -103,33 +103,32 @@
         }
     }
 
-    .modal-dialog{
-
-        .modal-content{
+    .modal-dialog {
+        .modal-content {
             border: 0 !important;
             border-radius: 0 !important;
 
-            .modal{
-                &-header{
+            .modal {
+                &-header {
                     padding: 2.5rem 2.2rem 0rem 2.2rem;
                     border: 0 !important;
 
-                    .close{
+                    .close {
                         font-size: 2rem !important;
 
-                        i::before{
+                        i::before {
                             color: $grey-3 !important;
                         }
                     }
 
-                    h4{
+                    h4 {
                         font-size: 1.7rem;
                         line-height: 2rem;
                         margin-bottom: 0.4rem;
                         color: $black-1 !important;
                     }
 
-                    p{
+                    p {
                         font-weight: normal;
                         font-size: 1.1rem;
                         line-height: 1.2rem;
@@ -137,13 +136,13 @@
                     }
                 }
 
-                &-body{
+                &-body {
                     border: 0 !important;
 
-                    .list-group{
+                    .list-group {
                         width: 100% !important;
 
-                        .list-group-item{
+                        .list-group-item {
                             border: 0 !important;
                             padding: 1rem 0 !important;
                             display: flex !important;
@@ -152,34 +151,34 @@
                             position: relative !important;
                             background-color: $white !important;
 
-                            i{
+                            i {
                                 padding: 0 !important;
                                 margin-right: 0 !important;
                                 font-size: 1.4rem !important;
                                 top: 0 !important;
                                 left: 0 !important;
 
-                                &.kejar-belum-mengerjakan-2:before{
+                                &.kejar-belum-mengerjakan-2:before {
                                     color: $red-2 !important;
                                 }
 
-                                &.kejar-latihan-to-bold:before{
+                                &.kejar-latihan-to-bold:before {
                                     color: $deep-yellow !important;
                                 }
 
-                                &.kejar-sudah-dikerjakan:before{
+                                &.kejar-sudah-dikerjakan:before {
                                     color: $green-2 !important;
                                 }
                             }
 
-                            &:hover{
+                            &:hover {
                                 background-color: $white !important;
                             }
 
-                            .list-item-text{
+                            .list-item-text {
                                 margin-left: 1.1rem !important;
 
-                                h6{
+                                h6 {
                                     font-weight: bold;
                                     font-size: 1.3rem;
                                     line-height: 1.6rem;
@@ -187,13 +186,13 @@
                                     margin: 0 !important;
                                 }
 
-                                p{
+                                p {
                                     font-size: 1.1rem;
                                     line-height: 1.2rem;
                                     color: $grey-8 !important;
                                     margin: 0.2rem 0 0 0 !important;
 
-                                    span{
+                                    span {
                                         font-weight: bold !important;
                                         color: $grey-2 !important;
                                     }
@@ -203,7 +202,7 @@
                     }
                 }
 
-                &-footer{
+                &-footer {
                     padding: 2.5rem 2.2rem !important;
                     border: 0 !important;
                 }
@@ -211,7 +210,7 @@
         }
     }
 
-    .modal-md{
+    .modal-md {
         width: 38.4rem;
     }
 
@@ -223,28 +222,30 @@
         }
     }
 
-    .modal-content{
+    .modal-content {
         border-radius: 0rem;
         border: 0rem;
         padding: 1.6rem;
 
-        .modal-header{
+        .modal-header {
             border: none !important;
 
-            .modal-title{
+            .modal-title {
                 @include h3;
             }
         }
 
-        .modal-body{
+        .modal-body {
             padding-bottom: 3rem;
 
-            p{
+            p {
                 @include h6-reg;
             }
 
-            .form-group{
-                input[type="text"], input[type="number"], textarea{
+            .form-group {
+                input[type="text"],
+                input[type="number"],
+                textarea {
                     width: 100%;
                     border-radius: 0rem;
                     border: 0.2rem solid $grey-13;
@@ -252,17 +253,17 @@
                     color: $grey-6;
                     background-color: $white !important;
 
-                    &:focus{
+                    &:focus {
                         outline: 0;
                         border: 0.2rem solid $blue-4;
                     }
                 }
             }
 
-            .custom-upload{
+            .custom-upload {
                 margin-bottom: 0rem !important;
 
-                input[type="text"]{
+                input[type="text"] {
                     width: 100%;
                     border-radius: 0rem;
                     border: 0.2rem solid $grey-13;
@@ -271,182 +272,179 @@
                     background-color: $white !important;
                 }
 
-                .btn-label{
+                .btn-label {
                     @include h5-reg;
                     padding: 1rem 1.2rem;
                     color: $blue;
 
-                    &:hover{
+                    &:hover {
                         color: $blue-2;
                     }
                 }
 
-                input[type="file"]{
+                input[type="file"] {
                     display: none;
                 }
             }
 
-            .form-group{
-
-                label{
+            .form-group {
+                label {
                     @include h5;
                 }
             }
 
-
-            .link-download{
+            .link-download {
                 @include h6-reg;
                 color: $blue;
                 line-height: 0rem !important;
                 text-decoration: none;
-                i::before{
+                i::before {
                     color: $blue;
                 }
-                &:hover{
+                &:hover {
                     color: $blue-2;
                     cursor: pointer;
-                    i::before{
+                    i::before {
                         color: $blue-2;
                     }
                 }
             }
         }
 
-        .modal-footer{
+        .modal-footer {
             border: none !important;
             display: flex;
             justify-content: space-between;
             align-items: center;
 
-            a{
+            a {
                 @include h5-reg;
                 color: $blue;
                 text-decoration: none;
 
-                i{
+                i {
                     font-size: 2rem;
                     top: 0.1rem;
 
-                    &:before{
+                    &:before {
                         color: $blue;
                         font-size: 1.5rem;
                     }
                 }
 
-                &:hover{
+                &:hover {
                     color: $blue-2;
 
-                    i{
-                        &:before{
+                    i {
+                        &:before {
                             color: $blue-2;
                         }
                     }
                 }
             }
 
-            .btn{
+            .btn {
                 @include h5-reg;
                 padding: 0.8rem 1rem;
                 border-radius: 0rem;
             }
 
-            .btn-cancel{
+            .btn-cancel {
                 color: $blue;
                 background: transparent;
 
-                &:hover{
+                &:hover {
                     color: $blue-2;
                 }
             }
 
-            .btn-primary{
+            .btn-primary {
                 background: $blue;
                 color: $white;
                 border: 0;
 
-                &:hover{
+                &:hover {
                     background: $blue-2;
                 }
             }
 
-            .btn-skip{
+            .btn-skip {
                 background-color: $blue-tp2 !important;
                 color: $blue !important;
                 border: 0;
-                &:hover{
+                &:hover {
                     background: $blue-2;
                 }
             }
-
         }
     }
 
-    .content{
+    .content {
         margin: 40px, 40px;
     }
 
     /* Breadcrumb */
-    .breadcrumb{
+    .breadcrumb {
         font-size: 15px !important;
     }
 
-    a.breadcrumb-item{
+    a.breadcrumb-item {
         color: #9daebd !important;
         cursor: pointer !important;
         text-decoration: none;
     }
 
-    .breadcrumb-item.active{
+    .breadcrumb-item.active {
         color: #202020 !important;
     }
 
     /* Title */
-    .text-title{
+    .text-title {
         font-weight: bold;
         font-style: 25px;
         color: #202020;
     }
 
     /* Detail */
-    .task-detail{
+    .task-detail {
         margin-top: 0px;
         font-style: 15px;
     }
 
-    .title-group{
+    .title-group {
         font-style: 15px;
         font-weight: bold;
     }
 
-    .task-detail .task-detail-amount{
+    .task-detail .task-detail-amount {
         font-size: 15px;
         color: #7c92a7;
         font-weight: normal;
     }
-    .task-detail .task-detail-amount span{
+    .task-detail .task-detail-amount span {
         font-size: 15px;
-        color: #334E68;
+        color: #334e68;
         font-weight: bold;
     }
 
-    .task-detail .task-detail-description{
+    .task-detail .task-detail-description {
         font-size: 15px;
         color: #202020;
     }
 
     /* Taks Detail Card */
 
-    .detail-card{
+    .detail-card {
         margin-top: 8px;
-        background: #F7F4FB;
+        background: #f7f4fb;
         padding: 24px;
     }
 
-    .detail-card .detail-card-icon .kejar-open-book::before{
-        color: #7233DA !important;
+    .detail-card .detail-card-icon .kejar-open-book::before {
+        color: #7233da !important;
     }
 
-    .detail-card .detail-card-text{
+    .detail-card .detail-card-text {
         color: #202020;
         font-size: 15px;
         line-height: 24px;
@@ -454,112 +452,115 @@
     }
 
     /* Btn Start */
-    .btn-start-group{
+    .btn-start-group {
         margin-top: 56px;
     }
 
-    .btn-start-group .btn-start{
+    .btn-start-group .btn-start {
         border-radius: 0px;
-        background: #7233DA;
+        background: #7233da;
         font-size: 19px;
         border: 0;
     }
 
-    .btn-start-group .btn-start .kejar-next::before{
-        color: #FFFFFF;
+    .btn-start-group .btn-start .kejar-next::before {
+        color: #ffffff;
         font-size: 19px;
         margin-left: 7px;
     }
 
     /* Btn start hover */
-    .btn-start-group .btn-start:hover{
-        background: #986CE0;
+    .btn-start-group .btn-start:hover {
+        background: #986ce0;
     }
 
-    .kotak{
+    .kotak {
         border-radius: 0px;
         border: 0px;
     }
 
-    .judul{
+    .judul {
         margin-top: 0px;
     }
+
+    overflow: auto !important;
 }
-@media (max-width: 576px){
-    #detailResultModal{
-        .modal-dialog{
+@media (max-width: 576px) {
+    #detailResultModal {
+        .modal-dialog {
             margin: 0 !important;
         }
     }
 
-    #create-question, .modal-large{
-        .modal-dialog{
+    #create-question,
+    .modal-large {
+        .modal-dialog {
             max-width: 70rem !important;
         }
     }
 
     /* Breadcrumb */
-    .breadcrumb{
+    .breadcrumb {
         font-size: 15px !important;
     }
 
-    a.breadcrumb-item{
+    a.breadcrumb-item {
         color: #9daebd !important;
         cursor: pointer !important;
         text-decoration: none;
     }
 
-    .breadcrumb-item.active{
+    .breadcrumb-item.active {
         color: #202020 !important;
     }
 
     /* Title */
-    .text-title{
+    .text-title {
         font-weight: bold;
         font-style: 25px;
         color: #202020;
     }
 
     /* Detail */
-    .task-detail{
+    .task-detail {
         margin-top: 0px;
         font-style: 15px;
     }
 
-    .title-group{
+    .title-group {
         font-style: 15px;
         font-weight: bold;
     }
 
-    .task-detail .task-detail-amount{
+    .task-detail .task-detail-amount {
         font-size: 15px;
         color: #7c92a7;
         font-weight: normal;
     }
-    .task-detail .task-detail-amount span{
+    .task-detail .task-detail-amount span {
         font-size: 15px;
-        color: #334E68;
+        color: #334e68;
         font-weight: bold;
     }
 
-    .task-detail .task-detail-description{
+    .task-detail .task-detail-description {
         font-size: 15px;
         color: #202020;
     }
 
     /* Taks Detail Card */
 
-    .detail-card{
+    .detail-card {
         margin-top: 8px;
-        background: #F7F4FB;
+        background: #f7f4fb;
         padding: 24px;
     }
 
-    .detail-card .detail-card-icon .kejar-open-book::before{
-        color: #7233DA !important;
+    .detail-card .detail-card-icon .kejar-open-book::before {
+        color: #7233da !important;
     }
 
-    .detail-card .detail-card-text{
+    .detail-card .detail-card-text {
         color: #202020;
         font-size: 15px;
         line-height: 24px;
@@ -567,39 +568,39 @@
     }
 
     /* Btn Start */
-    .btn-start-group{
+    .btn-start-group {
         margin-top: 56px;
     }
 
-    .btn-start-group .btn-start{
+    .btn-start-group .btn-start {
         border-radius: 0px;
-        background: #7233DA;
+        background: #7233da;
         font-size: 19px;
         border: 0;
     }
 
-    .btn-start-group .btn-start .kejar-next::before{
-        color: #FFFFFF;
+    .btn-start-group .btn-start .kejar-next::before {
+        color: #ffffff;
         font-size: 19px;
         margin-left: 7px;
     }
 
     /* Btn start hover */
-    .btn-start-group .btn-start:hover{
-        background: #986CE0;
+    .btn-start-group .btn-start:hover {
+        background: #986ce0;
     }
 
-    .kotak{
+    .kotak {
         border-radius: 0px;
         border: 0px;
     }
 
-    .judul{
+    .judul {
         margin-top: 0px;
     }
 }
 
-.toast{
+.toast {
     position: fixed;
     top: 2rem;
     width: 100%;
@@ -610,33 +611,32 @@
 }
 
 /* Modal Exit */
-#exitExamModal{
-
-    .modal-content{
+#exitExamModal {
+    .modal-content {
         padding: 0rem;
 
-        .modal-header{
+        .modal-header {
             display: flex !important;
             align-items: center;
             justify-content: space-between;
             padding: 3.2rem !important;
 
-            .modal-title{
+            .modal-title {
                 margin: 0rem;
                 @include h3;
             }
 
-            .close{
+            .close {
                 margin: 0rem;
                 outline: none;
             }
         }
 
-        .modal-body{
+        .modal-body {
             position: relative;
             margin: 0rem;
             padding: 0rem 3.2rem !important;
-            p{
+            p {
                 font-size: 1.5rem;
                 font-weight: normal;
                 color: $grey-2;
@@ -644,14 +644,14 @@
             }
         }
 
-        .modal-footer{
+        .modal-footer {
             padding: 2.5rem 2.2rem !important;
-            .btn{
+            .btn {
                 padding: 10px 12px;
                 font-size: 15px;
             }
 
-            .btn-transparent{
+            .btn-transparent {
                 background-color: transparent !important;
             }
         }
