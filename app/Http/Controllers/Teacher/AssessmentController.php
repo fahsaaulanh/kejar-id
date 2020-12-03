@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Services\Assessment as AssessmentApi;
 use App\Services\AssessmentGroup as AssessmentGroupApi;
+use App\Services\Question as QuestionApi;
 use App\Services\School as SchoolApi;
 use App\Services\User as UserApi;
 use Illuminate\Http\Request;
@@ -65,16 +66,16 @@ class AssessmentController extends Controller
 
         $subjectDetail = $schoolApi->subjectDetail($schoolId, $subjectId);
 
-        $AssessmentApi = new AssessmentApi;
+        $assessmentApi = new AssessmentApi;
         $filterMA = [
             'filter[grade]' => $grade,
             'filter[group]' => $assessmentGroupId,
             'filter[subject_id]' => $subjectId,
         ];
-        $assessments = $AssessmentApi->index($filterMA);
+        $assessments = $assessmentApi->index($filterMA);
         $dataAssessment = ($assessments['data'] ?? []);
 
-        $dataQuestion = (count($dataAssessment) > 0 ? $AssessmentApi->questions($dataAssessment[0]['id']) : null);
+        $dataQuestion = (count($dataAssessment) > 0 ? $assessmentApi->questions($dataAssessment[0]['id']) : null);
         $dataChoices = ($dataQuestion['data'] !== null ? $dataQuestion['data'][0]['choices'] : []);
 
         return view('teacher.subject_teacher.assessment.index')
@@ -92,7 +93,7 @@ class AssessmentController extends Controller
 
     public function createMiniAssessment(Request $request, $assessmentGroupId, $subjectId, $grade)
     {
-        $AssessmentApi = new AssessmentApi;
+        $assessmentApi = new AssessmentApi;
         $reqFile = [
             [
                 'file_extension' => 'pdf',
@@ -110,7 +111,7 @@ class AssessmentController extends Controller
             'total_question' => $request['total_question'],
             'total_choices' => $request['total_choices'],
         ];
-        $create = $AssessmentApi->create($reqFile, $payload);
+        $create = $assessmentApi->create($reqFile, $payload);
         if ($create) {
             return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil tersimpan!']);
         }
@@ -120,8 +121,8 @@ class AssessmentController extends Controller
 
     public function settingMiniAssessment(Request $request, $assessmentGroupId, $subjectId, $grade, $assessmentId)
     {
-        $AssessmentApi = new AssessmentApi;
-        $assessmentDetail = $AssessmentApi->detail($assessmentId);
+        $assessmentApi = new AssessmentApi;
+        $assessmentDetail = $assessmentApi->detail($assessmentId);
         $payload = [
             'duration' => $request['duration'],
             'subject_id' => $subjectId,
@@ -132,7 +133,7 @@ class AssessmentController extends Controller
             'total_question' => $request['total_question'],
             'total_choices' => $request['total_choices'],
         ];
-        $update = $AssessmentApi->update($assessmentId, $payload);
+        $update = $assessmentApi->update($assessmentId, $payload);
         if ($update) {
             return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil diperbaharui!']);
         }
@@ -140,37 +141,31 @@ class AssessmentController extends Controller
         return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal diperbaharui!']);
     }
 
-    public function viewMini($id)
+    public function viewQuestion($id)
     {
-        $AssessmentApi = new AssessmentApi;
-        $detail = $AssessmentApi->detail($id);
+        $assessmentApi = new AssessmentApi;
+        $question = $assessmentApi->questions($id);
+     
+        $detail = $assessmentApi->detail($id);
         $data = [];
         $data['detail'] = $detail['data'];
-        $data['detail']['created'] = '';
-        if ($data['detail']['validated']) {
-            $UserApi = new UserApi;
-            $teacher = $UserApi->detailTeacher($data['detail']['validated_by']);
-            $data['detail']['created'] = $teacher['data']['name'];
+        $data['detail']['validated_by_name'] = '';
+        $data['detail']['countAnswer'] = collect($question['data'])->where('answer', '')->count();
+
+        $UserApi = new UserApi;
+        $user = $UserApi->detailUser($data['detail']['created_by']);
+        $teacher = $UserApi->detailTeacher($user['data']['userable_id']);
+        $data['detail']['created_by_name'] = $teacher['data']['name'];
+
+        if ($data['detail']['validated_by']) {
+            $user = $UserApi->detailUser($data['detail']['validated_by']);
+            $teacher = $UserApi->detailTeacher($user['data']['userable_id']);
+            $data['detail']['validated_by_name'] = $teacher['data']['name'];
         }
 
-        $data['time'] = $this->dateFormat($detail['data']['start_time'], 'd M Y') .
-            ', ' . $this->dateFormat($detail['data']['start_time'], 'H.i') .
-            ' - ' . $this->dateFormat($detail['data']['expiry_time'], 'H.i');
+        $choices1 = $this->choicesHtml($question['data'], 1);
 
-        // $answersAPI = $AssessmentApi->answers($id);
-
-        $total_question = 50;
-        $total_choices = 5;
-
-
-        $choices1 = $this->choicesHtml($total_question, $total_choices, $id, 1);
-
-        $choices2 = $this->choicesHtml($total_question, $total_choices, $id, 2);
-
-
-        // if ($answersAPI['data']) {
-
-        // }
+        $choices2 = $this->choicesHtml($question['data'], 2);
 
         $data['choicesTab1'] = $choices1;
         $data['choicesTab2'] = $choices2;
@@ -178,75 +173,179 @@ class AssessmentController extends Controller
         return response()->json($data);
     }
 
-    public function choicesHtml($total, $number, $id, $tab)
+    public function choicesHtml($questions, $tab)
     {
-        $divider = (float) ($total / 2);
-        $divider = ceil($divider);
+        $divider = (float) (count($questions) / 2);
+        $size = ceil($divider);
+
+        $chunkQuestion = array_chunk($questions, $size);
 
         $view = '';
-        if ($tab === 1) {
-            for ($i = 1; $i <= $divider; $i++) {
-                $view .= '<div class="row px-4 mt-4">';
-                $view .= '<div class="pts-number">' . $i . '</div>';
-                $view .= '<div class="col">';
-                $view .= ' <div class="row">';
 
-                for ($c = 1; $c <= $number; $c++) {
-                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
-                    onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
-                    id="pts-choice-' . $i . '-' . $c . '">';
-                    $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';
-                }
+        $view2 = '';
 
-                $view .= '<div id="pts-choice-load-' . $i . '" style="display:none"\
-                class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
-                $view .= '<div class="spinner-border" role="status">';
-                $view .= ' <span class="sr-only">Loading...</span>';
-                $view .= '</div>';
-                $view .= '</div>';
+        $no = 1;
 
-                $view .= '<div id="pts-choice-success-' . $i . '"  style="display:none"\
-                class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
-                $view .= '<i class="kejar-soal-benar"></i></div>';
-
-                $view .= '</div>';
-                $view .= '</div>';
-                $view .= '</div>';
-            }
-
-            return $view;
-        }
-
-        for ($i = $divider + 1; $i <= $total; $i++) {
+        foreach ($chunkQuestion[0] as $question) {
             $view .= '<div class="row px-4 mt-4">';
-            $view .= '<div class="pts-number">' . $i . '</div>';
+            $view .= '<div class="pts-number">' . $no . '</div>';
             $view .= '<div class="col">';
             $view .= ' <div class="row">';
 
-            for ($c = 1; $c <= $number; $c++) {
-                $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
-                onclick="onClickAnswerPG(\'' . $i . '\',\'' . $c . '\',\'' . $id . '\',\'' . $number . '\')"\
-                id="pts-choice-' . $i . '-' . $c . '">';
-                $view .= '<span class="caption">' . chr(64 + $c) . '</span></div>';
+            $qId = $question['id'];
+
+            $countQ = count($question['choices']);
+
+            foreach ($question['choices'] as $key => $c) {
+                if ($c === $question['answer']) {
+                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice active"\
+                        onclick="onClickAnswerPG(\'' . $key . '\',\'' . $qId . '\',\'' . $c . '\',\'' . $countQ . '\')"\
+                        id="pts-choice-' . $qId . '-' . $key . '">';
+                } else {
+                    $view .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
+                        onclick="onClickAnswerPG(\'' . $key . '\',\'' . $qId . '\',\'' . $c . '\',\'' . $countQ . '\')"\
+                        id="pts-choice-' . $qId . '-' . $key . '">';
+                }
+
+                $view .= '<span class="caption">' . $c . '</span></div>';
             }
 
-            $view .= '<div id="pts-choice-load-' . $i . '" style="display:none"\
-            class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
+            $view .= '<div id="pts-choice-load-' . $qId . '" style="display:none"\
+                    class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
             $view .= '<div class="spinner-border" role="status">';
             $view .= ' <span class="sr-only">Loading...</span>';
             $view .= '</div>';
             $view .= '</div>';
 
-            $view .= '<div id="pts-choice-success-' . $i . '" style="display:none"\
-            class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
+            $view .= '<div id="pts-choice-success-' . $qId . '"  style="display:none"\
+                    class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
             $view .= '<i class="kejar-soal-benar"></i></div>';
 
             $view .= '</div>';
             $view .= '</div>';
             $view .= '</div>';
+            $no++;
         }
 
-        return $view;
+        foreach ($chunkQuestion[1] as $question) {
+            $view2 .= '<div class="row px-4 mt-4">';
+            $view2 .= '<div class="pts-number">' . $no . '</div>';
+            $view2 .= '<div class="col">';
+            $view2 .= ' <div class="row">';
+
+            $qId = $question['id'];
+
+            $countQ = count($question['choices']);
+
+            foreach ($question['choices'] as $key => $c) {
+                if ($c === $question['answer']) {
+                    $view2 .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice active"\
+                        onclick="onClickAnswerPG(\'' . $key . '\',\'' . $qId . '\',\'' . $c . '\',\'' . $countQ . '\')"\
+                        id="pts-choice-' . $qId . '-' . $key . '">';
+                } else {
+                    $view2 .= '<div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice"\
+                        onclick="onClickAnswerPG(\'' . $key . '\',\'' . $qId . '\',\'' . $c . '\',\'' . $countQ . '\')"\
+                        id="pts-choice-' . $qId . '-' . $key . '">';
+                }
+
+                $view2 .= '<span class="caption">' . $c . '</span></div>';
+            }
+
+            $view2 .= '<div id="pts-choice-load-' . $qId . '" style="display:none"\
+                    class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">';
+            $view2 .= '<div class="spinner-border" role="status">';
+            $view2 .= ' <span class="sr-only">Loading...</span>';
+            $view2 .= '</div>';
+            $view2 .= '</div>';
+
+            $view2 .= '<div id="pts-choice-success-' . $qId . '"  style="display:none"\
+                    class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">';
+            $view2 .= '<i class="kejar-soal-benar"></i></div>';
+
+            $view2 .= '</div>';
+            $view2 .= '</div>';
+            $view2 .= '</div>';
+            $no++;
+        }
+
+        if ($tab === 1) {
+            return $view;
+        }
+
+        return $view2;
+    }
+
+    public function checkQuestion($id)
+    {
+        $assessmentApi = new AssessmentApi;
+
+        $question = $assessmentApi->questions($id);
+     
+        $detail = $assessmentApi->detail($id);
+
+        $data = [];
+        $data['detail'] = $detail['data'];
+        $data['detail']['validated_by_name'] = '';
+        $data['detail']['countAnswer'] = collect($question['data'])->where('answer', '')->count();
+
+        $UserApi = new UserApi;
+        $user = $UserApi->detailUser($data['detail']['created_by']);
+        $teacher = $UserApi->detailTeacher($user['data']['userable_id']);
+        $data['detail']['created_by_name'] = $teacher['data']['name'];
+
+        if ($data['detail']['validated_by']) {
+            $user = $UserApi->detailUser($data['detail']['validated_by']);
+            $teacher = $UserApi->detailTeacher($user['data']['userable_id']);
+            $data['detail']['validated_by_name'] = $teacher['data']['name'];
+        }
+
+        return response()->json($data);
+    }
+
+    public function updateQuestion()
+    {
+        $questionService = new QuestionApi;
+
+        $answer = $this->request->input('answer');
+        $questionId = $this->request->input('questionId');
+
+        $questionDetail = $questionService->getDetail($questionId);
+
+        $payload = [
+            'answer' => $answer,
+            'created_by' => $questionDetail['data']['created_by'],
+            'question' => $questionDetail['data']['question'],
+            'type' => $questionDetail['data']['type'],
+        ];
+
+        return $questionService->update($questionId, $payload);
+    }
+
+    public function validationQuestion()
+    {
+        $assessmentApi = new AssessmentApi;
+
+        $assessmentId = $this->request->input('idAssessment');
+
+        $payload = [
+            'validation' => true,
+        ];
+
+        $validation = $assessmentApi->update($assessmentId, $payload);
+     
+        $data = [];
+        $data['detail'] = $validation['data'];
+
+        $UserApi = new UserApi;
+        $user = $UserApi->detailUser($data['detail']['created_by']);
+        $teacher = $UserApi->detailTeacher($user['data']['userable_id']);
+        $data['detail']['created_by_name'] = $teacher['data']['name'];
+
+        $user = $UserApi->detailUser($data['detail']['validated_by']);
+        $teacher = $UserApi->detailTeacher($user['data']['userable_id']);
+        $data['detail']['validated_by_name'] = $teacher['data']['name'];
+
+        return response()->json($data);
     }
 
     public function dateFormat($val, $format = 'Y/m/d H:i:s')

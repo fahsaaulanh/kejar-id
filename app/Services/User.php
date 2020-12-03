@@ -80,4 +80,11 @@ class User extends Service
 
         return $this->showResponse($response);
     }
+
+    public function detailUser($id)
+    {
+        $response = $this->get('/users/users/'.$id);
+
+        return $this->showResponse($response);
+    }
 }

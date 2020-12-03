@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Validasi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" onclick="closeValidation()" aria-label="Close">
                     <i class="kejar-close"></i>
                 </button>
             </div>
@@ -16,8 +16,8 @@
             </div>
             <div class="modal-footer justify-content-end">
                 <div>
-                    <button type="button" class="btn btn-link" id="lanjut-missing-answer">Batal</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Validasi</button>
+                    <button type="button" class="btn btn-link" onclick="closeValidation()">Batal</button>
+                    <button type="button" class="btn btn-primary" id="validasiButton"  onclick="validationAssessment()">Validasi</button>
                 </div>
             </div>
         </div>
