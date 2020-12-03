@@ -20,7 +20,7 @@ class LoginController extends Controller
             }
 
             if ($user['role'] === 'STUDENT') {
-                return redirect('/student/games')->with('message', $message);
+                return redirect('/student/dashboard')->with('message', $message);
             }
 
             if ($user['role'] === 'TEACHER') {
@@ -88,7 +88,7 @@ class LoginController extends Controller
 
                 $request->session()->put('user', $responseMe['data']);
 
-                return redirect('/student/games');
+                return redirect('/student/dashboard');
             }
 
             if ($responseMe['data']['role'] === 'TEACHER') {
