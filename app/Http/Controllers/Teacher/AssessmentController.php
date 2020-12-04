@@ -311,8 +311,9 @@ class AssessmentController extends Controller
             ->with('message', 'Data success');
     }
 
-    public function createMiniAssessment(Request $request, $assessmentGroupId, $subjectId, $grade)
+    public function createMiniAssessment(Request $request, $teacherType, $assessmentGroupId, $subjectId, $grade)
     {
+        $teacherType;
         $assessmentApi = new AssessmentApi;
         $reqFile = [
             [
@@ -331,7 +332,9 @@ class AssessmentController extends Controller
             'total_question' => $request['total_question'],
             'total_choices' => $request['total_choices'],
         ];
+
         $create = $assessmentApi->create($reqFile, $payload);
+
         if ($create) {
             return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil tersimpan!']);
         }
@@ -339,8 +342,15 @@ class AssessmentController extends Controller
         return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal tersimpan!']);
     }
 
-    public function settingMiniAssessment(Request $request, $assessmentGroupId, $subjectId, $grade, $assessmentId)
-    {
+    public function settingMiniAssessment(
+        Request $request,
+        $teacherType,
+        $assessmentGroupId,
+        $subjectId,
+        $grade,
+        $assessmentId
+    ) {
+        $teacherType;
         $assessmentApi = new AssessmentApi;
         $assessmentDetail = $assessmentApi->detail($assessmentId);
         $payload = [
@@ -359,8 +369,9 @@ class AssessmentController extends Controller
         return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal diperbaharui!']);
     }
 
-    public function viewQuestion($id)
+    public function viewQuestion($teacherType, $id)
     {
+        $teacherType;
         $assessmentApi = new AssessmentApi;
         $question = $assessmentApi->questions($id);
 
@@ -493,8 +504,9 @@ class AssessmentController extends Controller
         return $view2;
     }
 
-    public function checkQuestion($id)
+    public function checkQuestion($teacherType, $id)
     {
+        $teacherType;
         $assessmentApi = new AssessmentApi;
 
         $question = $assessmentApi->questions($id);
@@ -520,8 +532,9 @@ class AssessmentController extends Controller
         return response()->json($data);
     }
 
-    public function updateQuestion()
+    public function updateQuestion($teacherType)
     {
+        $teacherType;
         $questionService = new QuestionApi;
 
         $answer = $this->request->input('answer');
@@ -539,8 +552,9 @@ class AssessmentController extends Controller
         return $questionService->update($questionId, $payload);
     }
 
-    public function validationQuestion()
+    public function validationQuestion($teacherType)
     {
+        $teacherType;
         $assessmentApi = new AssessmentApi;
 
         $assessmentId = $this->request->input('idAssessment');
