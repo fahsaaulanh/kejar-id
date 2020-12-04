@@ -153,7 +153,7 @@
     function selectMA(val) {
         var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teacher/') !!}"+"/"+val+"/subject";
         var urlStudentCounselor = "{!! URL::to('/teacher/student-counselor/mini-assessment') !!}"+"/"+val+"/list";
-        var urlStudentSupervisor = "{!! URL::to('/teacher/supervisor/mini-assessment') !!}"+"/"+val;
+        var urlStudentSupervisor = "{!! URL::to('/teacher/supervisor/') !!}"+"/"+val+"/subject";
         $("#select-ma-subject-teachers").attr("href", urlSubjectTeachers);
         $("#select-ma-student-counselor").attr("href", urlStudentCounselor);
         $("#select-ma-pengawas").attr("href", urlStudentSupervisor);

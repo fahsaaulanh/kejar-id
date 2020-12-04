@@ -45,6 +45,13 @@ class User extends Service
         return $this->showResponse($response);
     }
 
+    public function detailStudent($id)
+    {
+        $response = $this->get('/users/students/'.$id);
+
+        return $this->showResponse($response);
+    }
+
     public function detailTeacher($id)
     {
         $response = $this->get('/users/teachers/'.$id);

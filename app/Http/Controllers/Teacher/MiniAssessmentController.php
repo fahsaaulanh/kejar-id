@@ -68,6 +68,7 @@ class MiniAssessmentController extends Controller
         $schoolApi = new SchoolApi;
         $filter = [
             'page' => ($req->page ?? 1),
+            'filter[name]' => ($req->search ?? ''),
             'per_page' => 20,
         ];
         $subjects = $schoolApi->subjectIndex($schoolIdForSubject, $filter);
@@ -79,11 +80,16 @@ class MiniAssessmentController extends Controller
             $subjects['meta'] = [];
         }
 
-        return view('teacher.mini_assessments.subjects.index')
+        $blade = $type === 'supervisor' ?
+        'teacher.mini_assessments.supervisor.subjects.index' :
+        'teacher.mini_assessments.subjects.index';
+
+        return view($blade)
             ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
             ->with('miniAssessmentGroup', $miniAssessmentGroup)
             ->with('subjects', $subjects['data'])
             ->with('type', $type)
+            ->with('req', $req)
             ->with('subjectMeta', $subjects['meta']);
     }
 
@@ -292,30 +298,35 @@ class MiniAssessmentController extends Controller
 
     public function package($type, $miniAssessmentGroupValue, $subjectId, $grade)
     {
-        $schoolIdForSubject = $this->schoolIdForSubject();
+        $schoolIdForSubject = $this->schoolId();
         $schoolApi = new SchoolApi;
         $subject = $schoolApi->subjectDetail($schoolIdForSubject, $subjectId);
 
-
         if (!isset($subject['data'])) {
-            return redirect('admin/mini-assessment/' . $miniAssessmentGroupValue)->with(
+            return redirect('teacher/mini-assessment/' . $miniAssessmentGroupValue)->with(
                 ['message' => 'Data Tidak Ditemukan!'],
             );
         }
 
-        return view('teacher.mini_assessments.subjects.subject_teachers.index')
-            ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
-            ->with('subject', $subject['data'])
-            ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
-            ->with(
-                'miniAssessmentGroupId',
-                $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
-            )
-            ->with('subject', $subject['data'])
-            ->with('type', $type)
-            ->with('subjectId', $subjectId)
-            ->with('grade', $grade)
-            ->with('reportAccess', $this->reportAccess);
+        if ($type === 'supervisor') {
+            $viewBlade = 'teacher.mini_assessments.supervisor.subjects.student_groups.index';
+        } elseif ($type === 'subject-teacher') {
+            $viewBlade = 'teacher.mini_assessments.subjects.subject_teachers.index';
+        }
+
+        return view($viewBlade)
+               ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
+               ->with('subject', $subject['data'])
+               ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
+               ->with(
+                   'miniAssessmentGroupId',
+                   $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
+               )
+               ->with('subject', $subject['data'])
+               ->with('type', $type)
+               ->with('subjectId', $subjectId)
+               ->with('grade', $grade)
+               ->with('reportAccess', $this->reportAccess);
     }
 
     public function alphabet($val)
@@ -685,27 +696,32 @@ class MiniAssessmentController extends Controller
     {
         $list = $data;
         $count = count($list);
+        $type = ($req['type'] ?? 'subject-teachers');
 
         $view = '<div class="list-group" data-url="#" id="StudentGroupData">';
         if ($count > 0) {
             foreach ($list as $v) {
                 $view .= '<div class="list-group-item">';
-                $view .= '<a href="/teacher/subject-teachers/mini-assessment/'
-                    . $req['miniAssessmentGroupValue'] . '/subject/' . $req['subjectId'] .
-                    '/' . $req['grade'] . '/batch/' . $v['batch_id'] . '/score/' . $v['id'] . '" class="col-10">';
-                $view .= '<i class="kejar-rombel"></i>';
-                $view .= '<span>' . $v['name'] . '</span>';
-                $view .= '</a>';
-                $param = "'" . $req['miniAssessmentGroupValue'] . "'," .
-                    "'" . $req['subjectId'] . "'," .
-                    "'" . $req['grade'] . "'," .
-                    "'" . $v['batch_id'] . "'," .
-                    "'" . $v['id'] . "'," .
-                    "'" . $v['name'] . "'";
-                $view .= '<span class="col row" style="cursor:pointer"
-                    onclick="attendanceForm(' . $param . ')" >
-                    <i class="kejar-edit float-right col-1">';
-                $view .= '</i><small class="col pl-2">Absensi</small></span>';
+
+                if ($type === 'supervisor') {
+                    $view .= '<a href="/teacher/'. $type .'/'
+                                .$req['miniAssessmentGroupValue'].'/subject/'.$req['subjectId'].
+                                '/'.$req['grade'].'/student-groups/'.$v['id'].'" class="col-10">';
+                } else {
+                    $view .= '<a href="/teacher/'. $type .'/mini-assessment/'
+                                .$req['miniAssessmentGroupValue'].'/subject/'.$req['subjectId'].
+                                '/'.$req['grade'].'/batch/'.$v['batch_id'].'/score/'.$v['id'].'" class="col-10">';
+                }
+
+                        $view .= '<i class="kejar-rombel"></i>';
+                        $view .= '<span>'.$v['name'].'</span>';
+                    $view .= '</a>';
+                    // $param = "'".$req['miniAssessmentGroupValue']."',".
+                    //          "'".$req['subjectId']."',".
+                    //          "'".$req['grade']."',".
+                    //          "'".$v['batch_id']."',".
+                    //          "'".$v['id']."',".
+                    //          "'".$v['name']."'";
                 $view .= '</div>';
             }
         } else {
@@ -816,7 +832,7 @@ class MiniAssessmentController extends Controller
         $StudentGroupDetail = $StudentGroupApi->detail($schoolId, $batchId, $studentGroupId);
 
         if (!isset($subject['data']) && !isset($StudentGroupDetail['data'])) {
-            return redirect('admin/mini-assessment/' . $miniAssessmentGroupValue)->with(
+            return redirect('teacher/mini-assessment/' . $miniAssessmentGroupValue)->with(
                 ['message' => 'Data Tidak Ditemukan!'],
             );
         }
@@ -1083,5 +1099,131 @@ class MiniAssessmentController extends Controller
         }
 
         return response()->json(false);
+    }
+
+    public function attendance($type, $miniAssessmentGroupValue, $subjectId, $grade, $studentGroupId)
+    {
+        if (!$this->reportAccess) {
+            return redirect('teacher/games');
+        }
+
+        $schoolId = $this->schoolId();
+        $schoolApi = new SchoolApi;
+        $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
+        $StudentGroupApi = new StudentGroupApi;
+        $StudentGroupDetail =
+        $StudentGroupApi->detailWithoutBatch($studentGroupId);
+
+        if (!isset($subject['data']) && !isset($StudentGroupDetail['data'])) {
+            return redirect('teacher/mini-assessment/' . $miniAssessmentGroupValue)->with(
+                ['message' => 'Data Tidak Ditemukan!'],
+            );
+        }
+
+        return view('teacher.mini_assessments.supervisor.subjects.report.index')
+                ->with('miniAssessmentGroup', $this->miniAssessmentGroups($miniAssessmentGroupValue))
+                ->with(
+                    'miniAssessmentGroupId',
+                    $this->miniAssessmentGroups($miniAssessmentGroupValue, 'value'),
+                )
+                ->with('subject', $subject['data'])
+                ->with('StudentGroupDetail', $StudentGroupDetail['data'])
+                ->with('miniAssessmentGroupValue', $miniAssessmentGroupValue)
+                ->with('subjectId', $subjectId)
+                ->with('type', $type)
+                ->with('id', $studentGroupId)
+                ->with('grade', $grade);
+    }
+
+    public function getStudentByStudentGroup(Request $req)
+    {
+        $UserApi = new UserApi;
+        $filter = [
+            'per_page' => 99,
+            'filter[student_group_id]' => $req->student_group_id,
+            'page' => ($req->page ?? 1),
+        ];
+        $students = $UserApi->students($filter);
+        $html = '';
+
+        if ($students['status'] === 200) {
+            foreach ($students['data'] as $key => $v) {
+                $html .= '<tr>';
+                    $html .= '<td class="text-center">';
+                        $html .= $key+1;
+                    $html .= '</td>';
+                    $html .= '<td id="student-data-'.$v['id'].'">';
+                        $html .= $v['name'];
+                    $html .= '</td>';
+                    $html .= '<td id="student-data-loading-'.$v['id'].'"
+                                    colspan="'. ($req->colspan ?? 1) .'">
+                                <div class="spinner-border mr-1" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div> Loading</td>';
+                $html .= '</tr>';
+            }
+        }
+
+        $data = [
+            'status'=> $students['status'],
+            'data' => $students['data'],
+            'html' => $html,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function studentAttendance()
+    {
+        $status = 200;
+        $html = '';
+
+        // $presenceText = ($v['value'] === 1 ? 'Tandai' : 'Hadir');
+
+        $taskStatus = true;
+        $presenceText = 'Tandai';
+        $presenceParams = '';
+        $presence = '<span class="btn btn-link btn-lg
+        text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+
+        $teacherNote = '';
+        $studentNote = '';
+
+        $html .= '<td>'. $presence .'</td>';
+        if ($taskStatus) {
+            $html .= '<td>Selesai</td>';
+            $html .= '<td><span class="text-grey">'.($studentNote ?: 'Tidak ada').'</span></td>';
+        } else {
+            $html .= '<td colspan="2">Belum mengerjakan</td>';
+        }
+
+        $id = 1;
+        $name = 'alfa';
+        $nis = '11102886';
+        // Note
+
+        $note = "'".$id."','".
+                $studentNote."','".
+                $teacherNote."','".
+                $nis."','".
+                $name."'";
+
+        $html .= '<td>';
+
+            $html .= '<div id="note-data-'.$id.'">';
+                $html .= '<span style="cursor: pointer;" class="text-grey"
+                    onclick="changeNote('.$note.')">';
+                    $html .= $this->noteData($teacherNote);
+                $html .= '</span>';
+            $html .= '</div>';
+
+        $html .= '</td>';
+
+        $data = [
+            'status' => $status,
+            'html' => $html,
+        ];
+
+        return response()->json($data);
     }
 }

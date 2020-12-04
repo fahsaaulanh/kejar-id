@@ -127,8 +127,16 @@ Route::middleware('session')->group(function () {
             //
 
             // Assessments
-            Route::prefix('subject-teacher')->group(function () {
+            Route::prefix('{type}')->group(function () {
                 Route::get('{assessmentGroupId}/subject', 'Teacher\AssessmentController@subjects');
+                Route::get(
+                    '{assessmentGroupId}/subject/{subject_id}/{grade}/student-groups',
+                    'Teacher\AssessmentController@studentGroup',
+                );
+                Route::get(
+                    '{assessmentGroupId}/subject/{subject_id}/{grade}/student-groups/{student_group_id}',
+                    'Teacher\AssessmentController@studentGroupDetail',
+                );
                 Route::get(
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
                     'Teacher\AssessmentController@assessment',
@@ -151,9 +159,25 @@ Route::middleware('session')->group(function () {
                 Route::post('/get-student-group', 'Teacher\AssessmentController@schoolGroupData');
                 Route::post('/get-students', 'Teacher\AssessmentController@getStudents');
                 Route::post('/schedules-create', 'Teacher\AssessmentController@schedulesCreate');
-            });
 
-            //
+                Route::post('{assessmentGroupId}/student-group', 'Teacher\AssessmentController@studentGroupData');
+
+                Route::post(
+                    '{assessmentGroupId}/get-student-groups',
+                    'Teacher\AssessmentController@getStudentByStudentGroup',
+                );
+
+                Route::post(
+                    '{assessmentGroupId}/student-attendance',
+                    'Teacher\AssessmentController@studentAttendance',
+                );
+
+                // Update Attendance
+                Route::post(
+                    '{assessmentGroupId}/student-attendance/update',
+                    'Teacher\AssessmentController@studentAttendanceUpdate',
+                );
+            });
 
             // Mini Assesments
 
@@ -176,8 +200,8 @@ Route::middleware('session')->group(function () {
             Route::post('/mini-assessment/student-score', 'Teacher\MiniAssessmentController@studentScore');
 
             Route::post(
-                '/mini-assessment/counselor-students',
-                'Teacher\MiniAssessmentController@getStudentByCounselor',
+                '/mini-assessment/student-groups',
+                'Teacher\MiniAssessmentController@getStudentByStudentGroup',
             );
 
             Route::prefix('{type}/mini-assessment/{mini_assessment_group}')->group(function () {
@@ -200,6 +224,26 @@ Route::middleware('session')->group(function () {
                     'Teacher\MiniAssessmentController@scoreBystudentGroupExport',
                 );
             });
+
+            // Supervisor
+            Route::prefix('{type}/{mini_assessment_group_id}')->group(function () {
+                Route::get('subject', 'Teacher\MiniAssessmentController@subjects');
+                Route::get('subject/{subject_id}/{grade}/student-groups', 'Teacher\MiniAssessmentController@package');
+                Route::get(
+                    'subject/{subject_id}/{grade}/student-groups/{id}',
+                    'Teacher\MiniAssessmentController@attendance',
+                );
+            });
+
+            Route::post(
+                '/mini-assessment/counselor-students',
+                'Teacher\MiniAssessmentController@getStudentByCounselor',
+            );
+
+            Route::post(
+                '/mini-assessment/student-attendance',
+                'Teacher\MiniAssessmentController@studentAttendance',
+            );
 
             Route::patch('/change-password', 'Shared\ChangePasswordController@update');
             Route::patch('/change-profile', 'Shared\ChangeProfileController@update');

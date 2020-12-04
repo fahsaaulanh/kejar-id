@@ -35,7 +35,18 @@ class AssessmentController extends Controller
         return $ret;
     }
 
-    public function subjects(Request $req, $assessmentGroupId)
+    private function teacherType($val)
+    {
+        if ($val === 'subject-teacher') {
+            $val = 'subject_teacher';
+        } elseif ($val === 'student-counselor') {
+            $val = 'student_counselor';
+        }
+
+        return $val;
+    }
+
+    public function subjects(Request $req, $teacherType, $assessmentGroupId)
     {
         $assessmentGroupApi = new AssessmentGroupApi;
         $schoolId = session()->get('user.userable.school_id');
@@ -55,14 +66,223 @@ class AssessmentController extends Controller
             $subjects['meta'] = [];
         }
 
-        return view('teacher.subject_teacher.subjects.index')
+        return view('teacher.'. $this->teacherType($teacherType) .'.subjects.index')
             ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('teacherType', $teacherType)
             ->with('assessmentGroup', $assessmentGroup['data']['title'])
             ->with('subjects', $subjects['data'])
             ->with('subjectMeta', $subjects['meta']);
     }
 
-    public function assessment($assessmentGroupId, $subjectId, $grade)
+    public function studentGroup($teacherType, $assessmentGroupValue, $subjectId, $grade)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $schoolApi = new SchoolApi;
+        $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
+
+        if (!isset($subject['data'])) {
+            return redirect('teacher/'. $teacherType .'/' . $assessmentGroupValue)->with(
+                ['message' => 'Data Tidak Ditemukan!'],
+            );
+        }
+
+        $viewBlade = 'teacher.'. $teacherType .'.student_groups.index';
+
+        return view($viewBlade)
+               ->with('assessmentGroup', $this->assessmentGroups($assessmentGroupValue))
+               ->with('subject', $subject['data'])
+               ->with('assessmentGroupValue', $assessmentGroupValue)
+               ->with(
+                   'assessmentGroupId',
+                   $this->assessmentGroups($assessmentGroupValue, 'value'),
+               )
+               ->with('subject', $subject['data'])
+               ->with('type', $teacherType)
+               ->with('subjectId', $subjectId)
+               ->with('grade', $grade);
+    }
+
+    public function entryYear($grade)
+    {
+        $yearNow = Carbon::now()->year;
+
+        $year = [
+            '10' => $yearNow . '/' . ($yearNow + 1),
+            '11' => ($yearNow - 1) . '/' . $yearNow,
+            '12' => ($yearNow - 2) . '/' . ($yearNow - 1),
+        ];
+
+        return $year[$grade];
+    }
+
+    public function studentGroupData(Request $req)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $filter = [
+            'page' => ($req->page ?? 1),
+            'per_page' => 99,
+            'filter[entry_year]' => $this->entryYear($req->grade),
+        ];
+        $BatchApi = new BatchApi;
+        $batch = $BatchApi->index($schoolId, $filter);
+        $StudentGroupApi = new StudentGroupApi;
+        $StudentGroup = [];
+
+        if ($batch['meta']['total'] === 0) {
+            if (isset($req->htmlView)) {
+                if ($req->htmlView === 'accordion') {
+                    $view = [
+                        'data' => $StudentGroup,
+                        'html' => '<h2 class="text-center">Tidak Ada Data</h2>',
+                    ];
+                }
+            } else {
+                $view = $this->studentGroupHtml($StudentGroup, $req->all());
+            }
+
+            return response()->json($view);
+        }
+
+        foreach ($batch['data'] as $v) {
+            $StudentGroupData = $StudentGroupApi->index($schoolId, $v['id'], $filter);
+            if (!isset($StudentGroupData['data'])) {
+                continue;
+            }
+
+            $StudentGroup = array_merge($StudentGroup, $StudentGroupData['data']);
+        }
+
+        if (isset($req->htmlView)) {
+            if ($req->htmlView === 'accordion') {
+                $view = [
+                    'data' => $StudentGroup,
+                    'html' => $this->studentGroupAccordionHtml($StudentGroup),
+                ];
+            }
+        } else {
+            $view = $this->studentGroupHtml($StudentGroup, $req->all());
+        }
+
+        return response()->json($view);
+    }
+
+    public function studentGroupHtml($data, $req)
+    {
+        $list = $data;
+        $count = count($list);
+
+        $view = '<div class="list-group" data-url="#" id="StudentGroupData">';
+        if ($count > 0) {
+            foreach ($list as $v) {
+                $view .= '<div class="list-group-item">';
+                $view .= '<a href="/teacher/'. $req['type'] . '/'
+                    . $req['assessmentGroupValue'] . '/subject/' . $req['subjectId'] .
+                    '/' . $req['grade'] . '/student-groups/' . $v['id'] . '" class="col-10">';
+                $view .= '<i class="kejar-rombel"></i>';
+                $view .= '<span>' . $v['name'] . '</span>';
+                $view .= '</a>';
+                $view .= '</div>';
+            }
+        } else {
+            $view .= '<h5 class="text-center">Tidak ada data</h5>';
+        }
+
+        $view .= '</div>';
+
+        return $view;
+    }
+
+    public function studentGroupDetail($teacherType, $assessmentGroupId, $subjectId, $grade, $student_group_id)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $schoolApi = new SchoolApi;
+        $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
+        $StudentGroupApi = new StudentGroupApi;
+        $StudentGroupDetail =
+        $StudentGroupApi->detailWithoutBatch($student_group_id);
+
+        if (!isset($subject['data']) && !isset($StudentGroupDetail['data'])) {
+            return redirect('teacher/'. $teacherType .'/' . $assessmentGroupId)->with(
+                ['message' => 'Data Tidak Ditemukan!'],
+            );
+        }
+
+        $reportType = '';
+        $token = '';
+        if ($teacherType === 'supervisor') {
+            $ScheduleApi = new ScheduleApi;
+            $filter = [
+                'filter[assessment_group_id]' => $assessmentGroupId,
+                'filter[subject_id]' => $subjectId,
+                'per_page' => 1,
+            ];
+            $getSchedule = $ScheduleApi->index($schoolId, $filter);
+            if (isset($getSchedule['data'][0]['schedulable_id'])) {
+                $AssessmentApi = new AssessmentApi;
+                $detail = $AssessmentApi->detail($getSchedule['data'][0]['schedulable_id']);
+                $reportType = $detail['data']['type'] ?? '';
+                $token = $detail['data']['pdf_password'] ?? '';
+            }
+        }
+
+        return view('teacher.' . $teacherType . '.report.index')
+                ->with('assessmentGroup', $this->assessmentGroups($assessmentGroupId))
+                ->with(
+                    'assessmentGroupId',
+                    $this->assessmentGroups($assessmentGroupId, 'value'),
+                )
+                ->with('subject', $subject['data'])
+                ->with('StudentGroupDetail', $StudentGroupDetail['data'])
+                ->with('assessmentGroupValue', $assessmentGroupId)
+                ->with('school_id', $schoolId)
+                ->with('subjectId', $subjectId)
+                ->with('type', $teacherType)
+                ->with('reportType', $reportType)
+                ->with('id', $student_group_id)
+                ->with('token', $token)
+                ->with('grade', $grade);
+    }
+
+    public function getStudentByStudentGroup(Request $req)
+    {
+        $UserApi = new UserApi;
+        $filter = [
+            'per_page' => 99,
+            'filter[student_group_id]' => $req->student_group_id,
+            'page' => ($req->page ?? 1),
+        ];
+        $students = $UserApi->students($filter);
+        $html = '<tr><td class="text-center" colspan="6">Tidak ada data</td></tr>';
+
+        if ($students['status'] === 200 && $students['data']) {
+            $html = '';
+            foreach ($students['data'] as $key => $v) {
+                $html .= '<tr>';
+                    $html .= '<td class="text-center">';
+                        $html .= $key+1;
+                    $html .= '</td>';
+                    $html .= '<td id="student-data-'.$v['id'].'">';
+                        $html .= $v['name'];
+                    $html .= '</td>';
+                    $html .= '<td id="student-data-loading-'.$v['id'].'"
+                                    colspan="'. ($req->colspan ?? 1) .'">
+                                <div class="spinner-border mr-1" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div> Loading</td>';
+                $html .= '</tr>';
+            }
+        }
+
+        $data = [
+            'status'=> $students['status'],
+            'data' => $students['data'],
+            'html' => $html,
+        ];
+
+        return response()->json($data);
+    }
+
+    public function assessment($teacherType, $assessmentGroupId, $subjectId, $grade)
     {
         $schoolId = session()->get('user.userable.school_id');
         $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
@@ -86,6 +306,7 @@ class AssessmentController extends Controller
             ->with('assessmentsMeta', $assessments['meta'])
             ->with('subject', $subjectDetail['data'])
             ->with('grade', $grade)
+            ->with('teacherType', $teacherType)
             ->with('type', ($dataAssessment[0]['type'] ?? ''))
             ->with('message', 'Data success');
     }
@@ -352,17 +573,116 @@ class AssessmentController extends Controller
         return date_format($date, $format);
     }
 
-    public function entryYear($grade)
+    private function noteData($val)
     {
-        $yearNow = Carbon::now()->year;
+        if ($val === '-' || !$val) {
+            $val = 'Belum ada catatan';
+        }
 
-        $year = [
-            '10' => $yearNow . '/' . ($yearNow + 1),
-            '11' => ($yearNow - 1) . '/' . $yearNow,
-            '12' => ($yearNow - 2) . '/' . ($yearNow - 1),
+        return $val;
+    }
+
+    public function studentAttendance(Request $req)
+    {
+
+        $ScheduleApi = new ScheduleApi;
+        $filter = [
+            'filter[student_id]' => $req->student_id,
+            'filter[assessment_group_id]' => $req->assessment_group_id,
+            'filter[subject_id]' => $req->subject_id,
+            'per_page' => 1,
+        ];
+        $getSchedule = $ScheduleApi->index($req->school_id, $filter);
+
+        $schedule = ($getSchedule['data'][0] ?? []);
+
+        if (!$schedule) {
+            $data = [
+                'status' => 404,
+            ];
+
+            return response()->json($data);
+        }
+
+        $status = $getSchedule['status'];
+        $html = '';
+        $presenceText = ($schedule['presence'] ? 'Hadir' : 'Tandai');
+        $presenceVal = ($schedule['presence'] ? null : 1);
+        $taskStatus = (isset($schedule['finish_time']) && $schedule['finish_time']);
+        $presenceParams = "'".$schedule['id']."',".$presenceVal;
+        $presence = '<span class="btn btn-link btn-lg
+        text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+
+        $teacherNote = ($schedule['teacher_note'] ?? '');
+        $studentNote = ($schedule['student_note'] ?? '');
+
+        $studentNote = $schedule['student_note'] === '-' || $schedule['student_note'] ?: '';
+
+        if (isset($req->reportType) && $req->reportType === 'ASSESMENT') {
+            $html .= '<td>'.($schedule['token'] ?? '').'</td>';
+        }
+
+        $html .= '<td class="text-center" id="presenceBtn-'.$schedule['id'].'">'. $presence .'</td>';
+        if ($taskStatus) {
+            $html .= '<td>Selesai</td>';
+            $html .= '<td><span class="text-grey">'.($studentNote ?: 'Tidak ada').'</span></td>';
+        } else {
+            $html .= '<td colspan="2">Belum mengerjakan</td>';
+        }
+
+        $userApi = new UserApi;
+        $student = $userApi->detailStudent($req->student_id);
+
+        $id = $schedule['id'];
+        $name = $student['data']['name'];
+        $nis = $student['data']['nis'];
+        // Note
+
+        $note = "'".$id."','".
+                $studentNote."','".
+                $teacherNote."','".
+                $nis."','".
+                $name."'";
+
+        $html .= '<td>';
+
+            $html .= '<div id="note-data-'.$id.'">';
+                $html .= '<span style="cursor: pointer;" class="text-grey"
+                    onclick="changeNote('.$note.')">';
+                    $html .= $this->noteData($teacherNote);
+                $html .= '</span>';
+            $html .= '</div>';
+
+        $html .= '</td>';
+
+        $data = [
+            'status' => $status,
+            'html' => $html,
         ];
 
-        return $year[$grade];
+        return response()->json($data);
+    }
+
+    public function studentAttendanceUpdate(Request $req)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $ScheduleApi = new ScheduleApi;
+        $payload = [
+            'schedule_ids' => [$req->schedule_id],
+        ];
+
+        if (isset($req->presence)) {
+            $payload['presence'] = (int)$req->presence;
+        }
+
+        if (isset($req->teacher_note) || isset($req->student_note)) {
+            $payload['notes']['teacher'] = $req->teacher_note;
+            $payload['notes']['student'] = $req->student_note;
+        }
+
+        $update = $ScheduleApi->update($schoolId, $payload);
+
+        return response()->json($update);
     }
 
     public function schoolGroupData(Request $req)
@@ -474,42 +794,6 @@ class AssessmentController extends Controller
         }
 
         return $html;
-    }
-
-    public function studentGroupHtml($data, $req)
-    {
-        $list = $data;
-        $count = count($list);
-
-        $view = '<div class="list-group" data-url="#" id="StudentGroupData">';
-        if ($count > 0) {
-            foreach ($list as $v) {
-                $view .= '<div class="list-group-item">';
-                $view .= '<a href="/teacher/subject-teachers/mini-assessment/'
-                    . $req['miniAssessmentGroupValue'] . '/subject/' . $req['subjectId'] .
-                    '/' . $req['grade'] . '/batch/' . $v['batch_id'] . '/score/' . $v['id'] . '" class="col-10">';
-                $view .= '<i class="kejar-rombel"></i>';
-                $view .= '<span>' . $v['name'] . '</span>';
-                $view .= '</a>';
-                $param = "'" . $req['miniAssessmentGroupValue'] . "'," .
-                    "'" . $req['subjectId'] . "'," .
-                    "'" . $req['grade'] . "'," .
-                    "'" . $v['batch_id'] . "'," .
-                    "'" . $v['id'] . "'," .
-                    "'" . $v['name'] . "'";
-                $view .= '<span class="col row" style="cursor:pointer"
-                    onclick="attendanceForm(' . $param . ')" >
-                    <i class="kejar-edit float-right col-1">';
-                $view .= '</i><small class="col pl-2">Absensi</small></span>';
-                $view .= '</div>';
-            }
-        } else {
-            $view .= '<h5 class="text-center">Tidak ada data</h5>';
-        }
-
-        $view .= '</div>';
-
-        return $view;
     }
 
     public function getStudents(Request $req)
