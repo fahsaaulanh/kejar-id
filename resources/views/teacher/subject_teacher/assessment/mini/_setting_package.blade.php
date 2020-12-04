@@ -20,20 +20,6 @@
                             <input type="text" class="form-control" value="{{($assessments[0]['pdf_password'] ?? '')}}" name="pdf_password" placeholder="Ketik token/password" autocomplete="off">
                         </div>
                         <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="question" class="font-weight-bold">Banyaknya Soal</label>
-                                    <input type="number" disabled class="form-control" value={{($question ?? 0)}} name="total_question" placeholder="Ketik jumlah soal" required="" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="answer" class="font-weight-bold">Pilihan Jawaban</label>
-                                    <input type="number" disabled class="form-control" value={{($choices ?? 0)}} name="total_choices" placeholder="Ketik jumlah jawaban" required="" autocomplete="off">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="duration" class="font-weight-bold">Durasi</label>
