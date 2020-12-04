@@ -198,9 +198,10 @@
                 $('#submitBtn').prop('disabled', true);
                 const url = "{!! URL::to('/teacher/subject-teacher/get-students') !!}";
                 let data  = new Object();
-
+                var subject_id = "{{$subject['id']}}";
                 data = {
                     student_group_id,
+                    subject_id,
                     check: 'schedule'
                 };
 
