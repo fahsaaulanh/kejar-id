@@ -17,4 +17,11 @@ class Schedule extends Service
 
         return $this->showResponse($response);
     }
+
+    public function update($schoolId, $payload)
+    {
+        $response = $this->patch("/schools/$schoolId/schedules/bulk-update", $payload);
+
+        return $this->showResponse($response);
+    }
 }

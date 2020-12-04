@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', $assessmentGroup)
+@section('title', $miniAssessmentGroup)
 
 @section('content')
     <div class="container">
@@ -13,12 +13,12 @@
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
-            <span class="breadcrumb-item active">{{$assessmentGroup}}</span>
+            <span class="breadcrumb-item active">{{$miniAssessmentGroup}}</span>
         </nav>
 
         <!-- Title -->
         <div class="page-title">
-            <h2 class="mb-08rem">{{$assessmentGroup}}</h2>
+            <h2 class="mb-08rem">{{$miniAssessmentGroup}}</h2>
         </div>
 
         <!-- Upload Buttons -->
@@ -38,43 +38,38 @@
             </script>
         @endif
 
-        <form method="get" action="{{ URL('teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject') }}">
+        <form method="get" action="{{ URL('teacher/supervisor/' . $miniAssessmentGroupValue . '/subject') }}">
             <div class="row mb-5">
-                <div class="col-10">
+                <div class="col-12">
                     <div class="input-group">
                         <span class="input-group-append">
                             <h2 class="border-right-0 border pt-1 pl-1">
                                 <i class="kejar-search text-muted"></i>
                             </h2>
                         </span>
-                        <input name="name" value="{{(request()->name ?? '')}}" class="form-control py-2 border-left-0 border" placeholder="Cari mapel..." id="subject_name" type="search">
+                        <input name="search" value="{{ $req->search ?? '' }}" placeholder="Cari mapel ..." class="form-control py-2 border-left-0 border" type="search">
                     </div>
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-revise btn-block bg-white" type="submit">
-                        <span>Cari</span>
-                    </button>
                 </div>
             </div>
         </form>
 
-        <!-- Pagination -->
         @if($subjectMeta && ($subjectMeta['total'] > 20))
+            <!-- Pagination -->
             <nav class="navigation mt-5">
                 <div>
                     <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} mapel</span>
                 </div>
                 <ul class="pagination">
                     <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
-                        <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
+                        <a class="page-link" href="?search={{ $req->search.'&' ?? '' }}page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
                     </li>
                     @for($i=1; $i <= $subjectMeta['last_page']; $i++)
                     <li class="page-item {{ (request()->page ?? 1) == $i ? 'active disabled' : '' }}">
-                        <a class="page-link" href="?page={{ $i }}">{{ $i }}</a>
+                        <a class="page-link" href="?search={{ $req->search.'&' ?? '' }}page={{ $i }}">{{ $i }}</a>
                     </li>
                     @endfor
                     <li class="page-item {{ ((request()->page ?? 1) + 1) > $subjectMeta['last_page'] ? 'disabled' : '' }}">
-                        <a class="page-link" href="?page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
+                        <a class="page-link" href="?search={{ $req->search.'&' ?? '' }}page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
                     </li>
                 </ul>
             </nav>
@@ -93,7 +88,7 @@
                     @for($i=0; $i < 3; $i++)
                         <div class="list-group" data-url="#" data-token="{{ csrf_token() }}">
                             <div class="list-group-item-dropdown">
-                                <a href="{{ URL('teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject/'.$v['id'].'/1'.$i.'/assessment') }}" class="col-12">
+                                <a href="{{ URL('teacher/'.$type.'/'.$miniAssessmentGroupValue.'/subject/'.$v['id'].'/1'.$i.'/student-groups') }}" class="col-12">
                                     <span class="ml-5">Kelas 1{{$i}}</span>
                                     <i class="kejar-right float-right"></i>
                                 </a>
@@ -106,23 +101,23 @@
             @endforelse
         </div>
 
-        <!-- Pagination -->
         @if($subjectMeta && ($subjectMeta['total'] > 20))
+            <!-- Pagination -->
             <nav class="navigation mt-5">
                 <div>
                     <span class="pagination-detail">{{ $subjectMeta['to'] ?? 0 }} dari {{ $subjectMeta['total'] }} mapel</span>
                 </div>
                 <ul class="pagination">
                     <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
-                        <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
+                        <a class="page-link" href="?search={{ $req->search.'&' ?? '' }}page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
                     </li>
                     @for($i=1; $i <= $subjectMeta['last_page']; $i++)
                     <li class="page-item {{ (request()->page ?? 1) == $i ? 'active disabled' : '' }}">
-                        <a class="page-link" href="?page={{ $i }}">{{ $i }}</a>
+                        <a class="page-link" href="?search={{ $req->search.'&' ?? '' }}page={{ $i }}">{{ $i }}</a>
                     </li>
                     @endfor
                     <li class="page-item {{ ((request()->page ?? 1) + 1) > $subjectMeta['last_page'] ? 'disabled' : '' }}">
-                        <a class="page-link" href="?page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
+                        <a class="page-link" href="?search={{ $req->search.'&' ?? '' }}page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
                     </li>
                 </ul>
             </nav>

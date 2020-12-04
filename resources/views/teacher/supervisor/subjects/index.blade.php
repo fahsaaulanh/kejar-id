@@ -93,7 +93,7 @@
                     @for($i=0; $i < 3; $i++)
                         <div class="list-group" data-url="#" data-token="{{ csrf_token() }}">
                             <div class="list-group-item-dropdown">
-                                <a href="{{ URL('teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject/'.$v['id'].'/1'.$i.'/assessment') }}" class="col-12">
+                                <a href="{{ URL('teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject/'.$v['id'].'/1'.$i.'/student-groups') }}" class="col-12">
                                     <span class="ml-5">Kelas 1{{$i}}</span>
                                     <i class="kejar-right float-right"></i>
                                 </a>
