@@ -36,11 +36,9 @@
             <div class="modal-footer justify-content-end">
                 <div>
                     <button type="button" id="unduh-lagi-check-answer" class="btn btn-link">Unduh Lagi</button>
-                    <a href="/student/assessment/close" class="text-white">
-                        <button type="button" id="lanjut-check-answer" class="btn btn-primary text-white">
-                            Tutup
-                        </button>
-                    </a>
+                    <button type="button" id="lanjut-check-answer" class="btn btn-primary text-white">
+                        Lanjut
+                    </button>
                 </div>
             </div>
         </div>

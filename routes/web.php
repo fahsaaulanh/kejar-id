@@ -250,6 +250,10 @@ Route::middleware('session')->group(function () {
                 '/{assessment_group_id}/subjects/{schedule_id}/onboarding',
                 'Student\AssessmentController@detail',
             );
+            Route::get(
+                '/{assessment_group_id}/subjects/{schedule_id}/proceed',
+                'Student\AssessmentController@proceed',
+            );
 
 
             Route::prefix('/subjects')->group(function () {

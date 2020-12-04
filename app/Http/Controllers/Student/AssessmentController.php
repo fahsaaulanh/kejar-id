@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Services\Assessment;
 use App\Services\Me;
+use App\Services\Task;
 use Carbon\Carbon;
 
 class AssessmentController extends Controller
 {
     public function schedules($assessmentGroupId)
     {
-        $assessmentGroupId;
-
         $user = $this->request->session()->get('user', null);
 
         if (!$user) {
@@ -35,7 +35,7 @@ class AssessmentController extends Controller
         $schedule = $meService->assessmentScheduleDetail($schedule_id);
 
         if ($schedule['data']['task'] !== null) {
-            return redirect()->back();
+            return redirect()->back()->with(['message' => 'Kamu telah mengerjakan penilaian ini.']);
         }
 
         $now = Carbon::now()->format('Y-m-d H:i:s');
@@ -47,6 +47,55 @@ class AssessmentController extends Controller
         ];
 
         return view('student.onboarding_exam.index', $pageData);
+    }
+
+    public function proceed($assessment_group_id, $schedule_id)
+    {
+        $assessment_group_id;
+        $taskService = new Task;
+        $assessmentService = new Assessment;
+
+        $responseAssessment = $assessmentService->detail($schedule_id);
+        $responseQuestions = $taskService->questionsAssessment($schedule_id);
+
+        if ($responseAssessment['error']) {
+            return redirect()->back()->with(['message' => 'Data Penilaian tidak ditemukan']);
+        }
+
+        $questions = $responseQuestions['data'];
+        $assessment = $responseAssessment['data'];
+        $assessmentGroupId = $assessment['assessment_group_id'];
+        $subjectId = $assessment['subject_id'];
+
+        $responseTask = $taskService->startAssessment($schedule_id);
+
+        if ($responseTask['error']) {
+            return redirect()->back()->with([
+                'message' => 'Data Penilaian tidak ditemukan, tidak bisa memulai Penilaian',
+            ]);
+        }
+
+        $task = $responseTask['data'];
+
+        $addMinutes = $assessment['duration'];
+        $endTime = Carbon::now()->addMinutes($addMinutes)->addSeconds(5)->format('Y-m-d H:i:s');
+
+        $assessment['end_time'] = $endTime;
+        $assessment['questions'] = $questions;
+
+        $answers = $this->getAnswer($task['id']);
+
+        $tasksSession = [
+            'subject_id' => $assessment['subject_id'],
+            'assessment' => $assessment,
+            'task_id' => $responseTask['data']['id'] ?? '',
+            'task' => $responseTask['data'] ?? [],
+            'answers' => $answers,
+        ];
+
+        $this->request->session()->put('task', $tasksSession);
+
+        return redirect("/student/assessment/$assessmentGroupId/subjects/$subjectId/exam");
     }
 
     public function getSchedules()
@@ -64,15 +113,25 @@ class AssessmentController extends Controller
             ],
         );
 
-        if ($schedules['data'] === null) {
+        if ($schedules['error']) {
             return false;
+        }
+
+        if ($schedules['data'] === null) {
+            $view = `
+                <div class="alert alert-primary mt-2">
+                    <h6>Tidak ada data penilaian.</h6>
+                </div>
+            `;
+
+            return response()->json($view);
         }
 
         $now = Carbon::now();
 
         $view = '';
         foreach ($schedules['data'] as $schedule) {
-            $icon = $schedule['task'] === null ? 'kejar-mapel' : 'kejar-sudah-mengerjakan';
+            $icon = $schedule['task'] === null ? 'kejar-mapel' : 'kejar-sudah-dikerjakan';
             $startAt = Carbon::parse($schedule['schedule']['start_time'])->format('d M Y, H:i');
             $endAt = Carbon::parse($schedule['schedule']['finish_time'])->format('d M Y, H:i');
 
@@ -87,7 +146,7 @@ class AssessmentController extends Controller
 
             $view .= '<div onclick="goOnboarding(this)" '.$metaRow.' class="row m-0 pt-4">';
                 $view .= '<div class="row m-0 btn-accordion-subject w-100" role="button">';
-                    $view .='<div class="row m-0 justify-content-between w-100">';
+                    $view .='<div class="row m-0 justify-content-between w-100 subject-item-assessment">';
                         $view .= '<div class="row m-0" onclick="">';
                             $view .='<div class="col-md-1 p-0">';
                                     $view .='<i class="'. $icon .'"></i>';
@@ -108,15 +167,39 @@ class AssessmentController extends Controller
                                 justify-content-lg-end">`;
                                 $view .= '</div>';
                             $view .= '</div>';
+                            $view .='<div class="icon">';
+                                $view .='<i class="kejar-right"></i>';
+                            $view .='</div>';
                         $view .= '</div>';
-                        $view .='<div>';
-                            $view .='<i class="kejar-right"></i>';
-                        $view .='</div>';
                     $view .='</div>';
                 $view .= '</div>';
             $view .= '</div>';
         }
 
         return response()->json($view);
+    }
+
+    // Private Function
+    private function getAnswer($taskId)
+    {
+        $taskService = new Task;
+
+        $response = $taskService->answersAssessment($taskId);
+        $data = [];
+
+        if ($response['error']) {
+            return $data;
+        }
+
+        if (!$response['error']) {
+            foreach ($response['data'] as $val) {
+                $data[$val['question_id']] = [
+                    'id' => $val['id'],
+                    'answer' => $val['answer'],
+                ];
+            }
+        }
+
+        return $data;
     }
 }

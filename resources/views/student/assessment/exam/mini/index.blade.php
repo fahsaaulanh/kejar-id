@@ -232,11 +232,11 @@
 
     $('#lanjut-check-answer').on('click', function() {
         $('#checkAnswerSheet').modal('hide');
-        // $('#studentNote').modal({
-        //     backdrop: 'static',
-        //     keyboard: false,
-        //     show: true,
-        // });
+        $('#studentNote').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
     });
 
     $('#edit-note').on('click', function() {
@@ -251,7 +251,7 @@
     $('#simpan-note').on('click', function() {
         $('#studentNote').modal('hide');
         $('#success').modal('show');
-        // editNote($(this));
+        editNote($(this));
     });
 
     $('#lanjut-time-up').on('click', function() {
