@@ -145,6 +145,13 @@ Route::middleware('session')->group(function () {
                 Route::post('assessment/question/update', 'Teacher\AssessmentController@updateQuestion');
                 Route::get('assessment/question/check/{id}', 'Teacher\AssessmentController@checkQuestion');
                 Route::post('assessment/question/validation', 'Teacher\AssessmentController@validationQuestion');
+                Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewMini');
+
+                // for Ajax
+
+                Route::post('/get-student-group', 'Teacher\AssessmentController@schoolGroupData');
+                Route::post('/get-students', 'Teacher\AssessmentController@getStudents');
+                Route::post('/schedules-create', 'Teacher\AssessmentController@schedulesCreate');
             });
 
             //
