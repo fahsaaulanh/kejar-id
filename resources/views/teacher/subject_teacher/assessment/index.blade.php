@@ -595,6 +595,8 @@
     }
 
     function showLoadingCreate() {
+        // TO DO: add set type for ASSESSMENT
+        setType('MINI_ASSESSMENT');
         $("#LoadingCreate").show();
     }
 
