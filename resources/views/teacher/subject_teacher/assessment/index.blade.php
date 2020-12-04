@@ -159,20 +159,6 @@
                     <h5 class="text-reguler">{{($assessments[0]['duration'] == null ? '-' : $assessments[0]['duration'].' menit')}}</h5>
                 </div>
             </div>
-            <div class="row mb-8">
-                @if($question > 0)
-                <div class="col">
-                    <h5>Banyaknya Soal</h5>
-                    <h5 class="text-reguler">{{$question.' soal'}}</h5>
-                </div>
-                @endif
-                @if($choices > 0)
-                <div class="col">
-                    <h5>Jumlah Jawaban</h5>
-                    <h5 class="text-reguler">{{$choices}}</h5>
-                </div>
-                @endif
-            </div>
 
             @if($type === 'ASSESSMENT')
             <h3 class="mb-4">Daftar Soal</h3>

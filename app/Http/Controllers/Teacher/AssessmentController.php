@@ -129,8 +129,6 @@ class AssessmentController extends Controller
             'assessment_group_id' => $assessmentGroupId,
             'type' => $assessmentDetail['data']['type'],
             'pdf_password' => $request['pdf_password'],
-            'total_question' => $request['total_question'],
-            'total_choices' => $request['total_choices'],
         ];
         $update = $assessmentApi->update($assessmentId, $payload);
         if ($update) {

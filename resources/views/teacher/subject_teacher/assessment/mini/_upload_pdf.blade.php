@@ -48,45 +48,37 @@
                             </div>
                         </div>
                     </div>
-                    @if(count($assessments) == 0)
-                        <div class="form-group">
-                            <label for="token" class="font-weight-bold">Token/Password PDF</label>
-                            <h6 class="mb-2">Ketik token/password yang digunakan pada naskah PDF (jika ada). <a class="btn-link bg-white" data-toggle="modal" data-target="#info_token">Pelajari</a></h6>
-                            <input type="text" class="form-control" name="pdf_password" placeholder="Ketik token/password" autocomplete="off">
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="question" class="font-weight-bold">Banyaknya Soal</label>
-                                    <input type="number" class="form-control" name="total_question" placeholder="Ketik jumlah soal" required="" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="answer" class="font-weight-bold">Pilihan Jawaban</label>
-                                    <select name="total_choices" class="form-control">
-                                        <option value=3>3</option>
-                                        <option value=4 {{($grade < 10 ? 'selected' : '')}}>4</option>
-                                        <option value=5 {{($grade >= 10 ? 'selected' : '')}}>5</option>
-                                    </select>
-                                </div>
+                    <div class="form-group">
+                        <label for="token" class="font-weight-bold">Token/Password PDF</label>
+                        <h6 class="mb-2">Ketik token/password yang digunakan pada naskah PDF (jika ada). <a class="btn-link bg-white" data-toggle="modal" data-target="#info_token">Pelajari</a></h6>
+                        <input type="text" class="form-control" name="pdf_password" placeholder="Ketik token/password" autocomplete="off">
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="question" class="font-weight-bold">Banyaknya Soal</label>
+                                <input type="number" class="form-control" name="total_question" placeholder="Ketik jumlah soal" required="" autocomplete="off">
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <label for="duration" class="font-weight-bold">Durasi</label>
-                                    <input type="number" class="form-control" name="duration" placeholder="Ketik durasi" required="" autocomplete="off">
-                                </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="answer" class="font-weight-bold">Pilihan Jawaban</label>
+                                <select name="total_choices" class="form-control">
+                                    <option value=3>3</option>
+                                    <option value=4 {{($grade < 10 ? 'selected' : '')}}>4</option>
+                                    <option value=5 {{($grade >= 10 ? 'selected' : '')}}>5</option>
+                                </select>
                             </div>
                         </div>
-                    @else
-                    <input type="hidden" value={{($assessments[0]['type'] ?? 0)}} name="type" />
-                    <input type="hidden" value={{$question}} name="total_question" placeholder="Ketik jumlah soal" autocomplete="off" />
-                    <input type="hidden" value={{($assessments[0]['duration'] ?? 0)}} name="duration" placeholder="Ketik durasi" autocomplete="off" />
-                    <input type="hidden" value={{$choices}} name="total_choices" placeholder="Pilihan jawaban" autocomplete="off" />
-                    <input type="hidden" value="{{($assessments[0]['pdf_password'] ?? '')}}" name="pdf_password" placeholder="Ketik token/password" autocomplete="off" />
-                    @endif
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="duration" class="font-weight-bold">Durasi</label>
+                                <input type="number" class="form-control" name="duration" placeholder="Ketik durasi" required="" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="text-right col-md-12">
