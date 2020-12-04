@@ -40,22 +40,22 @@
     @endif
 
     @if(count($assessments) == 0)
-    <div class="row">
-        <div class="col-sm-6">
-            <button class="btn-upload mb-0" data-toggle="modal" data-target="#add-ma" onclick="setType('MINI_ASSESSMENT')">
-                <i class="kejar-upload"></i>Unggah Naskah
-            </button>
+        <div class="row">
+            <div class="col-sm-6">
+                <button class="btn-upload mb-0" data-toggle="modal" data-target="#add-ma" onclick="setType('MINI_ASSESSMENT')">
+                    <i class="kejar-upload"></i>Unggah Naskah
+                </button>
+            </div>
+            <div class="col-sm-6">
+                <button class="btn-upload mb-0" data-toggle="modal">
+                    <i class="kejar-add"></i>Input Soal
+                </button>
+            </div>
         </div>
-        <div class="col-sm-6">
-            <button class="btn-upload mb-0" data-toggle="modal">
-                <i class="kejar-add"></i>Input Soal
-            </button>
-        </div>
-    </div>
     @else
-    <button class="btn btn-primary font-15">
-        <i class="kejar-siswa"></i>Tugaskan Siswa
-    </button>
+        <button class="btn btn-primary font-15" onclick="modalAssignShow(1)">
+            <i class="kejar-siswa"></i>Tugaskan Siswa
+        </button>
     @endif
     @if(count($assessments) == 0)
     <h3 class="mt-8 mb-4">Unggah Naskah vs Input Nilai</h3>
@@ -250,7 +250,13 @@
 </div>
 @include('teacher.subject_teacher.assessment.mini._upload_pdf')
 @if(count($assessments) > 0)
-@include('teacher.subject_teacher.assessment.mini._setting_package')
+    @include('teacher.subject_teacher.assessment.mini._setting_package')
+
+    <!-- Include Modal Assign -->
+
+    @include('teacher.subject_teacher.assessment.assign._assign_schedule')
+    @include('teacher.subject_teacher.assessment.assign._assign_select')
+    @include('teacher.subject_teacher.assessment.assign._assign_success')
 @endif
 
 @include('teacher.subject_teacher.assessment.mini.answer._validation_answer')

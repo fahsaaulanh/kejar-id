@@ -5,9 +5,13 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use App\Services\Assessment as AssessmentApi;
 use App\Services\AssessmentGroup as AssessmentGroupApi;
+use App\Services\Batch as BatchApi;
 use App\Services\Question as QuestionApi;
+use App\Services\Schedule as ScheduleApi;
 use App\Services\School as SchoolApi;
+use App\Services\StudentGroup as StudentGroupApi;
 use App\Services\User as UserApi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AssessmentController extends Controller
@@ -145,7 +149,7 @@ class AssessmentController extends Controller
     {
         $assessmentApi = new AssessmentApi;
         $question = $assessmentApi->questions($id);
-     
+
         $detail = $assessmentApi->detail($id);
         $data = [];
         $data['detail'] = $detail['data'];
@@ -280,7 +284,7 @@ class AssessmentController extends Controller
         $assessmentApi = new AssessmentApi;
 
         $question = $assessmentApi->questions($id);
-     
+
         $detail = $assessmentApi->detail($id);
 
         $data = [];
@@ -332,7 +336,7 @@ class AssessmentController extends Controller
         ];
 
         $validation = $assessmentApi->update($assessmentId, $payload);
-     
+
         $data = [];
         $data['detail'] = $validation['data'];
 
@@ -353,5 +357,254 @@ class AssessmentController extends Controller
         $date = date_create($val);
 
         return date_format($date, $format);
+    }
+
+    public function entryYear($grade)
+    {
+        $yearNow = Carbon::now()->year;
+
+        $year = [
+            '10' => $yearNow . '/' . ($yearNow + 1),
+            '11' => ($yearNow - 1) . '/' . $yearNow,
+            '12' => ($yearNow - 2) . '/' . ($yearNow - 1),
+        ];
+
+        return $year[$grade];
+    }
+
+    public function schoolGroupData(Request $req)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $filter = [
+            'page' => ($req->page ?? 1),
+            'per_page' => 99,
+            'filter[entry_year]' => $this->entryYear($req->grade),
+        ];
+        $BatchApi = new BatchApi;
+        $batch = $BatchApi->index($schoolId, $filter);
+        $StudentGroupApi = new StudentGroupApi;
+        $StudentGroup = [];
+
+        if ($batch['meta']['total'] === 0) {
+            if (isset($req->htmlView)) {
+                if ($req->htmlView === 'accordion') {
+                    $view = [
+                        'data' => $StudentGroup,
+                        'html' => '<h2 class="text-center">Tidak Ada Data</h2>',
+                    ];
+                }
+            } else {
+                $view = $this->studentGroupHtml($StudentGroup, $req->all());
+            }
+
+            return response()->json($view);
+        }
+
+        foreach ($batch['data'] as $v) {
+            $StudentGroupData = $StudentGroupApi->index($schoolId, $v['id'], $filter);
+            if (!isset($StudentGroupData['data'])) {
+                continue;
+            }
+
+            $StudentGroup = array_merge($StudentGroup, $StudentGroupData['data']);
+        }
+
+        if (isset($req->htmlView)) {
+            if ($req->htmlView === 'accordion') {
+                $view = [
+                    'data' => $StudentGroup,
+                    'html' => $this->studentGroupAccordionHtml($StudentGroup),
+                ];
+            }
+        } else {
+            $view = $this->studentGroupHtml($StudentGroup, $req->all());
+        }
+
+        return response()->json($view);
+    }
+
+    public function studentGroupAccordionHtml($data)
+    {
+        $html = '';
+        foreach ($data as $v) {
+            $html .= '<div class="accordion mt-3" id="accordion-'. $v['id'] .'">';
+                $html .= '<div class="card">';
+                    $html .= '<div class="card-header">';
+                        $idVal = "'".$v['id']."'";
+                        $html .= '<h5 class="mb-0"
+                        onclick="getStudents('. $idVal .')">';
+                            $html .= '<div class="row">';
+                                $html .= '<div class="col-1 ml-1">';
+                                    $html .= '<input type="checkbox" data-toggle="collapse"
+                                    data-target="#collapseStudents-'. $v['id'] .'"
+                                    aria-expanded="true" aria-controls="collapseStudents-'. $v['id'] .'"
+                                    id="schedule-check-all-'. $v['id'] .'"
+                                    onclick="selectAllStudents('. $idVal .')"
+                                    class="unCheckedData"
+                                    value="1">';
+                                $html .= '</div>';
+                                $html .= '<div class="col pl-0" data-toggle="collapse"
+                                          data-target="#collapseStudents-'. $v['id'] .'" aria-expanded="true"
+                                          aria-controls="collapseStudents-'. $v['id'] .'" style="cursor: pointer;">';
+                                    $html .= '<span data-toggle="collapse"
+                                            data-target="#collapseStudents-'. $v['id'] .'"
+                                            aria-expanded="true" aria-controls="collapseStudents-'. $v['id'] .'">';
+                                        $html .= $v['name'];
+                                    $html .= '</span>';
+                                    $html .= '<span class="float-right">';
+                                        $html .= '<span class="count-students-group
+                                        count-students-group-'. $v['id'] .'">';
+                                            $html .= 0;
+                                        $html .= '</span >';
+                                    $html .= ' Siswa';
+                                    $html .= '</span>';
+                                $html .= '</div>';
+                                $html .= '<div class="col-1" data-toggle="collapse"
+                                            data-target="#collapseStudents-'. $v['id'] .'"
+                                            aria-expanded="true" aria-controls="collapseStudents-'. $v['id'] .'">';
+                                    $html .= '<i class="kejar-dropdown"></i>';
+                                $html .= '</div>';
+                            $html .= '</div>';
+                        $html .= '</h5>';
+                    $html .= '</div>';
+                    $html .= '<table id="collapseStudents-'. $v['id'] .'" class="table table-bordered
+                    table-sm m-0 collapse" aria-labelledby="headingOne" data-parent="#accordion-'. $v['id'] .'">';
+                        $html .= '<tr id="students-loading-'.$v['id'].'">';
+                            $html .= '<td class="text-center">
+                                        <div class="spinner-border mr-1" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div> Loading</td>';
+                        $html .= '</tr>';
+                    $html .= '</table>';
+                $html .= '</div>';
+            $html .= '</div>';
+        }
+
+        return $html;
+    }
+
+    public function studentGroupHtml($data, $req)
+    {
+        $list = $data;
+        $count = count($list);
+
+        $view = '<div class="list-group" data-url="#" id="StudentGroupData">';
+        if ($count > 0) {
+            foreach ($list as $v) {
+                $view .= '<div class="list-group-item">';
+                $view .= '<a href="/teacher/subject-teachers/mini-assessment/'
+                    . $req['miniAssessmentGroupValue'] . '/subject/' . $req['subjectId'] .
+                    '/' . $req['grade'] . '/batch/' . $v['batch_id'] . '/score/' . $v['id'] . '" class="col-10">';
+                $view .= '<i class="kejar-rombel"></i>';
+                $view .= '<span>' . $v['name'] . '</span>';
+                $view .= '</a>';
+                $param = "'" . $req['miniAssessmentGroupValue'] . "'," .
+                    "'" . $req['subjectId'] . "'," .
+                    "'" . $req['grade'] . "'," .
+                    "'" . $v['batch_id'] . "'," .
+                    "'" . $v['id'] . "'," .
+                    "'" . $v['name'] . "'";
+                $view .= '<span class="col row" style="cursor:pointer"
+                    onclick="attendanceForm(' . $param . ')" >
+                    <i class="kejar-edit float-right col-1">';
+                $view .= '</i><small class="col pl-2">Absensi</small></span>';
+                $view .= '</div>';
+            }
+        } else {
+            $view .= '<h5 class="text-center">Tidak ada data</h5>';
+        }
+
+        $view .= '</div>';
+
+        return $view;
+    }
+
+    public function getStudents(Request $req)
+    {
+        $UserApi = new UserApi;
+        $filter = [
+            'per_page' => 99,
+            'filter[student_group_id]' => ($req->student_group_id ?? ''),
+            'page' => ($req->page ?? 1),
+        ];
+
+        $data = $UserApi->students($filter);
+
+        if (isset($req->check)) {
+            if ($req->check === 'schedule' && $data['data']) {
+                $schoolId = session()->get('user.userable.school_id');
+                $ScheduleApi = new ScheduleApi;
+
+                $ScheduleFilter = [
+                    'per_page' => 99,
+                    'filter[student_group_id]' => ($req->student_group_id ?? ''),
+                    'page' => ($req->page ?? 1),
+                ];
+
+                $scheduleStudents = $ScheduleApi->index($schoolId, $ScheduleFilter);
+                $studentIdScheduleCreated = [];
+                if ($scheduleStudents['meta']['total'] > 0) {
+                    foreach ($scheduleStudents['data'] as $key => $v) {
+                        $studentIdScheduleCreated[] = $v['student_id'];
+                    }
+                }
+
+                $dataStudent = [];
+                foreach ($data['data'] as $key => $v) {
+                    $dataStudent[$key] = $v;
+                    $dataStudent[$key]['already_scheduled'] = false;
+                    if (!in_array($v['id'], $studentIdScheduleCreated)) {
+                        continue;
+                    }
+
+                    $dataStudent[$key]['already_scheduled'] = true;
+                }
+
+                $data['data'] = $dataStudent;
+            }
+        }
+
+        return $data;
+    }
+
+    public function schedulesCreate(Request $req)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $data = [
+            'student_ids' => explode(',', $req->data),
+            'schedulable_type' => $req->type,
+            'start_time' => $req->start_date,
+            'finish_time' => $req->expiry_date,
+            // token
+        ];
+
+        if (isset($req->byNis)) {
+            $UserApi = new UserApi;
+            $studentIds = [];
+            foreach ($data['student_ids'] as $key => $v) {
+                $student = $UserApi->students(['filter[school_id]'=>$schoolId, 'filter[search]'=>$v]);
+                $studentIds[$key] = $student['data'] ? $student['data'][0]['id'] : 'not found';
+            }
+
+            $data['student_ids'] = $studentIds;
+        }
+
+        if ($req->type === 'ASSESSMENT') {
+            if ($req->typeAssesment === 'MINI_ASSESSMENT') {
+                $data['schedulable_ids'] = explode(',', $req->assesment);
+            } else {
+                $data['schedulable_id'] = $req->assesment;
+            }
+        }
+
+        $ScheduleApi = new ScheduleApi;
+        $create = $ScheduleApi->bulkCreate($schoolId, $data);
+        if ($create['status'] === 200) {
+            $create['count_save'] = count($data['student_ids']);
+
+            return response()->json($create);
+        }
+
+        return response()->json($create);
     }
 }
