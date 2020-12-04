@@ -46,12 +46,9 @@
                     <i class="kejar-matrikulasi mr-4">kejar-download</i>
                     Unduh Lembar Jawaban
                 </button>
-                <a href="/student/assessment/close">
-                    <button id="skip-download" type="button" class="btn btn-skip w-100 mt-3">
-
-                        Tutup
-                    </button>
-                </a>
+                <button id="skip-download" type="button" class="btn btn-skip w-100 mt-3">
+                    Lewati
+                </button>
             </div>
         </div>
     </div>

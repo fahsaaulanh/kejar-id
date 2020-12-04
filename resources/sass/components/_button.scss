@@ -583,6 +583,21 @@
     }
 }
 
+.subject-item-assessment.done{
+    background: #F4F6F9;
+    padding: 1.4rem 1.6rem;
+    color: $grey-6;
+    .icon{
+        display: none;
+    }
+}
+
+.subject-item-assessment.over{
+    background: #F4F6F9;
+    padding: 1.4rem 1.6rem;
+    color: $grey-6;
+}
+
 .assessment-choice-check {
     display: flex;
     width: 6.8rem;

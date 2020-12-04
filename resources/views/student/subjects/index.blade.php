@@ -15,7 +15,7 @@
         </nav>
         <!-- Title -->
         <div class="page-title">
-            <h2 id="title" class="mb-08rem"></h2>
+            <h1 id="title" class="mb-08rem"> Pilih mata pelajaran</h1>
         </div>
         <div class="accordion" id="accordion-pts">
             <!-- Empty -->

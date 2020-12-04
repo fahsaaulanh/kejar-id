@@ -32,6 +32,7 @@
         <h5 id="total-question" class="text-reguler">{{ $assessment['total_questions'] ?? 0 }} butir soal</h5>
     </div>
 
+    @if($assessment['type'] === "ASSESSMENT")
     <div class="mt-8">
         <h5>Token</h5>
         <p>Masukkan token yang telah dibagikan oleh guru.</p>
@@ -42,6 +43,13 @@
     <div class="mt-8 onboarding-page-pts">
         @include('student.onboarding_exam._rule_assessment')
     </div>
+    @else
+    <div class="mt-8 onboarding-page-pts">
+        @include('student.onboarding_exam._rule_mini_assessment')
+    </div>
+    @endif
+
+
 
     <!-- Button -->
     <!-- <div class="stage-order-buttons"> -->
@@ -58,8 +66,10 @@
 @push('script')
 <script>
     $('#play').on('click', function() {
+        const assessmentGroupId = "{{ $assessment['assessment_group_id'] }}";
+        const assessmentId = "{{ $assessment['id'] }}";
         if (typeof window !== 'undefined') {
-            window.location.href = "/student/cb6f4e41-9593-4ee9-84d1-633a19113072/subjects/0837e19d-8e52-4f2e-8c02-4ec0b3aa1b96/exam?save=true"
+            window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed`
         }
     });
 </script>

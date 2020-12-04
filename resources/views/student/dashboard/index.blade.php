@@ -169,7 +169,7 @@
 <script src="{{ asset('assets/plugins/dropify/dist/js/dropify.js')}}"></script>
 <script src="{{ mix('/js/student/games/script.js') }}"></script>
 <script type="text/javascript">
-
+let dataPts = [];
 getAssessmentGroups();
 
 $('.dropify').dropify({
@@ -181,96 +181,102 @@ $('.dropify').dropify({
     }
 });
 
-    function changeDrop() {
-        $("#updateProfile").modal('toggle');
+function changeDrop() {
+    $("#updateProfile").modal('toggle');
 
 
-        setInterval(function(){
-            var base64Img = $(".dropify-render").html()
-                                            .toString()
-                                            .replace('<img src="', '')
-                                            .replace('">', '');
+    setInterval(function(){
+        var base64Img = $(".dropify-render").html()
+                                        .toString()
+                                        .replace('<img src="', '')
+                                        .replace('">', '');
 
-            $('#profile-pict-crop').attr('src',base64Img);
+        $('#profile-pict-crop').attr('src',base64Img);
 
-            console.log(base64Img);
+        console.log(base64Img);
 
-            $('.profile-pict-crop').rcrop({
-                minSize : [200,200],
-                maxSize : [2000,2000],
-                preserveAspectRatio : true,
-                grid : true
-            });
-        }, 200);
-    }
+        $('.profile-pict-crop').rcrop({
+            minSize : [200,200],
+            maxSize : [2000,2000],
+            preserveAspectRatio : true,
+            grid : true
+        });
+    }, 200);
+}
 
-    function getAssessmentGroups() {
-        const url = "{!! URL::to('/student/api/assessment-groups') !!}";
-        const loading = `
-            <div class="px-4">
-                <div class="row align-items-center mt-2 alert alert-primary">
-                    <div class="spinner spinner-border spinner-border-sm text-primary" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <h6 class="ml-2">Mengambil data penilaian.</h6>
+function getAssessmentGroups() {
+    const url = "{!! URL::to('/student/api/assessment-groups') !!}";
+    const loading = `
+        <div class="px-4">
+            <div class="row align-items-center mt-2 alert alert-primary">
+                <div class="spinner spinner-border spinner-border-sm text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
                 </div>
-            </div>`;
+                <h6 class="ml-2">Mengambil data penilaian.</h6>
+            </div>
+        </div>`;
 
 
-        const empty = `
-            <div class="alert alert-primary mt-2">
-                <h6>Tidak ada data penilaian.</h6>
-            </div>`
+    const empty = `
+        <div class="alert alert-primary mt-2">
+            <h6>Tidak ada data penilaian.</h6>
+        </div>`
 
-        const retryButton = `
-            <div>
-                <p>Data gagal di dapatkan.</p>
-                <button id="retry-button" class="btn btn-primary">Coba Lagi</button>
-            </div>`
+    const retryButton = `
+        <div>
+            <p>Data gagal di dapatkan.</p>
+            <button id="retry-button" class="btn btn-primary">Coba Lagi</button>
+        </div>`
 
-        $("#pts").html(loading);
+    $("#pts").html(loading);
 
-        $.ajax({
-            method: 'get',
-            dataType: 'json',
-            url: url,
-            success: function (response) {
-                if(response.status == 200){
-                    data = response.data || [];
-                    if (data.length < 1) {
-                        $("#pts").html(empty);
-                        return;
-                    }
-
-                    $("#pts").html(processDataToHtml(response.data));
+    $.ajax({
+        method: 'get',
+        dataType: 'json',
+        url: url,
+        success: function (response) {
+            if(response.status == 200){
+                data = response.data || [];
+                if (data.length < 1) {
+                    $("#pts").html(empty);
                     return;
                 }
-            },
-            error: function (error) {
-                $("#pts").html(retryButton);
-                $("#retry-button").on('click', function() {
-                    getAssessmentGroups();
-                });
+                dataPts = response.data;
+                $("#pts").html(processDataToHtml(response.data));
+                return;
             }
-        });
-    }
+        },
+        error: function (error) {
+            $("#pts").html(retryButton);
+            $("#retry-button").on('click', function() {
+                getAssessmentGroups();
+            });
+        }
+    });
+}
 
-    function processDataToHtml(data) {
-        let html = "";
-        data.forEach((d, index) => {
-            html += (`
-                <div id="pts-${index}" class="card-pts mt-4" role="button">
-                    <h3>
-                        <i class="kejar-penilaian text-purple mr-4"></i>
-                        <span id="pts-1">${d.title}</span>
-                    </h3>
-                </div>
-            `);
-        })
+function processDataToHtml(data) {
+    let html = "";
+    data.forEach((d, index) => {
+        html += (`
+            <div id="pts-${index}" onclick="goSchedules(${index})" class="card-pts mt-4" role="button">
+                <h3>
+                    <i class="kejar-penilaian text-purple mr-4"></i>
+                    <span id="pts-1">${d.title}</span>
+                </h3>
+            </div>
+        `);
+    })
 
-        return html;
-    }
+    return html;
+}
 
 
-  </script>
+function goSchedules(index) {
+    const id = dataPts[index].id;
+    window.location.href = `/student/${id}/subjects`;
+}
+
+
+</script>
 @endpush
