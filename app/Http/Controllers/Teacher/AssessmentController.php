@@ -79,15 +79,10 @@ class AssessmentController extends Controller
         $assessments = $assessmentApi->index($filterMA);
         $dataAssessment = ($assessments['data'] ?? []);
 
-        $dataQuestion = (count($dataAssessment) > 0 ? $assessmentApi->questions($dataAssessment[0]['id']) : null);
-        $dataChoices = ($dataQuestion['data'] !== null ? $dataQuestion['data'][0]['choices'] : []);
-
         return view('teacher.subject_teacher.assessment.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
             ->with('assessments', $dataAssessment)
-            ->with('question', count($dataQuestion['data'] ?? []))
-            ->with('choices', count($dataChoices))
             ->with('assessmentsMeta', $assessments['meta'])
             ->with('subject', $subjectDetail['data'])
             ->with('grade', $grade)
