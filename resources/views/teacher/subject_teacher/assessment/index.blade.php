@@ -594,10 +594,12 @@
         $('.footer-view').html(createFooter);
     }
 
-    function showLoadingCreate() {
+    async function showLoadingCreate() {
         // TO DO: add set type for ASSESSMENT
         setType('MINI_ASSESSMENT');
         $("#LoadingCreate").show();
+        $("#saveBtn").prop('disabled', true);
+        $("#saveForm").submit();
     }
 
     $('#upload_pdf_file').on('change', (e) => {

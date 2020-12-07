@@ -25,7 +25,7 @@
                     @endif
                 </div>
             </div>
-            <form action="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment') }}" method="post" enctype="multipart/form-data">
+            <form id="saveForm" action="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment') }}" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     @csrf
                     <input type="hidden" name="title" value="Paket {{$assessmentsMeta['total'] + 1}}" />
@@ -83,7 +83,7 @@
                 <div class="modal-footer">
                     <div class="text-right col-md-12">
                         <button class="btn btn-cancel" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary" onclick="showLoadingCreate()">Simpan</button>
+                        <button class="btn btn-primary" id="saveBtn" onclick="showLoadingCreate()">Lanjut</button>
                     </div>
                     <div class="col-12 text-center mt-3" id="LoadingCreate" style="display:none">
                         <div class="row justify-content-center">
