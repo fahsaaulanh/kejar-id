@@ -29,10 +29,6 @@
                 @endif
             </div>
             <div class="col-md-6 text-right">
-                <form method="post" action="{{ URL('teacher/supervisor/'.$assessmentGroupValue.'/subject/'.$subject['id'].'/'.$grade.'/student-groups/'.$id.'/export') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-revise float-right"><i class="kejar-download text-blue mr-2"></i> Unduh Rincian</button>
-                </form>
                 <button onclick="dataIndex()" class="btn btn-publish float-right mr-3"> Refresh Data</button>
             </div>
         </div>
@@ -46,7 +42,7 @@
                             @if($reportType == 'ASSESMENT')
                                 <th>Token</th>
                             @endif
-                            <th>Hadir</th>
+                            <th width="11%">Hadir</th>
                             <th>Status</th>
                             <th width="25%">Catatan Siswa</th>
                             <th width="25%">Catatan Pengawas</th>
@@ -125,6 +121,48 @@
         </div>
     </div>
 
+
+    <div class="modal fade bd-example-modal-md" id="no-schedule-modal">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Belum Ditugaskan</h5>
+                    <button class="close modal-close" data-dismiss="modal">
+                        <i class="kejar kejar-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="no-schedule-modal-content"></div>
+                </div>
+                <div class="modal-footer text-right">
+                    <div class="text-right col-md-12 p-0">
+                        <button class="btn btn-primary pull-right" data-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-md" id="change-presence-modal">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hapus Kehadiran</h5>
+                    <button class="close modal-close" data-dismiss="modal">
+                        <i class="kejar kejar-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="change-presence-modal-content"></div>
+                </div>
+                <div class="modal-footer text-right">
+                    <div class="text-right col-md-12 p-0" id="change-presence-btn">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('script')
@@ -182,7 +220,7 @@
         });
     }
 
-    async function getAttendanceStudent(student_id) {
+    async function getAttendanceStudent(student_id, student_name) {
         var school_id = "{{ $school_id }}";
         var assessment_group_id = "{{ $assessmentGroupValue }}";
         var subject_id = "{{$subject['id']}}";
@@ -212,7 +250,8 @@
                     $("#student-data-loading-"+student_id).hide();
                     $("#student-data-"+student_id).after(response.html);
                 }else{
-                    $("#student-data-loading-"+student_id).html("Belum ditugaskan");
+                    student_name = "'"+student_name+"'";
+                    $("#student-data-loading-"+student_id).html('<span style="cursor:pointer" onclick="noScheduleModal('+student_name+')">Belum ditugaskan</span>');
                 }
             },
             error: function (error) {
@@ -225,8 +264,16 @@
         });
     }
 
+    function noScheduleModal(student_name){
+        var text = 'Siswa <b>'+student_name+'</b> belum direkomendasikan\
+                    untuk mengikuti penilaian ini. Hubungi guru mapel untuk\
+                    memintakan penugasan/rekomendasi.';
+        $('#no-schedule-modal-content').html(text);
+        $('#no-schedule-modal').modal('show');
+    }
+
     async function getAttendance() {
-        const promisesSave = studentData.map((d) => getAttendanceStudent(d.id));
+        const promisesSave = studentData.map((d) => getAttendanceStudent(d.id, d.name));
         await Promise.all(promisesSave);
     }
 
@@ -257,8 +304,10 @@
         $("#note-student").html('<span class="text-grey">Siswa belum/tidak membuat catatan.<span>');
         $("#student_note-val").val("");
         if (noteStudent) {
-            $("#note-student").html(noteStudent);
-            $("#student_note-val").val(noteStudent);
+            if (noteStudent != '-') {
+                $("#note-student").html(noteStudent);
+                $("#student_note-val").val(noteStudent);
+            }
         }
 
         $("#note-nis").html(nis);
@@ -272,11 +321,28 @@
         $("#noteContent").show();
     }
 
-    function changePresence(schedule_id, presence){
+    function changePresence(schedule_id, presence, confirmation = false, student_name = ''){
 
-        var html = '<center class="spinner-border">\
+        $('#change-presence-modal').modal('hide');
+        if(confirmation){
+            $('#change-presence-modal-content').html('Hapus kembali kehadiran siswa <b>'+student_name+' </b>?');
+            var param = "'"+schedule_id+"',"+presence+",0,'"+student_name+"'";
+            var button = '<button class="btn btn-link pull-right text-danger" data-dismiss="modal">Batal</button>';
+            button += '<button class="btn btn-danger pull-right" onclick="changePresence('+param+')">Hapus</button>';
+            $('#change-presence-btn').html(button);
+            $('#change-presence-modal').modal('show');
+            return;
+        }
+
+        if (presence) {
+            presenceText = 'Tandai';
+        }else{
+            presenceText = 'Hadir';
+        }
+
+        var html = presenceText+' <span class="spinner-border">\
                         <span class="sr-only">Loading...</span>\
-                    </center>';
+                    </span>';
 
         $('#presenceBtn-'+schedule_id).html(html);
 
@@ -301,10 +367,13 @@
         .then(response => response.json())
         .then(function(data) {
             var presenceText = 'Tandai';
+            var presenceConfrim = 0;
+
             if (data.status == 200) {
                 if (presence) {
-                    presence = null;
+                    presence = 0;
                     presenceText = 'Hadir';
+                    presenceConfrim = 1;
                 }else{
                     presence = true;
                 }
@@ -312,17 +381,23 @@
                 if (presence) {
                     presence = true;
                 }else{
-                    presence = null;
+                    presence = 0;
                     presenceText = 'Hadir';
+                    presenceConfrim = 1;
                 }
             }
 
-            var presenceParams = "'"+schedule_id+"',"+presence;
+            var presenceParams = "'"+schedule_id+"',"+presence+","+presenceConfrim+",'"+student_name+"'";
 
             var html = '<span class="btn btn-link btn-lg\
         text-decoration-none" onclick="changePresence('+presenceParams+')">'+presenceText+'</span>';
 
-            $('#presenceBtn-'+schedule_id).html(html);
+            $('#presenceBtn-'+schedule_id).html(html+' <i class="kejar-checklist font-15"></i>');
+
+            setTimeout(function() {
+                $('#presenceBtn-'+schedule_id).html(html);
+            }, 2000);
+
         })
         .catch(function(error) {
             console.error(error);

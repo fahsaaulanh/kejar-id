@@ -618,12 +618,26 @@ class AssessmentController extends Controller
             return response()->json($data);
         }
 
+        $userApi = new UserApi;
+        $student = $userApi->detailStudent($req->student_id);
+
+        $id = $schedule['id'];
+        $name = $student['data']['name'];
+        $nis = $student['data']['nis'];
+
         $status = $getSchedule['status'];
         $html = '';
         $presenceText = ($schedule['presence'] ? 'Hadir' : 'Tandai');
-        $presenceVal = ($schedule['presence'] ? null : 1);
+        $presenceVal = ($schedule['presence'] ? 0 : 1);
         $taskStatus = (isset($schedule['finish_time']) && $schedule['finish_time']);
         $presenceParams = "'".$schedule['id']."',".$presenceVal;
+
+        if (!$presenceVal) {
+            $presenceParams .= ",1,'".$name."'";
+        } else {
+            $presenceParams .= ",0,'".$name."'";
+        }
+
         $presence = '<span class="btn btn-link btn-lg
         text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
 
@@ -644,12 +658,6 @@ class AssessmentController extends Controller
             $html .= '<td colspan="2">Belum mengerjakan</td>';
         }
 
-        $userApi = new UserApi;
-        $student = $userApi->detailStudent($req->student_id);
-
-        $id = $schedule['id'];
-        $name = $student['data']['name'];
-        $nis = $student['data']['nis'];
         // Note
 
         $note = "'".$id."','".
