@@ -34,8 +34,19 @@ class AssessmentController extends Controller
 
         $schedule = $meService->assessmentScheduleDetail($schedule_id);
 
+        $startAt = Carbon::parse($schedule['data']['schedule']['start_time']);
+        $endAt = Carbon::parse($schedule['data']['schedule']['finish_time']);
+
         if ($schedule['data']['task'] !== null) {
             return redirect()->back()->with(['message' => 'Kamu telah mengerjakan penilaian ini.']);
+        }
+
+        if (Carbon::now() < $startAt) {
+            return redirect()->back()->with(['message' => 'Jadwal penilaian belum dimulai.']);
+        }
+
+        if (Carbon::now() > $endAt) {
+            return redirect()->back()->with(['message' => 'Jadwal penilaian sudah berakhir.']);
         }
 
         $now = Carbon::now()->format('Y-m-d H:i:s');

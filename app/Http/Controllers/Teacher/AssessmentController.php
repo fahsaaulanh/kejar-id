@@ -301,11 +301,12 @@ class AssessmentController extends Controller
         $assessmentApi = new AssessmentApi;
         $filterMA = [
             'filter[grade]' => $grade,
-            'filter[group]' => $assessmentGroupId,
+            'filter[assessment_group_id]' => $assessmentGroupId,
             'filter[subject_id]' => $subjectId,
         ];
         $assessments = $assessmentApi->index($filterMA);
         $dataAssessment = ($assessments['data'] ?? []);
+
         $dualData = false;
         foreach ($dataAssessment as $item) {
             if ($item['type'] !== $dataAssessment[0]['type']) {
