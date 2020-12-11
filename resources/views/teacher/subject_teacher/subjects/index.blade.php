@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', $assessmentGroup)
+@section('title', 'Mata Pelajaran: '.$assessmentGroup)
 
 @section('content')
     <div class="container">

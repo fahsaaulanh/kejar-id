@@ -25,6 +25,20 @@ class Assessment extends Service
         return $this->showResponse($response);
     }
 
+    public function createQuestion($id, $payload)
+    {
+        $response = $this->post('/libraries/assessments/'.$id.'/questions', $payload);
+
+        return $this->showResponse($response);
+    }
+
+    public function editQuestion($id, $payload)
+    {
+        $response = $this->patch('/libraries/assessments/'.$id.'/questions', $payload);
+
+        return $this->showResponse($response);
+    }
+
     public function saveAnswer($id, $payload)
     {
         $response = $this->post('/libraries/assessments/'.$id.'/answers', $payload);
