@@ -138,6 +138,10 @@ Route::middleware('session')->group(function () {
                     'Teacher\AssessmentController@studentGroupDetail',
                 );
                 Route::get(
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{assessType}',
+                    'Teacher\AssessmentController@setTypeAssessment',
+                );
+                Route::get(
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment',
                     'Teacher\AssessmentController@assessment',
                 );
@@ -149,10 +153,13 @@ Route::middleware('session')->group(function () {
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{assessmentId}',
                     'Teacher\AssessmentController@settingMiniAssessment',
                 );
+
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewQuestion');
                 Route::post('assessment/question/update', 'Teacher\AssessmentController@updateQuestion');
                 Route::get('assessment/question/check/{id}', 'Teacher\AssessmentController@checkQuestion');
                 Route::post('assessment/question/validation', 'Teacher\AssessmentController@validationQuestion');
+                Route::post('assessment/question/delete', 'Teacher\AssessmentController@deleteQuestion');
+                Route::post('assessment/duration', 'Teacher\AssessmentController@durationAssessment');
 
                 // for Ajax
 

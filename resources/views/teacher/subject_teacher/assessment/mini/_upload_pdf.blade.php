@@ -29,7 +29,7 @@
                 <div class="modal-body">
                     @csrf
                     <input type="hidden" name="title" value="Paket {{$assessmentsMeta['total'] + 1}}" />
-                    <input type="hidden" id="astype" name="type" value="" />
+                    <input type="hidden" id="astype" name="type" value="MINI_ASSESSMENT" />
                     <div class="row mb-4">
                         <div class="col-12">
                             <label for="pdf_name" class="font-weight-bold">Naskah Soal</label>

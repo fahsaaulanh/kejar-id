@@ -282,10 +282,18 @@ class AssessmentController extends Controller
         return response()->json($data);
     }
 
+    public function setTypeAssessment($teacherType, $assessmentGroupId, $subjectId, $grade, $assessType)
+    {
+        session()->put('assessmentType', $assessType);
+
+        return redirect('teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject/'.$subjectId.'/'.$grade.'/assessment');
+    }
+
     public function assessment($teacherType, $assessmentGroupId, $subjectId, $grade)
     {
         $schoolId = session()->get('user.userable.school_id');
         $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
+
         $schoolApi = new SchoolApi;
 
         $subjectDetail = $schoolApi->subjectDetail($schoolId, $subjectId);
@@ -298,16 +306,49 @@ class AssessmentController extends Controller
         ];
         $assessments = $assessmentApi->index($filterMA);
         $dataAssessment = ($assessments['data'] ?? []);
+        $dualData = false;
+        foreach ($dataAssessment as $item) {
+            if ($item['type'] !== $dataAssessment[0]['type']) {
+                $dualData = true;
+            }
+        }
+
+        $viewType = '';
+        $dataForAssessment = [];
+        $viewType = session()->get('assessmentType') !== null && $dualData === true ? strtoupper(
+            session()->get('assessmentType'),
+        ) : ($dataAssessment[0]['type'] ?? '');
+
+        if ($dualData === true) {
+            foreach ($dataAssessment as $item) {
+                if ($item['type'] === $viewType) {
+                    array_push($dataForAssessment, $item);
+                }
+            }
+        } else {
+            $dataForAssessment = $dataAssessment;
+        }
+
+        $questions = [];
+        $questionMeta = null;
+        if (count($dataAssessment) > 0 && $dataForAssessment[0]['type'] === 'ASSESSMENT') {
+            $getQuestions = $assessmentApi->questions($dataAssessment[0]['id']);
+            $questionMeta = $getQuestions['meta'] ?? null;
+            $questions = $getQuestions['data'] ?? [];
+        }
 
         return view('teacher.subject_teacher.assessment.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
-            ->with('assessments', $dataAssessment)
+            ->with('assessments', $dataForAssessment)
             ->with('assessmentsMeta', $assessments['meta'])
             ->with('subject', $subjectDetail['data'])
+            ->with('questions', $questions)
+            ->with('questionMeta', $questionMeta)
             ->with('grade', $grade)
+            ->with('dualType', $dualData)
             ->with('teacherType', $teacherType)
-            ->with('type', ($dataAssessment[0]['type'] ?? ''))
+            ->with('type', $viewType)
             ->with('message', 'Data success');
     }
 
@@ -315,31 +356,79 @@ class AssessmentController extends Controller
     {
         $teacherType;
         $assessmentApi = new AssessmentApi;
-        $reqFile = [
-            [
-                'file_extension' => 'pdf',
-                'file' => $request->file('pdf_file'),
-                'file_name' => $request['pdf_name'],
-            ],
-        ];
-        $payload = [
-            'duration' => $request['duration'],
-            'subject_id' => $subjectId,
-            'grade' => $grade,
-            'assessment_group_id' => $assessmentGroupId,
-            'type' => $request['type'],
-            'pdf_password' => $request['pdf_password'],
-            'total_question' => $request['total_question'],
-            'total_choices' => $request['total_choices'],
-        ];
+        if ($request['type'] === 'MINI_ASSESSMENT') {
+            $reqFile = [
+                [
+                    'file_extension' => 'pdf',
+                    'file' => $request->file('pdf_file'),
+                    'file_name' => $request['pdf_name'],
+                ],
+            ];
+            $payload = [
+                'duration' => $request['duration'],
+                'subject_id' => $subjectId,
+                'grade' => $grade,
+                'assessment_group_id' => $assessmentGroupId,
+                'type' => $request['type'],
+                'pdf_password' => $request['pdf_password'],
+                'total_question' => $request['total_question'],
+                'total_choices' => $request['total_choices'],
+            ];
 
-        $create = $assessmentApi->create($reqFile, $payload);
+            $create = $assessmentApi->create($reqFile, $payload);
+            if ($create) {
+                return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil tersimpan!']);
+            }
 
-        if ($create) {
-            return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil tersimpan!']);
+            return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal tersimpan!']);
         }
 
-        return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal tersimpan!']);
+        $assessmentId = $request['assessmentId'];
+        if ($assessmentId === null) {
+            $reqFile = [];
+            $assessPayload = [
+                'duration' => 0,
+                'subject_id' => $subjectId,
+                'grade' => $grade,
+                'assessment_group_id' => $assessmentGroupId,
+                'type' => 'ASSESSMENT',
+                'pdf_password' => '',
+                'total_question' => 0,
+                'total_choices' => 0,
+            ];
+            $setAssessment = $assessmentApi->create($reqFile, $assessPayload);
+            $assessmentId = $setAssessment['data']['id'];
+        }
+
+        $questPayload = [
+            'subject_id' => $subjectId,
+            'topic_id' => '',
+            'bank' => 'Assessment',
+            'question' => $request['question'],
+            'level' => 'LEVEL_1',
+            'created_by' => session()->get('user.id'),
+            'status' => 1,
+            'type' => 'MCQSA',
+            'choices' => $request['choices'],
+            'answer' => $request['trueAnswer'],
+        ];
+        $questionApi = new QuestionApi;
+        $setQuestion = $questionApi->store($questPayload);
+
+        $explanPayload = [
+            'explained_by' => session()->get('user.id'),
+            'explanation' => $request['explanation'],
+        ];
+        $setExplan = $questionApi->update($setQuestion['data']['id'], $explanPayload);
+        $qaPayload = [
+            'ids' => [$setQuestion['data']['id']],
+        ];
+        $setAssessQuest = $assessmentApi->createQuestion($assessmentId, $qaPayload);
+
+        return [
+            'question' => $setExplan,
+            'assessquest' => $setAssessQuest,
+        ];
     }
 
     public function settingMiniAssessment(
@@ -367,6 +456,20 @@ class AssessmentController extends Controller
         }
 
         return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal diperbaharui!']);
+    }
+
+    public function durationAssessment()
+    {
+        $assessmentApi = new AssessmentApi;
+        $assessmentId = $this->request->input('assessmentId');
+        $payload = [
+            'duration' => $this->request->input('duration'),
+            'subject_id' => $this->request->input('subjectId'),
+            'grade' => $this->request->input('grade'),
+            'assessment_group_id' => $this->request->input('assessmentGroupId'),
+        ];
+
+        return $assessmentApi->update($assessmentId, $payload);
     }
 
     public function viewQuestion($teacherType, $id)
@@ -504,6 +607,18 @@ class AssessmentController extends Controller
         return $view2;
     }
 
+    public function deleteQuestion()
+    {
+        $assessmentApi = new AssessmentApi;
+        $assessmentId = $this->request->input('assessmentId');
+        $qaPayload = [
+            'ids' => $this->request->input('newList'),
+            'action' => 'delete',
+        ];
+
+        return $assessmentApi->editQuestion($assessmentId, $qaPayload);
+    }
+
     public function checkQuestion($teacherType, $id)
     {
         $teacherType;
@@ -542,12 +657,33 @@ class AssessmentController extends Controller
 
         $questionDetail = $questionService->getDetail($questionId);
 
-        $payload = [
-            'answer' => $answer,
-            'created_by' => $questionDetail['data']['created_by'],
-            'question' => $questionDetail['data']['question'],
-            'type' => $questionDetail['data']['type'],
-        ];
+        $payload = [];
+        if ($questionDetail['data']['type'] === 'MCQSA') {
+            $choices = [];
+            foreach ($this->request->input('choices') as $key => $v) {
+                $choices[$key] = $v;
+            }
+
+            $payload = [
+                'explanation' => $this->request->input('explanation'),
+                'explained_by' => session()->get('user.id'),
+            ];
+            $questionService->update($questionId, $payload);
+            $payload = [
+                'type' => $questionDetail['data']['type'],
+                'question' => $this->request->input('question'),
+                'choices' => $choices,
+                'answer' => $this->request->input('trueAnswer'),
+                'created_by' => $questionDetail['data']['created_by'],
+            ];
+        } else {
+            $payload = [
+                'answer' => $answer,
+                'created_by' => $questionDetail['data']['created_by'],
+                'question' => $questionDetail['data']['question'],
+                'type' => $questionDetail['data']['type'],
+            ];
+        }
 
         return $questionService->update($questionId, $payload);
     }
@@ -791,7 +927,7 @@ class AssessmentController extends Controller
                                         count-students-group-'. $v['id'] .'">';
                                             $html .= 0;
                                         $html .= '</span >';
-                                    $html .= ' Siswa';
+                                    $html .= ' siswa';
                                     $html .= '</span>';
                                 $html .= '</div>';
                                 $html .= '<div class="col-1" data-toggle="collapse"

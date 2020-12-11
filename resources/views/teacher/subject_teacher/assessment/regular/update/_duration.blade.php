@@ -12,15 +12,34 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label for="duration" class="font-weight-bold">Durasi</label>
-                            <input type="number" class="form-control" name="duration" placeholder="Ketik durasi" required="" autocomplete="off">
+                            <input id="duration_assess" type="number" class="form-control" name="duration" placeholder="Ketik durasi" required="" autocomplete="off">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-end">
-                <div>
+            <div class="modal-footer">
+                <div class="text-right col-md-12">
                     <button type="button" id="lanjut-time-remaining" class="btn btn-link">Batal</button>
-                    <button type="button" data-dismiss="modal" class="btn btn-primary" id="save-btn">Simpan</button>
+                    <button type="button" class="btn btn-primary" id="save-btn"
+                    onclick="saveDuration('{{$assessmentGroupId}}', '{{$subject['id']}}', '{{$grade}}', '{{$assessments[0]['id']}}')">
+                        Simpan
+                    </button>
+                </div>
+                <div class="col-12 text-center mt-3" id="LoadingAssess0" style="display:none">
+                    <div class="row justify-content-center">
+                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                            <span class="sr-only">Sedang Menyimpan...</span>
+                        </div>
+                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                            <span class="sr-only">Sedang Menyimpan...</span>
+                        </div>
+                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                            <span class="sr-only">Sedang Menyimpan...</span>
+                        </div>
+                    </div>
+                    <div class="mt-2 row justify-content-center">
+                        <h5>Sedang Menyimpan</h5>
+                    </div>
                 </div>
             </div>
         </div>
