@@ -739,9 +739,14 @@ class LiterasiController extends Controller
                 'answer'=> $answer,
                 'tags' => ['answer', 'question'],
                 'created_by' => session('user.id'),
+                'type' => $questionType,
             ];
 
-            $questionApi->update($questionId, $collection);
+            $question = $questionApi->update($questionId, $collection);
+
+            if ($question['error']) {
+                return redirect()->back()->with('message', 'Maaf terjadi kesalahan, silahkan ulangi kembali!');
+            }
 
             $updateData = [
                 'explanation' => (string)$request['explanation'],

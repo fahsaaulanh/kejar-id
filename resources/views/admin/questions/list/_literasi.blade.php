@@ -556,7 +556,11 @@
             <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
                 <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
             </li>
-            @for($i=1; $i <= $pagination['last_page']; $i++)
+            @php
+                $x = $pagination['current_page'] < 3 ? 1 : $pagination['current_page'] - 2;
+                $y = $pagination['current_page'] + 2 < $pagination['last_page'] ? $pagination['current_page'] + 2 : $pagination['last_page'];
+            @endphp
+            @for($i= $x; $i <= $y; $i++)
             <li class="page-item {{ (request()->page ?? 1) == $i ? 'active disabled' : '' }}">
                 <a class="page-link" href="?page={{ $i }}">{{ $i }}</a>
             </li>
