@@ -45,14 +45,17 @@ class AssessmentController extends Controller
         return view('student.onboarding_exam.index', $pageData);
     }
 
-    public function proceed($assessment_group_id, $schedule_id)
+    public function proceed($assessment_group_id, $assessment_id, $schedule_id)
     {
         $assessment_group_id;
         $taskService = new Task;
         $assessmentService = new Assessment;
+        $meService = new Me;
 
-        $responseAssessment = $assessmentService->detail($schedule_id);
-        $responseQuestions = $taskService->questionsAssessment($schedule_id);
+        $schedule = $meService->assessmentScheduleDetail($schedule_id);
+
+        $responseAssessment = $assessmentService->detail($assessment_id);
+        $responseQuestions = $taskService->questionsAssessment($assessment_id);
 
         if ($responseAssessment['error']) {
             return redirect()->back()->with(['message' => 'Data Penilaian tidak ditemukan']);
@@ -63,7 +66,7 @@ class AssessmentController extends Controller
         $assessmentGroupId = $assessment['assessment_group_id'];
         $subjectId = $assessment['subject_id'];
 
-        $responseTask = $taskService->startAssessment($schedule_id);
+        $responseTask = $taskService->startAssessment($assessment_id);
 
         if ($responseTask['error']) {
             return redirect()->back()->with([
@@ -84,6 +87,7 @@ class AssessmentController extends Controller
         $tasksSession = [
             'subject_id' => $assessment['subject_id'],
             'assessment' => $assessment,
+            'schedule' => $schedule['data'],
             'task_id' => $responseTask['data']['id'] ?? '',
             'task' => $responseTask['data'] ?? [],
             'answers' => $answers,
@@ -214,6 +218,21 @@ class AssessmentController extends Controller
             'question' => $question,
             'answer' => $answers[$question['id']],
         ]);
+    }
+
+    public function editNote()
+    {
+        $assessmentService = new Assessment;
+
+        $task = $this->request->session()->get('task');
+
+        $note = $this->request->input('noteStudent');
+
+        $payloads = [
+            'note' => $note,
+        ];
+
+        return $assessmentService->updateNote($task['schedule']['schedule']['id'], $payloads);
     }
 
     // Private Function

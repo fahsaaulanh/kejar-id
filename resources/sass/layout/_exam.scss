@@ -3,12 +3,40 @@
 }
 
 // New exam Assessment Regular
+
+.drawer-exam::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.drawer-exam::-webkit-scrollbar-track {
+    background-color: #f4f4f4;
+    border-radius: 2px;
+}
+
+.drawer-exam::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #B7CCE4;
+}
+
+
+.drawer-exam::-moz-scrollbars-horizontal {
+    height: 2px;
+    width: 2px;
+}
+
+.drawer-exam::-moz-scrollbars-vertical {
+    height: 2px;
+    width: 2px;
+}
+
 .drawer-exam {
     min-width: 20.8rem;
     padding: 1.8rem 1.6rem 1.8rem 2rem;
     height: calc(100vh - 40px);
     max-height: 100vh;
     overflow: auto;
+    scrollbar-width: 2px;
 }
 
 .list-number {
@@ -20,13 +48,13 @@
     padding-top: 6px;
 }
 
-.list-number.active{
+.list-number.active {
     border: 1px solid $blue !important;
-    color: $blue!important;
+    color: $blue !important;
     font-weight: 700;
 }
 
-.list-number.selected{
+.list-number.selected {
     background-color: #BDD0E3;
     color: $white;
     font-weight: 700;
@@ -53,16 +81,17 @@
         position: absolute;
         background: white;
     }
+
     .content-exam {
         padding: 2rem;
     }
 
-    .assesment-btn-next{
-        padding: 1.6rem 1rem!important;
+    .assesment-btn-next {
+        padding: 1.6rem 1rem !important;
     }
 
-    .assesment-btn-before{
-        padding: 0.8rem 1rem!important;
+    .assesment-btn-before {
+        padding: 0.8rem 1rem !important;
     }
 }
 
@@ -738,7 +767,7 @@
     cursor: pointer;
 }
 
-._benar_salah ._benar_salah_options input[type='radio']:checked ~ label {
+._benar_salah ._benar_salah_options input[type='radio']:checked~label {
     color: $black-1 !important;
 }
 
@@ -766,11 +795,9 @@
     width: 10rem;
 }
 
-._ya_tidak_options input {
+._ya_tidak_options input {}
 
-}
-
-._ya_tidak_options input ~ label i::before {
+._ya_tidak_options input~label i::before {
     color: #7C92A7;
     position: absolute;
     margin-left: -2rem;
@@ -778,7 +805,7 @@
     font-size: 1.6rem;
 }
 
-._ya_tidak_options input:checked ~ label i::before {
+._ya_tidak_options input:checked~label i::before {
     color: #3167F6;
     font-size: 1.6rem;
     margin-top: 0px;
@@ -945,7 +972,7 @@
     cursor: pointer;
 }
 
-._ya_tidak ._ya_tidak_options input[type='radio']:checked ~ label {
+._ya_tidak ._ya_tidak_options input[type='radio']:checked~label {
     color: $black-1 !important;
 }
 

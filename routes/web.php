@@ -332,7 +332,7 @@ Route::middleware('session')->group(function () {
                 'Student\AssessmentController@detail',
             );
             Route::get(
-                '/{assessment_group_id}/subjects/{schedule_id}/proceed',
+                '/{assessment_group_id}/subjects/{assessment_id}/proceed/{schedule_id}',
                 'Student\AssessmentController@proceed',
             );
 
