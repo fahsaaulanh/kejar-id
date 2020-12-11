@@ -109,6 +109,20 @@
         });
     }
 
+    // Loader
+    function showLoader() {
+        $('body').css('pointer-events', 'none');
+        $('body').append(`<div class="loader" style="position: fixed; z-index: 10000; width: auto; height: 30px; background: white; bottom: 10px; left: 10px; display: flex; align-items: center; justify-content: center;">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>`);
+    }
+
+    function hideLoader() {
+        $('body').css('pointer-events', 'auto');
+        $('.loader').remove();
+    }
+    // End Loader
+
     // AJAX Ordering
     function orderUpdate(id, order){
         $.ajax({
@@ -119,9 +133,11 @@
                 "order": order,
                 "id": id
             },
-            dataType: "JSON",
+            beforeSend: function() {
+                showLoader();
+            },
             success: function (response) {
-                
+                hideLoader();
             }
         });
     }

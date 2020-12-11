@@ -354,6 +354,7 @@
 
         a > div {
             flex-wrap: wrap;
+            display: flex;
 
             div {
                 width: 100%;
@@ -541,6 +542,7 @@
     .list-group-order-buttons {
         display: none;
         min-width: 5rem;
+        text-align: right;
     }
 
     &:hover {

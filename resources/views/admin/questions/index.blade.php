@@ -107,7 +107,11 @@
             <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
                 <a class="page-link" href="?page={{ (request()->page ?? 1) - 1 }}" tabindex="-1">&lt;</a>
             </li>
-            @for($i=1; $i <= $roundQuestionsMeta['last_page']; $i++)
+            @php
+                $x = $roundQuestionsMeta['current_page'] < 3 ? 1 : $roundQuestionsMeta['current_page'] - 2;
+                $y = $roundQuestionsMeta['current_page'] + 2 < $roundQuestionsMeta['last_page'] ? $roundQuestionsMeta['current_page'] + 2 : $roundQuestionsMeta['last_page'];
+            @endphp
+            @for($i= $x; $i <= $y; $i++)
             <li class="page-item {{ (request()->page ?? 1) == $i ? 'active disabled' : '' }}">
                 <a class="page-link" href="?page={{ $i }}">{{ $i }}</a>
             </li>

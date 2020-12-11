@@ -42,12 +42,6 @@ class ChangePasswordController extends Controller
             //update session password sudah diperbarui
             $request->session()->put('user.PasswordMustBeChanged', false);
 
-            $checkPhoto = session()->get('user.userable.photo');
-
-            if (!$checkPhoto) {
-                Session::flash('user.changePhotoOnBoarding', true);
-            }
-
             Session::flash('message', 'Ubah password berhasil!');
         } else {
             $error = '';

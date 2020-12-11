@@ -243,7 +243,7 @@ function textToClipboard (text) {
 
 // Modals
 $('.edit-title').dblclick(function(e) {
-    updateModal('#rename-title', $(e.currentTarget).html(), 'input');
+    updateModal('#rename-title', $(e.currentTarget).html(), 'input[name="title"]');
 });
 
 $('.edit-description').dblclick(function(e) {
@@ -259,14 +259,38 @@ function updateModal(id, html, type = 'textarea') {
     $(id).modal('show');
 }
 
-$(".modal").on("show.bs.modal", function(e){
+$("div[id^='create']").on("show.bs.modal", function(e){
+    showLoader();
+    $(e.currentTarget).find('.editor-field').each((index, element) => {
+        generateEditor(index, element);
+    });
+
+    $('#question-type').modal('hide');
+});
+
+$("#update-wacana").on("show.bs.modal", function(e){
+    showLoader();
     $(e.currentTarget).find('.editor-field').each((index, element) => {
         generateEditor(index, element);
     });
 });
 
-$(".modal").on("hidden.bs.modal", function(){
+$("div[id^='update-']").on("show.bs.modal", function (e) {
+    if (e.currentTarget.id !== 'update-description') {
+        showLoader();
+    }
+});
+
+$("#update-description").on("show.bs.modal", function (e) {
+    hideLoader();
+});
+
+$(".modal").on("hidden.bs.modal", function (){
     clearEditorField();
+});
+
+$("div[id^='create']").on('hide.bs.modal', function () {
+    $('#question-type').modal('show');
 });
 // End Modals
 
@@ -313,7 +337,7 @@ $(document).on('click', '.add-btn', function() {
                 $(this).append(removeBtn);
             });
         }
-        var td1 = '<td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ totalField +'"><i class="kejar-belum-dikerjakan"></i></div></td>';
+        var td1 = '<td><div class="check-group"><input type="checkbox" name="answer[]" value="'+ totalField +'"><i class="kejar-check-box"></i></div></td>';
         var td2 = '<td><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ totalField +']" class="editor-field editor-field" placeholder="Ketik pilihan jawaban '+ parseInt(totalField + 1) +'" ck-type="menceklis-daftar" required></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
         var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
         var newAnswer = '<tr>'+ td1 + td2 + td3 +'</tr>';
@@ -836,8 +860,10 @@ $(document).on('input', '.answer-list-table-pg input[type=radio]', function() {
 function radioPgManagement(){
     $('.answer-list-table-pg input[type=radio]').each(function(){
         if ($(this).is(':checked')) {
+            $(this).next().removeClass('kejar-belum-dikerjakan').addClass('kejar-radio-button');
             $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
         } else {
+            $(this).next().addClass('kejar-belum-dikerjakan').removeClass('kejar-radio-button');
             $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
         }
     });
@@ -878,8 +904,10 @@ function checkBoxMdManagement(type){
     if (type === 'check') {
         $('.answer-list-table-md input[type=checkbox]').each(function(){
             if ($(this).is(':checked')) {
+                $(this).next().addClass('kejar-checked-box').removeClass('kejar-check-box');
                 $(this).parents().closest('td').next().find('.ck-editor').addClass('active');
             } else {
+                $(this).next().removeClass('kejar-checked-box').addClass('kejar-check-box');
                 $(this).parents().closest('td').next().find('.ck-editor').removeClass('active');
             }
         });
@@ -1088,7 +1116,7 @@ $('#update-menceklis-daftar').on('shown.bs.modal', function(e) {
                 <td>
                     <div class="check-group">
                         <input type="checkbox" name="answer[]" value="${index}" ${ response.answer.includes(String.fromCharCode(parseInt(65 + index))) ? 'checked' : '' }>
-                        <i class="kejar-belum-dikerjakan"></i>
+                        <i class="kejar-check-box"></i>
                     </div>
                 </td>
                 <td>

@@ -615,6 +615,7 @@ class MiniAssessmentController extends Controller
                     $view .= '</a>';
                     $view .= '</div>';
                 }
+
                 // end tes view
             }
         } else {
