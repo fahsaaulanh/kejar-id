@@ -1,7 +1,7 @@
 <!-- Modal Tugaskan Siswa -->
 
-<div class="modal fade bd-example-modal-md assignStudentsModalSection" id="assignStudentsModal-1">
-    <div class="modal-dialog modal-md" role="document">
+<div class="modal fade assignStudentsModalSection" id="assignStudentsModal-1">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Tugaskan Siswa<br>
@@ -12,111 +12,112 @@
                 </button>
             </div>
             <div class="modal-body">
-
-                @if($type == 'MINI_ASSESSMENT')
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="title" class="font-weight-bold">Token/Password PDF</label>
-                                @if($assessments[0]['pdf_password'])
-                                    <input type="text" class="form-control" name="title" value="{{$assessments[0]['pdf_password']}}" readonly disabled>
-                                @else
-                                    <p class="text-grey">Tidak ada token/password.</p>
-                                @endif
+                <form>
+                    @if($type == 'MINI_ASSESSMENT')
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="title" class="font-weight-bold">Token/Password PDF</label>
+                                    @if($assessments[0]['pdf_password'])
+                                        <input type="text" class="form-control" name="title" value="{{$assessments[0]['pdf_password']}}" readonly disabled>
+                                    @else
+                                        <p class="text-grey">Tidak ada token/password.</p>
+                                    @endif
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @else
+                    @else
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="check-group row">
+                                    <input type="checkbox" onchange="modalAssignShowChoicePanel(0)" id="choice-0" value="1" class="col-1 mt-2">
+                                    <label for="choice-0" class="col pl-0">
+                                    Penilaian hanya dapat dibuka dengan <b>token</b> yang diberikan secara manual oleh guru/pengawas.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;" id="choice-0-panel">
+                            <div class="col-1"></div>
+                            <div class="col pl-0">
+                                <div class="row">
+                                    <div class="col-12 mb-3">
+                                        <label for="title" class="font-weight-bold">Token</label><br>
+                                        <small class="text-muted">
+                                            Ketik token/password yang digunakan pada penilaian (jika ada).
+                                            <span class="text-primary" onclick="modalAssignShow(4)" style="cursor:pointer">Pelajari</span>
+                                        </small>
+                                        <input type="text" class="form-control" name="title" value="" placeholder="Ketik token, 6 karakter a-z dan/atau 0-9" id="token">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif()
                     <div class="row">
                         <div class="col-12">
                             <div class="check-group row">
-                                <input type="checkbox" onchange="modalAssignShowChoicePanel(0)" id="choice-0" value="1" class="col-1 mt-2">
-                                <label for="choice-0" class="col pl-0">
-                                Penilaian hanya dapat dibuka dengan <b>token</b> yang diberikan secara manual oleh guru/pengawas.
+                                <input type="checkbox" onchange="modalAssignShowChoicePanel(1)" id="choice-1" value="1" class="col-1 mt-2">
+                                <label for="choice-1" class="col pl-0">
+                                    Penilaian hanya dapat dikerjakan <b>mulai dari</b> waktu tertentu.
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="display:none;" id="choice-0-panel">
+                    <div class="row" style="display:none;" id="choice-1-panel">
                         <div class="col-1"></div>
                         <div class="col pl-0">
                             <div class="row">
-                                <div class="col-12 mb-3">
-                                    <label for="title" class="font-weight-bold">Token</label><br>
-                                    <small class="text-muted">
-                                        Ketik token/password yang digunakan pada penilaian (jika ada).
-                                        <span class="text-primary" onclick="modalAssignShow(4)" style="cursor:pointer">Pelajari</span>
-                                    </small>
-                                    <input type="text" class="form-control" name="title" value="" placeholder="Ketik token, 6 karakter a-z dan/atau 0-9" id="token">
+                                <div class="col-12">
+                                    <label for="title" class="font-weight-bold">Dimulai Pada</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control datepicker text-dark"  placeholder="DD/MM/YYYY" id="start_date" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control clockpicker text-dark" placeholder="H:S" id="start_time" autocomplete="off">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                @endif()
-                <div class="row">
-                    <div class="col-12">
-                        <div class="check-group row">
-                            <input type="checkbox" onchange="modalAssignShowChoicePanel(1)" id="choice-1" value="1" class="col-1 mt-2">
-                            <label for="choice-1" class="col pl-0">
-                                Penilaian hanya dapat dikerjakan <b>mulai dari</b> waktu tertentu.
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" style="display:none;" id="choice-1-panel">
-                    <div class="col-1"></div>
-                    <div class="col pl-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <label for="title" class="font-weight-bold">Dimulai Pada</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="date" class="form-control" id="start_date" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="time" class="form-control" id="start_time" autocomplete="off">
-                                </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="check-group row">
+                                <input type="checkbox" onchange="modalAssignShowChoicePanel(2)" id="choice-2" value="1" class="col-1 mt-2">
+                                <label for="choice-2" class="col pl-0">
+                                Penilaian hanya dapat dikerjakan <b>sampai dengan</b> tanggal dan waktu tertentu.
+                                </label>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="check-group row">
-                            <input type="checkbox" onchange="modalAssignShowChoicePanel(2)" id="choice-2" value="1" class="col-1 mt-2">
-                            <label for="choice-2" class="col pl-0">
-                            Penilaian hanya dapat dikerjakan <b>sampai dengan</b> tanggal dan waktu tertentu.
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" id="choice-2-panel" style="display:none;">
-                    <div class="col-1"></div>
-                    <div class="col pl-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <label for="title" class="font-weight-bold">Selesai Pada</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="date" class="form-control" id="expiry_date" autocomplete="off">
+                    <div class="row" id="choice-2-panel" style="display:none;">
+                        <div class="col-1"></div>
+                        <div class="col pl-0">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="title" class="font-weight-bold">Selesai Pada</label>
                                 </div>
                             </div>
-                            <div class="col-6">
-                                <div class="form-group">
-                                    <input type="time" class="form-control" id="expiry_time" autocomplete="off">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control datepicker text-dark"  placeholder="DD/MM/YYYY" id="expiry_date" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control clockpicker text-dark" placeholder="H:S" id="expiry_time" autocomplete="off">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer text-right">
                 <div class="text-right col-md-12">
@@ -176,8 +177,27 @@
     </div>
 </div>
 
+@section('css')
+  <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css')}}">
+  <link rel="stylesheet" href="{{ asset('assets/plugins/clockpicker/jquery-clockpicker.min.css')}}">
+@endsection
+
 @push('script')
+    <script src="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{ asset('assets/plugins/clockpicker/jquery-clockpicker.min.js')}}"></script>
     <script>
+
+        $(".datepicker").datepicker({
+            format: 'dd/mm/yyyy'
+        });
+
+        $('.clockpicker').clockpicker({
+            placement: 'top',
+            align: 'right',
+            autoclose: true,
+            'default': 'now'
+        });
+
         var typeAssesment = "{{ $type }}";
         var assesment = [];
 
@@ -379,10 +399,12 @@
             var token = '';
 
             if ($('#choice-1').is(':checked')) {
-                start_date = $('#start_date').val()+' '+$('#start_time').val();
+                var start_dateFormat = moment($('#start_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+                start_date = start_dateFormat+' '+$('#start_time').val();
             }
 
             if ($('#choice-2').is(':checked')) {
+                var expiry_dateFormat = moment($('#expiry_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
                 expiry_date = $('#expiry_date').val()+' '+$('#expiry_time').val();
             }
 
@@ -412,10 +434,12 @@
             var token = '';
 
             if ($('#choice-1').is(':checked')) {
-                start_date = $('#start_date').val()+' '+$('#start_time').val();
+                var start_dateFormat = moment($('#start_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+                start_date = start_dateFormat+' '+$('#start_time').val();
             }
 
             if ($('#choice-2').is(':checked')) {
+                var expiry_dateFormat = moment($('#expiry_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
                 expiry_date = $('#expiry_date').val()+' '+$('#expiry_time').val();
             }
 
@@ -439,6 +463,15 @@
         }
 
         function saveData(data){
+
+            // Check Duration
+
+            if (durationVal < 1) {
+                $(".assignStudentsModalSection").modal('hide');
+                $('#duration').modal('show');
+                return;
+            }
+
             $('#submitBtn').prop('disabled', true);
             $('#submit').prop('disabled', true);
             $('.LoadingCreateSceduleStudents').show(200);
