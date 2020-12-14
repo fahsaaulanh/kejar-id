@@ -203,34 +203,37 @@
                         </nav>
                     @endif()
 
+                    <div class="table-questions border-top-none">
                     @foreach($questions as $i => $question)
-                        <div class="pb-4">
+                        <div class="card type-pilihan-ganda">
                             <div class="w-100 bg-green px-4 py-3">
                                 <div class="row justify-content-between px-4">
-                                    <h5>SOAL {{ $i + 1 }}</h5>
-                                    <div class="justify-content-end">
+                                    <div>
+                                        <h5>SOAL {{ $i + 1 }}</h5>
+                                    </div>
+                                    <div>
                                         <a href="javascript:void(0)" id="nav-{{$i}}" style="cursor: pointer;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="kejar-edit"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nav-{{$i}}">
                                             <a class="dropdown-item" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
-                                                <i class="kejar-edit"></i> Edit Soal
+                                                Edit Soal
                                             </a>
                                             <a class="dropdown-item" href="javascript:void(0)" style="cursor: pointer;" data-toggle="modal" data-target="#delete_question"
                                                 onclick="setDelete('{{$question['id']}}')">
-                                                <i class="kejar-delete"></i> Hapus Soal
+                                                Hapus Soal
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="w-100 border-grey-13 px-4 py-3">
-                                <div class="pb-8" id="q_question_{{$i}}">
+                            <div class="card-body">
+                                <div class="editor-display" id="q_question_{{$i}}">
                                     {!! $question['question'] !!}
                                 </div>
                                 <textarea hidden>{{$question['question']}}</textarea>
                                 <textarea hidden>{{$question['explanation']}}</textarea>
-                                <div class="pb-8">
+                                <div class="question-answer-group">
                                 <table class="question-answer-table">
                                     @foreach($question['choices'] as $key => $choice)
                                     <tr>
@@ -248,12 +251,18 @@
                                 </div>
                                 <div id="q_answer_{{$i}}" hidden>{!! $question['answer'] !!}</div>
                                 <div id="q_choices_{{$i}}" hidden>{{json_encode($question['choices'])}}</div>
-                                <h5 class="pb-4">Pembahasan:</h5>
-                                <div id="q_explanation_{{$i}}">{!! $question['explanation'] !!}</div>
+                                @if($question['explanation'] !== null || $question['explanation'] !== '' )
+                                <div class="explanation-group">
+                                    <strong>Pembahasan</strong>
+                                    <div class="editor-display">
+                                        <div id="q_explanation_{{$i}}">{!! $question['explanation'] !!}</div>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
-
+                    </div>
                     <!-- Pagination -->
                     @if($questionMeta && ($questionMeta['total'] > 10))
                         <nav class="navigation mt-5">
