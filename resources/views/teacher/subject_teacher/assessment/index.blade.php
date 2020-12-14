@@ -69,7 +69,7 @@
             </div>
         </div>
     @else
-        <button class="btn btn-primary font-15" onclick="modalAssignShow(1)">
+        <button class="btn btn-publish font-15" onclick="modalAssignShow(1)">
             <i class="kejar-siswa"></i>Tugaskan Siswa
         </button>
     @endif
@@ -172,7 +172,10 @@
                     @endif
                     <div class="col">
                         <h5>Durasi</h5>
-                        <h5 class="text-reguler">{{($assessments[0]['duration'] == null ? '-' : $assessments[0]['duration'].' menit')}}</h5>
+                        <h5 class="text-reguler">
+                            <span id="duration-caption">{{($assessments[0]['duration'] == null ? '-' : $assessments[0]['duration'].' menit')}}
+                            </span>
+                        </h5>
                     </div>
                 </div>
 
@@ -379,6 +382,8 @@
         });
     }
 
+    var durationVal = "{{$assessments[0]['duration']}}";
+
     function saveDuration(assessmentGroupId, subjectId, grade, assessmentId){
         const url = "{!! URL::to('/teacher/subject-teacher/assessment/duration') !!}";
         var duration = $('#duration_assess').val();
@@ -403,11 +408,14 @@
                 $('#setDuration').html('Simpan');
                 $('#setDuration').attr('disabled', 'false');
             },
-            success: function(response) {
-                if (response.status === 200) {
-                    window.location.reload();
-                    return;
+            success: function(data) {
+                if (data.status === 200) {
+                    $('#duration-caption').html(data.data.duration+' menit');
+                    durationVal = data.data.duration;
+                    $('#duration').modal('hide');
                 }
+                $('#setDuration').html('Simpan');
+                $('#setDuration').attr('disabled', 'false');
             }
         });
     }
