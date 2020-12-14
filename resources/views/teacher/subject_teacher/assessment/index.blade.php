@@ -185,7 +185,7 @@
                         <i class="kejar-add"></i>Tambah Soal
                     </button>
                     <!-- Pagination -->
-                    @if($questionMeta && ($questionMeta['total'] > 10))
+                    @if($questionMeta)
                         <nav class="navigation mt-5">
                             <div>
                                 <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} mapel</span>
@@ -219,10 +219,10 @@
                                             <i class="kejar-edit"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nav-{{$i}}">
-                                            <a class="dropdown-item" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
+                                            <a class="dropdown-item font-15" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
                                                 Edit Soal
                                             </a>
-                                            <a class="dropdown-item" href="javascript:void(0)" style="cursor: pointer;" data-toggle="modal" data-target="#delete_question"
+                                            <a class="dropdown-item font-15" href="javascript:void(0)" style="cursor: pointer;" data-toggle="modal" data-target="#delete_question"
                                                 onclick="setDelete('{{$question['id']}}')">
                                                 Hapus Soal
                                             </a>
@@ -254,7 +254,7 @@
                                 </div>
                                 <div id="q_answer_{{$i}}" hidden>{!! $question['answer'] !!}</div>
                                 <div id="q_choices_{{$i}}" hidden>{{json_encode($question['choices'])}}</div>
-                                @if($question['explanation'] !== null || $question['explanation'] !== '' )
+                                @if($question['explanation'] !== null && $question['explanation'] !== '' )
                                 <div class="explanation-group">
                                     <strong>Pembahasan</strong>
                                     <div class="editor-display">

@@ -423,7 +423,7 @@ class AssessmentController extends Controller
             }
 
             if (count($choices) <= 0 || is_null($request['question']) || is_null($request['answer'])) {
-                return redirect()->back();
+                return redirect()->back()->with('message', 'Maaf terjadi kesalahan, silahkan ulangi kembali!');
             }
 
             $collection = [
