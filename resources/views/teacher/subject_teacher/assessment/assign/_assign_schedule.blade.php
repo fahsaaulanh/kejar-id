@@ -187,6 +187,8 @@
     <script src="{{ asset('assets/plugins/clockpicker/jquery-clockpicker.min.js')}}"></script>
     <script>
 
+        var durationVal = "{{$assessments[0]['duration']}}";
+
         $(".datepicker").datepicker({
             format: 'dd/mm/yyyy'
         });
