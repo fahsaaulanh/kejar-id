@@ -38,4 +38,11 @@ class Me extends Service
 
         return $this->showResponse($response);
     }
+
+    public function studentGroups($filter = [])
+    {
+        $response = $this->get('/me/student-groups', $filter);
+
+        return $this->showResponse($response);
+    }
 }

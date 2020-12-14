@@ -101,4 +101,11 @@ class Assessment extends Service
 
         return $this->showResponse($response);
     }
+
+    public function report($filter = [])
+    {
+        $response = $this->get('reports/assessments', $filter);
+
+        return $this->showResponse($response);
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Assessment as AssessmentApi;
 use App\Services\AssessmentGroup as AssessmentGroupApi;
 use App\Services\Batch as BatchApi;
+use App\Services\Me as MeApi;
 use App\Services\Question as QuestionApi;
 use App\Services\Schedule as ScheduleApi;
 use App\Services\School as SchoolApi;
@@ -708,7 +709,7 @@ class AssessmentController extends Controller
 
         $assessmentId = $this->request->input('assessmentId');
         $ids = ($this->request->input('newList') ?? []);
-        
+
         $questionApi->update($ids['0'], ['status' => '3']);
 
         $qaPayload = [
@@ -1142,5 +1143,94 @@ class AssessmentController extends Controller
         }
 
         return response()->json($create);
+    }
+
+    public function studentGroups(Request $req, $assessmentGroupId)
+    {
+        $meApi = new MeApi;
+        $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
+        $filter = [
+            'page' => ($req->page ?? 1),
+            'filter[name]' => ($req->name ?? ''),
+            'per_page' => 20,
+        ];
+
+        $studentGroups = $meApi->studentGroups($filter);
+
+        return view('teacher.counselor.student-groups.index')
+            ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('assessmentGroup', $assessmentGroup)
+            ->with('studentGroups', $studentGroups['data'])
+            ->with('studentGroupMeta', $studentGroups['meta']);
+    }
+
+    public function studentGroupSubject(Request $req, $assessmentGroupId, $studentGroupId)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $schoolApi = new SchoolApi;
+        $filter = [
+            'page' => ($req->page ?? 1),
+            'filter[name]' => ($req->name ?? ''),
+            'per_page' => 20,
+        ];
+        $subjects = $schoolApi->subjectIndex($schoolId, $filter);
+        $studentGroup = $schoolApi->studentGroupDetail($studentGroupId);
+        $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
+
+        return view('teacher.counselor.student-groups.subject.index')
+            ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('assessmentGroup', $assessmentGroup)
+            ->with('subjects', $subjects['data'])
+            ->with('subjectMeta', $subjects['meta'])
+            ->with('studentGroup', $studentGroup['data']);
+    }
+
+    public function studentGroupScore(Request $req, $assessmentGroupId, $studentGroupId, $subjectId)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $schoolApi = new SchoolApi;
+        $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
+        $studentGroup = $schoolApi->studentGroupDetail($studentGroupId);
+
+        $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
+
+        $dataScore = [];
+        $AssessmentApi = new AssessmentApi;
+        $filter = [
+            'per_page' => 50,
+            'filter[assessment_group_id]' => $assessmentGroupId,
+            'filter[student_group_id]' => $studentGroupId,
+            'filter[subject_id]' => $subjectId,
+            'page' => ($req->page ?? 1),
+
+        ];
+        $dataList = $AssessmentApi->report($filter);
+
+        if ($dataList['data'] !== null) {
+            foreach ($dataList['data'] as $key => $i) {
+                $dataScore[$key]['id'] = $i['id'];
+                $dataScore[$key]['nis'] = $i['nis'];
+                $dataScore[$key]['name'] = $i['name'];
+                $dataScore[$key]['recommendation_score'] = (!is_null(
+                    $i['latest_task'],
+                ) ? $i['latest_task']['score'] : null);
+                $dataScore[$key]['final_score'] = (!is_null(
+                    $i['latest_task'],
+                ) ? $i['latest_task']['final_score'] : null);
+                $duration = (!is_null($i['latest_task']) ? Carbon::parse(
+                    $i['latest_task']['start_time'],
+                )->diffInMinutes($i['latest_task']['finish_time']) : null);
+                $dataScore[$key]['duration'] = $duration;
+            }
+        }
+
+        return view('teacher.counselor.student-groups.score.index')
+            ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('assessmentGroup', $assessmentGroup)
+            ->with('subject', $subject['data'])
+            ->with('subjectMeta', $subject['meta'])
+            ->with('studentGroup', $studentGroup['data'])
+            ->with('scoreMeta', $dataList['meta'])
+            ->with('scores', $dataScore);
     }
 }
