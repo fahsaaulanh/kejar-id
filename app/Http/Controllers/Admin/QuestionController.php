@@ -942,6 +942,7 @@ class QuestionController extends Controller
                     'answer'=> $answers,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => 'QSAT',
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -973,6 +974,7 @@ class QuestionController extends Controller
                     'answer'=> (string)strtolower($request->answer),
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => 'QSAT',
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1009,6 +1011,7 @@ class QuestionController extends Controller
                     'answer' => $answer,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1038,6 +1041,7 @@ class QuestionController extends Controller
                     'answer' => $choices,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1067,6 +1071,7 @@ class QuestionController extends Controller
                     'answer' => $choices,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1109,6 +1114,7 @@ class QuestionController extends Controller
                     'answer' => $answers,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1183,6 +1189,7 @@ class QuestionController extends Controller
                     'answer' => $answers,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1237,6 +1244,7 @@ class QuestionController extends Controller
                     'answer' => $answers,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1268,6 +1276,7 @@ class QuestionController extends Controller
                     'answer' => $choices,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1304,6 +1313,7 @@ class QuestionController extends Controller
                     'answer' => $answer,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1344,6 +1354,7 @@ class QuestionController extends Controller
                     'answer' => $body,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1379,6 +1390,7 @@ class QuestionController extends Controller
                     'answer' => $answers,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1415,6 +1427,7 @@ class QuestionController extends Controller
                     'answer' => $answers,
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);
@@ -1440,6 +1453,7 @@ class QuestionController extends Controller
                     'answer' => $request['answer'],
                     'tags' => ['answer', 'question'],
                     'created_by' => session('user.id'),
+                    'type' => $questionType,
                 ];
 
                 $questionApi->update($questionId, $payload);

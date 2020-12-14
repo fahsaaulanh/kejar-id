@@ -520,3 +520,10 @@ function btnManagement(){
         $(this).parents().closest('.ck-editor').next().addClass('d-none');
     });
 }
+
+$('.table-toeic').on('dblclick', 'tr', function() {
+    $('#update-question').find('form').attr('action', $(this).data('url'));
+    $('#update-question').find('input[name="question"]').val($(this).data('question'));
+    $('#update-question').find('input[name="answer"]').val($(this).data('answer'));
+    $('#update-question').modal('show');
+});
