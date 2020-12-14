@@ -12,6 +12,10 @@
 @endif
 
 @section('content')
+@php
+    $loweredSchoolName = strtolower(session('user.userable.school_name'));
+    $isWikrama = strpos($loweredSchoolName, 'wikrama') !== false;
+@endphp
 @if(session('user.PasswordMustBeChanged') === true)
 <!-- form ganti password -->
 <div class="bg-lego">
@@ -152,7 +156,11 @@
 
     function selectMA(val) {
         var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teacher/') !!}"+"/"+val+"/subject";
-        var urlStudentCounselor = "{!! URL::to('/teacher/student-counselor/mini-assessment') !!}"+"/"+val+"/list";
+        @if($isWikrama)
+            var urlStudentCounselor = "{!! URL::to('/teacher') !!}"+"/"+val+"/student-counselor";
+        @else
+            var urlStudentCounselor = "{!! URL::to('/teacher') !!}"+"/"+val+"/student-groups";
+        @endif
         var urlStudentSupervisor = "{!! URL::to('/teacher/supervisor/') !!}"+"/"+val+"/subject";
         $("#select-ma-subject-teachers").attr("href", urlSubjectTeachers);
         $("#select-ma-student-counselor").attr("href", urlStudentCounselor);
