@@ -382,8 +382,6 @@
         });
     }
 
-    var durationVal = "{{$assessments[0]['duration']}}";
-
     function saveDuration(assessmentGroupId, subjectId, grade, assessmentId){
         const url = "{!! URL::to('/teacher/subject-teacher/assessment/duration') !!}";
         var duration = $('#duration_assess').val();
