@@ -31,7 +31,6 @@
                                 </button>
                             </div>
                         </div>
-
                         <div class="edit-header-view" style="display:none">
                             <div class="pl-4 pr-4">
                                 <div class="row justify-content-between">
@@ -46,7 +45,6 @@
                                 <span class="breadcrumb-item active headSubject-view"></span>
                             </nav>
                         </div>
-
                         <div class="pb-7">
                             <h3 id="title" class="title-view"></h3>
                         </div>
@@ -83,86 +81,34 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 tab-1-view">
-                                    @for($i=1; $i < 21; $i++) <div class="row px-4 mt-4">
-                                        <div class="pts-number">{{ $i }}</div>
-                                        <div class="col">
-                                            <div class="row">
-                                                <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                    <span class="caption">A</span>
-                                                </div>
-                                                <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                    <span class="caption">B</span>
-                                                </div>
-                                                <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                    <span class="caption">C</span>
-                                                </div>
-                                                <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                    <span class="caption">D</span>
-                                                </div>
-                                                <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                    <span class="caption">E</span>
-                                                </div>
-                                                <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 pt-1 spin-load">
-                                                    <div class="spinner-border" role="status">
-                                                        <span class="sr-only">Loading...</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                 </div>
-                                @endfor()
+                                <div class="col-md-6 tab-2-view">
+                                </div>
                             </div>
-                            <div class="col-md-6 tab-2-view">
-                                @for($i=21; $i < 41; $i++) <div class="row px-4 mt-4">
-                                    <div class="pts-number">{{ $i }}</div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                <span class="caption">A</span>
-                                            </div>
-                                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                <span class="caption">B</span>
-                                            </div>
-                                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                <span class="caption">C</span>
-                                            </div>
-                                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                <span class="caption">D</span>
-                                            </div>
-                                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pts-choice">
-                                                <span class="caption">E</span>
-                                            </div>
-                                            <div class="mb-2 mb-md-0 mb-lg-0 mb-xl-0 pl-4 font-24">
-                                                <i class="kejar-soal-benar"></i>
-                                            </div>
-                                        </div>
-                                    </div>
+                        </div>
+                        <div class="pl-4 pr-4 pt-9 footer-view">
+                            <div class="row edit-answer justify-content-between align-items-end">
+                                <div>
+                                    <p class="font-15 text-grey-6 ">Diinput oleh Sande Listiana.</p>
+                                    <p class="font-15 text-grey-6 ">Telah divalidasi oleh Mutia Prawitasari.</p>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-lg btn-primary" id="lanjut-missing-answer">EDIT</button>
+                                </div>
                             </div>
-                            @endfor()
-                        </div>
-                    </div>
-                </div>
-                <div class="pl-4 pr-4 pt-9 footer-view">
-                    <div class="row edit-answer justify-content-between align-items-end">
-                        <div>
-                            <p class="font-15 text-grey-6 ">Diinput oleh Sande Listiana.</p>
-                            <p class="font-15 text-grey-6 ">Telah divalidasi oleh Mutia Prawitasari.</p>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-lg btn-primary" id="lanjut-missing-answer">EDIT</button>
-                        </div>
-                    </div>
-                    <div class="row validated-answer justify-content-between align-items-end">
-                        <div>
-                            <p class="font-15 text-grey-6 ">Diinput oleh Sande Listiana.</p>
-                        </div>
-                        <div>
-                            <button type="button" class="btn btn-lg btn-primary" id="lanjut-missing-answer">VALIDASI</button>
-                        </div>
-                    </div>
-                    <div class="row create-answer justify-content-end align-items-end">
-                        <div>
-                            <button type="button" class="btn-save btn btn-lg btn-primary" data-dismiss="modal">SIMPAN</button>
+                            <div class="row validated-answer justify-content-between align-items-end">
+                                <div>
+                                    <p class="font-15 text-grey-6 ">Diinput oleh Sande Listiana.</p>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-lg btn-primary" id="lanjut-missing-answer">VALIDASI</button>
+                                </div>
+                            </div>
+                            <div class="row create-answer justify-content-end align-items-end">
+                                <div>
+                                    <button type="button" class="btn-save btn btn-lg btn-primary" data-dismiss="modal">SIMPAN</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
