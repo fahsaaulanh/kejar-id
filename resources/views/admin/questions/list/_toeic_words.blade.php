@@ -80,14 +80,14 @@
 
     <!-- Table of questions -->
     <div class="table-responsive">
-        <table class="table table-toeic">
+        <table class="table  table-stripped table-toeic">
             <thead>
                 <th class="a">Meaning</th>
                 <th class="b">Word</th>
             </thead>
             <tbody class="pointer">
                 @forelse($roundQuestionsData as $question)
-                <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}" data-url="{{ secure_url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
+                <tr data-id="{{ $question['question']['id'] }}" data-question="{{ $question['question']['question'] }}" data-answer="{{ $question['question']['answer'] }}" data-url="{{ url('/admin/' . $game['uri'] .'/stages/' . $stage['id'] . '/rounds/' . $round['id'] . '/questions/' . $question['question_id']) }}">
                     <td>{{ $question['question']['question'] }}</td>
                     <td>{{ $question['question']['answer'] }}</td>
                 </tr>
