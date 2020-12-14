@@ -13,6 +13,7 @@ use App\Services\StudentGroup as StudentGroupApi;
 use App\Services\User as UserApi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Throwable;
 
 class AssessmentController extends Controller
 {
@@ -66,7 +67,7 @@ class AssessmentController extends Controller
             $subjects['meta'] = [];
         }
 
-        return view('teacher.'. $this->teacherType($teacherType) .'.subjects.index')
+        return view('teacher.' . $this->teacherType($teacherType) . '.subjects.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('teacherType', $teacherType)
             ->with('assessmentGroup', $assessmentGroup['data']['title'])
@@ -81,25 +82,25 @@ class AssessmentController extends Controller
         $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
 
         if (!isset($subject['data'])) {
-            return redirect('teacher/'. $teacherType .'/' . $assessmentGroupValue)->with(
+            return redirect('teacher/' . $teacherType . '/' . $assessmentGroupValue)->with(
                 ['message' => 'Data Tidak Ditemukan!'],
             );
         }
 
-        $viewBlade = 'teacher.'. $teacherType .'.student_groups.index';
+        $viewBlade = 'teacher.' . $teacherType . '.student_groups.index';
 
         return view($viewBlade)
-               ->with('assessmentGroup', $this->assessmentGroups($assessmentGroupValue))
-               ->with('subject', $subject['data'])
-               ->with('assessmentGroupValue', $assessmentGroupValue)
-               ->with(
-                   'assessmentGroupId',
-                   $this->assessmentGroups($assessmentGroupValue, 'value'),
-               )
-               ->with('subject', $subject['data'])
-               ->with('type', $teacherType)
-               ->with('subjectId', $subjectId)
-               ->with('grade', $grade);
+            ->with('assessmentGroup', $this->assessmentGroups($assessmentGroupValue))
+            ->with('subject', $subject['data'])
+            ->with('assessmentGroupValue', $assessmentGroupValue)
+            ->with(
+                'assessmentGroupId',
+                $this->assessmentGroups($assessmentGroupValue, 'value'),
+            )
+            ->with('subject', $subject['data'])
+            ->with('type', $teacherType)
+            ->with('subjectId', $subjectId)
+            ->with('grade', $grade);
     }
 
     public function entryYear($grade)
@@ -175,7 +176,7 @@ class AssessmentController extends Controller
         if ($count > 0) {
             foreach ($list as $v) {
                 $view .= '<div class="list-group-item">';
-                $view .= '<a href="/teacher/'. $req['type'] . '/'
+                $view .= '<a href="/teacher/' . $req['type'] . '/'
                     . $req['assessmentGroupValue'] . '/subject/' . $req['subjectId'] .
                     '/' . $req['grade'] . '/student-groups/' . $v['id'] . '" class="col-10">';
                 $view .= '<i class="kejar-rombel"></i>';
@@ -199,10 +200,10 @@ class AssessmentController extends Controller
         $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
         $StudentGroupApi = new StudentGroupApi;
         $StudentGroupDetail =
-        $StudentGroupApi->detailWithoutBatch($student_group_id);
+            $StudentGroupApi->detailWithoutBatch($student_group_id);
 
         if (!isset($subject['data']) && !isset($StudentGroupDetail['data'])) {
-            return redirect('teacher/'. $teacherType .'/' . $assessmentGroupId)->with(
+            return redirect('teacher/' . $teacherType . '/' . $assessmentGroupId)->with(
                 ['message' => 'Data Tidak Ditemukan!'],
             );
         }
@@ -226,21 +227,21 @@ class AssessmentController extends Controller
         }
 
         return view('teacher.' . $teacherType . '.report.index')
-                ->with('assessmentGroup', $this->assessmentGroups($assessmentGroupId))
-                ->with(
-                    'assessmentGroupId',
-                    $this->assessmentGroups($assessmentGroupId, 'value'),
-                )
-                ->with('subject', $subject['data'])
-                ->with('StudentGroupDetail', $StudentGroupDetail['data'])
-                ->with('assessmentGroupValue', $assessmentGroupId)
-                ->with('school_id', $schoolId)
-                ->with('subjectId', $subjectId)
-                ->with('type', $teacherType)
-                ->with('reportType', $reportType)
-                ->with('id', $student_group_id)
-                ->with('token', $token)
-                ->with('grade', $grade);
+            ->with('assessmentGroup', $this->assessmentGroups($assessmentGroupId))
+            ->with(
+                'assessmentGroupId',
+                $this->assessmentGroups($assessmentGroupId, 'value'),
+            )
+            ->with('subject', $subject['data'])
+            ->with('StudentGroupDetail', $StudentGroupDetail['data'])
+            ->with('assessmentGroupValue', $assessmentGroupId)
+            ->with('school_id', $schoolId)
+            ->with('subjectId', $subjectId)
+            ->with('type', $teacherType)
+            ->with('reportType', $reportType)
+            ->with('id', $student_group_id)
+            ->with('token', $token)
+            ->with('grade', $grade);
     }
 
     public function getStudentByStudentGroup(Request $req)
@@ -258,14 +259,14 @@ class AssessmentController extends Controller
             $html = '';
             foreach ($students['data'] as $key => $v) {
                 $html .= '<tr>';
-                    $html .= '<td class="text-center">';
-                        $html .= $key+1;
-                    $html .= '</td>';
-                    $html .= '<td id="student-data-'.$v['id'].'">';
-                        $html .= $v['name'];
-                    $html .= '</td>';
-                    $html .= '<td id="student-data-loading-'.$v['id'].'"
-                                    colspan="'. ($req->colspan ?? 1) .'">
+                $html .= '<td class="text-center">';
+                $html .= $key + 1;
+                $html .= '</td>';
+                $html .= '<td id="student-data-' . $v['id'] . '">';
+                $html .= $v['name'];
+                $html .= '</td>';
+                $html .= '<td id="student-data-loading-' . $v['id'] . '"
+                                    colspan="' . ($req->colspan ?? 1) . '">
                                 <div class="spinner-border mr-1" role="status">
                                     <span class="sr-only">Loading...</span>
                                 </div> Loading</td>';
@@ -274,7 +275,7 @@ class AssessmentController extends Controller
         }
 
         $data = [
-            'status'=> $students['status'],
+            'status' => $students['status'],
             'data' => $students['data'],
             'html' => $html,
         ];
@@ -286,10 +287,11 @@ class AssessmentController extends Controller
     {
         session()->put('assessmentType', $assessType);
 
-        return redirect('teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject/'.$subjectId.'/'.$grade.'/assessment');
+        return redirect('teacher/'.$teacherType.'/'.
+        $assessmentGroupId.'/subject/'.$subjectId.'/'.$grade.'/assessment');
     }
 
-    public function assessment($teacherType, $assessmentGroupId, $subjectId, $grade)
+    public function assessment($teacherType, $assessmentGroupId, $subjectId, $grade, Request $request)
     {
         $schoolId = session()->get('user.userable.school_id');
         $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
@@ -333,7 +335,7 @@ class AssessmentController extends Controller
         $questions = [];
         $questionMeta = null;
         if (count($dataAssessment) > 0 && $dataForAssessment[0]['type'] === 'ASSESSMENT') {
-            $getQuestions = $assessmentApi->questions($dataAssessment[0]['id']);
+            $getQuestions = $assessmentApi->questions($dataAssessment[0]['id'], $request->page ?? 1);
             $questionMeta = $getQuestions['meta'] ?? null;
             $questions = $getQuestions['data'] ?? [];
         }
@@ -353,6 +355,7 @@ class AssessmentController extends Controller
             ->with('message', 'Data success');
     }
 
+    // Editted
     public function createMiniAssessment(Request $request, $teacherType, $assessmentGroupId, $subjectId, $grade)
     {
         $teacherType;
@@ -384,53 +387,143 @@ class AssessmentController extends Controller
             return redirect()->back()->with(['type' => 'danger', 'message' => 'Data gagal tersimpan!']);
         }
 
-        $assessmentId = $request['assessmentId'];
-        if ($assessmentId === null) {
-            $reqFile = [];
-            $assessPayload = [
-                'duration' => 0,
+        $reqFile = [];
+        $assessPayload = [
+            'duration' => 0,
+            'subject_id' => $subjectId,
+            'grade' => $grade,
+            'assessment_group_id' => $assessmentGroupId,
+            'type' => 'ASSESSMENT',
+            'pdf_password' => '',
+            'total_question' => 0,
+            'total_choices' => 0,
+        ];
+
+        return $assessmentApi->create($reqFile, $assessPayload);
+    }
+
+    public function createAssessQuestion($type, $assessmentId, $subjectId, Request $request)
+    {
+        try {
+            $type;
+            $questionApi = new QuestionApi;
+            $assessmentApi = new AssessmentApi;
+
+            $choices = [];
+            $alphabet = 'A';
+            foreach ($request['choices'] as $key => $choice) {
+                if (!is_null($choice)) {
+                    $choices[$alphabet] = $choice;
+                    if ($key === intval($request['answer'])) {
+                        $answer = $alphabet;
+                    }
+
+                    $alphabet++;
+                }
+            }
+
+            if (count($choices) <= 0 || is_null($request['question']) || is_null($request['answer'])) {
+                return redirect()->back();
+            }
+
+            $collection = [
                 'subject_id' => $subjectId,
-                'grade' => $grade,
-                'assessment_group_id' => $assessmentGroupId,
-                'type' => 'ASSESSMENT',
-                'pdf_password' => '',
-                'total_question' => 0,
-                'total_choices' => 0,
+                'topic_id' => null,
+                'bank' => null,
+                'question' => $request['question'],
+                'level' => 'LEVEL_1',
+                'created_by' => session()->get('user.id'),
+                'type' => 'MCQSA',
+                'status' => '1',
+                'choices' => $choices,
+                'answer' => $answer,
             ];
-            $setAssessment = $assessmentApi->create($reqFile, $assessPayload);
-            $assessmentId = $setAssessment['data']['id'];
+
+            $question = $questionApi->store($collection);
+
+            $updateData = [
+                'explanation' => (string)$request['explanation'],
+                'explained_by' => session()->get('user.id'),
+                'tags' => ['explanation'],
+                'note' => 'explanation',
+            ];
+
+            $questionApi->update($question['data']['id'], ['status' => '2']);
+            $questionApi->update($question['data']['id'], $updateData);
+
+            $qaPayload = [
+                'ids' => [$question['data']['id']],
+            ];
+
+            $assessmentApi->createQuestion($assessmentId, $qaPayload);
+        } catch (Throwable $th) {
+            return $th;
         }
 
-        $questPayload = [
-            'subject_id' => $subjectId,
-            'topic_id' => '',
-            'bank' => 'Assessment',
-            'question' => $request['question'],
-            'level' => 'LEVEL_1',
-            'created_by' => session()->get('user.id'),
-            'status' => 1,
-            'type' => 'MCQSA',
-            'choices' => $request['choices'],
-            'answer' => $request['trueAnswer'],
-        ];
-        $questionApi = new QuestionApi;
-        $setQuestion = $questionApi->store($questPayload);
-
-        $explanPayload = [
-            'explained_by' => session()->get('user.id'),
-            'explanation' => $request['explanation'],
-        ];
-        $setExplan = $questionApi->update($setQuestion['data']['id'], $explanPayload);
-        $qaPayload = [
-            'ids' => [$setQuestion['data']['id']],
-        ];
-        $setAssessQuest = $assessmentApi->createQuestion($assessmentId, $qaPayload);
-
-        return [
-            'question' => $setExplan,
-            'assessquest' => $setAssessQuest,
-        ];
+        return redirect()->back()->with('message', 'Berhasil menambahkan data!');
     }
+
+    public function editQuestion($type, $questionId)
+    {
+        $type;
+        $questionApi = new QuestionApi;
+        session()->put('questionId', $questionId);
+
+        $questionDetail = $questionApi->getDetail($questionId)['data'];
+
+        return response()->json($questionDetail);
+    }
+
+    public function updateAssessQuestion($type, $questionId, Request $request)
+    {
+        try {
+            $type;
+            $questionApi = new QuestionApi;
+            $questionDetail = $questionApi->getDetail($questionId);
+
+            $choices = [];
+            $alphabet = 'A';
+            foreach ($request['choices'] as $key => $choice) {
+                if (!is_null($choice)) {
+                    $choices[$alphabet] = $choice;
+                    if ($key === intval($request['answer'])) {
+                        $answer = $alphabet;
+                    }
+
+                    $alphabet++;
+                }
+            }
+
+            if (count($choices) <= 0 || is_null($request['question']) || is_null($request['answer'])) {
+                return redirect()->back();
+            }
+
+            $collection = [
+                'question' => $request['question'],
+                'choices' => $choices,
+                'answer' => $answer,
+                'type' => $questionDetail['data']['type'],
+                'tags' => ['answer', 'question'],
+                'created_by' => $questionDetail['data']['created_by'],
+            ];
+
+            $questionApi->update($questionId, $collection);
+
+            $updateData = [
+                'explanation' => (string)$request['explanation'],
+                'explained_by' => session('user.id'),
+                'tags' => ['explanation'],
+                'note' => 'explanation',
+            ];
+
+            $questionApi->update($questionId, $updateData);
+
+            return redirect()->back()->with('message', 'Berhasil mengubah soal!');
+        } catch (Throwable $th) {
+            return redirect()->back()->with('message', 'Maaf terjadi kesalahan, silahkan ulangi kembali!');
+        }
+    }
+    // Editted
 
     public function settingMiniAssessment(
         Request $request,
@@ -611,9 +704,15 @@ class AssessmentController extends Controller
     public function deleteQuestion()
     {
         $assessmentApi = new AssessmentApi;
+        $questionApi = new QuestionApi;
+
         $assessmentId = $this->request->input('assessmentId');
+        $ids = ($this->request->input('newList') ?? []);
+        
+        $questionApi->update($ids['0'], ['status' => '3']);
+
         $qaPayload = [
-            'ids' => $this->request->input('newList'),
+            'ids' => $ids,
             'action' => 'delete',
         ];
 
@@ -658,33 +757,33 @@ class AssessmentController extends Controller
 
         $questionDetail = $questionService->getDetail($questionId);
 
-        $payload = [];
-        if ($questionDetail['data']['type'] === 'MCQSA') {
-            $choices = [];
-            foreach ($this->request->input('choices') as $key => $v) {
-                $choices[$key] = $v;
-            }
+        // $payload = [];
+        // if ($questionDetail['data']['type'] === 'MCQSA') {
+        //     $choices = [];
+        //     foreach ($this->request->input('choices') as $key => $v) {
+        //         $choices[$key] = $v;
+        //     }
 
-            $payload = [
-                'explanation' => $this->request->input('explanation'),
-                'explained_by' => session()->get('user.id'),
-            ];
-            $questionService->update($questionId, $payload);
-            $payload = [
-                'type' => $questionDetail['data']['type'],
-                'question' => $this->request->input('question'),
-                'choices' => $choices,
-                'answer' => $this->request->input('trueAnswer'),
-                'created_by' => $questionDetail['data']['created_by'],
-            ];
-        } else {
-            $payload = [
-                'answer' => $answer,
-                'created_by' => $questionDetail['data']['created_by'],
-                'question' => $questionDetail['data']['question'],
-                'type' => $questionDetail['data']['type'],
-            ];
-        }
+        //     $payload = [
+        //         'explanation' => $this->request->input('explanation'),
+        //         'explained_by' => session()->get('user.id'),
+        //     ];
+        //     $questionService->update($questionId, $payload);
+        //     $payload = [
+        //         'type' => $questionDetail['data']['type'],
+        //         'question' => $this->request->input('question'),
+        //         'choices' => $choices,
+        //         'answer' => $this->request->input('trueAnswer'),
+        //         'created_by' => $questionDetail['data']['created_by'],
+        //     ];
+        // } else {
+        $payload = [
+            'answer' => $answer,
+            'created_by' => $questionDetail['data']['created_by'],
+            'question' => $questionDetail['data']['question'],
+            'type' => $questionDetail['data']['type'],
+        ];
+        // }
 
         return $questionService->update($questionId, $payload);
     }
@@ -767,16 +866,16 @@ class AssessmentController extends Controller
         $presenceText = ($schedule['presence'] ? 'Hadir' : 'Tandai');
         $presenceVal = ($schedule['presence'] ? 0 : 1);
         $taskStatus = (isset($schedule['finish_time']) && $schedule['finish_time']);
-        $presenceParams = "'".$schedule['id']."',".$presenceVal;
+        $presenceParams = "'" . $schedule['id'] . "'," . $presenceVal;
 
         if (!$presenceVal) {
-            $presenceParams .= ",1,'".$name."'";
+            $presenceParams .= ",1,'" . $name . "'";
         } else {
-            $presenceParams .= ",0,'".$name."'";
+            $presenceParams .= ",0,'" . $name . "'";
         }
 
         $presence = '<span class="btn btn-link btn-lg
-        text-decoration-none" onclick="changePresence('.$presenceParams.')">'.$presenceText.'</span>';
+        text-decoration-none" onclick="changePresence(' . $presenceParams . ')">' . $presenceText . '</span>';
 
         $teacherNote = ($schedule['teacher_note'] ?? '');
         $studentNote = ($schedule['student_note'] ?? '');
@@ -784,33 +883,33 @@ class AssessmentController extends Controller
         $studentNote = $schedule['student_note'] === '-' || $schedule['student_note'] ?: '';
 
         if (isset($req->reportType) && $req->reportType === 'ASSESMENT') {
-            $html .= '<td>'.($schedule['token'] ?? '').'</td>';
+            $html .= '<td>' . ($schedule['token'] ?? '') . '</td>';
         }
 
-        $html .= '<td class="text-center" id="presenceBtn-'.$schedule['id'].'">'. $presence .'</td>';
+        $html .= '<td class="text-center" id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
         if ($taskStatus) {
             $html .= '<td>Selesai</td>';
-            $html .= '<td><span class="text-grey">'.($studentNote ?: 'Tidak ada').'</span></td>';
+            $html .= '<td><span class="text-grey">' . ($studentNote ?: 'Tidak ada') . '</span></td>';
         } else {
             $html .= '<td colspan="2">Belum mengerjakan</td>';
         }
 
         // Note
 
-        $note = "'".$id."','".
-                $studentNote."','".
-                $teacherNote."','".
-                $nis."','".
-                $name."'";
+        $note = "'" . $id . "','" .
+            $studentNote . "','" .
+            $teacherNote . "','" .
+            $nis . "','" .
+            $name . "'";
 
         $html .= '<td>';
 
-            $html .= '<div id="note-data-'.$id.'">';
-                $html .= '<span style="cursor: pointer;" class="text-grey"
-                    onclick="changeNote('.$note.')">';
-                    $html .= $this->noteData($teacherNote);
-                $html .= '</span>';
-            $html .= '</div>';
+        $html .= '<div id="note-data-' . $id . '">';
+        $html .= '<span style="cursor: pointer;" class="text-grey"
+                    onclick="changeNote(' . $note . ')">';
+        $html .= $this->noteData($teacherNote);
+        $html .= '</span>';
+        $html .= '</div>';
 
         $html .= '</td>';
 
@@ -899,56 +998,56 @@ class AssessmentController extends Controller
     {
         $html = '';
         foreach ($data as $v) {
-            $html .= '<div class="accordion mt-3" id="accordion-'. $v['id'] .'">';
-                $html .= '<div class="card">';
-                    $html .= '<div class="card-header">';
-                        $idVal = "'".$v['id']."'";
-                        $html .= '<h5 class="mb-0"
-                        onclick="getStudents('. $idVal .')">';
-                            $html .= '<div class="row">';
-                                $html .= '<div class="col-1 ml-1">';
-                                    $html .= '<input type="checkbox" data-toggle="collapse"
-                                    data-target="#collapseStudents-'. $v['id'] .'"
-                                    aria-expanded="true" aria-controls="collapseStudents-'. $v['id'] .'"
-                                    id="schedule-check-all-'. $v['id'] .'"
-                                    onclick="selectAllStudents('. $idVal .')"
+            $html .= '<div class="accordion mt-3" id="accordion-' . $v['id'] . '">';
+            $html .= '<div class="card">';
+            $html .= '<div class="card-header">';
+            $idVal = "'" . $v['id'] . "'";
+            $html .= '<h5 class="mb-0"
+                        onclick="getStudents(' . $idVal . ')">';
+            $html .= '<div class="row">';
+            $html .= '<div class="col-1 ml-1">';
+            $html .= '<input type="checkbox" data-toggle="collapse"
+                                    data-target="#collapseStudents-' . $v['id'] . '"
+                                    aria-expanded="true" aria-controls="collapseStudents-' . $v['id'] . '"
+                                    id="schedule-check-all-' . $v['id'] . '"
+                                    onclick="selectAllStudents(' . $idVal . ')"
                                     class="unCheckedData"
                                     value="1">';
-                                $html .= '</div>';
-                                $html .= '<div class="col pl-0" data-toggle="collapse"
-                                          data-target="#collapseStudents-'. $v['id'] .'" aria-expanded="true"
-                                          aria-controls="collapseStudents-'. $v['id'] .'" style="cursor: pointer;">';
-                                    $html .= '<span data-toggle="collapse"
-                                            data-target="#collapseStudents-'. $v['id'] .'"
-                                            aria-expanded="true" aria-controls="collapseStudents-'. $v['id'] .'">';
-                                        $html .= $v['name'];
-                                    $html .= '</span>';
-                                    $html .= '<span class="float-right">';
-                                        $html .= '<span class="count-students-group
-                                        count-students-group-'. $v['id'] .'">';
-                                            $html .= 0;
-                                        $html .= '</span >';
-                                    $html .= ' siswa';
-                                    $html .= '</span>';
-                                $html .= '</div>';
-                                $html .= '<div class="col-1" data-toggle="collapse"
-                                            data-target="#collapseStudents-'. $v['id'] .'"
-                                            aria-expanded="true" aria-controls="collapseStudents-'. $v['id'] .'">';
-                                    $html .= '<i class="kejar-dropdown"></i>';
-                                $html .= '</div>';
-                            $html .= '</div>';
-                        $html .= '</h5>';
-                    $html .= '</div>';
-                    $html .= '<table id="collapseStudents-'. $v['id'] .'" class="table table-bordered
-                    table-sm m-0 collapse" aria-labelledby="headingOne" data-parent="#accordion-'. $v['id'] .'">';
-                        $html .= '<tr id="students-loading-'.$v['id'].'">';
-                            $html .= '<td class="text-center">
+            $html .= '</div>';
+            $html .= '<div class="col pl-0" data-toggle="collapse"
+                                          data-target="#collapseStudents-' . $v['id'] . '" aria-expanded="true"
+                                          aria-controls="collapseStudents-' . $v['id'] . '" style="cursor: pointer;">';
+            $html .= '<span data-toggle="collapse"
+                                            data-target="#collapseStudents-' . $v['id'] . '"
+                                            aria-expanded="true" aria-controls="collapseStudents-' . $v['id'] . '">';
+            $html .= $v['name'];
+            $html .= '</span>';
+            $html .= '<span class="float-right">';
+            $html .= '<span class="count-students-group
+                                        count-students-group-' . $v['id'] . '">';
+            $html .= 0;
+            $html .= '</span >';
+            $html .= ' siswa';
+            $html .= '</span>';
+            $html .= '</div>';
+            $html .= '<div class="col-1" data-toggle="collapse"
+                                            data-target="#collapseStudents-' . $v['id'] . '"
+                                            aria-expanded="true" aria-controls="collapseStudents-' . $v['id'] . '">';
+            $html .= '<i class="kejar-dropdown"></i>';
+            $html .= '</div>';
+            $html .= '</div>';
+            $html .= '</h5>';
+            $html .= '</div>';
+            $html .= '<table id="collapseStudents-' . $v['id'] . '" class="table table-bordered
+                    table-sm m-0 collapse" aria-labelledby="headingOne" data-parent="#accordion-' . $v['id'] . '">';
+            $html .= '<tr id="students-loading-' . $v['id'] . '">';
+            $html .= '<td class="text-center">
                                         <div class="spinner-border mr-1" role="status">
                                             <span class="sr-only">Loading...</span>
                                         </div> Loading</td>';
-                        $html .= '</tr>';
-                    $html .= '</table>';
-                $html .= '</div>';
+            $html .= '</tr>';
+            $html .= '</table>';
+            $html .= '</div>';
             $html .= '</div>';
         }
 
@@ -1019,7 +1118,7 @@ class AssessmentController extends Controller
             $UserApi = new UserApi;
             $studentIds = [];
             foreach ($data['student_ids'] as $key => $v) {
-                $student = $UserApi->students(['filter[school_id]'=>$schoolId, 'filter[search]'=>$v]);
+                $student = $UserApi->students(['filter[school_id]' => $schoolId, 'filter[search]' => $v]);
                 $studentIds[$key] = $student['data'] ? $student['data'][0]['id'] : 'not found';
             }
 

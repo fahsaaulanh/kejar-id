@@ -155,11 +155,20 @@ Route::middleware('session')->group(function () {
                 );
 
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewQuestion');
-                Route::post('assessment/question/update', 'Teacher\AssessmentController@updateQuestion');
+                Route::post('assessment/mini/question/update', 'Teacher\AssessmentController@updateQuestion');
                 Route::get('assessment/question/check/{id}', 'Teacher\AssessmentController@checkQuestion');
                 Route::post('assessment/question/validation', 'Teacher\AssessmentController@validationQuestion');
                 Route::post('assessment/question/delete', 'Teacher\AssessmentController@deleteQuestion');
                 Route::post('assessment/duration', 'Teacher\AssessmentController@durationAssessment');
+                Route::post(
+                    'assessment/{assessmentId}/subject/{subjectId}/question/create',
+                    'Teacher\AssessmentController@createAssessQuestion',
+                );
+                Route::get('assessment/question/{questionId}/edit', 'Teacher\AssessmentController@editQuestion');
+                Route::patch(
+                    'assessment/question/{questionId}/edit',
+                    'Teacher\AssessmentController@updateAssessQuestion',
+                );
 
                 // for Ajax
 

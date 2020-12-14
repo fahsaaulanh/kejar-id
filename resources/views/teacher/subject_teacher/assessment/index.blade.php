@@ -47,9 +47,25 @@
                 </button>
             </div>
             <div class="col-sm-6">
-                <button class="btn-upload mb-0" data-toggle="modal" data-target="#create-pilihan-ganda" onclick="setAdd()">
+                <button class="btn-upload mb-0" onclick="setAdd('{{$assessmentGroupId}}', '{{$subject['id']}}', '{{$grade}}')">
                     <i class="kejar-add"></i>Input Soal
                 </button>
+                <div class="mt-3" id="LoadingAssess4" style="display:none">
+                    <div class="row justify-content-center">
+                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                            <span class="sr-only">Sedang Menyimpan...</span>
+                        </div>
+                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                            <span class="sr-only">Sedang Menyimpan...</span>
+                        </div>
+                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                            <span class="sr-only">Sedang Menyimpan...</span>
+                        </div>
+                    </div>
+                    <div class="mt-2 row justify-content-center">
+                        <h5>Sedang Membuat assessment</h5>
+                    </div>
+                </div>
             </div>
         </div>
     @else
@@ -136,16 +152,6 @@
             <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
             <div class="tab-pane fade show active" id="packgae" role="tabpanel" aria-labelledby="packgae-tab">
                 <div class="row mt-8">
-                    @if($dualType === true)
-                        <div class="alert alert-info" role="alert">
-                            Assessment ini memiliki dua tipe!
-                            @if($type === 'ASSESSMENT')
-                            <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/mini_assessment') }}">Lihat tipe Mini Assessment</a>.
-                            @else
-                            <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/assessment') }}">Lihat tipe Assessment</a>.
-                            @endif
-                        </div>
-                    @endif
                     <div class="col">
                         <h3>Pengaturan</h3>
                     </div>
@@ -172,7 +178,7 @@
 
                 @if($type === 'ASSESSMENT')
                     <h3 class="mb-4">Daftar Soal</h3>
-                    <button class="btn-upload font-15" data-toggle="modal" data-target="#create-pilihan-ganda" onclick="setAdd()">
+                    <button class="btn-upload font-15" data-toggle="modal" data-target="#create-pilihan-ganda">
                         <i class="kejar-add"></i>Tambah Soal
                     </button>
                     <!-- Pagination -->
@@ -197,53 +203,56 @@
                         </nav>
                     @endif()
 
-                    @for($i=0; $i <= count($questions) - 1; $i++)
+                    @foreach($questions as $i => $question)
                         <div class="pb-4">
                             <div class="w-100 bg-green px-4 py-3">
                                 <div class="row justify-content-between px-4">
                                     <h5>SOAL {{ $i + 1 }}</h5>
                                     <div class="justify-content-end">
-                                        <a href="#" id="nav-{{$i}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="kejar-add"></i>
+                                        <a href="javascript:void(0)" id="nav-{{$i}}" style="cursor: pointer;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="kejar-edit"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nav-{{$i}}">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit-pilihan-ganda"
-                                                onclick="setEditData({{$i}}, '{{$questions[$i]['id']}}')">
+                                            <a class="dropdown-item" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
                                                 <i class="kejar-edit"></i> Edit Soal
                                             </a>
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_question"
-                                                onclick="setDelete('{{$questions[$i]['id']}}')">
-                                                <i class="kejar-add"></i> Hapus Soal
+                                            <a class="dropdown-item" href="javascript:void(0)" style="cursor: pointer;" data-toggle="modal" data-target="#delete_question"
+                                                onclick="setDelete('{{$question['id']}}')">
+                                                <i class="kejar-delete"></i> Hapus Soal
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="w-100 border-grey-13 px-4 py-3">
-                                <div class="pb-8">
-                                    {{$questions[$i]['question']}}
+                                <div class="pb-8" id="q_question_{{$i}}">
+                                    {!! $question['question'] !!}
                                 </div>
-                                <textarea id="q_question_{{$i}}" hidden>{{$questions[$i]['question']}}</textarea>
-                                <textarea id="q_explanation_{{$i}}" hidden>{{$questions[$i]['explanation']}}</textarea>
+                                <textarea hidden>{{$question['question']}}</textarea>
+                                <textarea hidden>{{$question['explanation']}}</textarea>
                                 <div class="pb-8">
-                                    @foreach($questions[$i]['choices'] as $key => $ch)
-                                        <div class="radio-group">
-                                            @if($key === $questions[$i]['answer'])
-                                                <i class="kejar-radio-button"></i>
+                                <table class="question-answer-table">
+                                    @foreach($question['choices'] as $key => $choice)
+                                    <tr>
+                                        <td>
+                                            @if($key == $question['answer'])
+                                            <i class="kejar-radio-button"></i>
                                             @else
-                                                <i class="kejar-belum-dikerjakan"></i>
+                                            <i class="kejar-belum-dikerjakan"></i>
                                             @endif
-                                            {{$questions[$i]['choices'][$key]}}
-                                        </div>
+                                        </td>
+                                        <td class="editor-display">{!! $choice !!}</td>
+                                    </tr>
                                     @endforeach
+                                </table>
                                 </div>
-                                <div id="q_answer_{{$i}}" hidden>{{$questions[$i]['answer']}}</div>
-                                <div id="q_choices_{{$i}}" hidden>{{json_encode($questions[$i]['choices'])}}</div>
+                                <div id="q_answer_{{$i}}" hidden>{!! $question['answer'] !!}</div>
+                                <div id="q_choices_{{$i}}" hidden>{{json_encode($question['choices'])}}</div>
                                 <h5 class="pb-4">Pembahasan:</h5>
-                                <div>{{$questions[$i]['explanation']}}</div>
+                                <div id="q_explanation_{{$i}}">{!! $question['explanation'] !!}</div>
                             </div>
                         </div>
-                    @endfor
+                    @endforeach
 
                     <!-- Pagination -->
                     @if($questionMeta && ($questionMeta['total'] > 10))
@@ -315,7 +324,11 @@
 @endsection
 
 @push('script')
+<script src="{{ asset('ckeditor/build/ckeditor.js') }}"></script>
+<script src="{{ mix('/js/admin/question/literasi.js') }}"></script>
+
 <script>
+
     function setType(val) {
         $('#astype').val(val);
     }
@@ -329,190 +342,32 @@
         }
     });
 
-    const multiChoices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const multiChoices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'];
 
-    function saveQuestion(assessmentGroupId, subjectId, grade, assessmentId){
+    function setAdd(assessmentGroupId, subjectId, grade){
         const url = `{!! URL::to('/teacher/subject-teacher/${assessmentGroupId}/subject/${subjectId}/${grade}/assessment') !!}`;
-        // const url = "{!! URL::to('/teacher/subject-teacher/assessment/question/create') !!}";
-
-        var choicesElement = document.getElementsByName("cr_choices");
-        var choicesRadio = document.getElementsByName("cr_answer");
-        var choices = {};
-        var trueAnswer = "";
-        for(var i = 0; i <= choicesElement.length - 1; i++){
-            choices[multiChoices[i]] = choicesElement[i].value;
-            if(choicesRadio[i].checked === true){
-                trueAnswer = multiChoices[i];
-            }
-        }
-        var question = $('#question').val();
-        var explanation = $('#explanation').val();
         $.ajax({
             url,
             type: 'POST',
             data: {
-                assessmentGroupId,
                 type: 'ASSESSMENT',
-                subjectId,
-                grade,
-                assessmentId,
-                question,
-                choices,
-                trueAnswer,
-                explanation,
             },
             dataType: 'json',
             beforeSend: function() {
-                showLoadingAssesment(1);
+                showLoadingAssesment(4);
             },
             error: function(error) {
                 //
             },
             success: function(response) {
-                var statusError = Object.keys(response).map(item => response[item].error !== false);
-                if(statusError > 0){
-                    console.log(statusError)
+                if(response.error === false){
+                    location.reload();
                 }else{
-                    window.location.reload();
+                    alert('Penyimpanan gagal. Harap ulangi lagi!');
+                    $('#LoadingAssess4').hide();
                 }
             }
         });
-    }
-
-    async function setAdd(){
-        document.getElementById('addplus').style.visibility = 'initial';
-        await renderChoices(3, 'table_add_answer');
-    }
-
-    async function setEditData(index, id){
-        var choicesElement = document.getElementsByName("ed_choices");
-        var choicesRadio = document.getElementsByName("ed_answer");
-        $('#question2').html($(`#q_question_${index}`).html());
-        $('#explanation2').html($(`#q_explanation_${index}`).html());
-        var choices = $(`#q_choices_${index}`).html();
-        var answer = $(`#q_answer_${index}`).html();
-        var listChoices = JSON.parse(choices);
-        await renderChoices(Object.keys(listChoices).length - 1, 'table_edit_answer');
-        await Object.keys(listChoices).map((key, index) => {
-            choicesElement[index].innerHTML = listChoices[key];
-            choicesElement[index].value = listChoices[key];
-        })
-        var answerIndex = multiChoices.indexOf(answer);
-        choicesRadio[answerIndex].checked = true;
-        $('#selectedChoice').val(answerIndex);
-        $('#edit_q_id').val(id);
-        document.getElementById('editplus').style.visibility = 'initial';
-    }
-
-    function editQuestion(subjectId, grade){
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/question/update') !!}";
-
-        var choicesElement = document.getElementsByName("ed_choices");
-        var choicesRadio = document.getElementsByName("ed_answer");
-
-        var choices = {};
-        var trueAnswer = "";
-        for(var i = 0; i <= choicesElement.length - 1; i++){
-            choices[multiChoices[i]] = choicesElement[i].value;
-            if(choicesRadio[i].checked === true){
-                trueAnswer = multiChoices[i];
-            }
-        }
-        var question = $('#question2').val();
-        var explanation = $('#explanation2').val();
-        var questionId = $('#edit_q_id').val();
-        $.ajax({
-            url,
-            type: 'POST',
-            data: {
-                questionId,
-                subjectId,
-                grade,
-                question,
-                choices,
-                trueAnswer,
-                explanation,
-            },
-            dataType: 'json',
-            beforeSend: function() {
-                showLoadingAssesment(2);
-            },
-            error: function(error) {
-                //
-            },
-            success: function(response) {
-                if (response.status === 200) {
-                    window.location.reload();
-                    return;
-                }
-            }
-        });
-    }
-
-    function addChoice(event, tableId){
-        var choicesElement = document.getElementsByName(`${tableId === "table_add_answer" ? 'cr_answer' : 'ed_answer'}`);
-        var answers = `<tr>\
-                            <td>\
-                                <div class="radio-group">\
-                                    <input type="radio" name='${tableId === "table_add_answer" ? 'cr_answer' : 'ed_answer'}' value=${choicesElement.length}>\
-                                    <i class="kejar-belum-dikerjakan"></i>\
-                                </div>\
-                            </td>\
-                            <td>\
-                                <div class="ckeditor-group ckeditor-list">\
-                                    <textarea onchange="insertInto(event)" name='${tableId === "table_add_answer" ? 'cr_choices' : 'ed_choices'}' class="ckeditor-field" placeholder="Ketik pilihan jawaban ${choicesElement.length + 1}" ck-type="pilihan-ganda" required></textarea>\
-                                    <div class="ckeditor-btn-group ckeditor-btn-1 d-none">\
-                                        <button type="button" class="bold-btn" title="Bold (Ctrl + B)">\
-                                            <i class="kejar-bold"></i>\
-                                        </button>\
-                                        <button type="button" class="italic-btn" title="Italic (Ctrl + I)">\
-                                            <i class="kejar-italic"></i>\
-                                        </button>\
-                                        <button type="button" class="underline-btn" title="Underline (Ctrl + U)">\
-                                            <i class="kejar-underlined"></i>\
-                                        </button>\
-                                        <button type="button" class="bullet-list-btn" title="Bulleted list">\
-                                            <i class="kejar-bullet"></i>\
-                                        </button>\
-                                        <button type="button" class="number-list-btn" title="Number list">\
-                                            <i class="kejar-number"></i>\
-                                        </button>\
-                                        <button type="button" class="photo-btn" title="Masukkan foto">\
-                                            <i class="kejar-photo"></i>\
-                                        </button>\
-                                    </div>\
-                                </div>\
-                            </td>\
-                            <td>\
-                                <button class="remove-btn" type="button" onclick="removeChoice(event, '${tableId === "table_add_answer" ? 'addplus' : 'editplus'}')">\
-                                    <i class="kejar-close"></i>\
-                                </button>\
-                            </td>\
-                        </tr>`;
-        var ind = parseInt($('#selectedChoice').val());
-        var set = $(`#${tableId}`).html() + answers;
-        var total = choicesElement.length + 1
-        document.getElementById(tableId).innerHTML += answers;
-        if(tableId === "table_edit_answer"){
-            choicesElement[ind].checked = true;
-        }
-        if(total == 5){
-            event.currentTarget.style.visibility = 'hidden';
-        }
-    }
-
-    function removeChoice(event, plusBtnId){
-        event.currentTarget.parentElement.parentElement.remove();
-        var choicesElement = document.getElementsByName("ed_choices");
-        var total = choicesElement.length - 1;
-        if(total < 5){
-            document.getElementById(plusBtnId).style.visibility = 'initial';
-        }
-
-    }
-
-    function insertInto(event){
-        event.currentTarget.innerHTML = event.currentTarget.value;
     }
 
     function saveDuration(assessmentGroupId, subjectId, grade, assessmentId){
@@ -531,10 +386,13 @@
             },
             dataType: 'json',
             beforeSend: function() {
-                showLoadingAssesment(0);
+                $('#setDuration').html('Tunggu...');
+                $('#setDuration').attr('disabled', 'true');
             },
             error: function(error) {
                 //
+                $('#setDuration').html('Simpan');
+                $('#setDuration').attr('disabled', 'false');
             },
             success: function(response) {
                 if (response.status === 200) {
@@ -552,9 +410,7 @@
     function editQuestionList(assessmentId){
         const url = "{!! URL::to('/teacher/subject-teacher/assessment/question/delete') !!}";
         var selected = $('#edit_q_id').val();
-        var list = $('#question_list').val();
-        var newList = list.split(',').filter(item => item !== selected && item !== '');
-
+        var newList = [selected];
         $.ajax({
             url,
             type: 'POST',
@@ -564,15 +420,20 @@
             },
             dataType: 'json',
             beforeSend: function() {
-                showLoadingAssesment(3);
+                $('#deleteQuestion').html('Tunggu...');
+                $('#deleteQuestion').attr('disabled', 'true');
             },
             error: function(error) {
-                //
+                $('#deleteQuestion').html('Tunggu...');
+                $('#deleteQuestion').attr('disabled', 'false');
             },
             success: function(response) {
-                if (response.status === 200) {
-                    window.location.reload();
-                    return;
+                if (response.error == false) {
+                    location.reload();
+                } else{
+                    $('#deleteQuestion').html('Tunggu...');
+                    $('#deleteQuestion').attr('disabled', 'false');
+                    alert('Penghapusan soal gagal. Harap ulangi lagi!');
                 }
             }
         });
@@ -590,7 +451,7 @@
                             </td>\
                             <td>\
                                 <div class="ckeditor-group ckeditor-list">\
-                                    <textarea onchange="insertInto(event)" name='${tableId === "table_add_answer" ? 'cr_choices' : 'ed_choices'}' class="ckeditor-field" placeholder="Ketik pilihan jawaban ${i + 1}" ck-type="pilihan-ganda" required></textarea>\
+                                    <textarea name='choices[${i}]' class="ckeditor-field" placeholder="Ketik pilihan jawaban ${i + 1}" ck-type="pilihan-ganda" required></textarea>\
                                     <div class="ckeditor-btn-group ckeditor-btn-1 d-none">\
                                         <button type="button" class="bold-btn" title="Bold (Ctrl + B)">\
                                             <i class="kejar-bold"></i>\
@@ -614,7 +475,7 @@
                                 </div>\
                             </td>\
                             <td>\
-                                <button class="remove-btn" type="button" onclick="removeChoice(event, '${tableId === "table_add_answer" ? 'addplus' : 'editplus'}')">\
+                                <button class="remove-btn" type="button">\
                                     <i class="kejar-close"></i>\
                                 </button>\
                             </td>\
@@ -758,7 +619,7 @@
     }
 
     function setAnswer(answer, questionId) {
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/question/update') !!}";
+        const url = "{!! URL::to('/teacher/subject-teacher/assessment/mini/question/update') !!}";
 
         $.ajax({
             url,
