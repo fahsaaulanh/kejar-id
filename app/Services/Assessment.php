@@ -18,9 +18,9 @@ class Assessment extends Service
         return $this->showResponse($response);
     }
 
-    public function questions($id)
+    public function questions($id, $page = 1)
     {
-        $response = $this->get('/libraries/assessments/'.$id.'/questions');
+        $response = $this->get('/libraries/assessments/'.$id.'/questions', "page=$page");
 
         return $this->showResponse($response);
     }

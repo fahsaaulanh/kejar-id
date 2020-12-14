@@ -1,10 +1,10 @@
 <div class="modal fade" id="create-pilihan-ganda">
     <div class="modal-dialog  modal-fix" role="document">
-    @if(count($assessments) > 0)
-        <form onsubmit="event.preventDefault(); saveQuestion('{{$assessmentGroupId}}', '{{$subject['id']}}', '{{$grade}}', '{{$assessments[0]['id']}}')">
-    @else
-        <form onsubmit="event.preventDefault(); saveQuestion('{{$assessmentGroupId}}', '{{$subject['id']}}', '{{$grade}}', '')">
-    @endif
+        @if($assessments)
+            <form action="{{ url('/teacher/subject-teacher/assessment/'. $assessments[0]['id'] . '/subject/' . $subject['id'] . '/question/create') }}" method="POST" novalidate>
+        @else
+            <form action="{{ url('/teacher/subject-teacher/assessment/0/subject/' . $subject['id'] . '/question/create') }}" method="POST" novalidate>
+        @endif
             @csrf
             <input type="hidden" name="question_type" value="MCQSA">
             <div class="modal-content">
@@ -17,7 +17,7 @@
                 <div class="modal-body">
                     <div class="form-group ck-height-9 ckeditor-list">
                         <label>Soal</label>
-                        <textarea id="question" class="textarea-field ckeditor-field" name="question" placeholder="Ketik soal" required></textarea>
+                        <textarea class="textarea-field editor-field" id="question" name="question" placeholder="Ketik soal"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
@@ -43,17 +43,16 @@
                         <label>Jawaban</label>
                         <p>Pilih satu jawaban benar.</p>
                         <table class="answer-list-table-pg" data-type="pilihan-ganda" id="table_add_answer">
-                            @for ($i = 0; $i < 4; $i++)
-                            <tr>
+                            @for ($i = 0; $i < 4; $i++) <tr>
                                 <td>
                                     <div class="radio-group">
-                                        <input type="radio" name="cr_answer" value={{ $i }} @if($i === 0) required @endif>
+                                        <input type="radio" class="answer" name="answer" value="{{ $i }}" {{$i == 0 ? 'required' : '' }}>
                                         <i class="kejar-belum-dikerjakan"></i>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="ckeditor-group ckeditor-list">
-                                        <textarea name="choices" class="ckeditor-field" placeholder="Ketik pilihan jawaban {{ $i + 1 }}" ck-type="pilihan-ganda" required></textarea>
+                                        <textarea name="choices[{{$i}}]" class="editor-field" placeholder="Ketik pilihan jawaban {{ $i + 1 }}" ck-type="pilihan-ganda"></textarea>
                                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                                 <i class="kejar-bold"></i>
@@ -77,20 +76,20 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button class="remove-btn" type="button" onclick="removeChoice(event, 'addplus')">
+                                    <button class="remove-btn" type="button">
                                         <i class="kejar-close"></i>
                                     </button>
                                 </td>
-                            </tr>
-                            @endfor
+                                </tr>
+                                @endfor
                         </table>
-                        <button id="addplus" class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="pilihan-ganda" onclick="addChoice(event, 'table_add_answer')">
+                        <button class="btn btn-add border-0 pl-0 add-btn" type="button" data-type="pilihan-ganda">
                             <i class="kejar-add"></i> Tambah Pilihan Jawaban
                         </button>
                     </div>
                     <div class="form-group ck-height-9 ckeditor-list">
                         <label>Pembahasan</label>
-                        <textarea id="explanation" class="textarea-field ckeditor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
+                        <textarea class="textarea-field editor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
                                 <i class="kejar-bold"></i>
@@ -116,7 +115,7 @@
                 <div class="modal-footer">
                     <div class="text-right col-md-12">
                         <button type="button" class="btn btn-cancel" data-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary" id="save_question">Simpan</button>
                     </div>
                     <div class="col-12 text-center mt-3" id="LoadingAssess1" style="display:none">
                         <div class="row justify-content-center">

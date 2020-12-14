@@ -725,7 +725,7 @@ class QuestionController extends Controller
                         if (!isset($question['data'])) {
                             return redirect()->back()->with('message', 'Maaf, data yang diberikan tidak sesuai!');
                         }
-                        
+
                         $questionApi->update($question['data']['id'], ['status' => '2']);
                         $questionApi->update($question['data']['id'], $updateData);
 
@@ -1136,7 +1136,7 @@ class QuestionController extends Controller
                                     'Jawaban belum dipilih. Gagal Menambahkan Data!',
                                 );
                             }
-                            
+
                             if (intval($data['answer']) === $key2) {
                                 $answers[] = $alphabet;
                             }

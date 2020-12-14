@@ -20,26 +20,10 @@
             <div class="modal-footer">
                 <div class="text-right col-md-12">
                     <button type="button" id="lanjut-time-remaining" class="btn btn-link">Batal</button>
-                    <button type="button" class="btn btn-primary" id="save-btn"
+                    <button type="button" class="btn btn-primary" id="setDuration"
                     onclick="saveDuration('{{$assessmentGroupId}}', '{{$subject['id']}}', '{{$grade}}', '{{$assessments[0]['id']}}')">
                         Simpan
                     </button>
-                </div>
-                <div class="col-12 text-center mt-3" id="LoadingAssess0" style="display:none">
-                    <div class="row justify-content-center">
-                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
-                            <span class="sr-only">Sedang Menyimpan...</span>
-                        </div>
-                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
-                            <span class="sr-only">Sedang Menyimpan...</span>
-                        </div>
-                        <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
-                            <span class="sr-only">Sedang Menyimpan...</span>
-                        </div>
-                    </div>
-                    <div class="mt-2 row justify-content-center">
-                        <h5>Sedang Menyimpan</h5>
-                    </div>
                 </div>
             </div>
         </div>

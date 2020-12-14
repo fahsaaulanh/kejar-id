@@ -72,32 +72,32 @@ function checkActive(e){
 
 
 $(document).on('mousedown', '.ckeditor-list .bold-btn', function(){
-    thisEl = $(this);
+    var thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
 
 $(document).on('mousedown', '.ckeditor-list .italic-btn', function(){
-    thisEl = $(this);
+    var thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
 
 $(document).on('mousedown', '.ckeditor-list .underline-btn', function(){
-    thisEl = $(this);
+    var thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
 
 $(document).on('mousedown', '.ckeditor-list .bullet-list-btn', function(){
-    thisEl = $(this);
+    var thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
 
 $(document).on('mousedown', '.ckeditor-list .number-list-btn', function(){
-    thisEl = $(this);
+    var thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
 
 $(document).on('mousedown', '.ckeditor-list .photo-btn', function(){
-    thisEl = $(this);
+    var thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
 
@@ -313,7 +313,7 @@ $(document).on('click', '.add-btn', function() {
                     $(this).append(removeBtn);
                 });
             }
-            var td1 = '<td><div class="radio-group"><input type="radio" name="answer" value="'+ totalField +'"><i class="kejar-belum-dikerjakan"></i></div></td>';
+            var td1 = '<td><div class="radio-group"><input type="radio" class="answer" name="answer" value="'+ totalField +'"><i class="kejar-belum-dikerjakan"></i></div></td>';
             var td2 = '<td><div class="ckeditor-group ckeditor-list"><textarea name="choices['+ totalField +']" class="editor-field" placeholder="Ketik pilihan jawaban '+ parseInt(totalField + 1) +'" ck-type="pilihan-ganda" required></textarea><div class="ckeditor-btn-group ckeditor-btn-1 d-none"><button type="button" class="bold-btn" title="Bold (Ctrl + B)"><i class="kejar-bold"></i></button><button type="button" class="italic-btn" title="Italic (Ctrl + I)"><i class="kejar-italic"></i></button><button type="button" class="underline-btn" title="Underline (Ctrl + U)"><i class="kejar-underlined"></i></button><button type="button" class="bullet-list-btn" title="Bulleted list"><i class="kejar-bullet"></i></button><button type="button" class="number-list-btn" title="Number list"><i class="kejar-number"></i></button><button type="button" class="photo-btn" title="Masukkan foto"><i class="kejar-photo"></i></button></div></div></td>';
             var td3 = '<td><button class="remove-btn" type="button"><i class="kejar-close"></i></button></td>';
             var newAnswer = '<tr>'+ td1 + td2 + td3 +'</tr>';
@@ -528,7 +528,7 @@ $(document).on('click', '.add-btn', function() {
         setTimeout(function () { radioRmpgManagement(); }, 50);
     }
     // End Teks Rumpang PG
-    
+
 });
 // End Add BTN
 
@@ -782,7 +782,7 @@ $(document).on('click', '.remove-btn', function(e) {
         addTypeRmpg($('.add-btn[data-type=next-rumpang-pg]'));
         setTimeout(function () { radioRmpgManagement(); }, 50);
     }
-    
+
     if (type == 'tabel-lanjut-text') {
             var modal = $(this).parents('.modal');
             $(this).parents('.lanjutan-teks').remove();
@@ -792,7 +792,7 @@ $(document).on('click', '.remove-btn', function(e) {
             });
             addTypeRmpg($('.add-btn[data-type=next-rumpang-pg]'));
     }
-    
+
     if (type == 'tabel-rumpang-pg') {
         var trList = $(this).parents('.answer-list-table-rmpg');
         $(this).parents('tr').remove();
@@ -1039,8 +1039,45 @@ $('#update-pilihan-ganda').on('shown.bs.modal', function(e) {
         modal.find('textarea[name=explanation]').val(response.explanation);
 
         var html = ``;
+        console.log(Object.keys(response.choices).length)
         for (var index = 0; index < Object.keys(response.choices).length; index++) {
-            html += `
+            if (Object.keys(response.choices).length == 2) {
+                html += `
+                <tr>
+                    <td>
+                        <div class="radio-group">
+                            <input type="radio" name="answer" value="${index}" ${ String.fromCharCode(parseInt(65 + index)) === response.answer ? 'checked' : '' }>
+                            <i class="kejar-belum-dikerjakan"></i>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="ckeditor-group ckeditor-list">
+                            <textarea name="choices[${index}]" class="editor-field" placeholder="Ketik pilihan jawaban ${index + 1}" ck-type="pilihan-ganda" required>${response.choices[String.fromCharCode(parseInt(65 + index))]}</textarea>
+                            <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
+                                <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
+                                    <i class="kejar-bold"></i>
+                                </button>
+                                <button type="button" class="italic-btn" title="Italic (Ctrl + I)">
+                                    <i class="kejar-italic"></i>
+                                </button>
+                                <button type="button" class="underline-btn" title="Underline (Ctrl + U)">
+                                    <i class="kejar-underlined"></i>
+                                </button>
+                                <button type="button" class="bullet-list-btn" title="Bulleted list">
+                                    <i class="kejar-bullet"></i>
+                                </button>
+                                <button type="button" class="number-list-btn" title="Number list">
+                                    <i class="kejar-number"></i>
+                                </button>
+                                <button type="button" class="photo-btn" title="Masukkan foto">
+                                    <i class="kejar-photo"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>`;
+            } else {
+                html += `
             <tr>
                 <td>
                     <div class="radio-group">
@@ -1079,6 +1116,8 @@ $('#update-pilihan-ganda').on('shown.bs.modal', function(e) {
                     </button>
                 </td>
             </tr>`;
+            }
+            
         }
 
         modal.find('table').html(html);
@@ -1179,7 +1218,7 @@ $('#update-benar-salah').on('shown.bs.modal', function(e) {
     getApi(url, data, (response) => {
         modal.find('textarea[name=keterangan_soal]').val(response.question);
         modal.find('textarea[name=pembahasan]').val(response.explanation);
-        
+
         var html = ``;
         for (var index = 1; index <= Object.keys(response.choices).length; index++) {
             html += `
@@ -1384,7 +1423,7 @@ $('#update-mengurutkan').on('shown.bs.modal', function(e) {
         }
 
         modal.find('table').html(html);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1473,7 +1512,7 @@ $('#update-memasangkan').on('shown.bs.modal', function(e) {
         }
 
         modal.find('table').html(html);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1514,7 +1553,7 @@ $('#update-merinci').on('shown.bs.modal', function(e) {
         }
 
         modal.find('table').html(html);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1538,7 +1577,7 @@ $('#update-esai').on('shown.bs.modal', function(e) {
         modal.find('textarea[name=question]').val(response.question);
         modal.find('textarea[name=answer]').val(response.answer);
         modal.find('textarea[name=explanation]').val(response.explanation);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1580,7 +1619,7 @@ $('#update-isian-bahasa').on('shown.bs.modal', function(e) {
         }
 
         modal.find('table').append(html);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1651,7 +1690,7 @@ $('#update-isian-matematika').on('shown.bs.modal', function(e) {
         }
 
         modal.find('table').html(html);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1714,7 +1753,7 @@ $('#update-melengkapi-tabel').on('shown.bs.modal', function(e) {
 
                 $('.melengkapi-tabel-input-table').append(appendHTML);
         }
-    
+
         $(e.currentTarget).find('.melengkapi-tabel-input-table .editor-field').each((index, element) => {
             generateEditor($(element).data('index'), element);
         });
@@ -1775,7 +1814,7 @@ $('#update-teks-rumpang-pg').on('shown.bs.modal', function(e) {
             }
         }
         $(elementGroup).insertAfter(firstRumpang);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1808,7 +1847,7 @@ $('#update-').on('shown.bs.modal', function(e) {
         }
 
         modal.find('table').html(html);
-    
+
         $(e.currentTarget).find('.editor-field').each((index, element) => {
             generateEditor(index, element);
         });
@@ -1816,5 +1855,76 @@ $('#update-').on('shown.bs.modal', function(e) {
 
 });
 // End Template
-
 // END EDIT MODAL
+$('#edit-pilihan-ganda').on('shown.bs.modal', async function(e) {
+    var index = $(e.relatedTarget).attr('index');
+    var id = $(e.relatedTarget).attr('value');
+    var modal = $(e.currentTarget);
+    const multiChoices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'];
+    var choices = $(`#q_choices_${index}`).html();
+    var answer = $(`#q_answer_${index}`).html();
+    var answerIndex =  multiChoices.indexOf(answer);
+    var listChoices = JSON.parse(choices);
+    $('#selectedChoice').val(answerIndex);
+    $('#edit_q_id').val(id);
+    var html = "";
+
+    modal.find('textarea[name=question]').val($(`#q_question_${index}`).html());
+    modal.find('textarea[name=explanation]').val($(`#q_explanation_${index}`).html());
+    await Object.keys(listChoices).map((key, ind) => {
+        html += `
+            <tr>
+                <td>
+                    <div class="radio-group">
+                        <input type="radio" class="answer" name="answer" value="${ind}" ${ind === answerIndex ? 'checked': ''}>
+                        <i class="kejar-belum-dikerjakan"></i>
+                    </div>
+                </td>
+                <td>
+                    <div class="ckeditor-group ckeditor-list">
+                        <textarea name="choices[${ind}]" class="editor-field" placeholder="Ketik pilihan jawaban ${ind + 1}" ck-type="pilihan-ganda" required>${listChoices[key]}</textarea>
+                        <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
+                            <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
+                                <i class="kejar-bold"></i>
+                            </button>
+                            <button type="button" class="italic-btn" title="Italic (Ctrl + I)">
+                                <i class="kejar-italic"></i>
+                            </button>
+                            <button type="button" class="underline-btn" title="Underline (Ctrl + U)">
+                                <i class="kejar-underlined"></i>
+                            </button>
+                            <button type="button" class="bullet-list-btn" title="Bulleted list">
+                                <i class="kejar-bullet"></i>
+                            </button>
+                            <button type="button" class="number-list-btn" title="Number list">
+                                <i class="kejar-number"></i>
+                            </button>
+                            <button type="button" class="photo-btn" title="Masukkan foto">
+                                <i class="kejar-photo"></i>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+                ${Object.keys(listChoices).length > 2 ?
+                `<td>
+                    <button class="remove-btn" type="button">
+                        <i class="kejar-close"></i>
+                    </button>
+                </td>`
+                : ''}
+            </tr>`;
+    })
+    modal.find('table').html(html);
+
+        $(e.currentTarget).find('.editor-field-option').each((ind, element) => {
+            generateEditor(ind, element);
+        });
+
+        $(e.currentTarget).find('.editor-field').each((ind, element) => {
+            generateEditor(ind, element);
+        });
+
+        setTimeout(() => {
+            radioPgManagement();
+        }, 50);
+});

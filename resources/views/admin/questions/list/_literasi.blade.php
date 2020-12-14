@@ -569,7 +569,7 @@
                 <a class="page-link" href="?page={{ (request()->page ?? 1) + 1 }}">&gt;</a>
             </li>
         </ul>
-    </nav>  
+    </nav>
 </div>
 <!-- Units -->
 @include('admin.questions.update._rename_round')

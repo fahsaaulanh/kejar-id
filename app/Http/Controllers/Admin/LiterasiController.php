@@ -55,7 +55,7 @@ class LiterasiController extends Controller
         try {
             $game = $gameApi->parse($game);
             $questionType = is_null($request->question_type) ? false : $request->question_type;
-            
+
             // Pilihan Ganda
             if ($questionType === 'MCQSA') {
                 $choices = [];
@@ -192,7 +192,7 @@ class LiterasiController extends Controller
                 if (count($choices[0]) <= 0 || count($answers) <= 0) {
                     return redirect()->back()->with('message', 'Terjadi kesalahan, silahkan ulangi kembali!');
                 }
-                
+
                 $answer = $answers;
             }
 
@@ -393,7 +393,7 @@ class LiterasiController extends Controller
                 'round_id' => $unitId,
                 'order' => $questionTotal + 1,
             ];
-            
+
             $unitQuestionApi->store($question['data']['id'], $payloadQS);
 
             return redirect()->back()->with('message', 'Berhasil menambahkan soal!');
@@ -407,7 +407,7 @@ class LiterasiController extends Controller
         $game;
         $packageId;
         $unitId;
-        
+
         $questionApi = new Question;
         $question = $questionApi->getDetail($questionId)['data'] ?? [];
 
@@ -427,7 +427,7 @@ class LiterasiController extends Controller
         try {
             $game = $gameApi->parse($game);
             $questionType = is_null($request->question_type) ? false : $request->question_type;
-            
+
             // Pilihan Ganda
             if ($questionType === 'MCQSA') {
                 $choices = [];
@@ -564,7 +564,7 @@ class LiterasiController extends Controller
                 if (count($choices[0]) <= 0 || count($answers) <= 0) {
                     return redirect()->back()->with('message', 'Terjadi kesalahan, silahkan ulangi kembali!');
                 }
-                
+
                 $answer = $answers;
             }
 
