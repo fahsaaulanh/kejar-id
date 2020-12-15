@@ -3,40 +3,40 @@
 @section('title', 'PTS')
 
 @section('content')
-    <div class="container">
-        <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('student/dashboard') }}">
-            <i class="kejar-back"></i>Kembali
-        </a>
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb">
-            <a class="breadcrumb-item" href="{{ url('student/dashboard') }}">Beranda</a>
-            <span id="breadcrumb-1" class="breadcrumb-item active"></span>
-        </nav>
-        <!-- Title -->
-        <div class="page-title">
-            <h1 id="title" class="mb-08rem"> Pilih mata pelajaran</h1>
-        </div>
-        <div class="accordion" id="accordion-pts">
-            <!-- Empty -->
-        </div>
+<div class="container">
+    <!-- Link Back -->
+    <a class="btn-back" href="{{ url('student/dashboard') }}">
+        <i class="kejar-back"></i>Kembali
+    </a>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a class="breadcrumb-item" href="{{ url('student/dashboard') }}">Beranda</a>
+        <span id="breadcrumb-1" class="breadcrumb-item active"></span>
+    </nav>
+    <!-- Title -->
+    <div class="page-title">
+        <h1 id="title" class="mb-08rem"> Pilih mata pelajaran</h1>
     </div>
-    <div class="modal fade bd-example-modal-md" id="view-detail">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Detail Mapel</h5>
-                    <button class="close modal-close" data-dismiss="modal">
-                        <i class="kejar kejar-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div id="viewDetailContent">
-                    </div>
+    <div class="accordion" id="accordion-pts">
+        <!-- Empty -->
+    </div>
+</div>
+<div class="modal fade bd-example-modal-md" id="view-detail">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Mapel</h5>
+                <button class="close modal-close" data-dismiss="modal">
+                    <i class="kejar kejar-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewDetailContent">
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 @endsection
 
@@ -60,8 +60,15 @@
         }
     });
 
-    function subjectIndex()
-    {
+    $('#close-over').on('click', function() {
+        $('#over').modal('hide');
+    });
+
+    $('#close-taskdone').on('click', function() {
+        $('#taskdone').modal('hide');
+    });
+
+    function subjectIndex() {
         const url = "{!! URL::to('/student/me/schedules/assessments') !!}";
         let data = {
             assessment_group_id: `{{$assessmentGroupId}}`,
@@ -108,13 +115,20 @@
         });
     }
 
-    function goOnboarding(element)
-    {
+    function goOnboarding(element) {
         schedule_id = $(element).attr('data-id');
+        start_status = $(element).attr('start-status');
+        end_status = $(element).attr('end-status');
+        task_status = $(element).attr('task-status');
         assessment_group_id = '{{$assessmentGroupId}}';
 
-        window.location.href = `/student/${assessment_group_id}/subjects/${schedule_id}/onboarding`;
+        if (task_status === 'kejar-sudah-dikerjakan-outline') {
+            $('#taskdone').modal('show'); // task sudah dikerjakan
+        } else if (task_status === 'kejar-mapel' && end_status === 'true') {
+            $('#over').modal('show'); // task belum di kejarkan dan sudah lewat dari jadwal
+        } else {
+            window.location.href = `/student/${assessment_group_id}/subjects/${schedule_id}/onboarding`;
+        }
     }
-
 </script>
 @endpush

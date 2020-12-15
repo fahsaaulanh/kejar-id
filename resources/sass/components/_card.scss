@@ -9,6 +9,29 @@
     }
 }
 
+.card-mapel-assessment {
+    min-height: 4.8rem;
+    padding: 1.4rem 1.6rem;
+}
+
+.card-mapel-assessment.done {
+    background: #F4F6F9;
+    padding: 1.4rem 1.6rem;
+    color: $grey-6;
+
+    .icon {
+        display: none;
+    }
+}
+
+.card-mapel-assessment.over {
+    background: #F4F6F9;
+    padding: 1.4rem 1.6rem;
+    color: #202020;
+}
+
+
+
 .card-pts {
     padding: 2rem 3.5rem;
     background-color: white;
@@ -20,7 +43,7 @@
     background-color: $white-2;
 }
 
-.row.dashboard{
+.row.dashboard {
     margin-left: 0rem;
     box-sizing: border-box;
     width: 100%;
@@ -34,9 +57,9 @@
         margin-top: 7.2rem;
     }
 
-    .content-header{
+    .content-header {
 
-        .content-title{
+        .content-title {
             @include h1;
             font-weight: bold;
             text-align: start;
@@ -44,28 +67,28 @@
         }
     }
 
-    .content-body{
+    .content-body {
 
         @media screen and (max-width: 38.4rem) {
-            .content-body{
+            .content-body {
                 padding: 0rem 4rem;
             }
         }
 
         @media screen and (max-width: 76.8rem) {
-            .content-body{
+            .content-body {
                 padding: 0rem 4rem;
             }
         }
 
 
-        .card-deck{
+        .card-deck {
             justify-content: flex-start;
             display: flex;
             flex-basis: 33rem;
             flex-flow: row wrap;
 
-            .card{
+            .card {
                 border: 0rem;
                 border-radius: 0;
                 text-decoration: none;
@@ -75,20 +98,21 @@
                 max-width: 33rem;
                 min-width: 33rem;
 
-                .card-body{
+                .card-body {
                     padding: 2rem 1.25rem;
 
-                    .card-img, .card-img-top{
+                    .card-img,
+                    .card-img-top {
                         border-radius: 0;
                     }
 
-                    .card-title{
+                    .card-title {
                         font-weight: bold;
                         font-size: 1.9rem;
                         line-height: 2.4rem;
                     }
 
-                    .card-text{
+                    .card-text {
                         font-weight: normal;
                         font-size: 1.5rem;
                         line-height: 2.4rem;
@@ -105,15 +129,15 @@
     }
 }
 
-.container{
+.container {
     width: 100%;
 }
 
-.card-result{
+.card-result {
     background: $white;
     min-width: 50.4rem;
 
-    a{
+    a {
         text-decoration: none !important;
     }
 
@@ -121,7 +145,7 @@
         min-width: 100%;
     }
 
-    .card-header{
+    .card-header {
         border: 0;
         background: $white;
         display: flex;
@@ -129,67 +153,68 @@
         justify-content: flex-end;
         padding-top: 20px;
 
-        .close-icon{
+        .close-icon {
             font-size: 4rem;
 
-            &:before{
+            &:before {
                 color: $grey-3;
             }
         }
     }
 
-    .card-body{
+    .card-body {
         padding: 4rem 3.2rem;
         padding-top: 2rem;
 
-        .score-result{
+        .score-result {
             text-align: center;
         }
 
-        .side-stars{
+        .side-stars {
             font-size: 8rem;
             color: $deep-yellow;
         }
 
-        .middle-star{
+        .middle-star {
             font-size: 12rem;
             color: $deep-yellow;
         }
 
-        .middle-star-border{
+        .middle-star-border {
             font-size: 12rem;
             color: #EBF1F6 !important;
         }
-        .side-stars-border{
+
+        .side-stars-border {
             font-size: 8rem;
             color: #EBF1F6 !important;
         }
 
-        .score-title{
+        .score-title {
             @include h2;
             margin-top: 2rem;
             color: $black;
         }
 
-        .score-description{
+        .score-description {
             @include h5-reg;
             color: $black;
         }
 
-        .btn-restart{
+        .btn-restart {
             @include h3;
             background: $purple-tp;
             color: $purple;
             padding: 1.2rem 1.6rem;
             box-sizing: border-box;
 
-            &:hover{
+            &:hover {
                 color: $purple-2;
                 background: $purple-tp;
             }
         }
 
-        .btn-next{
+        .btn-next {
             @include h3;
             background: $purple;
             color: $purple;
@@ -201,26 +226,26 @@
             align-items: center;
             justify-content: center;
 
-            i:before{
+            i:before {
                 @include h3;
                 margin-left: 0.4rem;
                 color: $white;
             }
 
-            &:hover{
+            &:hover {
                 color: $white;
                 background: $purple-2;
             }
         }
 
-        .btn-retry{
+        .btn-retry {
             @include h3;
             border: 0 !important;
             background: $purple;
             color: $white;
             padding: 1.2rem 1.6rem;
 
-            &:hover{
+            &:hover {
                 background: $purple-2;
 
             }
@@ -229,11 +254,11 @@
 
     }
 
-    .res-container{
+    .res-container {
         display: flex;
         justify-content: center;
 
-        .btn{
+        .btn {
             display: block;
             border-radius: 0;
             margin: 0px 5px;
