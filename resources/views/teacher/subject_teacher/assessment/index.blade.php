@@ -157,7 +157,7 @@
                     </div>
                     <div class="col col-sm-2">
                         @if($type === 'ASSESSMENT')
-                        <button class="btn bg-white btn-revise" data-toggle="modal" data-target="#duration"><i class="kejar-setting"></i>Ubah</button>
+                        <button class="btn bg-white btn-revise" onclick="changeDurationModal()"><i class="kejar-setting"></i>Ubah</button>
                         @else
                         <button class="btn bg-white btn-revise" data-toggle="modal" data-target="#setting_pack"><i class="kejar-setting"></i>Ubah</button>
                         @endif
@@ -382,6 +382,11 @@
         });
     }
 
+    function changeDurationModal(){
+        $('#duration-alert').hide();
+        $('#duration').modal('show');
+    }
+
     function saveDuration(assessmentGroupId, subjectId, grade, assessmentId){
         const url = "{!! URL::to('/teacher/subject-teacher/assessment/duration') !!}";
         var duration = $('#duration_assess').val();
@@ -399,21 +404,21 @@
             dataType: 'json',
             beforeSend: function() {
                 $('#setDuration').html('Tunggu...');
-                $('#setDuration').attr('disabled', 'true');
+                $('#setDuration').prop('disabled', true);
             },
             error: function(error) {
                 //
                 $('#setDuration').html('Simpan');
-                $('#setDuration').attr('disabled', 'false');
+                $('#setDuration').prop('disabled', false);
             },
             success: function(data) {
+                $('#setDuration').html('Simpan');
+                $('#setDuration').prop('disabled', false);
                 if (data.status === 200) {
                     $('#duration-caption').html(data.data.duration+' menit');
                     durationVal = data.data.duration;
                     $('#duration').modal('hide');
                 }
-                $('#setDuration').html('Simpan');
-                $('#setDuration').attr('disabled', 'false');
             }
         });
     }
