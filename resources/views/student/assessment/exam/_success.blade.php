@@ -18,6 +18,14 @@
                         </div>
                     </div>
                 </div>
+                <div id="form-note-blank" class="row pt-6">
+                    <div class="col-12">
+                        <p class="font-15 text-bold">Catatan</p>
+                        <div class="pt-2">
+                            <p id="note-student" class="font-15 text-grey-6">Tidak ada catatan.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer justify-content-end">
                 <div>

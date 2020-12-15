@@ -164,11 +164,11 @@
 
     $('#skip-download').on('click', function() {
         $('#downloadAnswerSheet').modal('hide');
-        // $('#studentNote').modal({
-        //     backdrop: 'static',
-        //     keyboard: false,
-        //     show: true,
-        // });
+        $('#studentNote').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
         doneCheckAnswer = true;
     });
 
@@ -530,16 +530,21 @@
             success: function(response) {
                 component.html(htmlSelesai);
                 component.removeAttr('disabled');
-                if (response.status === 200) {
+                if (response.status === 200 && response.data.student_note !== null) {
                     $('#success').modal('show');
-                    if (noteStudent !== '') {
+                    if (noteStudent !== '' || noteStudent !== null) {
                         $('#form-note').show();
+                        $('#form-note-blank').hide();
                     } else {
                         $('#form-note').hide();
                     }
                     $('#note-student').html(noteStudent);
                     $('#studentNote').modal('hide');
                     return;
+                } else {
+                    $('#success').modal('show');
+                    $('#form-note').hide();
+                    $('#form-note-blank').show();
                 }
             }
         });

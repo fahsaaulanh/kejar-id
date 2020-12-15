@@ -1,30 +1,3 @@
-/*scrooling thin*/
-::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-}
-
-::-webkit-scrollbar-track {
-    background-color: #f4f4f4;
-    border-radius: 2px;
-}
-
-::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: #B7CCE4;
-}
-
-::-moz-scrollbars-horizontal {
-    height: 2px;
-    width: 2px;
-
-}
-
-::-moz-scrollbars-vertical {
-    height: 2px;
-    width: 2px;
-}
-
 .container {
     background: transparent;
     max-width: 78.4rem;

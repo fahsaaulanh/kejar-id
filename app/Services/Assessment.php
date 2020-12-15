@@ -97,7 +97,7 @@ class Assessment extends Service
 
     public function updateNote($id, $payload)
     {
-        $response = $this->patch('/tasks/assessments/'.$id.'/note', $payload);
+        $response = $this->patch('/me/schedules/assessments/'.$id, $payload);
 
         return $this->showResponse($response);
     }

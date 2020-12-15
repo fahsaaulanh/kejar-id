@@ -68,8 +68,9 @@
     $('#play').on('click', function() {
         const assessmentGroupId = "{{ $assessment['assessment_group_id'] }}";
         const assessmentId = "{{ $assessment['id'] }}";
+        const scheduleId = "{{ $assessment['schedule']['id'] }}";
         if (typeof window !== 'undefined') {
-            window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed`
+            window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`
         }
     });
 </script>
