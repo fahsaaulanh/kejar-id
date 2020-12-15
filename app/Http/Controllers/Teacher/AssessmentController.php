@@ -10,6 +10,7 @@ use App\Services\Me as MeApi;
 use App\Services\Question as QuestionApi;
 use App\Services\Schedule as ScheduleApi;
 use App\Services\School as SchoolApi;
+use App\Services\StudentCounselor as StudentCounselorApi;
 use App\Services\StudentGroup as StudentGroupApi;
 use App\Services\User as UserApi;
 use Carbon\Carbon;
@@ -1232,5 +1233,171 @@ class AssessmentController extends Controller
             ->with('studentGroup', $studentGroup['data'])
             ->with('scoreMeta', $dataList['meta'])
             ->with('scores', $dataScore);
+    }
+
+    public function counselingGroups($teacherType, $assessmentGroupValue)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $assessmentGroup = $this->assessmentGroups($assessmentGroupValue);
+        $teacherId = session()->get('user.userable.id');
+        $studentCounselorApi = new StudentCounselorApi;
+
+        $filter = [
+            'page' => 1,
+            'per_page' => 20,
+            'filter[homeroom_teacher_id]' => $teacherId,
+        ];
+
+        $studentCounselors = $studentCounselorApi->index($schoolId, $filter);
+        if (!isset($studentCounselors['data'])) {
+            $studentCounselors['data'] = [];
+        }
+
+        return view('teacher.counselor.student_counselor.counseling_groups.index')
+            ->with('assessmentGroupValue', $assessmentGroupValue)
+            ->with('assessmentGroup', $assessmentGroup)
+            ->with('studentCounselors', $studentCounselors['data'])
+            ->with('type', $teacherType);
+    }
+
+    public function subjectForCounselingGroups(Request $req, $teacherType, $assessmentGroupId, $studentCounselorId)
+    {
+        $assessmentGroupApi = new AssessmentGroupApi;
+        $schoolId = session()->get('user.userable.school_id');
+        $assessmentGroup = $assessmentGroupApi->detail($assessmentGroupId);
+        $studentCounselorApi = new StudentCounselorApi;
+        $studentCounselor = $studentCounselorApi->detail($schoolId, $studentCounselorId);
+
+        $schoolApi = new SchoolApi;
+        $filter = [
+            'page' => ($req->page ?? 1),
+            'filter[name]' => ($req->name ?? ''),
+            'per_page' => 20,
+        ];
+        $subjects = $schoolApi->subjectIndex($schoolId, $filter);
+        if (!isset($subjects['data'])) {
+            $subjects['data'] = [];
+        }
+
+        if (!isset($subjects['meta'])) {
+            $subjects['meta'] = [];
+        }
+
+        return view('teacher.counselor.student_counselor.subjects.index')
+            ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('teacherType', $teacherType)
+            ->with('assessmentGroup', $assessmentGroup['data']['title'])
+            ->with('subjects', $subjects['data'])
+            ->with('studentCounselor', $studentCounselor['data'])
+            ->with('subjectMeta', $subjects['meta']);
+    }
+
+    public function counselingGroupsReport($teacherType, $assessmentGroupId, $studentCounselorId, $subjectId)
+    {
+        $assessmentGroupApi = new AssessmentGroupApi;
+        $schoolId = session()->get('user.userable.school_id');
+        $assessmentGroup = $assessmentGroupApi->detail($assessmentGroupId);
+        $studentCounselorApi = new StudentCounselorApi;
+        $studentCounselor = $studentCounselorApi->detail($schoolId, $studentCounselorId);
+        $schoolApi = new SchoolApi;
+        $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
+
+        return view('teacher.counselor.student_counselor.report.index')
+            ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('teacherType', $teacherType)
+            ->with('subject', $subject['data'])
+            ->with('assessmentGroup', $assessmentGroup['data']['title'])
+            ->with('studentCounselor', $studentCounselor['data']);
+    }
+
+    public function reportStudent(Request $req)
+    {
+        $AssessmentApi = new AssessmentApi;
+        $filter = [
+            'page' => ($req->page ?? 1),
+            'filter[assessment_group_id]' => ($req->assessment_group_id ?? ''),
+            'filter[subject_id]' => ($req->subject_id ?? ''),
+            'filter[grade]' => ($req->grade ?? ''),
+            'filter[student_counselor_id]' => ($req->student_counselor_id ?? ''),
+            'per_page' => 40,
+        ];
+        $data = $AssessmentApi->report($filter, $req->all());
+        $return = $this->reportStudentCounselorHtml($data, $req->all());
+
+        return response()->json($return);
+    }
+
+    private function reportStudentCounselorHtml($data, $req)
+    {
+        $dataArray = $data['data'];
+        $view = '';
+        if ($dataArray) {
+            foreach ($dataArray as $key => $v) {
+                // view
+                $view .= '<tr>';
+                $view .= '<td class="text-center">' . ($key+1) . '</td>';
+                $view .= '<td>' . $v['name'] . '</td>';
+                $view .= '<td>' . $v['nis'] . '</td>';
+                $view .= '<td id="score-' . $v['id'] . '">' . $v['student_group']['name'] . '</td>';
+                if ($v['schedule']) {
+                    if ($v['latest_task']) {
+                        if ($v['latest_task']['finish_time']) {
+                            $view .= '<td>'. ($v['latest_task']['score'] ?? '-') . '</td>';
+                            $view .= '<td>'. ($v['latest_task']['final_score'] ?? '-') . '</td>';
+                        } else {
+                            $view .= '<td colspan="2"><span class="text-muted">Sedang dikerjakan.</span></td>';
+                        }
+                    } else {
+                        $view .= '<td colspan="2"><span class="text-muted">Belum dikerjakan.</span></td>';
+                    }
+                } else {
+                    $view .= '<td colspan="2"><span class="text-muted">Belum ditugaskan.</span></td>';
+                }
+
+                $view .= '</tr>';
+            }
+        }
+
+        // Pagination
+        $pgnt = '';
+        $paginationFunction = $req['paginationFunction'];
+        $page = (int)$req['page'];
+        $meta = $data['meta'];
+
+        if ($meta && $meta['total'] > 40) {
+            $pgnt .= '<nav class="navigation mt-5">';
+            $pgnt .= '<div>';
+            $pgnt .= '<span class="pagination-detail">' . ($meta['to'] ?? 0)
+                . ' dari ' . $meta['total'] . ' siswa</span>';
+            $pgnt .= '</div>';
+            $pgnt .= '<ul class="pagination">';
+            $pgnt .= '<li class="page-item ' . ($page - 1 <= 0 ? 'disabled' : '') . '">';
+            $pgnt .= '<a class="page-link" onclick="' .
+                        $paginationFunction . '(' . $req['grade'] . ',' . ($page - 1) . ')"
+                        href="javascript::void(0)" tabindex="-1">&lt;</a>';
+            $pgnt .= '</li>';
+
+            for ($i = 1; $i <= $meta['last_page']; $i++) {
+                $pgnt .= '<li class="page-item ' . ($page === $i ? 'active disabled' : '') . '">';
+                $pgnt .= '<a class="page-link" onclick="' .
+                            $paginationFunction . '(' . $req['grade'] . ',' . $i . ')"
+                            href="javascript::void(0)">' . $i . '</a>';
+                $pgnt .= '</li>';
+            }
+
+            $pgnt .= '<li class="page-item ' . ($page + 1) . ' > ' . ($meta['last_page'] ? 'disabled' : '') . '">';
+            $pgnt .= '<a class="page-link" onclick="' .
+                        $paginationFunction . '(' . $req['grade'] . ',' . ($page + 1) . ')"
+                        href="javascript::void(0)">&gt;</a>';
+            $pgnt .= '</li>';
+            $pgnt .= '</ul>';
+            $pgnt .= '</nav>';
+        }
+
+        return [
+            'data' => $dataArray,
+            'html' => $view,
+            'pgnt' => $pgnt,
+        ];
     }
 }
