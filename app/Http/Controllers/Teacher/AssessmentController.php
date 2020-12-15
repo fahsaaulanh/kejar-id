@@ -867,7 +867,8 @@ class AssessmentController extends Controller
         $html = '';
         $presenceText = ($schedule['presence'] ? 'Hadir' : 'Tandai');
         $presenceVal = ($schedule['presence'] ? 0 : 1);
-        $taskStatus = (isset($schedule['finish_time']) && $schedule['finish_time']);
+
+        $taskStatus = $schedule['status_task'];
         $presenceParams = "'" . $schedule['id'] . "'," . $presenceVal;
 
         if (!$presenceVal) {
@@ -876,7 +877,7 @@ class AssessmentController extends Controller
             $presenceParams .= ",0,'" . $name . "'";
         }
 
-        $presence = '<span class="btn btn-link btn-lg
+        $presence = '<span class="btn btn-link '. ($presenceText === 'Hadir' ? 'text-dark' : '') .' btn-lg
         text-decoration-none" onclick="changePresence(' . $presenceParams . ')">' . $presenceText . '</span>';
 
         $teacherNote = ($schedule['teacher_note'] ?? '');
@@ -889,11 +890,15 @@ class AssessmentController extends Controller
         }
 
         $html .= '<td class="text-center" id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
-        if ($taskStatus) {
+        if ($taskStatus === 'Done') {
             $html .= '<td>Selesai</td>';
             $html .= '<td><span class="text-grey">' . ($studentNote ?: 'Tidak ada') . '</span></td>';
-        } else {
+        } elseif ($taskStatus === 'Ongoing') {
+            $html .= '<td colspan="2">Sedang mengerjakan</td>';
+        } elseif ($taskStatus === 'Undone') {
             $html .= '<td colspan="2">Belum mengerjakan</td>';
+        } else {
+            $html .= '<td colspan="2">Status tidak diketahui ('. $taskStatus .')</td>';
         }
 
         // Note
