@@ -170,9 +170,22 @@ Route::middleware('session')->group(function () {
                     'Teacher\AssessmentController@updateAssessQuestion',
                 );
 
+                // Student Counselor
+
+                Route::get('{assessmentGroupId}/counseling-groups', 'Teacher\AssessmentController@counselingGroups');
+                Route::get(
+                    '{assessmentGroupId}/counseling-groups/{studentCounselorId}/subject',
+                    'Teacher\AssessmentController@subjectForCounselingGroups',
+                );
+                Route::get(
+                    '{assessmentGroupId}/counseling-groups/{studentCounselorId}/subject/{subjectId}',
+                    'Teacher\AssessmentController@counselingGroupsReport',
+                );
+
                 // for Ajax
 
                 Route::post('/get-student-group', 'Teacher\AssessmentController@schoolGroupData');
+                Route::post('/report-student', 'Teacher\AssessmentController@reportStudent');
                 Route::post('/get-students', 'Teacher\AssessmentController@getStudents');
                 Route::post('/schedules-create', 'Teacher\AssessmentController@schedulesCreate');
 
