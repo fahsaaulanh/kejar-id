@@ -314,7 +314,6 @@ Route::middleware('session')->group(function () {
                 'Student\AssessmentController@proceed',
             );
 
-
             Route::prefix('/subjects')->group(function () {
                 Route::get('/', 'Student\MiniAssessmentController@index');
                 Route::post('/view-detail', 'Student\MiniAssessmentController@viewDetail');
@@ -348,12 +347,16 @@ Route::middleware('session')->group(function () {
                 );
 
                 // Route For Call API
-                Route::get('/service/subjects', 'Student\MiniAssessmentController@subjects');
-                Route::get('/service/subjects/{subject_id}', 'Student\MiniAssessmentController@detail');
-                Route::post('/service/answer', 'Student\MiniAssessmentController@setAnswer');
-                Route::post('/service/finish', 'Student\MiniAssessmentController@finish');
-                Route::get('/service/check', 'Student\MiniAssessmentController@checkAnswer');
-                Route::patch('/service/edit_note', 'Student\MiniAssessmentController@editNote');
+                Route::prefix('/service')->group(function () {
+                    Route::get('/subjects', 'Student\MiniAssessmentController@subjects');
+                    Route::get('/subjects/{subject_id}', 'Student\MiniAssessmentController@detail');
+                    Route::get('/question/{index}', 'Student\AssessmentController@getQuestion');
+                    Route::post('/answer', 'Student\MiniAssessmentController@setAnswer');
+                    Route::post('/finish', 'Student\MiniAssessmentController@finish');
+                    Route::get('/check', 'Student\MiniAssessmentController@checkAnswer');
+                    Route::patch('/edit_note', 'Student\MiniAssessmentController@editNote');
+                });
+
                 Route::get('/exam/pdf', 'Student\MiniAssessmentController@print')->name('printAnswer');
             });
 

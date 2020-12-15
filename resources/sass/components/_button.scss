@@ -453,6 +453,7 @@
     vertical-align: middle;
     align-items: center;
     border-radius: 0;
+    border-width: 0;
     color: $white;
     background: $green-2;
 
@@ -470,6 +471,14 @@
     &:hover {
         background: $purple-2;
     }
+
+    &.disabled {
+        background: #DBE4EC;
+
+        &:hover {
+            background: #DBE4EC;
+        }
+    }
 }
 
 .assesment-btn-before {
@@ -480,10 +489,10 @@
     text-align: center;
     vertical-align: middle;
     align-items: center;
+    border-width: 0;
     border-radius: 0;
     color: $white;
-    background: #DBE4EC;
-    ;
+    background: $green-2;
 
     i {
         display: block !important;
@@ -498,6 +507,14 @@
 
     &:hover {
         background: $purple-2;
+    }
+
+    &.disabled {
+        background: #DBE4EC;
+
+        &:hover {
+            background: #DBE4EC;
+        }
     }
 }
 

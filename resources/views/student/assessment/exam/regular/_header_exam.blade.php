@@ -12,13 +12,12 @@
         </div>
     </a>
 
-    <div class="text-white">
-        01:00:00
+    <div id="timer" class="text-white">
+        00:00:00
     </div>
 
-    <div class="text-white assesment-btn-exit" role="button">
-        <i class="kejar-exit mr-2"></i>
-        Keluar
+    <div id="assessment-done" class="text-white assesment-btn-exit" role="button">
+        Selesai
     </div>
 
     <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
