@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control clockpicker text-dark" placeholder="H:S" id="start_time" autocomplete="off">
+                                        <input type="text" class="form-control clockpicker text-dark" placeholder="HH:MM" id="start_time" autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <input type="text" class="form-control clockpicker text-dark" placeholder="H:S" id="expiry_time" autocomplete="off">
+                                        <input type="text" class="form-control clockpicker text-dark" placeholder="HH:MM" id="expiry_time" autocomplete="off">
                                     </div>
                                 </div>
                             </div>
@@ -342,6 +342,15 @@
 
         getStudentGroup();
         function modalAssignShow(val, withValidation = false){
+
+            $('#duration-alert').hide();
+            if(durationVal < 1){
+                $(".assignStudentsModalSection").modal('hide');
+                $('#duration').modal('show');
+                $('#duration-alert').show();
+                return;
+            }
+
             if(val === 2){
                 var valid = true;
                 if (withValidation) {
@@ -407,7 +416,7 @@
 
             if ($('#choice-2').is(':checked')) {
                 var expiry_dateFormat = moment($('#expiry_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
-                expiry_date = $('#expiry_date').val()+' '+$('#expiry_time').val();
+                expiry_date = expiry_dateFormat+' '+$('#expiry_time').val();
             }
 
             if ($('#choice-0').is(':checked')) {
