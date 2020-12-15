@@ -85,9 +85,11 @@
                         <div class="row mt-2">
                             <div class="col-12">
                                 <h5>Catatan Pengawas</h5>
-                                <div id="note-teacher">
+                                <form>
+                                    <div id="note-teacher">
 
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -368,6 +370,7 @@
         .then(function(data) {
             var presenceText = 'Tandai';
             var presenceConfrim = 0;
+            var textDark = ' text-dark ';
 
             if (data.status == 200) {
                 if (presence) {
@@ -376,10 +379,12 @@
                     presenceConfrim = 1;
                 }else{
                     presence = true;
+                    textDark = '';
                 }
             }else{
                 if (presence) {
                     presence = true;
+                    textDark = '';
                 }else{
                     presence = 0;
                     presenceText = 'Hadir';
@@ -389,7 +394,7 @@
 
             var presenceParams = "'"+schedule_id+"',"+presence+","+presenceConfrim+",'"+student_name+"'";
 
-            var html = '<span class="btn btn-link btn-lg\
+            var html = '<span class="btn btn-link '+textDark+' btn-lg\
         text-decoration-none" onclick="changePresence('+presenceParams+')">'+presenceText+'</span>';
 
             $('#presenceBtn-'+schedule_id).html(html+' <i class="kejar-checklist font-15"></i>');
