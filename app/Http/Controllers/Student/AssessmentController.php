@@ -202,6 +202,20 @@ class AssessmentController extends Controller
         return response()->json($view);
     }
 
+    public function getQuestion($index)
+    {
+        $task = $this->request->session()->get('task');
+        $answers = $this->getAnswer($task['task_id']);
+
+        $this->request->session()->put('answers', $answers);
+        $question = $task['assessment']['questions'][$index];
+
+        return response()->json([
+            'question' => $question,
+            'answer' => $answers[$question['id']],
+        ]);
+    }
+
     // Private Function
     private function getAnswer($taskId)
     {

@@ -300,7 +300,11 @@ class MiniAssessmentController extends Controller
             'userable' => $user['userable'],
         ];
 
-        // dd($pageData);
+        $assessment = $task['assessment'];
+
+        if ($assessment['type'] === 'ASSESSMENT') {
+            return view('student.assessment.exam.regular.index', $pageData);
+        }
 
         return view('student.assessment.exam.mini.index', $pageData);
     }
