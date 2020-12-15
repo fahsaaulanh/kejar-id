@@ -37,7 +37,7 @@
         <h5>Token</h5>
         <p>Masukkan token yang telah dibagikan oleh guru.</p>
         <!-- Dynamic Data -->
-        <input type="text" placeholder="Ketik Token" />
+        <input type="text" placeholder="Ketik Token" id="assessmentToken" />
     </div>
 
     <div class="mt-8 onboarding-page-pts">
@@ -66,11 +66,25 @@
 @push('script')
 <script>
     $('#play').on('click', function() {
+        const trueToken = "{{ $assessment['schedule']['token'] }}"
+        const token = $.trim($("#assessmentToken").val());
+        const type = "{{ $assessment['type'] }}";
         const assessmentGroupId = "{{ $assessment['assessment_group_id'] }}";
         const assessmentId = "{{ $assessment['id'] }}";
         const scheduleId = "{{ $assessment['schedule']['id'] }}";
-        if (typeof window !== 'undefined') {
-            window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`
+
+        if (type === "ASSESSMENT") {
+            if (trueToken === token) {
+                if (typeof window !== 'undefined') {
+                    window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`
+                }
+            } else {
+                alert("Token/Password tidak sesuai, silakan cek kembali!");
+            }
+        } else {
+            if (typeof window !== 'undefined') {
+                window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`
+            }
         }
     });
 </script>
