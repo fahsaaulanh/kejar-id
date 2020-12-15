@@ -96,7 +96,7 @@ class Service
         return [
             'status' => $response->status(),
             'error' => false,
-            'data' => $body['data'] ?: null,
+            'data' => $body['data'] ?? null,
             'meta' => $body['meta'] ?? null,
         ];
     }
