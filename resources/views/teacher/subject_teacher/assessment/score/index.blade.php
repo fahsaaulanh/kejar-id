@@ -156,7 +156,7 @@
                 assessmentGroupId: '{{$assessmentGroupId}}',
                 subjectId: '{{$subject["id"]}}',
                 studentGroupId: '{{$studentGroup["id"]}}',
-                type: 'MINI_ASSESSMENT',
+                type: typeAssesment,
             },
             dataType: 'json',
             beforeSend: function() {
