@@ -19,4 +19,11 @@ class Report extends Service
 
         return $this->showResponse($response);
     }
+
+    public function reportAssessment($filter = [])
+    {
+        $response = $this->get('/reports/assessments/', $filter);
+
+        return $this->showResponse($response);
+    }
 }

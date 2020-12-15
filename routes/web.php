@@ -153,6 +153,11 @@ Route::middleware('session')->group(function () {
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{assessmentId}',
                     'Teacher\AssessmentController@settingMiniAssessment',
                 );
+                
+                Route::get(
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/student-group/{studentGroupId}/score',
+                    'Teacher\AssessmentController@score',
+                );
 
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewQuestion');
                 Route::post('assessment/mini/question/update', 'Teacher\AssessmentController@updateQuestion');
@@ -169,6 +174,9 @@ Route::middleware('session')->group(function () {
                     'assessment/question/{questionId}/edit',
                     'Teacher\AssessmentController@updateAssessQuestion',
                 );
+                Route::post('assessment/getscore', 'Teacher\AssessmentController@scoreBystudentGroup');
+                Route::post('assessment/update-score', 'Teacher\AssessmentController@updateScore');
+
 
                 // Student Counselor
 
@@ -188,6 +196,8 @@ Route::middleware('session')->group(function () {
                 Route::post('/report-student', 'Teacher\AssessmentController@reportStudent');
                 Route::post('/get-students', 'Teacher\AssessmentController@getStudents');
                 Route::post('/schedules-create', 'Teacher\AssessmentController@schedulesCreate');
+                Route::post('/schedule-delete', 'Teacher\AssessmentController@deleteSchedule');
+                Route::post('/schedule-update', 'Teacher\AssessmentController@updateSchedule');
 
                 Route::post('{assessmentGroupId}/student-group', 'Teacher\AssessmentController@studentGroupData');
 

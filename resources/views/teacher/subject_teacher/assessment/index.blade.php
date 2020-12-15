@@ -149,7 +149,15 @@
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="row mt-8">
+                    @foreach($studentGroup as $data)
+                    <div class="w-100 bg-grey-15 mb-4 px-4 py-3">
+                        <a  href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/student-group/'.$data['id'].'/score') }}" class="text-black-1">Rombel {{$data['name']}}</a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
             <div class="tab-pane fade show active" id="packgae" role="tabpanel" aria-labelledby="packgae-tab">
                 <div class="row mt-8">
                     <div class="col">

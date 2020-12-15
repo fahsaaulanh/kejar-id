@@ -8,10 +8,12 @@ use App\Services\AssessmentGroup as AssessmentGroupApi;
 use App\Services\Batch as BatchApi;
 use App\Services\Me as MeApi;
 use App\Services\Question as QuestionApi;
+use App\Services\Report as ReportApi;
 use App\Services\Schedule as ScheduleApi;
 use App\Services\School as SchoolApi;
 use App\Services\StudentCounselor as StudentCounselorApi;
 use App\Services\StudentGroup as StudentGroupApi;
+use App\Services\Task as TaskApi;
 use App\Services\User as UserApi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -296,6 +298,37 @@ class AssessmentController extends Controller
     public function assessment($teacherType, $assessmentGroupId, $subjectId, $grade, Request $request)
     {
         $schoolId = session()->get('user.userable.school_id');
+        $year = '';
+
+        if ($grade === '10' || $grade === '7') {
+            $year = Carbon::now()->year . '/' . Carbon::now()->add(1, 'year')->year;
+        }
+
+        if ($grade === '11' || $grade === '8') {
+            $year = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->year;
+        }
+
+        if ($grade === '12' || $grade === '9') {
+            $year = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->sub(2, 'year')->year;
+        }
+
+        $batchApi = new BatchApi;
+
+        $batchFilter = [
+            'filter[entry_year]' => $year,
+        ];
+
+        $batchResponse = $batchApi->index($schoolId, $batchFilter);
+
+        $batchResult = $batchResponse['data'] ?? [];
+
+        $studentGroupApi = new StudentGroupApi;
+        $studentGroup = [];
+        foreach ($batchResult as $data) {
+            $classResponse = $studentGroupApi->index($schoolId, $data['id']);
+            $studentGroup = array_merge($studentGroup, $classResponse['data'] ?? []);
+        }
+
         $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
 
         $schoolApi = new SchoolApi;
@@ -354,6 +387,7 @@ class AssessmentController extends Controller
             ->with('dualType', $dualData)
             ->with('teacherType', $teacherType)
             ->with('type', $viewType)
+            ->with('studentGroup', $studentGroup)
             ->with('message', 'Data success');
     }
 
@@ -1118,7 +1152,7 @@ class AssessmentController extends Controller
             'schedulable_type' => $req->type,
             'start_time' => $req->start_date,
             'finish_time' => $req->expiry_date,
-            // token
+            'token' => $req->token ?? null,
         ];
 
         if (isset($req->byNis)) {
@@ -1404,5 +1438,180 @@ class AssessmentController extends Controller
             'html' => $view,
             'pgnt' => $pgnt,
         ];
+    }
+
+    public function score($teacherType, $assessmentGroupId, $subjectId, $grade, $studentGroupId)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $schoolApi = new SchoolApi;
+        $subjectDetail = $schoolApi->subjectDetail($schoolId, $subjectId);
+
+        $studentGroupDetail = $schoolApi->studentGroupDetail($studentGroupId);
+
+        $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
+
+        $assessmentApi = new AssessmentApi;
+        $filterMA = [
+            'filter[grade]' => $grade,
+            'filter[group]' => $assessmentGroupId,
+            'filter[subject_id]' => $subjectId,
+        ];
+        $assessments = $assessmentApi->index($filterMA);
+        $dataAssessment = ($assessments['data'] ?? []);
+
+        return view('teacher.subject_teacher.assessment.score.index')
+            ->with('teacherType', $teacherType)
+            ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('assessmentGroup', $assessmentGroup)
+            ->with('assessments', $dataAssessment)
+            ->with('subject', $subjectDetail['data'])
+            ->with('grade', $grade)
+            ->with('type', ($dataAssessment[0]['type'] ?? ''))
+            ->with('studentGroup', $studentGroupDetail['data'] ?? [])
+            ->with('message', 'Data success');
+    }
+
+    public function scoreBystudentGroup()
+    {
+        $assessmentGroupId = $this->request->input('assessmentGroupId');
+        $subjectId = $this->request->input('subjectId');
+        $studentGroupId = $this->request->input('studentGroupId');
+        $type = $this->request->input('type');
+
+        $reportApi = new ReportApi;
+        $filter = [
+            'filter[assessment_type]' => $type,
+            'filter[assessment_group_id]' => $assessmentGroupId,
+            'filter[student_group_id]' => $studentGroupId,
+            'filter[subject_id]' => $subjectId,
+        ];
+
+        $reports = $reportApi->reportAssessment($filter);
+        $dataReports = ($reports['data'] ?? []);
+
+        $view = $this->scoreBystudentGroupHtmlNew($dataReports);
+
+        return response()->json($view);
+    }
+
+    public function scoreBystudentGroupHtmlNew($data)
+    {
+        $list = $data;
+
+        $view = '';
+
+        if ($list === []) {
+            $view .= '<tr class="tr-score-report">';
+            $view .= '<td class="text-center" colspan="9">Data belum ada</td>';
+            $view .= '</tr>';
+        
+            return $view;
+        }
+        
+        foreach ($list as $key => $v) {
+            $view .= '<tr class="tr-score-report">';
+            $view .= '<td class="text-center">' . ($key + 1) . '</td>';
+            $view .= '<td>' . $v['name'] . '</td>';
+            $view .= '<td>' . $v['nis'] . '</td>';
+
+            if ($v['schedule'] === null && $v['latest_task'] === null) {
+                $view .= '<td colspan="6">Belum ditugaskan 
+                <a class="text-primary" style="cursor:pointer"\ 
+                onclick="viewCreateSchedule(\'' . $v['id'] . '\',\'' . $v['name'] . '\')">Tugaskan Siswa</a></td>';
+            }
+
+            if ($v['schedule'] !== null && $v['latest_task'] === null) {
+                $view .= '<td colspan="6">Belum mengerjakan
+                <a class="text-primary" style="cursor:pointer"\
+                onclick="viewUpdateSchedule(\'' . $v['id'] . '\',\'' . $v['name'] . '\',\'\
+                ' . $v['schedule']['id'] . '\',\'' . $v['schedule']['start_time'] . '\',\'\
+                ' . $v['schedule']['finish_time'] . '\',\'' . $v['schedule']['token'] . '\')"\
+                >Edit Penugasan</a></td>';
+            }
+
+            if ($v['latest_task'] !== null) {
+                $startTime = Carbon::parse($v['latest_task']['start_time']);
+                $finishTime = Carbon::parse($v['latest_task']['finish_time']);
+                $diff = $finishTime->diffInMinutes($startTime);
+                $finalScore = $v['latest_task']['final_score'] ?? 0;
+                $view .= '<td>' . $diff . '</td>';
+                $view .= '<td>' . $v['latest_task']['answer_status']['correct'] . '</td>';
+                $view .= '<td>' . $v['latest_task']['answer_status']['wrong'] . '</td>';
+                $view .= '<td>' . $v['latest_task']['answer_status']['empty'] . '</td>';
+                $view .= '<td>' . $v['latest_task']['score'] . '</td>';
+                $view .= '<td class="column-white" id="score-td-' . $v['latest_task']['id'] . '">';
+                $view .= '<div class="row m-0 p-0" style="width:180px">';
+                $view .= '<div class="col">';
+                $view .= '<input type="number"
+                                        onchange="handleChange(this);"
+                                        onkeyup="handleChange(this);"
+                                        id="score-input-' . $v['latest_task']['id'] . '"
+                                        onblur="updateScore(\'' . $v['latest_task']['id'] . '\')"
+                                        onfocus="modeEdit(\'' . $v['latest_task']['id'] . '\')"
+                                        placeholder="Input Nilai" value="' . $finalScore . '"
+                                        class="form-control form-control-lg input-score-white" >';
+                $view .= '</div>';
+                $view .= '<div class="col-1">';
+                $view .= '<div id="score-alert-' . $v['latest_task']['id'] . '">';
+                $view .= '</div>';
+                $view .= '</div>';
+                $view .= '</div>';
+                $view .= '</td>';
+            }
+
+            $view .= '</tr>';
+        }
+
+        return $view;
+    }
+
+    public function updateScore(Request $req)
+    {
+        $taskApi = new TaskApi;
+        if (!$req->score) {
+            return response()->json(false);
+        }
+
+        $update = $taskApi->updateFinalScore($req->id, ['final_score' => $req->score]);
+        if ($update) {
+            return response()->json(true);
+        }
+
+        return response()->json(false);
+    }
+
+    public function deleteSchedule($teacherType)
+    {
+        $teacherType;
+        $scheduleApi = new ScheduleApi;
+
+        $schoolId = session()->get('user.userable.school_id');
+
+        $scheduleId = $this->request->input('scheduleId');
+
+        return $scheduleApi->deleteSchedule($schoolId, $scheduleId);
+    }
+
+    public function updateSchedule($teacherType)
+    {
+        $teacherType;
+        $schoolId = session()->get('user.userable.school_id');
+        $ScheduleApi = new ScheduleApi;
+
+        $scheduleId = $this->request->input('scheduleId');
+        $startDate = $this->request->input('startDate');
+        $expiryDate = $this->request->input('expiryDate');
+        $token = $this->request->input('token');
+
+        $payload = [
+            'schedule_ids' => [$scheduleId],
+            'start_time' => $startDate,
+            'finish_time' => $expiryDate,
+            'token' => $token ?? null,
+        ];
+
+        $update = $ScheduleApi->update($schoolId, $payload);
+
+        return response()->json($update);
     }
 }

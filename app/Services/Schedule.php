@@ -24,4 +24,11 @@ class Schedule extends Service
 
         return $this->showResponse($response);
     }
+
+    public function deleteSchedule($schoolId, $scheduleId)
+    {
+        $response = $this->delete("/schools/$schoolId/schedules/$scheduleId");
+
+        return $this->showResponse($response);
+    }
 }

@@ -176,4 +176,11 @@ class Task extends Service
 
         return $this->showResponse($response);
     }
+
+    public function updateFinalScore($taskId, $payload)
+    {
+        $response = $this->patch("/tasks/assessments/$taskId/final-score/", $payload);
+
+        return $this->showResponse($response);
+    }
 }
