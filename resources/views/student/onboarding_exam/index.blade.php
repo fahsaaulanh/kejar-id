@@ -35,9 +35,9 @@
     @if($assessment['type'] === "ASSESSMENT")
     <div class="mt-8">
         <h5>Token</h5>
-        <p>Masukkan token yang telah dibagikan oleh guru.</p>
+        <p class="text-grey-3">Masukkan token yang telah dibagikan oleh guru.</p>
         <!-- Dynamic Data -->
-        <input type="text" placeholder="Ketik Token" id="assessmentToken" />
+        <input class="input-token" type="text" placeholder="Ketik Token" id="assessmentToken" />
     </div>
 
     <div class="mt-8 onboarding-page-pts">
@@ -65,6 +65,9 @@
 
 @push('script')
 <script>
+    const title = localStorage.getItem('pts_title') || '';
+    $('#breadcrumb-1').html(title);
+
     $('#play').on('click', function() {
         const trueToken = "{{ $assessment['schedule']['token'] }}"
         const token = $.trim($("#assessmentToken").val());
