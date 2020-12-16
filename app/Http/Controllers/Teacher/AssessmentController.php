@@ -908,7 +908,7 @@ class AssessmentController extends Controller
             $presenceParams .= ",0,'" . $name . "'";
         }
 
-        $presence = '<span class="btn btn-link '. ($presenceText === 'Hadir' ? 'text-dark' : '') .' btn-lg
+        $presence = '<span class="btn btn-link p-0 '. ($presenceText === 'Hadir' ? 'text-dark' : '') .' btn-lg
         text-decoration-none" onclick="changePresence(' . $presenceParams . ')">' . $presenceText . '</span>';
 
         $teacherNote = ($schedule['teacher_note'] ?? '');
@@ -920,7 +920,7 @@ class AssessmentController extends Controller
             $html .= '<td>' . ($schedule['token'] ?? '-') . '</td>';
         }
 
-        $html .= '<td class="text-center" id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
+        $html .= '<td id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
         if ($taskStatus === 'Done') {
             $html .= '<td>Selesai</td>';
             $html .= '<td><span class="text-grey">' . ($studentNote ?: 'Tidak ada') . '</span></td>';
@@ -1501,10 +1501,10 @@ class AssessmentController extends Controller
             $view .= '<tr class="tr-score-report">';
             $view .= '<td class="text-center" colspan="9">Data belum ada</td>';
             $view .= '</tr>';
-        
+
             return $view;
         }
-        
+
         foreach ($list as $key => $v) {
             $view .= '<tr class="tr-score-report">';
             $view .= '<td class="text-center">' . ($key + 1) . '</td>';
@@ -1512,8 +1512,8 @@ class AssessmentController extends Controller
             $view .= '<td>' . $v['nis'] . '</td>';
 
             if ($v['schedule'] === null && $v['latest_task'] === null) {
-                $view .= '<td colspan="6">Belum ditugaskan 
-                <a class="text-primary" style="cursor:pointer"\ 
+                $view .= '<td colspan="6">Belum ditugaskan
+                <a class="text-primary" style="cursor:pointer"\
                 onclick="viewCreateSchedule(\'' . $v['id'] . '\',\'' . $v['name'] . '\')">Tugaskan Siswa</a></td>';
             }
 

@@ -6,7 +6,7 @@
     <div class="container-lg">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/supervisor/'.$assessmentGroupValue.'/subject/'.$subject['id'].'/'.$grade) }}">
+        <a class ="btn-back" href="{{ url('/teacher/supervisor/'.$assessmentGroupValue.'/subject/'.$subject['id'].'/'.$grade.'/student-groups') }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
@@ -28,8 +28,8 @@
                     {{ $token }}
                 @endif
             </div>
-            <div class="col-md-6 text-right">
-                <button onclick="dataIndex()" class="btn btn-publish float-right mr-3"> Refresh Data</button>
+            <div class="col-md-6 text-right pr-1">
+                <button onclick="dataIndex()" class="btn btn-publish float-right mr-3"><i class="kejar-reload text-white"> </i> Refresh Halaman</button>
             </div>
         </div>
         <div class="row mt-3">
@@ -42,7 +42,7 @@
                             @if($reportType == 'ASSESSMENT')
                                 <th>Token</th>
                             @endif
-                            <th width="11%">Hadir</th>
+                            <th width="10%">Hadir</th>
                             <th>Status</th>
                             <th width="25%">Catatan Siswa</th>
                             <th width="25%">Catatan Pengawas</th>
@@ -58,7 +58,10 @@
         <div class="modal-dialog modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Catatan Pengawas</h5>
+                    <div class="modal-title">
+                        <h5 id="note-name"></h5>
+                        <small class="mt-3 text-muted"><span id="note-nis"></span>, {{ $StudentGroupDetail['name'] }}</small>
+                    </div>
                     <button class="close modal-close" data-dismiss="modal">
                         <i class="kejar kejar-close"></i>
                     </button>
@@ -67,19 +70,17 @@
                     <div id="noteContent" style="display:none">
                         <div class="row">
                             <div class="col-12">
-                                <h5 id="note-name"></h5>
                                 <input type="hidden" id="note-id">
                                 <input type="hidden" id="note-name-val">
                                 <input type="hidden" id="note-nis-val">
                                 <input type="hidden" id="student_note-val">
                                 <input type="hidden" id="teacher_note-val">
-                                <p class="mt-3"><span id="note-nis"></span>, {{ $StudentGroupDetail['name'] }}</p>
                             </div>
                         </div>
-                        <div class="row mt-2">
+                        <div class="row">
                             <div class="col-12">
                                 <h5>Catatan Siswa</h5>
-                                <p class="mt-3" id="note-student"></p>
+                                <p class="mt-1" id="note-student"></p>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -286,7 +287,7 @@
 
         $("#view-note").modal('show');
 
-        var info = '<p class="text-muted">';
+        var info = '<p class="text-muted mb-3">';
                 info += '<small>Catatan pengawas merupakan bagian dari berita acara kegiatan.</small>';
             info += '</p>';
         $("#note-teacher").html(info+'<textarea rows="6" id="teacher_note" \
@@ -394,7 +395,7 @@
 
             var presenceParams = "'"+schedule_id+"',"+presence+","+presenceConfrim+",'"+student_name+"'";
 
-            var html = '<span class="btn btn-link '+textDark+' btn-lg\
+            var html = '<span class="btn btn-link p-0 '+textDark+' btn-lg\
         text-decoration-none" onclick="changePresence('+presenceParams+')">'+presenceText+'</span>';
 
             $('#presenceBtn-'+schedule_id).html(html+' <i class="kejar-checklist font-15"></i>');
