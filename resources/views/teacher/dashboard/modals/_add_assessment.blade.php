@@ -9,23 +9,25 @@
                         <span aria-hidden="true"><i class="kejar-close"></i></span>
                     </button>
                 </div>
-                <div class="modal-body border-0">
-                    <!-- Input -->
-                    <form method="post" id="form-addAssessment" class="mt-4">
-                        @csrf
-                        <label for="title" class="font-weight-bold">Judul penilaian</label>
-                        <input id="title-addAssessment" type="text" placeholder="Ketik judul penilaian" name="title" class="form-control">
-                    </form>
-                    <!-- Button  -->
-                    <div class="d-flex justify-content-end btn-start-group" >
-                        <button class="btn btn-lg btn-link mr-2" data-dismiss="modal">
-                            Batal
-                        </button>
-                        <button id="simpan-addAssessment" class="btn btn-primary btn-lg">
-                            Simpan
-                        </button>
+                <form method="POST" id="form-addAssessment" class="mt-4">
+                    <div class="modal-body border-0">
+                            @csrf
+                            <!-- Input -->
+                            <label for="title" class="font-weight-bold">Judul penilaian</label>
+                            <input id="title-addAssessment" type="text" placeholder="Ketik judul penilaian" name="title" class="form-control">
+                            <!-- Button  -->
                     </div>
-                </div>
+                    <div class="modal-footer border-0 p-0">
+                        <div class="d-flex justify-content-end w-100" >
+                            <button type="button" class="btn btn-cancel mr-4" data-dismiss="modal">
+                                Batal
+                            </button>
+                            <button type="submit" id="simpan-addAssessment" class="btn btn-primary">
+                                Simpan
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
   </div>

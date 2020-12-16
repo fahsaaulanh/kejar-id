@@ -129,7 +129,8 @@
         $('#modal-addAssessment').modal('show');
     });
 
-    $("#simpan-addAssessment").on('click', function() {
+    $("#form-addAssessment").on('submit', function(e) {
+        e.preventDefault();
         createAssessmentGroup();
     });
 
