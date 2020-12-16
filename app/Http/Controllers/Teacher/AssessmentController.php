@@ -215,19 +215,16 @@ class AssessmentController extends Controller
         $reportType = '';
         $token = '';
         if ($teacherType === 'supervisor') {
-            $ScheduleApi = new ScheduleApi;
-            $filter = [
+            $assessmentApi = new AssessmentApi;
+            $filterMA = [
+                'filter[grade]' => $grade,
                 'filter[assessment_group_id]' => $assessmentGroupId,
                 'filter[subject_id]' => $subjectId,
                 'per_page' => 1,
             ];
-            $getSchedule = $ScheduleApi->index($schoolId, $filter);
-            if (isset($getSchedule['data'][0]['schedulable_id'])) {
-                $AssessmentApi = new AssessmentApi;
-                $detail = $AssessmentApi->detail($getSchedule['data'][0]['schedulable_id']);
-                $reportType = $detail['data']['type'] ?? '';
-                $token = $detail['data']['pdf_password'] ?? '';
-            }
+            $getAssessment = $assessmentApi->index($filterMA);
+            $reportType = $getAssessment['data'][0]['type'] ?? '';
+            $token = $getAssessment['data'][0]['pdf_password'] ?? '';
         }
 
         return view('teacher.' . $teacherType . '.report.index')
@@ -919,8 +916,8 @@ class AssessmentController extends Controller
 
         $studentNote = $schedule['student_note'] === '-' || $schedule['student_note'] ?: '';
 
-        if (isset($req->reportType) && $req->reportType === 'ASSESMENT') {
-            $html .= '<td>' . ($schedule['token'] ?? '') . '</td>';
+        if (isset($req->reportType) && $req->reportType === 'ASSESSMENT') {
+            $html .= '<td>' . ($schedule['token'] ?? '-') . '</td>';
         }
 
         $html .= '<td class="text-center" id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';

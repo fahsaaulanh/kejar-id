@@ -23,7 +23,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                @if($reportType == 'MINI_ASSESMENT')
+                @if($reportType == 'MINI_ASSESSMENT')
                     <h5>Token/Password PDF</h5>
                     {{ $token }}
                 @endif
@@ -39,7 +39,7 @@
                         <tr class="table-head">
                             <th width="1%">No.</th>
                             <th width="30%">Nama</th>
-                            @if($reportType == 'ASSESMENT')
+                            @if($reportType == 'ASSESSMENT')
                                 <th>Token</th>
                             @endif
                             <th width="11%">Hadir</th>
@@ -174,7 +174,7 @@
     var reportType = "{{ $reportType }}";
     function dataIndex() {
         var colspan = 6;
-        if (reportType == 'ASSESMENT') {
+        if (reportType == 'ASSESSMENT') {
             colspan = 7;
         }
         $("#studentData").html('<tr>\
@@ -192,7 +192,7 @@
         var student_group_id = "{{$id}}";
 
         var colspan = 4;
-        if (reportType == 'ASSESMENT') {
+        if (reportType == 'ASSESSMENT') {
             colspan = 5;
         }
         data = {
