@@ -7,18 +7,40 @@
 
 @section('content')
 <div class="container-exam">
+    <?php $questionLength = count($task['assessment']['questions']); ?>
+
+    @if($questionLength > 20)
     <div id="drawer" class="drawer-exam d-flex-column">
         <div class="row m-0">
             <h5>Daftar Soal</h5>
         </div>
         <div class="container-list-number">
             @foreach($task['assessment']['questions'] as $q)
-                <div id="num-{{ $loop->index }}" class="list-number" role="button" onclick="setQuestion('{{ $loop->index }}')">
-                    {{ $loop->index + 1 }}
-                </div>
+            <div id="num-{{ $loop->index }}" class="list-number" role="button" onclick="setQuestion('{{ $loop->index }}')">
+                {{ $loop->index + 1 }}
+            </div>
             @endforeach
         </div>
     </div>
+    @else
+    <div id="drawer" class="drawer-exam-row d-flex-column">
+        <div class="row m-0 pl-5">
+            <h5>Daftar Soal</h5>
+        </div>
+        <div class="container-list-number-row">
+            @foreach($task['assessment']['questions'] as $q)
+            <div id="num-{{ $loop->index }}" class="list-number-row" role="button" onclick="setQuestion('{{ $loop->index }}')">
+                <div class="text-grey-3">
+                    Soal {{ $loop->index + 1 }}
+                </div>
+                <div>
+                    <i class="kejar-sudah-dikerjakan-outline text-grey-3"></i>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
     <div class="content-exam">
         <div>
             <div class="assesment-btn-question" role="button" onclick="toggleDrawer()">
@@ -295,7 +317,10 @@
         $('#prev').removeAttr('disabled');
         $('#prev').removeClass('disabled');
 
-        console.log({ total, current });
+        console.log({
+            total,
+            current
+        });
 
         if (currentNum >= total) {
             $('#next').attr('disabled', true);
@@ -353,7 +378,9 @@
                 });
             },
             success: function(data) {
-                console.log({ data });
+                console.log({
+                    data
+                });
 
                 const choices = data.question.choices;
                 const keys = Object.keys(choices);
@@ -404,7 +431,9 @@
                 //
             },
             success: function(response) {
-                console.log({ responseAnswer: response });
+                console.log({
+                    responseAnswer: response
+                });
             }
         });
     }
