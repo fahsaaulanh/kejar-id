@@ -339,7 +339,7 @@ $(document).on('click', '.add-btn', function(){
 
         initializeEditor(ckEditorField.length, $(this).parent().find('.benar-salah-input-table').find('tr').last().find('textarea')[0]);
     }
-    
+
     // Add Isian Matematika Item
     if (type === 'isian_matematika') {
         var indexNumber = $(this).parent().find('.isian-matematika-input-table').find('tr').length;
@@ -1612,8 +1612,6 @@ $('#update-esai').on('show.bs.modal', (e) => {
         type: "GET",
         url: $(e.relatedTarget).data('url'),
         success: function (response) {
-            console.log(response);
-
             // Insert Question
             $(e.currentTarget).find('textarea[name="question"]').val(response.question);
 

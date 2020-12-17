@@ -51,18 +51,16 @@ $(document).ready(function(){
 
                 let alternativeAnswers = '';
 
-                console.log(typeof(response.answer));
-
                 if (typeof(response.answer) !== 'string') {
-                    $.each(response.answer, function () { 
-                        alternativeAnswers += '<li><i class="kejar-soal-benar"></i>' + this + '</li>'; 
+                    $.each(response.answer, function () {
+                        alternativeAnswers += '<li><i class="kejar-soal-benar"></i>' + this + '</li>';
                     });
                 } else {
                     alternativeAnswers = '<li><i class="kejar-soal-benar"></i>' + response.answer + '</li>';
                 }
 
                 $(questions[i]).find('.pembahasan').find('.alternative-answers ul').html(alternativeAnswers);
-        
+
                 if (($('.question-list .question-item').length - 1) !== i) {
                     $(questions[i]).find('.btn-check').prop('disabled', false);
                     $(questions[i]).find('.btn-check').blur();
@@ -122,7 +120,7 @@ $(document).ready(function(){
         }, timer, function(){
             checkAnswer();
         });
-    } 
+    }
 
     $('body').on('keyup', '.answer-input', function(e){
         var btnCheck = $(this).parents('.question-item').find('.btn-check');

@@ -304,14 +304,13 @@
     }
 
     async function onClickAnswerPG(order, choice, id, number) {
-        console.log({order, choice, id, number});
         for (let i = 1; i < number; i++) {
             $(`#pts-choice-${order}-${i}`).removeClass('active');
         }
 
         $(`#pts-choice-${order}-${choice}`).addClass('active');
 
-        $(`#pts-choice-load-${order}`).delay(1000).show(500); 
+        $(`#pts-choice-load-${order}`).delay(1000).show(500);
 
         await setTimeout(function() {
             $(`#pts-choice-load-${order}`).show();

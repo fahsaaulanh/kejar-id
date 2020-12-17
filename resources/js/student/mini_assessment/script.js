@@ -73,19 +73,15 @@ async function saveAll() {
     const promisesSave = data.map((d) => fetchSubjects(data));
 
     await Promise.all(promises);
-    console.log('success');
 }
 
 function fetchSubjects(url) {
-    console.log('Fetch');
     $.ajax({
         url,
         beforeSend: function() {
-            console.log('Start Fetch');
             $('#accordion-pts').html(renderLoading())
         },
         success: function(result){
-            console.log('Finish Fetch');
             $('#accordion-pts').html(renderSubjects(data))
         }
     });

@@ -317,11 +317,6 @@
         $('#prev').removeAttr('disabled');
         $('#prev').removeClass('disabled');
 
-        console.log({
-            total,
-            current
-        });
-
         if (currentNum >= total) {
             $('#next').attr('disabled', true);
             $('#next').addClass('disabled');
@@ -378,10 +373,6 @@
                 });
             },
             success: function(data) {
-                console.log({
-                    data
-                });
-
                 const choices = data.question.choices;
                 const keys = Object.keys(choices);
                 const answerData = data.answer;
@@ -431,9 +422,6 @@
                 //
             },
             success: function(response) {
-                console.log({
-                    responseAnswer: response
-                });
             }
         });
     }

@@ -1039,7 +1039,6 @@ $('#update-pilihan-ganda').on('shown.bs.modal', function(e) {
         modal.find('textarea[name=explanation]').val(response.explanation);
 
         var html = ``;
-        console.log(Object.keys(response.choices).length)
         for (var index = 0; index < Object.keys(response.choices).length; index++) {
             if (Object.keys(response.choices).length == 2) {
                 html += `
@@ -1117,7 +1116,7 @@ $('#update-pilihan-ganda').on('shown.bs.modal', function(e) {
                 </td>
             </tr>`;
             }
-            
+
         }
 
         modal.find('table').html(html);
@@ -1290,7 +1289,6 @@ $('#update-ya-tidak').on('shown.bs.modal', function(e) {
     getApi(url, data, (response) => {
         modal.find('textarea[name=keterangan_soal]').val(response.question);
         modal.find('textarea[name=pembahasan]').val(response.explanation);
-        console.log(response);
 
         var html = ``;
         for (var index = 1; index <= Object.keys(response.choices).length; index++) {
