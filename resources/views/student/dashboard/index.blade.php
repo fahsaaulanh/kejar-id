@@ -193,8 +193,6 @@
 
             $('#profile-pict-crop').attr('src', base64Img);
 
-            console.log(base64Img);
-
             $('.profile-pict-crop').rcrop({
                 minSize: [200, 200],
                 maxSize: [2000, 2000],

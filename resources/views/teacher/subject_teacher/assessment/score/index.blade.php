@@ -181,7 +181,6 @@
     }
 
     function updateScore(id) {
-        console.log($("#score-input-" + id).val())
         if ($("#score-input-" + id).val() === "") {
             return false
         }
@@ -456,7 +455,6 @@
                 }
             })
             .catch(function(error) {
-                console.log(error);
             });
 
     }
@@ -588,9 +586,7 @@
                 }
             })
             .catch(function(error) {
-                console.log(error);
             });
-
     }
 
     function closeToken() {

@@ -292,7 +292,6 @@
 
                 })
                 .catch(function(error) {
-                    console.log(error);
                 });
             }
         }
@@ -336,7 +335,6 @@
                 $('#LoadingGetStudent').hide(200);
             })
             .catch(function(error) {
-                console.log(error);
             });
         }
 
@@ -520,7 +518,6 @@
                 $('.LoadingCreateSceduleStudents').hide(200);
             })
             .catch(function(error) {
-                console.log(error);
             });
 
         }
