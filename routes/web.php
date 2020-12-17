@@ -153,7 +153,7 @@ Route::middleware('session')->group(function () {
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/{assessmentId}',
                     'Teacher\AssessmentController@settingMiniAssessment',
                 );
-                
+
                 Route::get(
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/student-group/{studentGroupId}/score',
                     'Teacher\AssessmentController@score',
@@ -200,6 +200,11 @@ Route::middleware('session')->group(function () {
                 Route::post('/schedule-update', 'Teacher\AssessmentController@updateSchedule');
 
                 Route::post('{assessmentGroupId}/student-group', 'Teacher\AssessmentController@studentGroupData');
+
+                Route::post(
+                    '{assessmentGroupId}/get-student-group-schedules',
+                    'Teacher\AssessmentController@getStudentByStudentGroupSchedules',
+                );
 
                 Route::post(
                     '{assessmentGroupId}/get-student-groups',
