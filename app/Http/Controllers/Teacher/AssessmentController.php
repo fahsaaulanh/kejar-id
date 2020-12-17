@@ -323,22 +323,30 @@ class AssessmentController extends Controller
 
             $dataStudent = [];
             foreach ($students['data'] as $key => $v) {
+                $student = $v;
+                $dataStudent[$key] = $student;
+
+                $name = $student['name'];
+                $nis = $student['nis'];
+
                 if (!in_array($v['id'], $studentIdScheduleCreated)) {
                     // Siswa tidak ada jadwal
+                    $html .= '<tr>';
+                        $html .= '<td class="text-center">'. ($key+1) .'</td>';
+                        $html .= '<td>'. $name .'</td>';
+                        $html .= '<td colspan="' . ($req->colspan ?? 1) . '"><span style="cursor:pointer"
+                        onclick="noScheduleModal('. ("'".$name."'") .')">Belum ditugaskan</span></td>';
+                    $html .= '</tr>';
+
                     continue;
                 }
 
                 // Siswa Ada jadwal
 
                 $schedule = $getSchedule[$v['id']];
-                $student = $v;
-
-                $dataStudent[$key] = $student;
-                $dataStudent[$key]['schedule'] = $schedule;
-
                 $id = $schedule['id'];
-                $name = $student['name'];
-                $nis = $student['nis'];
+
+                $dataStudent[$key]['schedule'] = $schedule;
 
                 $html .= '<tr>';
                     $html .= '<td class="text-center">'. ($key+1) .'</td>';
@@ -372,7 +380,13 @@ class AssessmentController extends Controller
                     $html .= '<td id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
                 if ($taskStatus === 'Done') {
                     $html .= '<td>Selesai</td>';
-                    $html .= '<td><span class="text-grey">' . ($studentNote ?: 'Tidak ada') . '</span></td>';
+
+                    $html .= '<td><span ';
+                    if (!$studentNote) {
+                        $html .=' class="text-grey"';
+                    }
+
+                    $html .= ' >'.($studentNote ?: 'Tidak ada') . '</span></td>';
                 } elseif ($taskStatus === 'Ongoing') {
                     $html .= '<td colspan="2">Sedang mengerjakan</td>';
                 } elseif ($taskStatus === 'Undone') {
@@ -392,10 +406,14 @@ class AssessmentController extends Controller
                     $html .= '<td>';
 
                         $html .= '<div id="note-data-' . $id . '">';
-                        $html .= '<span style="cursor: pointer;" class="text-grey"
-                                    onclick="changeNote(' . $note . ')">';
-                        $html .= $this->noteData($teacherNote);
-                        $html .= '</span>';
+                            $html .= '<span style="cursor: pointer;"';
+                if (!$teacherNote) {
+                    $html .=' class="text-grey"';
+                }
+
+                            $html .= 'onclick="changeNote(' . $note . ')">';
+                            $html .= $this->noteData($teacherNote);
+                            $html .= '</span;>';
                         $html .= '</div>';
 
                     $html .= '</td>';
