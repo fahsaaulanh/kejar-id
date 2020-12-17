@@ -1678,7 +1678,7 @@ class AssessmentController extends Controller
 
         foreach ($list as $key => $v) {
             $view .= '<tr class="tr-score-report">';
-            $view .= '<td class="text-center">' . ($key + 1) . '</td>';
+            $view .= '<td class="text-right">' . ($key + 1) . '</td>';
             $view .= '<td>' . $v['name'] . '</td>';
             $view .= '<td>' . $v['nis'] . '</td>';
 
@@ -1702,15 +1702,15 @@ class AssessmentController extends Controller
                 $startTime = Carbon::parse($v['latest_task']['start_time']);
                 $finishTime = Carbon::parse($v['latest_task']['finish_time']);
                 $diff = $finishTime->diffInMinutes($startTime);
-                $finalScore = $v['latest_task']['final_score'] ?? 0;
+                $finalScore = $v['latest_task']['final_score'];
                 $view .= '<td>' . $diff . '</td>';
                 $view .= '<td>' . $v['latest_task']['answer_status']['correct'] . '</td>';
                 $view .= '<td>' . $v['latest_task']['answer_status']['wrong'] . '</td>';
                 $view .= '<td>' . $v['latest_task']['answer_status']['empty'] . '</td>';
-                $view .= '<td>' . $v['latest_task']['score'] . '</td>';
+                $view .= '<td class="text-right">' . $v['latest_task']['score'] . '</td>';
                 $view .= '<td class="column-white" id="score-td-' . $v['latest_task']['id'] . '">';
-                $view .= '<div class="row m-0 p-0" style="width:180px">';
-                $view .= '<div class="col">';
+                $view .= '<div class="row justify-content-end m-0 p-0" style="width:180px">';
+                $view .= '<div style="width: 85%">';
                 $view .= '<input type="number"
                                         onchange="handleChange(this);"
                                         onkeyup="handleChange(this);"
@@ -1718,11 +1718,10 @@ class AssessmentController extends Controller
                                         onblur="updateScore(\'' . $v['latest_task']['id'] . '\')"
                                         onfocus="modeEdit(\'' . $v['latest_task']['id'] . '\')"
                                         placeholder="Input Nilai" value="' . $finalScore . '"
-                                        class="form-control form-control-lg input-score-white" >';
+                                        class="form-control text-right form-control-lg input-score-white" >';
                 $view .= '</div>';
-                $view .= '<div class="col-1">';
-                $view .= '<div id="score-alert-' . $v['latest_task']['id'] . '">';
-                $view .= '</div>';
+                $view .= '<div class="pt-1 pr-6" style="display:none; width: 10%"\
+                id="score-alert-' . $v['latest_task']['id'] . '">';
                 $view .= '</div>';
                 $view .= '</div>';
                 $view .= '</td>';

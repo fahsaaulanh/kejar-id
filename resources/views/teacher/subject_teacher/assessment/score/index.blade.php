@@ -187,6 +187,7 @@
 
         $("#score-td-" + id).removeClass("column-grey").addClass("column-white");
         $("#score-input-" + id).removeClass("input-score-grey").addClass("input-score-white");
+        $("#score-alert-" + id).show();
 
         $("#score-alert-" + id).html('<div class="spinner-border" role="status">\
                                         <span class="sr-only">Loading...</span>\
@@ -214,10 +215,11 @@
         fetch(request)
             .then(response => response.json())
             .then(function(data) {
-                $("#score-alert-" + id).html('<i class="kejar-soal-benar"></i>');
+                $("#score-alert-" + id).html('<i class="font-24 kejar-soal-benar"></i>');
 
                 setTimeout(function() {
                     $("#score-alert-" + id).empty();
+                    $("#score-alert-" + id).hide();
                 }, 2000);
             })
             .catch(function(error) {
