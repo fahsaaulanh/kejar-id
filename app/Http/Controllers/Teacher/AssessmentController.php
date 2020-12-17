@@ -1596,20 +1596,43 @@ class AssessmentController extends Controller
         $assessmentApi = new AssessmentApi;
         $filterMA = [
             'filter[grade]' => $grade,
-            'filter[group]' => $assessmentGroupId,
+            'filter[assessment_group_id]' => $assessmentGroupId,
             'filter[subject_id]' => $subjectId,
         ];
         $assessments = $assessmentApi->index($filterMA);
         $dataAssessment = ($assessments['data'] ?? []);
 
+        $dualData = false;
+        foreach ($dataAssessment as $item) {
+            if ($item['type'] !== $dataAssessment[0]['type']) {
+                $dualData = true;
+            }
+        }
+
+        $viewType = '';
+        $dataForAssessment = [];
+        $viewType = session()->get('assessmentType') !== null && $dualData === true ? strtoupper(
+            session()->get('assessmentType'),
+        ) : ($dataAssessment[0]['type'] ?? '');
+
+        if ($dualData === true) {
+            foreach ($dataAssessment as $item) {
+                if ($item['type'] === $viewType) {
+                    array_push($dataForAssessment, $item);
+                }
+            }
+        } else {
+            $dataForAssessment = $dataAssessment;
+        }
+
         return view('teacher.subject_teacher.assessment.score.index')
             ->with('teacherType', $teacherType)
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
-            ->with('assessments', $dataAssessment)
+            ->with('assessments', $dataForAssessment)
             ->with('subject', $subjectDetail['data'])
             ->with('grade', $grade)
-            ->with('type', ($dataAssessment[0]['type'] ?? ''))
+            ->with('type', $viewType)
             ->with('studentGroup', $studentGroupDetail['data'] ?? [])
             ->with('message', 'Data success');
     }
@@ -1658,17 +1681,18 @@ class AssessmentController extends Controller
             $view .= '<td>' . $v['nis'] . '</td>';
 
             if ($v['schedule'] === null && $v['latest_task'] === null) {
-                $view .= '<td colspan="6">Belum ditugaskan
+                $view .= '<td colspan="6" class="text-grey-3">Belum ditugaskan.
                 <a class="text-primary" style="cursor:pointer"\
                 onclick="viewCreateSchedule(\'' . $v['id'] . '\',\'' . $v['name'] . '\')">Tugaskan Siswa</a></td>';
             }
 
             if ($v['schedule'] !== null && $v['latest_task'] === null) {
-                $view .= '<td colspan="6">Belum mengerjakan
+                $view .= '<td colspan="6" class="text-grey-3">Belum mengerjakan.
                 <a class="text-primary" style="cursor:pointer"\
-                onclick="viewUpdateSchedule(\'' . $v['id'] . '\',\'' . $v['name'] . '\',\'\
-                ' . $v['schedule']['id'] . '\',\'' . $v['schedule']['start_time'] . '\',\'\
-                ' . $v['schedule']['finish_time'] . '\',\'' . $v['schedule']['token'] . '\')"\
+                onclick="viewUpdateSchedule(\'' . $v['id'] . '\',\'' .
+                $v['name'] . '\',\'' . $v['schedule']['id'] . '\',\'' .
+                $v['schedule']['start_time'] . '\',\'' . $v['schedule']['finish_time'] . '\',\'' .
+                $v['schedule']['token'] . '\')"\
                 >Edit Penugasan</a></td>';
             }
 
