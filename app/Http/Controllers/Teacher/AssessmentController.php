@@ -301,6 +301,7 @@ class AssessmentController extends Controller
 
             $ScheduleFilter = [
                 'per_page' => 99,
+                'filter[assessment_group_id]' => $req->assessment_group_id,
                 'filter[student_group_id]' => ($req->student_group_id ?? ''),
                 'filter[subject_id]' => ($req->subject_id ?? ''),
                 'page' => ($req->page ?? 1),
@@ -1256,6 +1257,7 @@ class AssessmentController extends Controller
 
                 $ScheduleFilter = [
                     'per_page' => 99,
+                    'filter[assessment_group_id]' => $req->assessment_group_id,
                     'filter[student_group_id]' => ($req->student_group_id ?? ''),
                     'filter[subject_id]' => ($req->subject_id ?? ''),
                     'page' => ($req->page ?? 1),
