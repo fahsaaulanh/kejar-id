@@ -284,6 +284,134 @@ class AssessmentController extends Controller
         return response()->json($data);
     }
 
+    public function getStudentByStudentGroupSchedules(Request $req)
+    {
+        $UserApi = new UserApi;
+        $filter = [
+            'per_page' => 99,
+            'filter[student_group_id]' => $req->student_group_id,
+            'page' => ($req->page ?? 1),
+        ];
+        $students = $UserApi->students($filter);
+        $html = '<tr><td class="text-center" colspan="6">Tidak ada data</td></tr>';
+
+        if ($students['status'] === 200 && $students['data']) {
+            $schoolId = session()->get('user.userable.school_id');
+            $ScheduleApi = new ScheduleApi;
+
+            $ScheduleFilter = [
+                'per_page' => 99,
+                'filter[student_group_id]' => ($req->student_group_id ?? ''),
+                'filter[subject_id]' => ($req->subject_id ?? ''),
+                'page' => ($req->page ?? 1),
+            ];
+
+            $scheduleStudents = $ScheduleApi->index($schoolId, $ScheduleFilter);
+
+            $studentIdScheduleCreated = [];
+            $getSchedule = [];
+            if ($scheduleStudents['meta']['total'] > 0) {
+                foreach ($scheduleStudents['data'] as $key => $v) {
+                    $studentIdScheduleCreated[] = $v['student_id'];
+                    $getSchedule[$v['student_id']] = $v;
+                }
+            }
+
+            if ($studentIdScheduleCreated) {
+                $html = '';
+            }
+
+            $dataStudent = [];
+            foreach ($students['data'] as $key => $v) {
+                if (!in_array($v['id'], $studentIdScheduleCreated)) {
+                    // Siswa tidak ada jadwal
+                    continue;
+                }
+
+                // Siswa Ada jadwal
+
+                $schedule = $getSchedule[$v['id']];
+                $student = $v;
+
+                $dataStudent[$key] = $student;
+                $dataStudent[$key]['schedule'] = $schedule;
+
+                $id = $schedule['id'];
+                $name = $student['name'];
+                $nis = $student['nis'];
+
+                $html .= '<tr>';
+                    $html .= '<td class="text-center">'. ($key+1) .'</td>';
+                    $html .= '<td>'. $name .'</td>';
+                    $presenceText = ($schedule['presence'] ? 'Hadir' : 'Tandai');
+                    $presenceVal = ($schedule['presence'] ? 0 : 1);
+
+                    $taskStatus = $schedule['status_task'];
+                    $presenceParams = "'" . $schedule['id'] . "'," . $presenceVal;
+
+                if (!$presenceVal) {
+                    $presenceParams .= ",1,'" . $name . "'";
+                } else {
+                    $presenceParams .= ",0,'" . $name . "'";
+                }
+
+                    $presence = '<span class="btn btn-link p-0 '.
+                    ($presenceText === 'Hadir' ? 'text-dark' : '') .' btn-lg
+                    text-decoration-none" onclick="changePresence(' . $presenceParams . ')">'
+                    . $presenceText . '</span>';
+
+                    $teacherNote = ($schedule['teacher_note'] ?? '');
+                    $studentNote = ($schedule['student_note'] ?? '');
+
+                    $studentNote = $schedule['student_note'] === '-' || $schedule['student_note'] ?: '';
+
+                if (isset($req->reportType) && $req->reportType === 'ASSESSMENT') {
+                    $html .= '<td>' . ($schedule['token'] ?? '-') . '</td>';
+                }
+
+                    $html .= '<td id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
+                if ($taskStatus === 'Done') {
+                    $html .= '<td>Selesai</td>';
+                    $html .= '<td><span class="text-grey">' . ($studentNote ?: 'Tidak ada') . '</span></td>';
+                } elseif ($taskStatus === 'Ongoing') {
+                    $html .= '<td colspan="2">Sedang mengerjakan</td>';
+                } elseif ($taskStatus === 'Undone') {
+                    $html .= '<td colspan="2">Belum mengerjakan</td>';
+                } else {
+                    $html .= '<td colspan="2">Status tidak diketahui ('. $taskStatus .')</td>';
+                }
+
+                    // Note
+
+                    $note = "'" . $id . "','" .
+                        $studentNote . "','" .
+                        $teacherNote . "','" .
+                        $nis . "','" .
+                        $name . "'";
+
+                    $html .= '<td>';
+
+                        $html .= '<div id="note-data-' . $id . '">';
+                        $html .= '<span style="cursor: pointer;" class="text-grey"
+                                    onclick="changeNote(' . $note . ')">';
+                        $html .= $this->noteData($teacherNote);
+                        $html .= '</span>';
+                        $html .= '</div>';
+
+                    $html .= '</td>';
+                $html .= '</td>';
+            }
+        }
+
+        $data = [
+            'status' => $students['status'],
+            'data' => $dataStudent,
+            'html' => $html,
+        ];
+
+        return response()->json($data);
+    }
+
     public function setTypeAssessment($teacherType, $assessmentGroupId, $subjectId, $grade, $assessType)
     {
         session()->put('assessmentType', $assessType);

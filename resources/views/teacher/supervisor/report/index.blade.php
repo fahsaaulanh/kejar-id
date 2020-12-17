@@ -14,7 +14,8 @@
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
             <a class="breadcrumb-item" href="{{ url('/teacher/supervisor/'.$assessmentGroupValue.'/subject') }}">{{$assessmentGroup}}</a>
-            <span class="breadcrumb-item active">{{$subject['name']}}</span>
+            <a class="breadcrumb-item" href="{{ url('/teacher/supervisor/'.$assessmentGroupValue.'/subject/'.$subject['id'].'/'.$grade.'/student-groups') }}">{{$subject['name']}}</a>
+            <span class="breadcrumb-item active">{{ $StudentGroupDetail['name'] }}</span>
         </nav>
 
         <!-- Title -->
@@ -29,7 +30,7 @@
                 @endif
             </div>
             <div class="col-md-6 text-right pr-1">
-                <button onclick="dataIndex()" class="btn btn-publish float-right mr-3"><i class="kejar-reload text-white"> </i> Refresh Halaman</button>
+                <button onclick="dataIndex()" class="btn btn-publish float-right mr-3"><i class="kejar-reload text-white mr-1"> </i> Refresh Halaman</button>
             </div>
         </div>
         <div class="row mt-3">
@@ -173,6 +174,8 @@
 
     var studentData = [];
     var reportType = "{{ $reportType }}";
+    var subject_id = "{{$subject['id']}}";
+
     function dataIndex() {
         var colspan = 6;
         if (reportType == 'ASSESSMENT') {
@@ -188,7 +191,7 @@
                             </tr>\
                             ');
 
-        const url = "{!! URL::to('/teacher/supervisor/' . $assessmentGroupValue . '/get-student-groups') !!}";
+        const url = "{!! URL::to('/teacher/supervisor/' . $assessmentGroupValue . '/get-student-group-schedules') !!}";
         let data  = new Object();
         var student_group_id = "{{$id}}";
 
@@ -198,6 +201,8 @@
         }
         data = {
             student_group_id,
+            subject_id,
+            reportType,
             colspan
         };
 
@@ -216,7 +221,6 @@
         .then(function(data) {
             $('#studentData').html(data.html);
             studentData = data.data;
-            getAttendance();
         })
         .catch(function(error) {
             console.error(error);
@@ -226,7 +230,6 @@
     async function getAttendanceStudent(student_id, student_name) {
         var school_id = "{{ $school_id }}";
         var assessment_group_id = "{{ $assessmentGroupValue }}";
-        var subject_id = "{{$subject['id']}}";
 
         const url = "{!! URL::to('/teacher/supervisor/' . $assessmentGroupValue . '/student-attendance') !!}";
 
