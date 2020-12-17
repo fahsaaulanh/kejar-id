@@ -29,9 +29,9 @@
                         <div class="col-12">
                             <div class="check-group row">
                                 <input type="checkbox" onchange="modalAssignShowChoicePanel(0)" id="choice-0" value="1" class="col-1 mt-2">
-                                <label for="choice-0" class="col pl-0">
+                                <h5-reg for="choice-0" class="col pl-0 pb-4">
                                     Penilaian hanya dapat dibuka dengan <b>token</b> yang diberikan secara manual oleh guru/pengawas.
-                                </label>
+                                </h5-reg>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                             <div class="row">
                                 <div class="col-12 mb-3">
                                     <label for="title" class="font-weight-bold">Token</label><br>
-                                    <small class="text-muted">
+                                    <small class="text-grey-3 pb-2">
                                         Ketik token/password yang digunakan pada penilaian (jika ada).
                                         <span class="text-primary" onclick="viewToken()" style="cursor:pointer">Pelajari</span>
                                     </small>
@@ -55,9 +55,9 @@
                         <div class="col-12">
                             <div class="check-group row">
                                 <input type="checkbox" onchange="modalAssignShowChoicePanel(1)" id="choice-1" value="1" class="col-1 mt-2">
-                                <label for="choice-1" class="col pl-0">
+                                <h5-reg for="choice-1" class="col pl-0 pb-4">
                                     Penilaian hanya dapat dikerjakan <b>mulai dari</b> waktu tertentu.
-                                </label>
+                                </h5-reg>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                         <div class="col pl-0">
                             <div class="row">
                                 <div class="col-12">
-                                    <label for="title" class="font-weight-bold">Dimulai Pada</label>
+                                    <label for="title" class="font-weight-bold">Dimulai pada</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -87,9 +87,9 @@
                         <div class="col-12">
                             <div class="check-group row">
                                 <input type="checkbox" onchange="modalAssignShowChoicePanel(2)" id="choice-2" value="1" class="col-1 mt-2">
-                                <label for="choice-2" class="col pl-0">
+                                <h5-reg for="choice-2" class="col pl-0 pb-4">
                                     Penilaian hanya dapat dikerjakan <b>sampai dengan</b> tanggal dan waktu tertentu.
-                                </label>
+                                </h5-reg>
                             </div>
                         </div>
                     </div>
@@ -98,7 +98,7 @@
                         <div class="col pl-0">
                             <div class="row">
                                 <div class="col-12">
-                                    <label for="title" class="font-weight-bold">Selesai Pada</label>
+                                    <label for="title" class="font-weight-bold">Selesai pada</label>
                                 </div>
                             </div>
                             <div class="row">

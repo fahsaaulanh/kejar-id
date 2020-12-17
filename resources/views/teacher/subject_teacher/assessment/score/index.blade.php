@@ -43,7 +43,7 @@
         <div class="col-6">
             <div class="row justify-content-end">
                 <div class="pr-4">
-                    <button onclick="scoreIndex()" class="btn btn-publish"><i class="kejar-refresh mr-2"></i> Refresh Data</button>
+                    <button onclick="scoreIndex()" class="btn btn-publish"><i class="kejar-refresh mr-2"></i> Refresh Halaman</button>
                 </div>
                 <!-- <form method="post">
                     @csrf
@@ -58,18 +58,18 @@
             <div class="table-responsive table-result-stage">
                 <table class="table table-bordered" id="table-kejar">
                     <tr class="table-head">
-                        <th rowspan="2" class="align-middle" width="1%">No</th>
-                        <th rowspan="2" class="align-middle">Nama Siswa</th>
-                        <th rowspan="2" class="align-middle">NIS</th>
-                        <th rowspan="2" class="align-middle">Durasi <br>(menit)</th>
-                        <th colspan="3">Jawaban</th>
-                        <th rowspan="2" class="align-middle">NR</th>
-                        <th rowspan="2" class="align-middle">NA</th>
+                        <th rowspan="2" class="align-middle" width="1%"><span class="float-left">No.</span></th>
+                        <th rowspan="2" class="align-middle" width="28%"><span class="float-left">Nama Siswa</span></th>
+                        <th rowspan="2" class="align-middle" width="19%"><span class="float-left">NIS</span></th>
+                        <th rowspan="2" class="align-middle" width="6%"><span class="float-left">Durasi <br>(menit)</span></th>
+                        <th colspan="3" width="20%">Jawaban</th>
+                        <th rowspan="2" class="align-middle" width="6%"><span class="float-left">NR</span></th>
+                        <th rowspan="2" class="align-middle" width="15%"><span class="float-left">NA</span></th>
                     </tr>
                     <tr class="table-head">
-                        <th>B</th>
-                        <th>S</th>
-                        <th>K</th>
+                        <th><span class="float-left">B</span></th>
+                        <th><span class="float-left">S</span></th>
+                        <th><span class="float-left">K</span></th>
                     </tr>
                     <tbody id="scoreData">
                     </tbody>
@@ -271,11 +271,12 @@
         studentId = idStudent;
         studentName = nameStudent;
         scheduleId = idSchedule;
+
         $('.nameStudent').html(studentName);
 
         var footerModal = `<div class="modal-footer justify-content-between">\
         <div>\
-        <button class="btn btn-danger" data-dismiss="modal" onclick="viewDelete()">Hapus</button>\
+        <button class="btn btn-link text-grey-6" data-dismiss="modal" onclick="viewDelete()">Hapus</button>\
         </div>\
         <div>\
         <button class="btn btn-link" data-dismiss="modal">Batal</button>\
@@ -295,8 +296,8 @@
         if (scheduleFinish) {
             $('#choice-2').prop('checked', true);
             $('#choice-2-panel').show();
-            $('#expiry_date').val(moment(scheduleFinish).format("DD/MM/YYYY"));
-            $('#expiry_time').val(moment(scheduleFinish).format("HH:mm"));
+            $('#expiry_date').val(moment.parseZone(scheduleFinish).format("DD/MM/YYYY"));
+            $('#expiry_time').val(moment.parseZone(scheduleFinish).format("HH:mm"));
         }
 
         if (token) {
@@ -426,11 +427,11 @@
                     $('#createAssgin').prop('disabled', false);
                     $('#createAssgin').html('Tugaskan');
                     $('#choice-1').prop('checked', false);
-                    $('#choice-1-panel').show();
+                    $('#choice-1-panel').hide();
                     $('#choice-2').prop('checked', false);
-                    $('#choice-2-panel').show();
+                    $('#choice-2-panel').hide();
                     $('#choice-0').prop('checked', false);
-                    $('#choice-0-panel').show();
+                    $('#choice-0-panel').hide();
                     $('#token').val("");
                     $('#start_date').val("");
                     $('#start_time').val("");
@@ -442,11 +443,11 @@
                     $('#createAssgin').prop('disabled', false);
                     $('#createAssgin').html('Tugaskan');
                     $('#choice-1').prop('checked', false);
-                    $('#choice-1-panel').show();
+                    $('#choice-1-panel').hide();
                     $('#choice-2').prop('checked', false);
-                    $('#choice-2-panel').show();
+                    $('#choice-2-panel').hide();
                     $('#choice-0').prop('checked', false);
-                    $('#choice-0-panel').show();
+                    $('#choice-0-panel').hide();
                     $('#token').val("");
                     $('#start_date').val("");
                     $('#start_time').val("");
@@ -486,11 +487,11 @@
                 $('#deleteAssgin').html('Hapus');
                 $('#deleteSchecule').modal('hide');
                 $('#choice-1').prop('checked', false);
-                $('#choice-1-panel').show();
+                $('#choice-1-panel').hide();
                 $('#choice-2').prop('checked', false);
-                $('#choice-2-panel').show();
+                $('#choice-2-panel').hide();
                 $('#choice-0').prop('checked', false);
-                $('#choice-0-panel').show();
+                $('#choice-0-panel').hide();
                 $('#token').val("");
                 $('#start_date').val("");
                 $('#start_time').val("");
@@ -557,11 +558,11 @@
                     $('#updateAssign').prop('disabled', false);
                     $('#updateAssign').html('Simpan');
                     $('#choice-1').prop('checked', false);
-                    $('#choice-1-panel').show();
+                    $('#choice-1-panel').hide();
                     $('#choice-2').prop('checked', false);
-                    $('#choice-2-panel').show();
+                    $('#choice-2-panel').hide();
                     $('#choice-0').prop('checked', false);
-                    $('#choice-0-panel').show();
+                    $('#choice-0-panel').hide();
                     $('#token').val("");
                     $('#start_date').val("");
                     $('#start_time').val("");
@@ -573,11 +574,11 @@
                     $('#updateAssign').prop('disabled', false);
                     $('#updateAssign').html('Simpan');
                     $('#choice-1').prop('checked', false);
-                    $('#choice-1-panel').show();
+                    $('#choice-1-panel').hide();
                     $('#choice-2').prop('checked', false);
-                    $('#choice-2-panel').show();
+                    $('#choice-2-panel').hide();
                     $('#choice-0').prop('checked', false);
-                    $('#choice-0-panel').show();
+                    $('#choice-0-panel').hide();
                     $('#token').val("");
                     $('#start_date').val("");
                     $('#start_time').val("");
