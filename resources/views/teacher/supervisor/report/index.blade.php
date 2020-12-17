@@ -175,6 +175,7 @@
     var studentData = [];
     var reportType = "{{ $reportType }}";
     var subject_id = "{{$subject['id']}}";
+    var assessment_group_id = "{{ $assessmentGroupValue }}";
 
     function dataIndex() {
         var colspan = 6;
@@ -201,6 +202,7 @@
         }
         data = {
             student_group_id,
+            assessment_group_id,
             subject_id,
             reportType,
             colspan

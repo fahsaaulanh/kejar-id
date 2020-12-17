@@ -186,7 +186,7 @@
     <script src="{{ asset('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
     <script src="{{ asset('assets/plugins/clockpicker/jquery-clockpicker.min.js')}}"></script>
     <script>
-
+        var assessment_group_id = "{{$assessmentGroupId}}";
         var durationVal = "{{$assessments[0]['duration']}}";
 
         $(".datepicker").datepicker({
@@ -224,6 +224,7 @@
                 data = {
                     student_group_id,
                     subject_id,
+                    assessment_group_id,
                     check: 'schedule'
                 };
 
