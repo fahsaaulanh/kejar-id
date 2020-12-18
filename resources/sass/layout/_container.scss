@@ -34,4 +34,10 @@
     place-items: center;
 }
 
+.drawer-skeleton {
+    display: block;
 
+    @media screen and (max-width: $mobile-breakpoint) {
+        display: none !important;
+    }
+}

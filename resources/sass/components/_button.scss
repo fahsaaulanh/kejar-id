@@ -435,6 +435,27 @@
     .kejar-exit {
         color: #ffffff;
     }
+
+    @media screen and (max-width: 576px) {
+        display: none;
+    }
+}
+
+.assesment-timer {
+    display: flex;
+    align-items: center;
+
+    @media screen and (max-width: 400px) {
+        display: none;
+    }
+}
+
+.assesment-timer-dropdown {
+    display: none;
+
+    @media screen and (max-width: 400px) {
+        display: flex;
+    }
 }
 
 .assesment-btn-question {
@@ -459,7 +480,7 @@
     i {
         display: block !important;
         font-size: 1.6rem !important;
-        margin-top: 0.2rem !important;
+        // margin-top: 0.2rem !important;
 
         &:before {
             color: $grey-3;
@@ -468,7 +489,7 @@
     }
 
     &:hover {
-        background: $purple-2;
+        background: $grey-10;
     }
 }
 
@@ -482,8 +503,8 @@
     align-items: center;
     border-radius: 0;
     border-width: 0;
-    color: $green;
-    background: $green-5;
+    color: $white;
+    background: $green-2;
 
     i {
         display: block !important;
@@ -491,13 +512,13 @@
         margin-top: 0.2rem !important;
 
         &:before {
-            color: $green;
+            color: $white;
             font-size: 2rem;
         }
     }
 
     &:hover {
-        background: $green-2;
+        background: $dark-green;
         color: $white;
 
         i {
@@ -550,7 +571,7 @@
 
     &:hover {
         color: $white;
-        background: $green-2;
+        background: $green;
 
         i {
             &:before {

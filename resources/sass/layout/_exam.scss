@@ -71,7 +71,54 @@
     height: calc(100vh - 40px);
     max-height: 100vh;
     overflow: auto;
+    display: block;
     scrollbar-width: 2px;
+
+    #close {
+        margin-right: 0.8rem;
+        margin-top: 0.2rem;
+    }
+
+    #close:hover {
+        background-color: $grey-10;
+    }
+
+    i:before {
+        color: $black;
+        font-size: 1.6rem;
+    }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+        display: none;
+
+        #close {
+            display: block;
+        }
+    }
+
+    @media screen and (max-width: $tablet-breakpoint) {
+        display: none;
+
+        #close {
+            display: block;
+        }
+    }
+
+    @media screen and (max-width: $desktop-breakpoint) {
+        display: none;
+
+        #close {
+            display: block;
+        }
+    }
+
+    @media screen and (min-width: $desktop-breakpoint) {
+        display: block;
+
+        #close {
+            display: none;
+        }
+    }
 }
 
 .list-number {

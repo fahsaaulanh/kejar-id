@@ -13,6 +13,7 @@ class LoginController extends Controller
     {
         if ($request->session()->has('token')) {
             $user = $request->session()->get('user', null);
+
             $message = $request->session()->get('message', null);
 
             if ($user === null) {
@@ -84,7 +85,7 @@ class LoginController extends Controller
                 $status = $response['status'] === 200;
 
                 $responseMe['data']['PasswordMustBeChanged'] = $status;
-                $responseMe['data']['changePhotoOnBoarding'] = !$photoExist;
+                $responseMe['data']['changePhotoOnBoarding'] = false;
 
                 $request->session()->put('user', $responseMe['data']);
 
@@ -113,7 +114,7 @@ class LoginController extends Controller
                 $status = $response['status'] === 200;
 
                 $responseMe['data']['PasswordMustBeChanged'] = $status;
-                $responseMe['data']['changePhotoOnBoarding'] = !$photoExist;
+                $responseMe['data']['changePhotoOnBoarding'] = false;
 
                 $request->session()->put('user', $responseMe['data']);
 

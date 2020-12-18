@@ -10,7 +10,7 @@
     <div class="bg-lego">
         <div class="container-center">
             <div>
-                <h1 class="brand-hero">Kejar Matrikulasi</h1>       
+                <h1 class="brand-hero">Kejar.id</h1>
                 <form class="card-384" action="{{ url('/login') }}" method="POST">
                     @csrf
                     <div class="form-group">

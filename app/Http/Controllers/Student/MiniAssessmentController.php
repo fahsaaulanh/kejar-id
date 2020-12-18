@@ -589,12 +589,12 @@ class MiniAssessmentController extends Controller
     }
     // End Of API Function
 
-    public function close()
+    public function close($assessment_group_id)
     {
         $this->request->session()->remove('task');
         $this->request->session()->remove('answers');
 
-        return redirect('/student/dashboard');
+        return redirect("/student/$assessment_group_id/subjects");
     }
 
     // Print Pdf

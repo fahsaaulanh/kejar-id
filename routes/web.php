@@ -372,7 +372,6 @@ Route::middleware('session')->group(function () {
             Route::get('/', 'HomeController@index');
 
             Route::prefix('/assessment')->group(function () {
-                Route::get('/close', 'Student\MiniAssessmentController@close')->name('close');
                 Route::get('/{assessment_group_id}/subjects', 'Student\MiniAssessmentController@index');
                 Route::get(
                     '/{assessment_group_id}/subjects/{subject_id}/onboarding',
@@ -381,6 +380,10 @@ Route::middleware('session')->group(function () {
                 Route::get(
                     '/{assessment_group_id}/subjects/{subject_id}/exam',
                     'Student\MiniAssessmentController@exam',
+                );
+                Route::get(
+                    '/{assessment_group_id}/subjects/{subject_id}/close',
+                    'Student\MiniAssessmentController@close',
                 );
 
                 // Route For Call API
