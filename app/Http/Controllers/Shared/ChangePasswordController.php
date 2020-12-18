@@ -65,7 +65,7 @@ class ChangePasswordController extends Controller
             $checkPhoto = session()->get('user.userable.photo');
 
             if (!$checkPhoto) {
-                Session::flash('user.changePhotoOnBoarding', true);
+                Session::flash('user.changePhotoOnBoarding', false);
             }
 
             $request->session()->put('user.PasswordMustBeChanged', false);

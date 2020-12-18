@@ -48,7 +48,7 @@
     <div class="row">
         <div class="col-md-6">
             @foreach ($collected as $t)
-            @if (($loop->index + 1) <= $divider && !is_array($t['answer'])) <div class="row px-4 mt-4">
+            @if (($loop->index + 1) <= $divider) <div class="row px-4 mt-4">
                 <div class="pts-number text-grey-3">{{ $loop->index + 1 }}</div>
                 @php
                 $answerId = $t['id'];
@@ -76,7 +76,7 @@
     </div>
     <div class="col-md-6">
         @foreach ($collected as $t)
-        @if (($loop->index + 1) > $divider && !is_array($t['answer']))
+        @if (($loop->index + 1) > $divider)
         <div class="row px-4 mt-4">
             <div class="pts-number text-grey-3">{{ $loop->index + 1 }}</div>
             @php
@@ -164,11 +164,12 @@
 
     $('#skip-download').on('click', function() {
         $('#downloadAnswerSheet').modal('hide');
-        $('#studentNote').modal({
-            backdrop: 'static',
-            keyboard: false,
-            show: true,
-        });
+        $('#checkAnswerSheet').modal('show');
+        // $('#studentNote').modal({
+        //     backdrop: 'static',
+        //     keyboard: false,
+        //     show: true,
+        // });
         doneCheckAnswer = true;
     });
 
@@ -208,7 +209,11 @@
     $('#download-answer').on('click', function(e) {
         // Function Agung in Here
         e.preventDefault();
+        const defaultCaption = $('#download-answer').html();
         $('#download-answer').html('Tunggu...');
+        $('#download-answer').attr('disabled', true);
+        $('#skip-download').attr('disabled', true);
+        $('#downloadAnswerSheet .close').attr('disabled', true);
 
         //set delay to let session store first, note : delay only estimate
         setTimeout(function() {
@@ -219,6 +224,10 @@
             a.click();
 
             setTimeout(function() {
+                $('#download-answer').html(defaultCaption);
+                $('#download-answer').removeAttr('disabled');
+                $('#skip-download').removeAttr('disabled');
+                $('#downloadAnswerSheet .close').removeAttr('disabled');
                 $('#downloadAnswerSheet').modal('hide');
                 $('#checkAnswerSheet').modal('show');
             }, 2000)
@@ -249,9 +258,9 @@
     });
 
     $('#simpan-note').on('click', function() {
-        $('#studentNote').modal('hide');
-        $('#success').modal('show');
-        editNote($(this));
+        const noteStudent = $.trim($("#noteStudent").val());
+        setDataToStorage('enc_n', noteStudent);
+        submitTask($(this));
     });
 
     $('#lanjut-time-up').on('click', function() {
@@ -462,12 +471,12 @@
         });
     }
 
-    function finish(component) {
+    async function submitTask(component) {
         const url = "{!! URL::to('/student/assessment/service/finish') !!}";
 
-        const htmlSpinner = `Tunggu...`;
+        const htmlSelesai = 'Simpan dan Selesai';
 
-        const htmlSelesai = 'Kumpulkan Jawaban';
+        const htmlSpinner = `Tunggu...`;
 
         $.ajax({
             url,
@@ -484,32 +493,48 @@
                 component.removeAttr('disabled');
             },
             success: function(response) {
-                component.html(htmlSelesai);
-                component.removeAttr('disabled');
-
-                $('#timeRemaining').modal('hide');
-                $('#timeUp').modal('hide');
-                $('#downloadAnswerSheet').modal({
-                    backdrop: 'static',
-                    keyboard: false,
-                    show: true,
-                });
-                doneSuccess = true;
-                doneDownloadAnswer = true;
-
+                editNote(component);
                 return;
             }
         });
     }
 
-    function editNote(component) {
-        const url = "{!! URL::to('/student/assessment/service/edit_note') !!}";
+    function finish(component) {
+        const url = "{!! URL::to('/student/assessment/service/finish') !!}";
 
         const htmlSpinner = `Tunggu...`;
 
-        const htmlSelesai = 'Simpan dan Selesai';
+        const htmlSelesai = 'Kumpulkan Jawaban';
 
-        const noteStudent = $.trim($("#noteStudent").val());
+        component.html(htmlSelesai);
+        component.removeAttr('disabled');
+
+        $('#timeRemaining').modal('hide');
+        $('#timeUp').modal('hide');
+        $('#downloadAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
+
+        doneSuccess = true;
+        doneDownloadAnswer = true;
+    }
+
+    async function editNote(component) {
+        const url = "{!! URL::to('/student/assessment/service/edit_note') !!}";
+
+        const htmlSpinner = `Tunggu...`;
+        const htmlSelesai = 'Simpan dan Selesai';
+        const noteStudent = getDataFromStorage('enc_n') || null;
+
+        if (noteStudent !== null) {
+            $('#note-student').html(noteStudent);
+            $('#note-student').removeClass('text-gray');
+        } else {
+            $('#note-student').html('Tidak ada catatan.');
+            $('#note-student').addClass('text-gray');
+        }
 
         $.ajax({
             url,
@@ -530,16 +555,42 @@
             success: function(response) {
                 component.html(htmlSelesai);
                 component.removeAttr('disabled');
+
                 if (response.status === 200 && response.data.student_note !== null) {
                     $('#success').modal('show');
                     $('#studentNote').modal('hide');
-                    return;
                 } else {
                     $('#success').modal('show');
-                    $('#form-note').show();
+                    $('#studentNote').modal('hide');
                 }
+
+                localStorage.removeItem('enc_n');
             }
         });
+    }
+
+    function setDataToStorage(key, data) {
+        if (typeof window !== 'undefined') {
+            const encodedData = JSON.stringify(data);
+            const encryptedText = window.aes.encrypt(encodedData, 'mini_assessment').toString();
+            localStorage.setItem(key, encryptedText);
+        }
+    }
+
+    function getDataFromStorage(key) {
+        if (typeof window !== 'undefined') {
+            const encryptedText = localStorage.getItem(key) || null;
+
+            if (!encryptedText) {
+                return null;
+            }
+
+            const encUtf8 = window.enc;
+            const decryptedText = window.aes.decrypt(encryptedText, 'mini_assessment').toString(encUtf8);
+            const decodedData = JSON.parse(decryptedText);
+
+            return decodedData;
+        }
     }
 </script>
 @endpush

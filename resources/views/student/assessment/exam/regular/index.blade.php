@@ -30,7 +30,10 @@
     </div>
     @else
     <div id="drawer" class="drawer-exam-row d-flex-column">
-        <div class="row m-0 pl-5">
+        <div class="row m-0 pl-5 align-items-center">
+            <div id="close" role="button" onclick="toggleDrawer()">
+                <i class="kejar-left font-20 text-black"></i>
+            </div>
             <h5>Daftar Soal</h5>
         </div>
         <div class="container-list-number-row">
@@ -39,7 +42,10 @@
                 <div class="text-grey-3">
                     Soal {{ $loop->index + 1 }}
                 </div>
-                <div>
+                <div id="spinner-{{ $loop->index }}" class="spinner-border spinner-border-small ml-8 text-grey-3" style="display:none">
+                    <span class="sr-only"></span>
+                </div>
+                <div id="answered-{{ $loop->index }}" style="display:none">
                     <i class="kejar-sudah-dikerjakan-outline text-grey-3"></i>
                 </div>
             </div>
@@ -50,11 +56,11 @@
     <div class="content-exam">
         <div>
             <div class="assesment-btn-question" role="button" onclick="toggleDrawer()">
-                <i class="kejar-right"></i>
+                <i class="kejar-right text-black"></i>
                 <h5>Lihat Daftar Soal</h5>
             </div>
         </div>
-        <div>
+        <div id="question-counter">
             <h4>SOAL <span id="current">1</span> <span class="text-grey-6">/ {{ count($task['assessment']['questions']) }}</span></h4>
         </div>
         <div id="question" class="assessment-question pt-2">
@@ -65,7 +71,7 @@
             <!-- Let it Empty -->
         </div>
 
-        <div class="row m-0 content-footer">
+        <div id="question-buttons" class="row m-0 content-footer">
             <div class="row px-4 mt-9">
                 <button id="prev" class="assesment-btn-before mr-4" onclick="prevQuestion()">
                     <i class="kejar-arrow-left"></i>
@@ -80,7 +86,6 @@
 
     </div>
 </div>
-@endsection
 
 @include('student.assessment.exam._time_up')
 @include('student.assessment.exam._time_running_out')
@@ -89,7 +94,10 @@
 @include('student.assessment.exam._missing_answer')
 @include('student.assessment.exam._download_answer_sheet')
 @include('student.assessment.exam._check_answer_sheet')
+@include('student.assessment.exam._check_loading')
 @include('student.assessment.exam._student_note')
+@endsection
+
 
 @push('script')
 <script>
@@ -108,15 +116,23 @@
 
     this.sendToServer = _.debounce(this.sendToServer, 1500);
 
-    if (question === null || answers === null) {
-        getQuestions();
-    } else {
-        initNumber();
-    }
+    // Quick Fix: If Answer doesn't Appear as expected just refresh the page.
+    getQuestions();
+
+    // Todo: Enable This Again
+    // if (question === null || answers === null) {
+    //     getQuestions();
+    // } else {
+    //     initNumber();
+    // }
 
     startTimer();
 
     $('#assessment-done').on('click', function() {
+        checkAnswer();
+    });
+
+    $('#assessment-done-dropdown').on('click', function() {
         checkAnswer();
     });
 
@@ -156,7 +172,11 @@
     $('#download-answer').on('click', function(e) {
         // Function Agung in Here
         e.preventDefault();
+        const defaultCaption = $('#download-answer').html();
         $('#download-answer').html('Tunggu...');
+        $('#download-answer').attr('disabled', true);
+        $('#skip-download').attr('disabled', true);
+        $('#downloadAnswerSheet .close').attr('disabled', true);
 
         //set delay to let session store first, note : delay only estimate
         setTimeout(function() {
@@ -167,6 +187,10 @@
             a.click();
 
             setTimeout(function() {
+                $('#download-answer').html(defaultCaption);
+                $('#download-answer').removeAttr('disabled');
+                $('#skip-download').removeAttr('disabled');
+                $('#downloadAnswerSheet .close').removeAttr('disabled');
                 $('#downloadAnswerSheet').modal('hide');
                 $('#checkAnswerSheet').modal('show');
             }, 2000)
@@ -197,7 +221,6 @@
     });
 
     $('#simpan-note').on('click', function() {
-        $('#studentNote').modal('hide');
         const noteStudent = $.trim($("#noteStudent").val());
         setDataToStorage('enc_n', noteStudent);
         submitTask($(this));
@@ -235,6 +258,7 @@
             const timerString = `${hourString}:${minuteString}:${secondString}`;
             $('#timer').html(timerString);
             $('#timer-bottom').html(timerString);
+            $('#timer-dropdown').html(timerString);
 
             // if duration only 5 more minutes
             if (duration < 300000 && !modalRunningOutHasShown && duration > 0) {
@@ -272,29 +296,31 @@
 
             if (current !== null) {
                 setQuestion(current);
+                initAnsweredQuestionBox();
                 return;
             }
 
             localStorage.setItem('current', 0);
             setQuestion(0);
+            initAnsweredQuestionBox();
         }
     }
 
     function toggleDrawer() {
-        var x = document.getElementById("drawer");
-        if (x.style.display === "none") {
-            x.style.display = "block";
+        var x = $("#drawer");
+        if (x.is(':hidden')) {
+            x.show();
         } else {
-            x.style.display = "none";
+            x.hide();
         }
     }
 
     function myFunction() {
-        var medScreen = window.matchMedia("(max-width: 1200px)")
+        var medScreen = window.matchMedia("(min-width: 1024px)")
 
         if (typeof window !== 'undefined') {
             if (medScreen.matches === true) { // If media query matches
-                toggleDrawer();
+                $("#drawer").show();
             }
         }
     }
@@ -305,12 +331,10 @@
             const current = parseInt(localStorage.getItem('current'), 10) || 0;
 
             if (current >= total) {
-                localStorage.setItem('current', total - 1);
                 setQuestion(total - 1);
                 return;
             }
 
-            localStorage.setItem('current', current + 1);
             setQuestion(current + 1);
         }
     }
@@ -320,12 +344,10 @@
             const current = parseInt(localStorage.getItem('current'), 10) || 0;
 
             if (current < 0) {
-                localStorage.setItem('current', 0);
                 setQuestion(0);
                 return;
             }
 
-            localStorage.setItem('current', current - 1);
             setQuestion(current - 1);
         }
     }
@@ -348,6 +370,9 @@
             crossDomain: true,
             beforeSend: function() {
                 $('#question').html(loadingSkeleton());
+                $('#question-buttons').hide();
+                $('#question-counter').hide();
+                $('#drawer').hide();
                 $('#choices').html('');
             },
             error: function(error) {
@@ -363,6 +388,13 @@
                 setDataToStorage('enc_q', questions);
                 setDataToStorage('enc_a', answers);
                 initNumber();
+                $('#question-counter').show();
+                $('#question-buttons').show();
+
+                var medScreen = window.matchMedia("(min-width: 1200px)")
+                if (medScreen.matches) {
+                    $('#drawer').show();
+                }
             }
         });
     }
@@ -370,7 +402,7 @@
     function setQuestion(index) {
         const parsedIndex = parseInt(index, 10);
         const total = questions.length;
-        const current = parseInt(localStorage.getItem('current'), 10) || null;
+        localStorage.setItem('current', parsedIndex);
 
         const currentNum = parsedIndex + 1;
         $('#next').removeAttr('disabled');
@@ -379,10 +411,8 @@
         $('#prev').removeClass('disabled');
 
         if (currentNum >= total) {
-            // $('#next').attr('disabled', true);
             $('#next').html('Selesai');
             $('#next').attr('onclick', "checkAnswer()");
-            // $('#next').addClass('disabled');
         } else {
             $('#next').html(defaultNext);
             $('#next').attr('onclick', "nextQuestion()");
@@ -426,25 +456,38 @@
         $('#choices').html(choicesView);
     }
 
-    async function sendToServer() {
+    async function sendToServer(questionIndex) {
         const keys = Object.keys(promises);
         const newPromises = keys.map((key) => promises[keys]);
         const responses = await Promise.all(newPromises);
+
+        $("#spinner-" + questionIndex).hide();
+        $("#answered-" + questionIndex).show();
+
         promises = {};
     }
 
     async function debounceAnswer(key, index, questionIndex) {
+        const question = questions[questionIndex];
+
+        if (key === answers[question.id]['answer']) {
+            return;
+        };
+
         for (let i = 0; i < 10; i++) {
             $(`#choice-${i}`).removeClass('active')
         }
         $(`#choice-${index}`).addClass('active')
 
-        const question = questions[questionIndex];
         answers[question.id]['answer'] = key;
         setDataToStorage('enc_a', answers);
 
+        $("#answered-" + questionIndex).hide();
+        $("#spinner-" + questionIndex).show();
+        $("#spinner-" + questionIndex + '-' + 'done').hide()
+
         promises[questionIndex] = await answer(key, index, questionIndex);
-        sendToServer();
+        sendToServer(questionIndex);
     }
 
     async function answer(key, index, questionIndex) {
@@ -489,8 +532,7 @@
         const url = "{!! URL::to('/student/assessment/service/check') !!}";
 
         const htmlSpinner = `Tunggu...`;
-
-        const htmlSelesai = $('#done').html();
+        const htmlSelesai = $('#next').html();
 
         $.ajax({
             url,
@@ -499,18 +541,14 @@
             dataType: 'json',
             crossDomain: true,
             beforeSend: function() {
-                $('#done').html(htmlSpinner);
-                $('#done').attr('disabled', 'true');
+                $('#checkLoading').modal('show');
             },
             error: function(error) {
-                $('#done').html(htmlSelesai);
-                $('#done').removeAttr('disabled');
+                $('#checkLoading').modal('hide');
             },
             success: function(response) {
-                $('#done').html(htmlSelesai);
-                $('#done').removeAttr('disabled');
                 if (response.error === false) {
-
+                    $('#checkLoading').modal('hide');
                     if (response.unanswered === 0) {
                         $('#timeRemaining').modal('show');
                         return;
@@ -604,7 +642,30 @@
     function loadingSkeleton() {
         return `
         <div class="ph-item border-0 px-0 pb-0 pt-2">
-            <div class="ph-col-12 px-0 pb-0 pt-2">
+            <div class="ph-col-2 px-0 pb-0 drawer-skeleton">
+                <div class="ph-row">
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                    <div class="ph-col-12 empty"></div>
+                    <div class="ph-col-6"></div>
+                </div>
+            </div>
+            <div class="ph-col-10 px-0 pb-0 pt-2">
                 <div class="ph-row">
                     <div class="ph-col-4"></div>
                     <div class="ph-col-10"></div>
@@ -653,6 +714,39 @@
             const decodedData = JSON.parse(decryptedText);
 
             return decodedData;
+        }
+    }
+
+    function initAnsweredQuestionBox() {
+        if (questions.length <= 20) {
+            questions.forEach((q, index) => {
+                const answer = answers[q.id]['answer'] || null;
+                const isChecked = $(`#answered-${index}`).is(':visible');
+
+                console.log({ isChecked });
+
+                if (answer !== null && !isChecked) {
+                    $(`#answered-${index}`).show();
+                }
+            });
+        }
+    }
+
+    function setAnsweredBox(index) {
+        if (questions.length <= 20) {
+            const q = questions[index];
+            const answer = answers[q.id]['answer'] || null;
+            const base = $(`#num-${index}`).html();
+            const extend = `
+                <div>
+                    <i class="kejar-sudah-dikerjakan-outline text-grey-3"></i>
+                </div>
+            `;
+            const isChecked = base.includes(extend);
+
+            if (answer !== null && !isChecked) {
+                $(`#num-${index}`).html(`${base}${extend}`);
+            }
         }
     }
 

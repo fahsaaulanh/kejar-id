@@ -12,6 +12,7 @@
                     <div class="col-12">
                         <p class="font-15">Masih ada jawaban yang belum diisi. Semangat! Periksa kembali jawabanmu.</p>
                         <!-- <p class="font-15">Apabila semua jawaban sudah terisi dan pesan ini muncul, sistem sedang melakukan penyimpanan. Tutup jendela, tunggu beberapa saat, dan klik Selesai sekali lagi.<p> -->
+                        <p class="font-15">Apabila semua jawaban sudah terisi dan pesan ini muncul, silahkan refresh terlebih dahulu.<p>
                     </div>
                 </div>
             </div>

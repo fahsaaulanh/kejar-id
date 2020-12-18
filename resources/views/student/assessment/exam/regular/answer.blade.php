@@ -195,7 +195,7 @@
                     <td align="right" style="width: 40%;">
                         <div class="box">
                             <div class="font-2 color-black pb-6">{{ $userable['name'] }}</div>
-                            <div class="font-3 color-grey">{{ $userable['nis'] }} | {{ $userable['class_name'] }}</div>
+                            <div class="font-3 color-grey">{{ $userable['nis'] }} | {{ $userable['student_group']['name'] }}</div>
                         </div>
                     </td>
                 </tr>
@@ -246,7 +246,7 @@
                         <div class="font-1 color-grey-5">Halaman {{ $i + 1 }} dari {{ $page }}</div>
                     </td>
                     <td align="right" style="width: 70%;">
-                        <div class="font-1 color-grey-5"><i>{{ $userable['name'] }} ({{ $userable['nis'] }}, {{ $userable['class_name'] }})</i></div>
+                        <div class="font-1 color-grey-5"><i>{{ $userable['name'] }} ({{ $userable['nis'] }}, {{ $userable['student_group']['name'] }})</i></div>
                         <div class="font-1 color-grey-5"><i>Diunduh pada pukul {{ $time ?? '' }}, {{ $date ?? '' }} dari Kejar.id.</i></div>
                     </td>
                 </tr>

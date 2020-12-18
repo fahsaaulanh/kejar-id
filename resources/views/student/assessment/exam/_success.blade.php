@@ -22,7 +22,13 @@
             <div class="modal-footer justify-content-end">
                 <div>
                     <button type="button" id="edit-note" class="btn btn-link">Edit Catatan</button>
-                    <a href="/student/assessment/close"><button type="button" class="btn btn-primary" id="tutup-success">Tutup</button></a>
+                    @php
+                        $url = Request::url();
+                        $url = str_replace('exam', 'close', $url);
+                    @endphp
+                    <a href="{{ $url }}">
+                        <button type="button" class="btn btn-primary" id="tutup-success">Tutup</button>
+                    </a>
                 </div>
             </div>
         </div>
