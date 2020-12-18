@@ -32,7 +32,9 @@
                                 <div class="check-group row">
                                     <input type="checkbox" onchange="modalAssignShowChoicePanel(0)" id="choice-0" value="1" class="col-1 mt-2">
                                     <label for="choice-0" class="col pl-0">
-                                    Penilaian hanya dapat dibuka dengan <b>token</b> yang diberikan secara manual oleh guru/pengawas.
+                                        <p class="mb-0">
+                                            Penilaian hanya dapat dibuka dengan <b>token</b> yang diberikan secara manual oleh guru/pengawas.
+                                        </p>
                                     </label>
                                 </div>
                             </div>
@@ -58,7 +60,9 @@
                             <div class="check-group row">
                                 <input type="checkbox" onchange="modalAssignShowChoicePanel(1)" id="choice-1" value="1" class="col-1 mt-2">
                                 <label for="choice-1" class="col pl-0">
-                                    Penilaian hanya dapat dikerjakan <b>mulai dari</b> waktu tertentu.
+                                    <p class="mb-0">
+                                        Penilaian hanya dapat dikerjakan <b>mulai dari</b> waktu tertentu.
+                                    </p>
                                 </label>
                             </div>
                         </div>
@@ -90,7 +94,9 @@
                             <div class="check-group row">
                                 <input type="checkbox" onchange="modalAssignShowChoicePanel(2)" id="choice-2" value="1" class="col-1 mt-2">
                                 <label for="choice-2" class="col pl-0">
-                                Penilaian hanya dapat dikerjakan <b>sampai dengan</b> tanggal dan waktu tertentu.
+                                    <p class="mb-0">
+                                        Penilaian hanya dapat dikerjakan <b>sampai dengan</b> tanggal dan waktu tertentu.
+                                    </p>
                                 </label>
                             </div>
                         </div>
@@ -246,7 +252,8 @@
                     return response.json();
                 })
                 .then(function(data) {
-                    if(data.data){
+                    if(data.data.length > 0){
+                        console.log('ada data');
                         var checked = '';
                         if ($('#schedule-check-all-'+student_group_id).is(':checked')) {
                             checked = ' checked';
@@ -265,14 +272,13 @@
                                 <input name="student_data[]" type="checkbox" \
                                 id="schedule-student-check-'+value.name+'" '+checked+' value="'+value.id+'"\
                                 onclick="countStudents('+student_group_id_val+')"\
-                                class="ml-1 unCheckedData students_group-'+student_group_id+'" checked></td>';
+                                class="ml-1 unCheckedData students_group-'+student_group_id+'"></td>';
                             }
                                 html += '<td width="50%"><label for="schedule-student-check-'+value.name+'">'+value.name+'</label></td>';
                                 html += '<td><label for="schedule-student-check-'+value.name+'">'+value.nis+'</label></td>';
                             html += '</tr>';
                         });
 
-                        $('#schedule-check-all-'+student_group_id).prop('checked', true);
                         $("#collapseStudents-"+student_group_id).empty();
                         $("#collapseStudents-"+student_group_id).append(html);
                         $("#students-loading-"+student_group_id).remove();
@@ -280,6 +286,7 @@
                             countStudents(student_group_id);
                         }
                     }else{
+                        console.log('gaada data');
                         $("#schedule-check-all-"+student_group_id).remove();
                         $("#students-loading-"+student_group_id).html("<center>Tidak ada data<center>");
                     }
@@ -372,12 +379,27 @@
                         }
                     }
 
+                    if ($('#choice-1').is(':checked') && $('#choice-2').is(':checked')) {
+                        var start_dateFormat = moment($('#start_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+                        var start_date = start_dateFormat+' '+$('#start_time').val();
+
+                        var expiry_dateFormat = moment($('#expiry_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+                        var expiry_date = expiry_dateFormat+' '+$('#expiry_time').val();
+
+                        if (start_date >= expiry_date) {
+                            alert('Waktu tidak sesuai, silahkan diperbaiki.');
+                            return;
+                        }
+
+                    }
+
                 }
+
                 if (valid) {
                     $(".assignStudentsModalSection").modal('hide');
                     $("#assignStudentsModal-"+val).modal('show');
                 }else{
-                    alert('silahkan lengkapi data');
+                    alert('Silahkan lengkapi data.');
                 }
             }else if(val === 3){
                 $(".assignStudentsModalSection").modal('hide');
