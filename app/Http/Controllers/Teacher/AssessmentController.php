@@ -1216,7 +1216,6 @@ class AssessmentController extends Controller
             $html .= '<div class="row">';
             $html .= '<div class="col-1 ml-1">';
             $html .= '<input type="checkbox" data-toggle="collapse"
-                                    data-target="#collapseStudents-' . $v['id'] . '"
                                     aria-expanded="true" aria-controls="collapseStudents-' . $v['id'] . '"
                                     id="schedule-check-all-' . $v['id'] . '"
                                     onclick="selectAllStudents(' . $idVal . ')"

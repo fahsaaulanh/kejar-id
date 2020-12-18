@@ -15,15 +15,15 @@
                         <div class="form-group">
                             <label for="title" class="font-weight-bold mb-3">Pilih Rombel atau Siswa</label>
                             <div class="form-check row ml-1">
-                                <input class="form-check-input col-1" name="choice-Assign" type="radio" id="choice-Assign1" value="1" checked>
-                                <label class="form-check-label col" for="choice-Assign1">
-                                    Pilih Rombel
+                                <input class="form-check-input col-1 mt-1" name="choice-Assign" type="radio" id="choice-Assign1" value="1" checked>
+                                <label class="form-check-label col ml-2 pt-0" for="choice-Assign1">
+                                    <p class="mb-0">Pilih Rombel</p>
                                 </label>
                             </div>
                             <div class="form-check row mt-3 ml-1">
-                                <input class="form-check-input col-1" name="choice-Assign" type="radio" id="choice-Assign2" value="1">
-                                <label class="form-check-label col" for="choice-Assign2">
-                                    Pilih Siswa
+                                <input class="form-check-input col-1 mt-1" name="choice-Assign" type="radio" id="choice-Assign2" value="1">
+                                <label class="form-check-label col ml-2 pt-0" for="choice-Assign2">
+                                    <p class="mb-0">Pilih Siswa</p>
                                 </label>
                             </div>
                         </div>
@@ -130,22 +130,24 @@
                     <i class="kejar kejar-close"></i>
                 </button>
             </div>
-            <div class="modal-body ml-4 mr-4" style="max-height: 500px; overflow-x:hidden">
+            <div class="modal-body" style="max-height: 500px; overflow-x:hidden">
                 <div class="row">
                     <div class="col-12">
                         <h5>Pilih Siswa</h5>
-                        <p>Siswa yang dipilih akan mendapatkan rekomendasi/tugas untuk mengerjakan penilaian.</p>
+                        <p class="mb-0">Siswa yang dipilih akan mendapatkan rekomendasi/tugas untuk mengerjakan penilaian.</p>
                     </div>
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-12">
-                        <textarea class="form-control" id="NISTextarea" placeholder="Ketik nama atau NIS siswa" rows="5"></textarea>
+                        <form>
+                            <textarea class="form-control" id="NISTextarea" placeholder="Ketik nama atau NIS siswa" rows="5"></textarea>
+                        </form>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <small class="text-muted">Copy paste NIS siswa, pisahkan dengan koma.</small>
+                        <p class="text-muted mt-2 mb-0">Copy paste NIS siswa, pisahkan dengan koma.</p>
                     </div>
                 </div>
             </div>
