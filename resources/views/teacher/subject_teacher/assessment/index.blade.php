@@ -163,7 +163,13 @@
                 </div>
             </div>
             <div class="tab-pane fade show active" id="packgae" role="tabpanel" aria-labelledby="packgae-tab">
-                <div class="row mt-8">
+                @if($newestPackStatus !== "" && $type === "MINI_ASSESSMENT")
+                <div class="answer-note text-grey-3 mt-8" id="answer_status">
+                    Input semua paket soal beserta kunci jawabannya sebelum menugaskan siswa.
+                </div>
+                @endif
+
+                <div class="row mt-8 mb-3 align-items-center">
                     <div class="col">
                         <h3>Pengaturan</h3>
                     </div>
@@ -191,8 +197,23 @@
                     </div>
                 </div>
 
+                @if(count($questions) > 0 && $type === "MINI_ASSESSMENT")
+                <div class="row">
+                    <div class="col">
+                        <h5>Banyaknya Soal</h5>
+                        <h5 class="text-reguler">{{count($questions).' soal'}}</h5>
+                    </div>
+                    <div class="col">
+                        <h5>Pilihan Jawaban</h5>
+                        <h5 class="text-reguler">
+                            <span id="duration-caption">{{count($questions[0]['choices'])}}</span>
+                        </h5>
+                    </div>
+                </div>
+                @endif
+
                 @if($type === 'ASSESSMENT')
-                    <h3 class="mb-4">Daftar Soal</h3>
+                    <h3 class="mb-4 mt-7">Daftar Soal</h3>
                     <button class="btn-upload font-15" data-toggle="modal" data-target="#create-pilihan-ganda">
                         <i class="kejar-add"></i>Tambah Soal
                     </button>
@@ -300,10 +321,10 @@
                         </nav>
                     @endif()
                 @else
-                    <h3 class="mb-4">Paket</h3>
+                    <h3 class="mb-4 mt-7">Paket</h3>
                     @for($i=0; $i < count($assessments); $i++)
-                        <div onclick="viewMA(`{{$assessments[$i]['id']}}`, 'Paket {{$i + 1}}')" class="w-100 bg-grey-15 mb-4 px-4 py-3">
-                            <a class="text-black-1">Paket {{$i + 1}}</a>
+                        <div onclick="viewMA(`{{$assessments[$i]['id']}}`, 'Paket {{$i + 1}}')" class="btn-package">
+                            Paket {{$i + 1}}
                         </div>
                     @endfor
                     <button class="btn-upload font-15" data-toggle="modal" data-target="#add-ma">
@@ -352,6 +373,14 @@
 <script src="{{ mix('/js/admin/question/literasi.js') }}"></script>
 
 <script>
+    var failedId = '{{$newestPackStatus}}';
+    var type = '{{$type}}';
+    $(document).ready(() => {
+        var params = window.location.search.substr(1);
+        if(failedId !== "" && type == 'MINI_ASSESSMENT'){
+            viewMA(failedId, "Paket {{$assessmentsMeta['total']}}");
+        }
+    })
 
     function setType(val) {
         $('#astype').val(val);
@@ -554,7 +583,7 @@
                 <p class="font-15 text-grey-6 ">Telah divalidasi oleh ${data.detail.validated_by_name}.</p>\
                 </div>\
                 <div>\
-                <button type="button" onclick="showSave()" class="btn btn-lg btn-primary">EDIT</button>\
+                <button type="button" onclick="showSave()" class="btn btn-lg btn-skip btn-publish">Edit></button>\
                 </div>\
                 </div>`;
 
@@ -562,15 +591,15 @@
                 <div>\
                 <p class="font-15 text-grey-6 ">Diinput oleh ${data.detail.created_by_name}.</p>\
                 </div>\
-                <div>\
-                <button type="button" onclick="showSave()" class="btn btn-lg btn-link">EDIT</button>\
-                <button type="button" onclick="showValidation()" class="btn btn-lg btn-primary">VALIDASI</button>\
+                <div class="row">\
+                <button type="button" onclick="showSave()" class="btn btn-lg btn-skip btn-publish mr-4">Edit</button>\
+                <button type="button" onclick="showValidation()" class="btn btn-lg btn-publish">Validasi</button>\
                 </div>\
                 </div>`;
 
                 var createFooter = `<div class="row create-answer justify-content-end align-items-end">\
                 <div>\
-                <button type="button" id="saveButton" class="btn-save btn btn-lg btn-primary" onClick="checkQuestion('${data.detail.id}')" >SIMPAN</button>\
+                <button type="button" id="saveButton" class="btn-save btn btn-lg btn-publish" onClick="checkQuestion('${data.detail.id}')" >Simpan</button>\
                 </div>\
                 </div>`;
 
@@ -716,13 +745,16 @@
                     <div>\
                     <p class="font-15 text-grey-6 ">Diinput oleh ${data.detail.created_by_name}.</p>\
                     </div>\
-                    <div>\
-                    <button type="button" onclick="showSave()" class="btn btn-lg btn-link">EDIT</button>\
-                    <button type="button" onclick="showValidation()" class="btn btn-lg btn-primary">VALIDASI</button>\
+                    <div class="row">\
+                    <button type="button" onclick="showSave()" class="btn btn-lg btn-skip btn-publish mr-4">Edit</button>\
+                    <button type="button" onclick="showValidation()" class="btn btn-lg btn-publish">Validasi</button>\
                     </div>\
                     </div>`;
 
                     $('.footer-view').html(validationFooter);
+                    if(idAssessment === failedId){
+                        $('#answer_status').remove();
+                    }
                 }
 
                 if (data.detail.validated_by !== null && data.detail.countAnswer === 0) {
@@ -735,10 +767,13 @@
                     <p class="font-15 text-grey-6 ">Telah divalidasi oleh ${data.detail.validated_by_name}.</p>\
                     </div>\
                     <div>\
-                    <button type="button" onclick="showSave()" class="btn btn-lg btn-primary">EDIT</button>\
+                    <button type="button" onclick="showSave()" class="btn btn-lg btn-skip btn-publish">Edit</button>\
                     </div>\
                     </div>`;
                     $('.footer-view').html(editFooter);
+                    if(idAssessment === failedId){
+                        $('#answer_status').remove();
+                    }
                 }
 
                 $('#saveButton').html(htmlDone);
@@ -815,7 +850,7 @@
                 <p class="font-15 text-grey-6 ">Telah divalidasi oleh ${data.detail.validated_by_name}.</p>\
                 </div>\
                 <div>\
-                <button type="button" onclick="showSave()" class="btn btn-lg btn-primary">EDIT</button>\
+                <button type="button" onclick="showSave()" class="btn btn-lg btn-skip btn-publish">Edit</button>\
                 </div>\
                 </div>`;
 
@@ -833,7 +868,7 @@
 
         var createFooter = `<div class="row create-answer justify-content-end align-items-end">\
         <div>\
-        <button type="button" id="saveButton" class="btn-save btn btn-lg btn-primary" onClick="checkQuestion('${idAssessment}')" >SIMPAN</button>\
+        <button type="button" id="saveButton" class="btn-save btn btn-lg btn-publish" onClick="checkQuestion('${idAssessment}')" >Simpan</button>\
         </div>\
         </div>`;
 

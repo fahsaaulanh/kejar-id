@@ -21,8 +21,8 @@
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <div class="form-group">
-                                    <label for="duration" class="font-weight-bold">Durasi</label>
+                                <div>
+                                    <label for="duration" class="font-weight-bold">Durasi(menit)</label>
                                     <input type="number" class="form-control" value={{($assessments[0]['duration'] ?? 0)}} name="duration" placeholder="Ketik durasi" required="" autocomplete="off">
                                 </div>
                             </div>
