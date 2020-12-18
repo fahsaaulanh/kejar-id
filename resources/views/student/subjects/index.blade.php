@@ -124,10 +124,10 @@
 
         if (task_status === 'Done') {
             $('#taskdone').modal('show'); // task sudah dikerjakan
-        } else if (task_status === 'Undone' && end_status === 'true') {
-            $('#over').modal('show'); // task belum dikejarkan dan sudah lewat dari jadwal
         } else if (task_status === 'Undone' && start_status === 'false') {
             $('#notstarted').modal('show'); // jadwal belum mulai
+        } else if (task_status === 'Undone' && end_status === 'false') {
+            $('#over').modal('show'); // task belum dikejarkan dan sudah lewat dari jadwal
         } else {
             window.location.href = `/student/${assessment_group_id}/subjects/${schedule_id}/onboarding`;
         }
