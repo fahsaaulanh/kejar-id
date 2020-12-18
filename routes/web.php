@@ -387,11 +387,11 @@ Route::middleware('session')->group(function () {
                 Route::prefix('/service')->group(function () {
                     Route::get('/subjects', 'Student\MiniAssessmentController@subjects');
                     Route::get('/subjects/{subject_id}', 'Student\MiniAssessmentController@detail');
-                    Route::get('/question/{index}', 'Student\AssessmentController@getQuestion');
+                    Route::get('/questions', 'Student\AssessmentController@getQuestions');
                     Route::post('/answer', 'Student\MiniAssessmentController@setAnswer');
                     Route::post('/finish', 'Student\MiniAssessmentController@finish');
                     Route::get('/check', 'Student\MiniAssessmentController@checkAnswer');
-                    Route::patch('/edit_note', 'Student\MiniAssessmentController@editNote');
+                    Route::patch('/edit_note', 'Student\AssessmentController@editNote');
                 });
 
                 Route::get('/exam/pdf', 'Student\MiniAssessmentController@print')->name('printAnswer');

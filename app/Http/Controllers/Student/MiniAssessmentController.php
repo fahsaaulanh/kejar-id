@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
-use App\Services\Assessment;
 use App\Services\AssessmentGroup;
 use App\Services\School;
 use App\Services\School as SchoolApi;
@@ -184,57 +183,6 @@ class MiniAssessmentController extends Controller
         // return view('student.mini_assessment.subjects.detail', $pageData);
     }
 
-    public function beforeExam()
-    {
-        $taskService = new Task;
-        $assessmentService = new Assessment;
-        $assessmentId = $this->request->query('assessment_id', null);
-        $save = $this->request->query('save', 'false');
-
-        $responseAssessment = $assessmentService->detail($assessmentId);
-        $responseQuestions = $taskService->questionsAssessment($assessmentId);
-
-        if ($responseAssessment['error']) {
-            dd('ID Assessment Not Found');
-        }
-
-        $questions = $responseQuestions['data'];
-        $assessment = $responseAssessment['data'];
-        $assessmentGroupId = $assessment['assessment_group_id'];
-        $subjectId = $assessment['subject_id'];
-
-        if ($save === 'true') {
-            $responseTask = $taskService->startAssessment($assessmentId);
-            if ($responseTask['error']) {
-                dd('Task Not Found');
-            }
-
-            $task = $responseTask['data'];
-
-            $addMinutes = $assessment['duration'];
-            $endTime = Carbon::now()->addMinutes($addMinutes)->addSeconds(5)->format('Y-m-d H:i:s');
-
-            $assessment['end_time'] = $endTime;
-            $assessment['questions'] = $questions;
-
-            $answers = $this->getAnswer($task['id']);
-
-            $tasksSession = [
-                'subject_id' => $assessment['subject_id'],
-                'assessment' => $assessment,
-                'task_id' => $responseTask['data']['id'] ?? '',
-                'task' => $responseTask['data'] ?? [],
-                'answers' => $answers,
-            ];
-
-            $this->request->session()->put('task', $tasksSession);
-
-            return redirect("/student/assessment/$assessmentGroupId/subjects/$subjectId/exam");
-        } else {
-            dd($assessment);
-        }
-    }
-
     public function exam()
     {
 
@@ -282,7 +230,7 @@ class MiniAssessmentController extends Controller
         //     return redirect('/student/mini_assessment')->with('message', 'Jawaban telah dikumpulkan');
         // }
 
-        $answers = $this->getAnswer($task['task_id']);
+        $answers = $this->getAnswer($task['task_id'])['answers'] ?? [];
 
         if (!$answers) {
             $this->request->session()->remove('task');
@@ -596,7 +544,7 @@ class MiniAssessmentController extends Controller
     public function checkAnswer()
     {
         $task = $this->request->session()->get('task', []);
-        $answers = $this->getAnswer($task['task_id']);
+        $answers = $this->getAnswer($task['task_id'])['answers'] ?? [];
 
         $unanswered = 0;
 
@@ -618,7 +566,7 @@ class MiniAssessmentController extends Controller
 
         $task = $this->request->session()->get('task');
 
-        $answers = $this->getAnswer($task['task_id']);
+        $answers = $this->getAnswer($task['task_id'])['answers'] ?? [];
 
         $this->request->session()->put('answers', $answers);
 
@@ -662,7 +610,7 @@ class MiniAssessmentController extends Controller
 
         $task = $this->request->session()->get('task');
 
-        $answers = $this->request->session()->get('answers');
+        $answers = $this->getAnswer($task['task_id'])['answers'] ?? [];
 
         $user = $this->request->session()->get('user');
 
@@ -704,8 +652,18 @@ class MiniAssessmentController extends Controller
             'group' => $group,
         ];
 
-        $pdf = PDF::loadview('student.assessment.exam.answer', $pageData)
+        $assessment = $task['assessment'];
+        $pdf = null;
+
+        if ($assessment['type'] === 'MINI_ASSESSMENT') {
+            $pdf = PDF::loadview('student.assessment.exam.answer', $pageData)
+                ->setPaper('a4', 'potrait');
+        }
+
+        if ($assessment['type'] === 'ASSESSMENT') {
+            $pdf = PDF::loadview('student.assessment.exam.regular.answer', $pageData)
             ->setPaper('a4', 'potrait');
+        }
 
         $filename = $user['userable']['name'] . '-' . $group . '-' . $subject . '-' . $time . '.PDF';
 
@@ -720,14 +678,22 @@ class MiniAssessmentController extends Controller
 
         $response = $taskService->answersAssessment($taskId);
         $data = [];
+        $data['questions'] = [];
+        $data['answers'] = [];
 
         if ($response['error']) {
             return $data;
         }
 
         if (!$response['error']) {
-            foreach ($response['data'] as $val) {
-                $data[$val['question_id']] = [
+            foreach ($response['data'] as $key => $val) {
+                $data['questions'][$key] = [
+                    'id' => $val['question_id'],
+                    'choices' => $val['choices'],
+                    'question' => $val['question'],
+                ];
+
+                $data['answers'][$val['question_id']] = [
                     'id' => $val['id'],
                     'answer' => $val['answer'],
                 ];

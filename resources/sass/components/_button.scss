@@ -455,8 +455,8 @@
     align-items: center;
     border-radius: 0;
     border-width: 0;
-    color: $white;
-    background: $green-2;
+    color: $green;
+    background: $green-5;
 
     i {
         display: block !important;
@@ -464,20 +464,35 @@
         margin-top: 0.2rem !important;
 
         &:before {
-            color: $white;
+            color: $green;
             font-size: 2rem;
         }
     }
 
     &:hover {
-        background: $purple-2;
+        background: $green-2;
+        color: $white;
+
+        i {
+            &:before {
+                color: $white;
+            }
+        }
     }
 
     &.disabled {
         background: #DBE4EC;
+        color: $white;
+
+        i {
+            &:before {
+                color: $white;
+            }
+        }
 
         &:hover {
             background: #DBE4EC;
+            color: $white;
         }
     }
 }
@@ -492,8 +507,8 @@
     align-items: center;
     border-width: 0;
     border-radius: 0;
-    color: $white;
-    background: $green-2;
+    color: $green;
+    background: $green-5;
 
     i {
         display: block !important;
@@ -501,20 +516,35 @@
         margin-top: 0.2rem !important;
 
         &:before {
-            color: $white;
+            color: $green;
             font-size: 2rem;
         }
     }
 
     &:hover {
-        background: $purple-2;
+        color: $white;
+        background: $green-2;
+
+        i {
+            &:before {
+                color: $white;
+            }
+        }
     }
 
     &.disabled {
         background: #DBE4EC;
+        color: $white;
+
+        i {
+            &:before {
+                color: $white;
+            }
+        }
 
         &:hover {
             background: #DBE4EC;
+            color: $white;
         }
     }
 }

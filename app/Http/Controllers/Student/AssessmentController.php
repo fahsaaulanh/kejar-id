@@ -53,15 +53,12 @@ class AssessmentController extends Controller
         $meService = new Me;
 
         $schedule = $meService->assessmentScheduleDetail($schedule_id);
-
         $responseAssessment = $assessmentService->detail($assessment_id);
-        $responseQuestions = $taskService->questionsAssessment($assessment_id);
 
         if ($responseAssessment['error']) {
             return redirect()->back()->with(['message' => 'Data Penilaian tidak ditemukan']);
         }
 
-        $questions = $responseQuestions['data'];
         $assessment = $responseAssessment['data'];
         $assessmentGroupId = $assessment['assessment_group_id'];
         $subjectId = $assessment['subject_id'];
@@ -76,13 +73,16 @@ class AssessmentController extends Controller
 
         $task = $responseTask['data'];
 
+        $taskAnswer = $this->getAnswer($task['id']);
+
+        $questions = $taskAnswer['questions'];
+        $answers = $taskAnswer['answers'];
+
         $addMinutes = $assessment['duration'];
-        $endTime = Carbon::now()->addMinutes($addMinutes)->addSeconds(5)->format('Y-m-d H:i:s');
+        $endTime = Carbon::now()->addMinutes($addMinutes)->format('Y-m-d H:i:s');
 
         $assessment['end_time'] = $endTime;
         $assessment['questions'] = $questions;
-
-        $answers = $this->getAnswer($task['id']);
 
         $tasksSession = [
             'subject_id' => $assessment['subject_id'],
@@ -206,17 +206,17 @@ class AssessmentController extends Controller
         return response()->json($view);
     }
 
-    public function getQuestion($index)
+    public function getQuestions()
     {
         $task = $this->request->session()->get('task');
-        $answers = $this->getAnswer($task['task_id']);
+        $answers = $this->getAnswer($task['task_id'])['answers'];
 
         $this->request->session()->put('answers', $answers);
-        $question = $task['assessment']['questions'][$index];
+        $questions = $task['assessment']['questions'];
 
         return response()->json([
-            'question' => $question,
-            'answer' => $answers[$question['id']],
+            'questions' => $questions,
+            'answers' => $answers,
         ]);
     }
 
@@ -242,14 +242,22 @@ class AssessmentController extends Controller
 
         $response = $taskService->answersAssessment($taskId);
         $data = [];
+        $data['questions'] = [];
+        $data['answers'] = [];
 
         if ($response['error']) {
             return $data;
         }
 
         if (!$response['error']) {
-            foreach ($response['data'] as $val) {
-                $data[$val['question_id']] = [
+            foreach ($response['data'] as $key => $val) {
+                $data['questions'][$key] = [
+                    'id' => $val['question_id'],
+                    'choices' => $val['choices'],
+                    'question' => $val['question'],
+                ];
+
+                $data['answers'][$val['question_id']] = [
                     'id' => $val['id'],
                     'answer' => $val['answer'],
                 ];
