@@ -125,7 +125,7 @@ class AssessmentController extends Controller
             return response()->json($view);
         }
 
-        $now = Carbon::now();
+        $now = Carbon::now()->format('Y-m-d H:i:s');
 
         $view = '';
         foreach ($schedules['data'] as $schedule) {
@@ -142,14 +142,15 @@ class AssessmentController extends Controller
             $startAtStatus = 'null';
             $endAtStatus = 'null';
 
+            $start_time = Carbon::parse($schedule['schedule']['start_time'])->format('Y-m-d H:i:s');
+            $finish_time = Carbon::parse($schedule['schedule']['finish_time'])->format('Y-m-d H:i:s');
+
             if ($startAt !== null) {
-                // if true then user can do assessment
-                $startAtStatus = $now > $schedule['schedule']['start_time'] ? 'true' : 'false';
+                $startAtStatus = $now > $start_time ? 'true' : 'false';
             }
 
             if ($endAt !== null) {
-                // if true then user can't do assessment
-                $endAtStatus = $now > $schedule['schedule']['finish_time'] ? 'true' : 'false';
+                $endAtStatus = $now < $finish_time ? 'true' : 'false';
             }
 
             $metaRow = 'start-status="' . $startAtStatus . '" end-status="' . $endAtStatus . '" ';
@@ -157,7 +158,7 @@ class AssessmentController extends Controller
             $icon = 'kejar-mapel';
             if ($statusTask === 'Undone') {
                 $metaRow .= 'task-status="' . $statusTask . '" data-id="' . $schedule['schedule']['id'] . '"';
-                if ($startAtStatus === 'false' || $endAtStatus === 'true') {
+                if ($startAtStatus === 'false' || $endAtStatus === 'false') {
                     $view .= '<div onclick="goOnboarding(this)" ' .
                         $metaRow . ' class="row m-0 pt-4 card-mapel-assessment over">';
                 } else {

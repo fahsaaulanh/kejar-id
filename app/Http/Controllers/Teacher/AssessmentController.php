@@ -368,11 +368,9 @@ class AssessmentController extends Controller
                     ($presenceText === 'Hadir' ? 'text-dark' : '') .' btn-lg
                     text-decoration-none" onclick="changePresence(' . $presenceParams . ')">'
                     . $presenceText . '</span>';
-
                     $teacherNote = ($schedule['teacher_note'] ?? '');
-                    $studentNote = ($schedule['student_note'] ?? '');
-
-                    $studentNote = $schedule['student_note'] === '-' || $schedule['student_note'] ?: '';
+                    $studentNote = ($schedule['student_note'] === '' &&
+                                    $studentNote === '-' ? '' : $schedule['student_note']);
 
                 if (isset($req->reportType) && $req->reportType === 'ASSESSMENT') {
                     $html .= '<td>' . ($schedule['token'] ?? '-') . '</td>';
