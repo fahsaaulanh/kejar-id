@@ -513,8 +513,34 @@ class AssessmentController extends Controller
 
         $questions = [];
         $questionMeta = null;
-        if (count($dataAssessment) > 0 && $dataForAssessment[0]['type'] === 'ASSESSMENT') {
+        $newestPackStatus = '';
+        $filter = 0;
+        if (count($dataAssessment) > 0) {
             $getQuestions = $assessmentApi->questions($dataAssessment[0]['id'], $request->page ?? 1);
+            if (count($dataAssessment) === 1) {
+                foreach ($getQuestions['data'] as $value) {
+                    if ($value['answer'] !== '') {
+                        $filter += 1;
+                    }
+                }
+
+                $newestPackStatus = ($filter !== count($getQuestions['data']) ? $dataAssessment[0]['id'] : '');
+            } else {
+                $getQuestsMore = $assessmentApi->questions(
+                    $dataAssessment[count($dataAssessment) - 1]['id'],
+                    $request->page ?? 1,
+                );
+                foreach ($getQuestsMore['data'] as $value) {
+                    if ($value['answer'] !== '') {
+                        $filter += 1;
+                    }
+                }
+
+                $newestPackStatus = ($filter !== count($getQuestsMore['data']) ? $dataAssessment[count(
+                    $dataAssessment,
+                ) - 1]['id'] : '');
+            }
+
             $questionMeta = $getQuestions['meta'] ?? null;
             $questions = $getQuestions['data'] ?? [];
         }
@@ -532,7 +558,7 @@ class AssessmentController extends Controller
             ->with('teacherType', $teacherType)
             ->with('type', $viewType)
             ->with('studentGroup', $studentGroup)
-            ->with('message', 'Data success');
+            ->with('newestPackStatus', $newestPackStatus);
     }
 
     // Editted
@@ -560,7 +586,7 @@ class AssessmentController extends Controller
             ];
 
             $create = $assessmentApi->create($reqFile, $payload);
-            if ($create) {
+            if (!$create['error']) {
                 return redirect()->back()->with(['type' => 'success', 'message' => 'Data berhasil tersimpan!']);
             }
 

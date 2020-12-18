@@ -45,10 +45,10 @@
                                 <span class="breadcrumb-item active headSubject-view"></span>
                             </nav>
                         </div>
-                        <div class="pb-7">
+                        <div class="mb-7">
                             <h3 id="title" class="title-view"></h3>
                         </div>
-                        <div class="row pb-7">
+                        <div class="row mb-7">
                             <div class="col-6">
                                 <h5 class="pb-2">Token/Password PDF</h5>
                                 <p class="font-15" id="token"></p>
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div>
-                            <div class="pl-4 pr-4 pb-7">
+                            <div class="pl-4 pr-4 mb-7">
                                 <div id="view-naskah" class="row">
                                     <div class="pts-btn-pdf" role="button">
                                         <i class="kejar-pdf"></i>
@@ -67,9 +67,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <h5 class="pb-2">Kunci Jawaban</h5>
-                            <div class="pb-6">
-                                <div class="answer-note">
+                            <h5 class="mb-2">Kunci Jawaban</h5>
+                            <div class="mb-3">
+                                <div class="answer-note text-grey-3">
                                     <p>Klik jawaban yang benar.
                                         Pastikan loading penyimpanan selesai
                                         sampai muncul icon ceklis di samping jawaban.
@@ -93,7 +93,7 @@
                                     <p class="font-15 text-grey-6 ">Telah divalidasi oleh Mutia Prawitasari.</p>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-lg btn-primary" id="lanjut-missing-answer">EDIT</button>
+                                    <button type="button" class="btn btn-lg btn-skip btn-publish" id="lanjut-missing-answer">Edit</button>
                                 </div>
                             </div>
                             <div class="row validated-answer justify-content-between align-items-end">
@@ -101,12 +101,12 @@
                                     <p class="font-15 text-grey-6 ">Diinput oleh Sande Listiana.</p>
                                 </div>
                                 <div>
-                                    <button type="button" class="btn btn-lg btn-primary" id="lanjut-missing-answer">VALIDASI</button>
+                                    <button type="button" class="btn btn-lg btn-publish" id="lanjut-missing-answer">Validasi</button>
                                 </div>
                             </div>
                             <div class="row create-answer justify-content-end align-items-end">
                                 <div>
-                                    <button type="button" class="btn-save btn btn-lg btn-primary" data-dismiss="modal">SIMPAN</button>
+                                    <button type="button" class="btn-save btn btn-lg btn-publish" data-dismiss="modal">Simpan</button>
                                 </div>
                             </div>
                         </div>

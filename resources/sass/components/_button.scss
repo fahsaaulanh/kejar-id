@@ -14,6 +14,34 @@
     }
 }
 
+.btn-skip {
+    background-color: $blue-tp2 !important;
+    color: $blue !important;
+    border: 0;
+    &:hover {
+        background: $blue-2;
+    }
+}
+
+.btn-package {
+    background-color: $grey-15;
+    margin-bottom: 1.6rem;
+    padding: 1.2rem 1.6rem;
+    width: 100%;
+    color: $black-1;
+    cursor: pointer;
+    a {
+        text-decoration: none;
+    }
+    &:hover {
+        background-color: $blue-tp;
+        color: $purple;
+        a {
+            color: $purple;
+        }
+    }
+}
+
 .btn-accordion {
     background-color: $white-2;
     display: flex;
@@ -48,7 +76,6 @@
     padding-right: 1.6rem;
     @include h5;
     text-align: start;
-
     &:hover {
         background: $grey-10;
     }
