@@ -33,13 +33,14 @@
     </div>
 
     @if($assessment['type'] === "ASSESSMENT")
-    <div class="mt-8">
-        <h5>Token</h5>
-        <p class="text-grey-3">Masukkan token yang telah dibagikan oleh guru.</p>
-        <!-- Dynamic Data -->
-        <input class="input-token" type="text" placeholder="Ketik Token" id="assessmentToken" />
-    </div>
-
+        @if($assessment['schedule']['token'])
+        <div class="mt-8">
+            <h5>Token</h5>
+            <p class="text-grey-3">Masukkan token yang telah dibagikan oleh guru.</p>
+            <!-- Dynamic Data -->
+            <input class="input-token" type="text" placeholder="Ketik Token" id="assessmentToken" />
+        </div>
+        @endif
     <div class="mt-8 onboarding-page-pts">
         @include('student.onboarding_exam._rule_assessment')
     </div>
@@ -77,6 +78,12 @@
         const scheduleId = "{{ $assessment['schedule']['id'] }}";
 
         if (type === "ASSESSMENT") {
+            if (trueToken === '') {
+                if (typeof window !== 'undefined') {
+                    window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`
+                }
+            }
+            
             if (trueToken === token) {
                 if (typeof window !== 'undefined') {
                     window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`
