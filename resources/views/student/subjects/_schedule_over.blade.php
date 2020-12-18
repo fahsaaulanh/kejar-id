@@ -1,8 +1,11 @@
-<div class="modal fade" id="over" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="over">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Jadwal Sudah Berakhir</h5>
+                <button class="close modal-close" data-dismiss="modal">
+                    <i class="kejar kejar-close"></i>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="row">
