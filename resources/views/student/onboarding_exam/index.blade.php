@@ -83,7 +83,7 @@
                     window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`
                 }
             }
-            
+
             if (trueToken === token) {
                 if (typeof window !== 'undefined') {
                     window.location.href = `/student/${assessmentGroupId}/subjects/${assessmentId}/proceed/${scheduleId}`

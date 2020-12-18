@@ -117,12 +117,10 @@ class AssessmentController extends Controller
             return false;
         }
 
-        if ($schedules['data'] === null) {
-            $view = `
-                <div class="alert alert-primary mt-2">
-                    <h6>Tidak ada data penilaian.</h6>
-                </div>
-            `;
+        if (!$schedules['data']) {
+            $view = '<div class="alert alert-primary mt-2">
+                        <h6>Tidak ada data penilaian.</h6>
+                    </div>';
 
             return response()->json($view);
         }
@@ -131,75 +129,89 @@ class AssessmentController extends Controller
 
         $view = '';
         foreach ($schedules['data'] as $schedule) {
-            $icon = $schedule['task'] === null ? 'kejar-mapel' : 'kejar-sudah-dikerjakan-outline';
+            $statusTask = $schedule['schedule']['status_task'];
+
             $startAt = $schedule['schedule']['start_time'] === null ? null : Carbon::parse(
                 $schedule['schedule']['start_time'],
             )->format('d M Y, H:i');
+
             $endAt = $schedule['schedule']['finish_time'] === null ? null : Carbon::parse(
                 $schedule['schedule']['finish_time'],
             )->format('d M Y, H:i');
+
+            $startAtStatus = 'null';
+            $endAtStatus = 'null';
+
             if ($startAt !== null) {
                 // if true then user can do assessment
                 $startAtStatus = $now > $schedule['schedule']['start_time'] ? 'true' : 'false';
-            } else {
-                $startAtStatus = 'null';
             }
 
             if ($endAt !== null) {
                 // if true then user can't do assessment
-                $endAtStatus = $now > $endAt ? 'true' : 'false';
-            } else {
-                $endAtStatus = 'null';
+                $endAtStatus = $now > $schedule['schedule']['finish_time'] ? 'true' : 'false';
             }
 
             $metaRow = 'start-status="' . $startAtStatus . '" end-status="' . $endAtStatus . '" ';
 
-            $metaRow .= 'task-status="' . $icon . '" data-id="' . $schedule['schedule']['id'] . '"';
-            if ($icon === 'kejar-sudah-dikerjakan-outline') {
-                $view .= '<div onclick="goOnboarding(this)" ' .
-                    $metaRow . ' class="row m-0 pt-4 card-mapel-assessment done">';
-            } elseif ($icon === 'kejar-mapel' && $endAtStatus === 'true') {
-                $view .= '<div onclick="goOnboarding(this)" ' .
-                    $metaRow . ' class="row m-0 pt-4 card-mapel-assessment over">';
-            } else {
+            $icon = 'kejar-mapel';
+            if ($statusTask === 'Undone') {
+                $metaRow .= 'task-status="' . $statusTask . '" data-id="' . $schedule['schedule']['id'] . '"';
+                if ($startAtStatus === 'false' || $endAtStatus === 'true') {
+                    $view .= '<div onclick="goOnboarding(this)" ' .
+                        $metaRow . ' class="row m-0 pt-4 card-mapel-assessment over">';
+                } else {
+                    $view .= '<div onclick="goOnboarding(this)" ' .
+                    $metaRow . ' class="row m-0 pt-4 card-mapel-assessment">';
+                }
+            } elseif ($statusTask === 'Ongoing') {
+                $metaRow .= 'task-status="' . $statusTask . '" data-id="' . $schedule['schedule']['id'] . '"';
                 $view .= '<div onclick="goOnboarding(this)" ' .
                 $metaRow . ' class="row m-0 pt-4 card-mapel-assessment">';
+            } elseif ($statusTask === 'Done') {
+                $icon = 'kejar-sudah-dikerjakan-outline';
+                $metaRow .= 'task-status="' . $statusTask . '" data-id="' . $schedule['schedule']['id'] . '"';
+
+                $view .= '<div onclick="goOnboarding(this)" ' .
+                $metaRow . ' class="row m-0 pt-4 card-mapel-assessment done">';
             }
 
             $view .= '<div class="row m-0 btn-accordion-subject w-100" role="button">';
-            $view .= '<div class="row m-0 justify-content-between w-100">';
-            $view .= '<div class="row m-0" onclick="">';
-            $view .= '<div class="p-0">';
-            $view .= '<i class="' . $icon . '"></i>';
-            $view .= '</div>';
-            $view .= '<div class="row m-0 pl-4 flex-column">';
-            $view .= '<div id="mapel">';
-            $view .= '<h4>' . $schedule['subject']['name'] . '</h4>';
-            $view .= '</div>';
+                $view .= '<div class="row m-0 justify-content-between w-100">';
+                    $view .= '<div class="row m-0" onclick="">';
+                        $view .= '<div class="p-0 pt-1">';
+                            $view .= '<i class="' . $icon . '"></i>';
+                        $view .= '</div>';
+
+                        $view .= '<div class="row m-0 pl-4 flex-column">';
+                            $view .= '<div id="mapel">';
+                                $view .= '<h4>' . $schedule['subject']['name'] . '</h4>';
+                            $view .= '</div>';
+
             if ($startAt !== null) {
                 $view .= '<div class="pt-2">';
-                $view .= '<h6 class="text-grey-3"> Dimulai pada ' . $startAt . ' </h6>';
+                    $view .= '<h6 class="text-grey-3"> Dimulai pada ' . $startAt . ' </h6>';
                 $view .= '</div>';
             }
 
             if ($endAt !== null) {
                 $view .= '<div class="pt-2">';
-                $view .= '<h6 class="text-grey-3"> Berakhir pada ' . $endAt . ' </h6>';
+                    $view .= '<h6 class="text-grey-3"> Berakhir pada ' . $endAt . ' </h6>';
                 $view .= '</div>';
             }
 
-            $view .= '</div>';
-            $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
-            $view .= `<div class="row justify-content-start justify-content-md-end
-                                justify-content-lg-end">`;
-            $view .= '</div>';
-            $view .= '</div>';
-            $view .= '<div class="icon">';
-            $view .= '<i class="kejar-right"></i>';
-            $view .= '</div>';
-            $view .= '</div>';
-            $view .= '</div>';
-            $view .= '</div>';
+                            $view .= '</div>';
+                            $view .= '<div class="col-md-6 mt-2 mt-md-0 mt-lg-0 align-items-end">';
+                                $view .= `<div class="row justify-content-start justify-content-md-end
+                                                    justify-content-lg-end">`;
+                                $view .= '</div>';
+                            $view .= '</div>';
+                            $view .= '<div class="icon">';
+                                $view .= '<i class="kejar-right"></i>';
+                            $view .= '</div>';
+                        $view .= '</div>';
+                    $view .= '</div>';
+                $view .= '</div>';
             $view .= '</div>';
         }
 
