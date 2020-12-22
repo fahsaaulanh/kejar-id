@@ -6,14 +6,14 @@
     <div class="container">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/'.$assessmentGroupId.'/student-groups') }}">
+        <a class ="btn-back" href="{{ url('/teacher/'.$type.'/'.$assessmentGroupId.'/student-groups') }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
-            <a class="breadcrumb-item" href="{{ url('/teacher/'.$assessmentGroupId.'/student-groups') }}">{{$assessmentGroup}}</a>
+            <a class="breadcrumb-item" href="{{ url('/teacher/'.$type.'/'.$assessmentGroupId.'/student-groups') }}">{{$assessmentGroup}}</a>
             <span class="breadcrumb-item active">{{$studentGroup['name']}}</span>
         </nav>
 
@@ -39,7 +39,7 @@
             </script>
         @endif
 
-        <form method="get" action="{{ URL('teacher/'.$assessmentGroupId.'/student-groups/'.$studentGroup['id'].'/subjects') }}">
+        <form method="get" action="{{ URL('teacher/'.$type.'/'.$assessmentGroupId.'/student-groups/'.$studentGroup['id'].'/subjects') }}">
             <div class="row mb-5">
                 <div class="col-10">
                     <div class="input-group">
@@ -85,7 +85,7 @@
         <div class="list-group">
             @forelse($subjects as $key => $v)
                 <div class="list-group-item">
-                    <a class="col-12" href="{{ URL('teacher/'.$assessmentGroupId.'/student-groups/'.$studentGroup['id'].'/subjects/'.$v['id'].'/score')}}">
+                    <a class="col-12" href="{{ URL('teacher/'.$type.'/'.$assessmentGroupId.'/student-groups/'.$studentGroup['id'].'/subjects/'.$v['id'].'/score')}}">
                         <i class="kejar-book"></i>
                         {{$v['name']}}
                     </a>

@@ -6,15 +6,15 @@
     <div class="container mw-1040r">
 
         <!-- Link Back -->
-        <a class ="btn-back" href="{{ url('/teacher/'.$assessmentGroupId.'/student-groups'.$studentGroup['id'].'/subjects') }}">
+        <a class ="btn-back" href="{{ url('/teacher/'.$type.'/'.$assessmentGroupId.'/student-groups'.$studentGroup['id'].'/subjects') }}">
             <i class="kejar-back"></i>Kembali
         </a>
 
         <!-- Breadcrumb -->
         <nav class="breadcrumb">
             <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
-            <a class="breadcrumb-item" href="{{ url('/teacher/'.$assessmentGroupId.'/student-groups') }}">{{$assessmentGroup}}</a>
-            <a class="breadcrumb-item" href="{{ url('/teacher/'.$assessmentGroupId.'/student-groups/'.$studentGroup['id'].'/subjects') }}">{{$studentGroup['name']}}</a>
+            <a class="breadcrumb-item" href="{{ url('/teacher/'.$type.'/'.$assessmentGroupId.'/student-groups') }}">{{$assessmentGroup}}</a>
+            <a class="breadcrumb-item" href="{{ url('/teacher/'.$type.'/'.$assessmentGroupId.'/student-groups/'.$studentGroup['id'].'/subjects') }}">{{$studentGroup['name']}}</a>
             <span class="breadcrumb-item active">{{$subject['name']}}</span>
         </nav>
 

@@ -38,7 +38,7 @@
             </script>
         @endif
 
-        <form method="get" action="{{ URL('teacher/'.$assessmentGroupId.'/student-groups') }}">
+        <form method="get" action="{{ URL('teacher/'.$type.'/'.$assessmentGroupId.'/student-groups') }}">
             <div class="row mb-5">
                 <div class="col-10">
                     <div class="input-group">
@@ -84,7 +84,7 @@
         <div class="list-group">
             @forelse($studentGroups as $key => $v)
                 <div class="list-group-item">
-                    <a class="col-12" href="{{ URL('teacher/'.$assessmentGroupId.'/student-groups/'.$v['id'].'/subjects')}}">
+                    <a class="col-12" href="{{ URL('teacher/'.$type.'/'.$assessmentGroupId.'/student-groups/'.$v['id'].'/subjects')}}">
                         <i class="kejar-rombel"></i>
                         {{$v['name']}}
                     </a>

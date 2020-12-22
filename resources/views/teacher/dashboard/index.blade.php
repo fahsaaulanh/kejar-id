@@ -158,9 +158,9 @@
     function selectMA(val) {
         var urlSubjectTeachers = "{!! URL::to('/teacher/subject-teacher/') !!}"+"/"+val+"/subject";
         @if($isWikrama)
-            var urlStudentCounselor = "{!! URL::to('/teacher') !!}"+"/"+val+"/student-counselor";
+            var urlStudentCounselor = "{!! URL::to('/teacher/student-counselor') !!}"+"/"+val+"/counseling-groups";
         @else
-            var urlStudentCounselor = "{!! URL::to('/teacher') !!}"+"/"+val+"/student-groups";
+            var urlStudentCounselor = "{!! URL::to('/teacher/homeroom-teacher') !!}"+"/"+val+"/student-groups";
         @endif
         var urlStudentSupervisor = "{!! URL::to('/teacher/supervisor/') !!}"+"/"+val+"/subject";
         $("#select-ma-subject-teachers").attr("href", urlSubjectTeachers);
