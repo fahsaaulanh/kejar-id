@@ -486,6 +486,11 @@ class AssessmentController extends Controller
         $assessments = $assessmentApi->index($filterMA);
         $dataAssessment = ($assessments['data'] ?? []);
 
+        $schoolDetail = $schoolApi->detail($schoolId);
+        $dataSchool = $schoolDetail['data'] ?? [];
+
+        $questionCount = $dataSchool['educational_stage'] === 'SMP' ? 4 : 5;
+
         $dualData = false;
         foreach ($dataAssessment as $item) {
             if ($item['type'] !== $dataAssessment[0]['type']) {
@@ -556,7 +561,9 @@ class AssessmentController extends Controller
             ->with('teacherType', $teacherType)
             ->with('type', $viewType)
             ->with('studentGroup', $studentGroup)
-            ->with('newestPackStatus', $newestPackStatus);
+            ->with('newestPackStatus', $newestPackStatus)
+            ->with('questionCount', $questionCount)
+            ->with('message', 'Data success');
     }
 
     // Editted
