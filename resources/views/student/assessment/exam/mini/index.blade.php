@@ -270,12 +270,13 @@
     function startTimer() {
         let modalRunningOutHasShown = false;
 
+        var currTime = moment("{{ $now }}")
         var end = moment("{{ $task['assessment']['end_time'] }}");
         var endTime = end.valueOf();
         // Update the count down every 1 second
         var x = setInterval(function() {
             // Get today's date and time and extend it
-            var now = moment().valueOf();
+            var now = currTime.add(1, 'seconds').valueOf();
 
             // Find the distance between now and the count down date
             var duration = endTime - now;

@@ -241,11 +241,14 @@ class MiniAssessmentController extends Controller
 
         $this->request->session()->put('answers', $answers);
 
+        $now = Carbon::now()->format('Y-m-d H:i:s');
+
         $pageData = [
             'user' => $user,
             'task' => $task,
             'answers' => $answers,
             'userable' => $user['userable'],
+            'now' => $now,
         ];
 
         $assessment = $task['assessment'];
