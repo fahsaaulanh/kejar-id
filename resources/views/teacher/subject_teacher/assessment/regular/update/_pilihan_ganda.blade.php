@@ -13,7 +13,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group ck-height-9 ckeditor-list">
-                        <label>Soal</label>
+                        <h5>Soal</h5>
+                        <div class="pb-2"><h6-reg class="text-grey-3">Tidak perlu menginputkan nomor soal.</h6-reg></div>
                         <textarea class="textarea-field editor-field" name="question" placeholder="Ketik soal" required></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
@@ -37,8 +38,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Jawaban</label>
-                        <p>Pilih satu jawaban benar.</p>
+                        <h5>Jawaban</h5>
+                        <div class="pb-2"><h6-reg class="text-grey-3">Pilih satu jawaban benar.</h6-reg></div>
                         <table class="answer-list-table-pg" data-type="pilihan-ganda">
 
                         </table>
@@ -47,7 +48,7 @@
                         </button>
                     </div>
                     <div class="form-group ck-height-9 ckeditor-list">
-                        <label>Pembahasan</label>
+                        <div class="pb-2"><h5>Pembahasan</h5></div>
                         <textarea class="textarea-field editor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">

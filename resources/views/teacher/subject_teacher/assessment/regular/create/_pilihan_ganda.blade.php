@@ -16,7 +16,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group ck-height-9 ckeditor-list">
-                        <label>Soal</label>
+                        <h5>Soal</h5>
+                        <div class="pb-2"><h6-reg class="text-grey-3">Tidak perlu menginputkan nomor soal.</h6-reg></div>
                         <textarea class="textarea-field editor-field" id="question" name="question" placeholder="Ketik soal"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
@@ -40,10 +41,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Jawaban</label>
-                        <p>Pilih satu jawaban benar.</p>
+                        <h5>Jawaban</h5>
+                        <div class="pb-2"><h6-reg class="text-grey-3">Tida perlu menginputkan A, B, C pilihan jawaban dan pilih satu jawaban benar.</h6-reg></div>
                         <table class="answer-list-table-pg" data-type="pilihan-ganda" id="table_add_answer">
-                            @for ($i = 0; $i < 4; $i++) <tr>
+                            @for ($i = 0; $i < $questionCount; $i++) <tr>
                                 <td>
                                     <div class="radio-group">
                                         <input type="radio" class="answer" name="answer" value="{{ $i }}" {{$i == 0 ? 'required' : '' }}>
@@ -88,7 +89,7 @@
                         </button>
                     </div>
                     <div class="form-group ck-height-9 ckeditor-list">
-                        <label>Pembahasan</label>
+                        <div class="pb-2"><h5>Pembahasan</h5></div>
                         <textarea class="textarea-field editor-field" name="explanation" placeholder="Ketik pembahasan"></textarea>
                         <div class="ckeditor-btn-group ckeditor-btn-1 d-none">
                             <button type="button" class="bold-btn" title="Bold (Ctrl + B)">
