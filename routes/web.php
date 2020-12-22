@@ -182,7 +182,7 @@ Route::middleware('session')->group(function () {
                 );
                 Route::post('assessment/getscore', 'Teacher\AssessmentController@scoreBystudentGroup');
                 Route::post('assessment/update-score', 'Teacher\AssessmentController@updateScore');
-
+                Route::get('assessment/export', 'Teacher\AssessmentController@export');
 
                 // Student Counselor
 
