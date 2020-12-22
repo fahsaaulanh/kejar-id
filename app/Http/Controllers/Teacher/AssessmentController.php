@@ -333,10 +333,10 @@ class AssessmentController extends Controller
                 if (!in_array($v['id'], $studentIdScheduleCreated)) {
                     // Siswa tidak ada jadwal
                     $html .= '<tr>';
-                        $html .= '<td class="text-center">'. ($key+1) .'</td>';
-                        $html .= '<td>'. $name .'</td>';
-                        $html .= '<td colspan="' . ($req->colspan ?? 1) . '"><span style="cursor:pointer"
-                        onclick="noScheduleModal('. ("'".$name."'") .')">Belum ditugaskan</span></td>';
+                    $html .= '<td class="text-center">' . ($key + 1) . '</td>';
+                    $html .= '<td>' . $name . '</td>';
+                    $html .= '<td colspan="' . ($req->colspan ?? 1) . '"><span style="cursor:pointer"
+                        onclick="noScheduleModal(' . ("'" . $name . "'") . ')">Belum ditugaskan</span></td>';
                     $html .= '</tr>';
 
                     continue;
@@ -350,13 +350,13 @@ class AssessmentController extends Controller
                 $dataStudent[$key]['schedule'] = $schedule;
 
                 $html .= '<tr>';
-                    $html .= '<td class="text-center">'. ($key+1) .'</td>';
-                    $html .= '<td>'. $name .'</td>';
-                    $presenceText = ($schedule['presence'] ? 'Hadir' : 'Tandai');
-                    $presenceVal = ($schedule['presence'] ? 0 : 1);
+                $html .= '<td class="text-center">' . ($key + 1) . '</td>';
+                $html .= '<td>' . $name . '</td>';
+                $presenceText = ($schedule['presence'] ? 'Hadir' : 'Tandai');
+                $presenceVal = ($schedule['presence'] ? 0 : 1);
 
-                    $taskStatus = $schedule['status_task'];
-                    $presenceParams = "'" . $schedule['id'] . "'," . $presenceVal;
+                $taskStatus = $schedule['status_task'];
+                $presenceParams = "'" . $schedule['id'] . "'," . $presenceVal;
 
                 if (!$presenceVal) {
                     $presenceParams .= ",1,'" . $name . "'";
@@ -364,8 +364,8 @@ class AssessmentController extends Controller
                     $presenceParams .= ",0,'" . $name . "'";
                 }
 
-                    $presence = '<span class="btn btn-link p-0 '.
-                    ($presenceText === 'Hadir' ? 'text-dark' : '') .' btn-lg
+                $presence = '<span class="btn btn-link p-0 ' .
+                    ($presenceText === 'Hadir' ? 'text-dark' : '') . ' btn-lg
                     text-decoration-none" onclick="changePresence(' . $presenceParams . ')">'
                     . $presenceText . '</span>';
                     $teacherNote = ($schedule['teacher_note'] ?? '');
@@ -376,46 +376,46 @@ class AssessmentController extends Controller
                     $html .= '<td>' . ($schedule['token'] ?? '-') . '</td>';
                 }
 
-                    $html .= '<td id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
+                $html .= '<td id="presenceBtn-' . $schedule['id'] . '">' . $presence . '</td>';
                 if ($taskStatus === 'Done') {
                     $html .= '<td>Selesai</td>';
 
                     $html .= '<td><span ';
                     if (!$studentNote) {
-                        $html .=' class="text-grey"';
+                        $html .= ' class="text-grey"';
                     }
 
-                    $html .= ' >'.($studentNote ?: 'Tidak ada') . '</span></td>';
+                    $html .= ' >' . ($studentNote ?: 'Tidak ada') . '</span></td>';
                 } elseif ($taskStatus === 'Ongoing') {
                     $html .= '<td colspan="2">Sedang mengerjakan</td>';
                 } elseif ($taskStatus === 'Undone') {
                     $html .= '<td colspan="2">Belum mengerjakan</td>';
                 } else {
-                    $html .= '<td colspan="2">Status tidak diketahui ('. $taskStatus .')</td>';
+                    $html .= '<td colspan="2">Status tidak diketahui (' . $taskStatus . ')</td>';
                 }
 
-                    // Note
+                // Note
 
-                    $note = "'" . $id . "','" .
-                        $studentNote . "','" .
-                        $teacherNote . "','" .
-                        $nis . "','" .
-                        $name . "'";
+                $note = "'" . $id . "','" .
+                    $studentNote . "','" .
+                    $teacherNote . "','" .
+                    $nis . "','" .
+                    $name . "'";
 
-                    $html .= '<td>';
+                $html .= '<td>';
 
-                        $html .= '<div id="note-data-' . $id . '">';
-                            $html .= '<span style="cursor: pointer;"';
+                $html .= '<div id="note-data-' . $id . '">';
+                $html .= '<span style="cursor: pointer;"';
                 if (!$teacherNote) {
-                    $html .=' class="text-grey"';
+                    $html .= ' class="text-grey"';
                 }
 
-                            $html .= 'onclick="changeNote(' . $note . ')">';
-                            $html .= $this->noteData($teacherNote);
-                            $html .= '</span;>';
-                        $html .= '</div>';
+                $html .= 'onclick="changeNote(' . $note . ')">';
+                $html .= $this->noteData($teacherNote);
+                $html .= '</span;>';
+                $html .= '</div>';
 
-                    $html .= '</td>';
+                $html .= '</td>';
                 $html .= '</td>';
             }
         }
@@ -433,8 +433,8 @@ class AssessmentController extends Controller
     {
         session()->put('assessmentType', $assessType);
 
-        return redirect('teacher/'.$teacherType.'/'.
-        $assessmentGroupId.'/subject/'.$subjectId.'/'.$grade.'/assessment');
+        return redirect('teacher/' . $teacherType . '/' .
+            $assessmentGroupId . '/subject/' . $subjectId . '/' . $grade . '/assessment');
     }
 
     public function assessment($teacherType, $assessmentGroupId, $subjectId, $grade, Request $request)
@@ -451,7 +451,7 @@ class AssessmentController extends Controller
         }
 
         if ($grade === '12' || $grade === '9') {
-            $year = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->sub(2, 'year')->year;
+            $year = Carbon::now()->sub(2, 'year')->year . '/' . Carbon::now()->sub(1, 'year')->year;
         }
 
         $batchApi = new BatchApi;
@@ -466,6 +466,7 @@ class AssessmentController extends Controller
 
         $studentGroupApi = new StudentGroupApi;
         $studentGroup = [];
+
         foreach ($batchResult as $data) {
             $classResponse = $studentGroupApi->index($schoolId, $data['id']);
             $studentGroup = array_merge($studentGroup, $classResponse['data'] ?? []);
@@ -1079,7 +1080,7 @@ class AssessmentController extends Controller
             $presenceParams .= ",0,'" . $name . "'";
         }
 
-        $presence = '<span class="btn btn-link p-0 '. ($presenceText === 'Hadir' ? 'text-dark' : '') .' btn-lg
+        $presence = '<span class="btn btn-link p-0 ' . ($presenceText === 'Hadir' ? 'text-dark' : '') . ' btn-lg
         text-decoration-none" onclick="changePresence(' . $presenceParams . ')">' . $presenceText . '</span>';
 
         $teacherNote = ($schedule['teacher_note'] ?? '');
@@ -1100,7 +1101,7 @@ class AssessmentController extends Controller
         } elseif ($taskStatus === 'Undone') {
             $html .= '<td colspan="2">Belum mengerjakan</td>';
         } else {
-            $html .= '<td colspan="2">Status tidak diketahui ('. $taskStatus .')</td>';
+            $html .= '<td colspan="2">Status tidak diketahui (' . $taskStatus . ')</td>';
         }
 
         // Note
@@ -1542,15 +1543,15 @@ class AssessmentController extends Controller
             foreach ($dataArray as $key => $v) {
                 // view
                 $view .= '<tr>';
-                $view .= '<td class="text-center">' . ($key+1) . '</td>';
+                $view .= '<td class="text-center">' . ($key + 1) . '</td>';
                 $view .= '<td>' . $v['name'] . '</td>';
                 $view .= '<td>' . $v['nis'] . '</td>';
                 $view .= '<td id="score-' . $v['id'] . '">' . $v['student_group']['name'] . '</td>';
                 if ($v['schedule']) {
                     if ($v['latest_task']) {
                         if ($v['latest_task']['finish_time']) {
-                            $view .= '<td>'. ($v['latest_task']['score'] ?? '-') . '</td>';
-                            $view .= '<td>'. ($v['latest_task']['final_score'] ?? '-') . '</td>';
+                            $view .= '<td>' . ($v['latest_task']['score'] ?? '-') . '</td>';
+                            $view .= '<td>' . ($v['latest_task']['final_score'] ?? '-') . '</td>';
                         } else {
                             $view .= '<td colspan="2"><span class="text-muted">Sedang dikerjakan.</span></td>';
                         }
@@ -1580,21 +1581,21 @@ class AssessmentController extends Controller
             $pgnt .= '<ul class="pagination">';
             $pgnt .= '<li class="page-item ' . ($page - 1 <= 0 ? 'disabled' : '') . '">';
             $pgnt .= '<a class="page-link" onclick="' .
-                        $paginationFunction . '(' . $req['grade'] . ',' . ($page - 1) . ')"
+                $paginationFunction . '(' . $req['grade'] . ',' . ($page - 1) . ')"
                         href="javascript::void(0)" tabindex="-1">&lt;</a>';
             $pgnt .= '</li>';
 
             for ($i = 1; $i <= $meta['last_page']; $i++) {
                 $pgnt .= '<li class="page-item ' . ($page === $i ? 'active disabled' : '') . '">';
                 $pgnt .= '<a class="page-link" onclick="' .
-                            $paginationFunction . '(' . $req['grade'] . ',' . $i . ')"
+                    $paginationFunction . '(' . $req['grade'] . ',' . $i . ')"
                             href="javascript::void(0)">' . $i . '</a>';
                 $pgnt .= '</li>';
             }
 
             $pgnt .= '<li class="page-item ' . ($page + 1) . ' > ' . ($meta['last_page'] ? 'disabled' : '') . '">';
             $pgnt .= '<a class="page-link" onclick="' .
-                        $paginationFunction . '(' . $req['grade'] . ',' . ($page + 1) . ')"
+                $paginationFunction . '(' . $req['grade'] . ',' . ($page + 1) . ')"
                         href="javascript::void(0)">&gt;</a>';
             $pgnt .= '</li>';
             $pgnt .= '</ul>';
@@ -1702,7 +1703,19 @@ class AssessmentController extends Controller
         foreach ($list as $key => $v) {
             $view .= '<tr class="tr-score-report">';
             $view .= '<td class="text-right">' . ($key + 1) . '</td>';
-            $view .= '<td>' . $v['name'] . '</td>';
+
+            if ($v['latest_task']) {
+                $view .= '<td class="text-grey-3">
+                <a class="text-primary" style="cursor:pointer"\
+                href="/teacher/subject-teacher/' . $v['latest_task']['config']['assessment']['assessment_group_id'] .
+                    '/subject/' . $v['latest_task']['config']['assessment']['subject_id'] .
+                    '/' . $v['latest_task']['config']['assessment']['grade'] .
+                    '/assessment/student-group/' . $v['student_group_id'] .
+                    '/score/' . $v['latest_task']['id'] . '/detail">' . $v['name'] . '</a></td>';
+            } else {
+                $view .= '<td>' . $v['name'] . '</td>';
+            }
+
             $view .= '<td>' . $v['nis'] . '</td>';
 
             if ($v['schedule'] === null && $v['latest_task'] === null) {
@@ -1715,9 +1728,9 @@ class AssessmentController extends Controller
                 $view .= '<td colspan="6" class="text-grey-3">Belum mengerjakan.
                 <a class="text-primary" style="cursor:pointer"\
                 onclick="viewUpdateSchedule(\'' . $v['id'] . '\',\'' .
-                $v['name'] . '\',\'' . $v['schedule']['id'] . '\',\'' .
-                $v['schedule']['start_time'] . '\',\'' . $v['schedule']['finish_time'] . '\',\'' .
-                $v['schedule']['token'] . '\')"\
+                    $v['name'] . '\',\'' . $v['schedule']['id'] . '\',\'' .
+                    $v['schedule']['start_time'] . '\',\'' . $v['schedule']['finish_time'] . '\',\'' .
+                    $v['schedule']['token'] . '\')"\
                 >Edit Penugasan</a></td>';
             }
 
@@ -1804,5 +1817,51 @@ class AssessmentController extends Controller
         $update = $ScheduleApi->update($schoolId, $payload);
 
         return response()->json($update);
+    }
+
+    public function detailScore($teacherType, $assessmentGroupId, $subjectId, $grade, $studentGroupId, $taskId)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $schoolApi = new SchoolApi;
+        $taskApi = new TaskApi;
+        $UserApi = new UserApi;
+
+        $subjectDetail = $schoolApi->subjectDetail($schoolId, $subjectId);
+
+        $studentGroupDetail = $schoolApi->studentGroupDetail($studentGroupId);
+
+        $taskDetail = $taskApi->detialAssessment($taskId);
+
+        $studentDetail = $UserApi->detailStudent($taskDetail['data']['student_id']);
+
+        $startTime = Carbon::parse($taskDetail['data']['start_time'])->format('Y-m-d H:i:s');
+        
+        $finishTime = Carbon::parse($taskDetail['data']['finish_time']);
+
+        $firstTime = Carbon::parse($taskDetail['data']['start_time'])->format('H:i');
+
+        $secondTime = Carbon::parse($taskDetail['data']['finish_time'])->format('H:i');
+
+        $time = Carbon::parse($taskDetail['data']['start_time'])->isoFormat('D MMMM Y');
+
+        $duration = $finishTime->diffInMinutes($startTime);
+
+        $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
+
+        return view('teacher.subject_teacher.assessment.score.detail.index')
+            ->with('teacherType', $teacherType)
+            ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('assessmentGroup', $assessmentGroup)
+            ->with('subject', $subjectDetail['data'])
+            ->with('task', $taskDetail['data'])
+            ->with('grade', $grade)
+            ->with('taskId', $taskId)
+            ->with('firstTime', $firstTime)
+            ->with('secondTime', $secondTime)
+            ->with('time', $time)
+            ->with('studentDetail', $studentDetail['data'])
+            ->with('studentGroup', $studentGroupDetail['data'] ?? [])
+            ->with('duration', $duration)
+            ->with('message', 'Data success');
     }
 }

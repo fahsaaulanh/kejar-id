@@ -369,10 +369,6 @@
     }
 
     function createNewAssign() {
-        var values = [];
-
-        values.push(studentId);
-
         var start_date = '';
         var expiry_date = '';
         var token = '';
@@ -390,6 +386,24 @@
         if ($('#choice-0').is(':checked')) {
             token = $('#token').val();
         }
+
+        if ($('#choice-1').is(':checked') && $('#choice-2').is(':checked')) {
+            var start_dateFormat = moment($('#start_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+            var start_date = start_dateFormat+' '+$('#start_time').val();
+
+            var expiry_dateFormat = moment($('#expiry_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+            var expiry_date = expiry_dateFormat+' '+$('#expiry_time').val();
+
+            if (start_date >= expiry_date) {
+                alert('Waktu tidak sesuai, silahkan diperbaiki.');
+                return;
+            }
+
+        }
+
+        var values = [];
+
+        values.push(studentId);
 
         let data = new Object();
         data = {
@@ -521,6 +535,20 @@
 
         if ($('#choice-0').is(':checked')) {
             token = $('#token').val();
+        }
+
+        if ($('#choice-1').is(':checked') && $('#choice-2').is(':checked')) {
+            var start_dateFormat = moment($('#start_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+            var start_date = start_dateFormat+' '+$('#start_time').val();
+
+            var expiry_dateFormat = moment($('#expiry_date').val(), 'DD/MM/YYYY').format('YYYY-MM-DD');
+            var expiry_date = expiry_dateFormat+' '+$('#expiry_time').val();
+
+            if (start_date >= expiry_date) {
+                alert('Waktu tidak sesuai, silahkan diperbaiki.');
+                return;
+            }
+
         }
 
         let data = new Object();

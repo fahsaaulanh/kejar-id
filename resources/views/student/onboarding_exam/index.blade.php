@@ -1,6 +1,6 @@
 @extends('layout.index')
 
-@section('title', 'On Boarding')
+@section('title', 'On Boarding - '.$assessment['subject']['name'])
 
 @section('content')
 <div class="container">

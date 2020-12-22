@@ -183,4 +183,11 @@ class Task extends Service
 
         return $this->showResponse($response);
     }
+
+    public function detialAssessment($taskId)
+    {
+        $response = $this->get("/tasks/assessments/$taskId/result");
+
+        return $this->showResponse($response);
+    }
 }
