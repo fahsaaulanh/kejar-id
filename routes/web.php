@@ -441,6 +441,11 @@ Route::middleware('session')->group(function () {
                         });
                     });
                 });
+
+                Route::prefix('api/{game}')->group(function () {
+                    Route::get('stages', 'Student\StageController@getIndex');
+                    Route::get('stages/{stageId}/rounds', 'Student\RoundController@getIndex');
+                });
             });
         });
 

@@ -12,33 +12,42 @@ class StageController extends Controller
     public function index($game)
     {
         $game = strtoupper($game);
-        $stagesApi = new StageApi;
         $gameService = new Game;
-        $roundApi = new Round;
+        $game = $gameService->parse($game);
+
+        return view('student.stages.index', compact('game'));
+    }
+
+    public function getIndex($game)
+    {
+        $game = strtoupper($game);
+        $stagesApi = new StageApi;
 
         $filter = [
             'per_page' => 99,
         ];
-        $stagesAll = $stagesApi->getAll($game, $filter)['data'] ?? [];
 
-        $stages = [];
-        foreach ($stagesAll as $stage) {
-            $filter = [
-                'per_page' => 1,
-                'filter[status]' => 'PUBLISHED',
-                'filter[stage_id]' => $stage['id'],
-            ];
-            $rounds = $roundApi->index($filter);
+        $stages = $stagesApi->getAll($game, $filter)['data'] ?? [];
 
-            if ($rounds['error'] !== false && $rounds['data'] === null) {
-                continue;
-            }
+        return response()->json(['error' => false, 'data' => $stages]);
+    }
 
-            $stages[] = $stage;
-        }
+    public function stageStatus($game, $stageId)
+    {
+        $game;
+        $roundsApi = new Round;
 
-        $game = $gameService->parse($game);
+        $filter = [
+            'per_page' => 1,
+            'filter[status]' => 'PUBLISHED',
+            'filter[stage_id]' => $stageId,
+        ];
+        $rounds = $roundsApi->index($filter)['data'] ?? [];
 
-        return view('student.stages.index', compact('game', 'stages'));
+        $message = [
+            'status' => count($rounds) > 0,
+        ];
+
+        return response()->json($message);
     }
 }

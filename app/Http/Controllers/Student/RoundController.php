@@ -18,61 +18,44 @@ class RoundController extends Controller
         $stage = $response['data'];
         $gameService = new Game;
 
+        $game = $gameService->parse($game);
+
+        return view('student.rounds.index', compact('game', 'stage'));
+    }
+
+    public function getIndex($game, $stageId)
+    {
+        $game;
         $roundApi = new RoundApi;
+        $userApi = new UserApi;
+
         $filter = [
             'filter[stage_id]' => $stageId,
             'filter[status]' => 'PUBLISHED',
             'per_page' => 99,
         ];
-        $response = $roundApi->index($filter);
 
+        $rounds = $roundApi->index($filter)['data'] ?? [];
 
-        $data = $response['data'] ?? [];
+        $responseRounds = [];
+        foreach ($rounds as $key => $round) {
+            $filter = [
+                'filter[taskable_id]' => $round['id'],
+                'filter[finished]' => 'true',
+                'filter[taskable_type]' => 'MATRIKULASI',
+                'per_page' => 99,
+            ];
 
-        $rounds = [];
-        if ($data !== []) {
-            $userApi = new UserApi;
-            foreach ($data as $key => $round) {
-                $filter = [
-                    'filter[taskable_id]' => $round['id'],
-                    'filter[finished]' => 'true',
-                    'filter[taskable_type]' => 'MATRIKULASI',
-                    'per_page' => 99,
-                ];
-                $result = $userApi->meTask($filter);
-                $score = null;
+            $score = $userApi->meTask($filter)['data'] ?? [];
 
-                if ($result['error'] === false && $result['data'] !== null) {
-                    $score = $result['data']['0']['score'];
-                }
-
-                $rounds[$key]['id'] = $round['id'];
-                $rounds[$key]['stage_id'] = $round['stage_id'];
-                $rounds[$key]['description'] = $round['description'];
-                $rounds[$key]['direction'] = $round['direction'];
-                $rounds[$key]['material'] = $round['material'];
-                $rounds[$key]['total_question'] = $round['total_question'];
-                $rounds[$key]['question_timespan'] = $round['question_timespan'];
-                $rounds[$key]['order'] = $round['order'];
-                $rounds[$key]['status'] = $round['status'];
-                $rounds[$key]['title'] = $round['title'];
-                $rounds[$key]['score'] = $score;
-            }
+            $responseRounds[$key]['id'] = $round['id'];
+            $responseRounds[$key]['title'] = $round['title'];
+            $responseRounds[$key]['order'] = $round['order'];
+            $responseRounds[$key]['score'] = $score[0]['score'] ?? null;
         }
 
-        if ($rounds !== '') {
-            $round = [];
-            foreach ($rounds as $key => $row) {
-                $round[$key] = $row['order'];
-            }
+        usort($responseRounds, fn ($a, $b) => $a['order'] <=> $b['order']);
 
-            array_multisort($round, SORT_ASC, $rounds);
-        } else {
-            $rounds = '';
-        }
-
-        $game = $gameService->parse($game);
-
-        return view('student.rounds.index', compact('game', 'stage', 'rounds'));
+        return response()->json(['error' => false, 'data' => $responseRounds]);
     }
 }
