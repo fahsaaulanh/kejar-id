@@ -292,3 +292,24 @@
     padding: 10px 16px !important;
     background: $blue-tp2;
 }
+
+.card-score {
+    border: 2px solid #334E68;
+    width: 164px;
+    box-sizing: border-box;
+    
+    .header-score {
+        height: 32px;
+        border-radius: 0px;
+        border-bottom: 2px solid #334E68;
+        text-align: center;
+        padding-top: 0.2rem;
+    }
+
+    .body-score {
+        height: 56px;
+        border-radius: 0px;
+        text-align: center;
+        padding-top: 0.8rem;
+    }
+}

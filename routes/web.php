@@ -159,6 +159,12 @@ Route::middleware('session')->group(function () {
                     'Teacher\AssessmentController@score',
                 );
 
+                Route::get(
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/'.
+                    'student-group/{studentGroupId}/score/{taskId}/detail',
+                    'Teacher\AssessmentController@detailScore',
+                );
+
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewQuestion');
                 Route::post('assessment/mini/question/update', 'Teacher\AssessmentController@updateQuestion');
                 Route::get('assessment/question/check/{id}', 'Teacher\AssessmentController@checkQuestion');
