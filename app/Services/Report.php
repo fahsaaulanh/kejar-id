@@ -26,4 +26,11 @@ class Report extends Service
 
         return $this->showResponse($response);
     }
+
+    public function exportAssessment($filter = [])
+    {
+        $response = $this->get('/reports/assessments/export', $filter);
+
+        return $this->showResponse($response);
+    }
 }

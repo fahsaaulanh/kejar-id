@@ -329,6 +329,7 @@ class AssessmentController extends Controller
 
                 $name = $student['name'];
                 $nis = $student['nis'];
+                $studentNote === '-';
 
                 if (!in_array($v['id'], $studentIdScheduleCreated)) {
                     // Siswa tidak ada jadwal
@@ -1842,7 +1843,7 @@ class AssessmentController extends Controller
         $studentDetail = $UserApi->detailStudent($taskDetail['data']['student_id']);
 
         $startTime = Carbon::parse($taskDetail['data']['start_time'])->format('Y-m-d H:i:s');
-        
+
         $finishTime = Carbon::parse($taskDetail['data']['finish_time']);
 
         $firstTime = Carbon::parse($taskDetail['data']['start_time'])->format('H:i');
@@ -1870,5 +1871,23 @@ class AssessmentController extends Controller
             ->with('studentGroup', $studentGroupDetail['data'] ?? [])
             ->with('duration', $duration)
             ->with('message', 'Data success');
+    }
+
+    public function export()
+    {
+        $assessmentGroupId = $this->request->input('assessmentGroupId');
+        $subjectId = $this->request->input('subjectId');
+        $studentGroupId = $this->request->input('studentGroupId');
+        $type = $this->request->input('type');
+
+        $reportApi = new ReportApi;
+        $filter = [
+            'filter[assessment_type]' => $type,
+            'filter[assessment_group_id]' => $assessmentGroupId,
+            'filter[student_group_id]' => $studentGroupId,
+            'filter[subject_id]' => $subjectId,
+        ];
+
+        return $reportApi->exportAssessment($filter);
     }
 }

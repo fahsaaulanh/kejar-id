@@ -43,6 +43,9 @@
         <div class="col-6">
             <div class="row justify-content-end">
                 <div class="pr-4">
+                    <button id="download" onclick="exportExcel()" class="btn btn-export"><i class="kejar-download mr-2"></i> Unduh Rincian Jawaban</button>
+                </div>
+                <div class="pr-4">
                     <button onclick="scoreIndex()" class="btn btn-publish"><i class="kejar-refresh mr-2"></i> Refresh Halaman</button>
                 </div>
                 <!-- <form method="post">
@@ -637,6 +640,38 @@
             backdrop: 'static',
             keyboard: false,
             show: true,
+        });
+    }
+
+    function exportExcel() {
+        const url = "{!! URL::to('/teacher/subject-teacher/assessment/export') !!}";
+        const defaultCaption = $('#download').html();
+
+        $.ajax({
+            url,
+            type: 'GET',
+            data: {
+                assessmentGroupId: '{{$assessmentGroupId}}',
+                subjectId: '{{$subject["id"]}}',
+                studentGroupId: '{{$studentGroup["id"]}}',
+                type: typeAssesment,
+            },
+            dataType: 'json',
+            beforeSend: function() {
+                $('#download').html('Tunggu...');
+                $('#download').attr('disabled', true);
+            },
+            error: function(error) {
+                //
+                $('#download').html(defaultCaption);
+                $('#download').removeAttr('disabled');
+            },
+            success: function(response) {
+                const { data } = response;
+                window.open(data, '_blank');
+                $('#download').html(defaultCaption);
+                $('#download').removeAttr('disabled');
+            }
         });
     }
 </script>

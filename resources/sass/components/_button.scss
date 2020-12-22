@@ -284,6 +284,36 @@
     }
 }
 
+.btn-export {
+    @include h5-reg;
+    color: $blue;
+    background-color: transparent;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    border: none;
+    box-sizing: border-box;
+    outline: none;
+    padding: 1rem 1.2rem !important;
+    margin: 0;
+
+    i {
+        &:before {
+            color: $blue;
+        }
+    }
+
+    &:hover {
+        color: $blue-2;
+
+        i {
+            &:before {
+                color: $blue-2;
+            }
+        }
+    }
+}
+
 .btn-publish {
     @include h5-reg;
     color: $white;
