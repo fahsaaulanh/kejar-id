@@ -6,19 +6,22 @@
 @show
 
 @section('css')
-  <link rel="stylesheet" href="{{ asset('assets/plugins/placeholder-loading/placeholder-loading.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/placeholder-loading/placeholder-loading.min.css') }}">
 @endsection
 
 @section('content')
 <div class="container-exam">
     @php
-        $questionLength = count($task['assessment']['questions']);
+    $questionLength = count($task['assessment']['questions']);
     @endphp
 
     @if($questionLength > 20)
     <div id="drawer" class="drawer-exam d-flex-column">
-        <div class="row m-0">
+        <div class="row m-0 justify-content-between">
             <h5>Daftar Soal</h5>
+            <div id="close" class="close-assessment-drawer" role="button" onclick="toggleDrawer()">
+                <i class="kejar-close font-20 text-black"></i>
+            </div>
         </div>
         <div class="container-list-number">
             @foreach($task['assessment']['questions'] as $q)
@@ -30,11 +33,11 @@
     </div>
     @else
     <div id="drawer" class="drawer-exam-row d-flex-column">
-        <div class="row m-0 pl-5 align-items-center">
-            <div id="close" role="button" onclick="toggleDrawer()">
-                <i class="kejar-left font-20 text-black"></i>
-            </div>
+        <div class="row m-0 pl-5 align-items-center justify-content-between">
             <h5>Daftar Soal</h5>
+            <div id="close" class="close-assessment-drawer" role="button" onclick="toggleDrawer()">
+                <i class="kejar-close font-20 text-black"></i>
+            </div>
         </div>
         <div class="container-list-number-row">
             @foreach($task['assessment']['questions'] as $q)
@@ -723,7 +726,9 @@
                 const answer = answers[q.id]['answer'] || null;
                 const isChecked = $(`#answered-${index}`).is(':visible');
 
-                console.log({ isChecked });
+                console.log({
+                    isChecked
+                });
 
                 if (answer !== null && !isChecked) {
                     $(`#answered-${index}`).show();
@@ -749,6 +754,5 @@
             }
         }
     }
-
 </script>
 @endpush

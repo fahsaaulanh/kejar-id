@@ -57,21 +57,23 @@
 }
 
 .drawer-exam {
-    min-width: 20.8rem;
+    min-width: 21.2rem;
     padding: 1.8rem 1.6rem 1.8rem 2rem;
     height: calc(100vh - 40px);
     max-height: 100vh;
     overflow: auto;
     scrollbar-width: 2px;
+    border-right: 4px solid #F4F6F9;
 }
 
 .drawer-exam-row {
-    min-width: 20.8rem;
+    min-width: 21.2rem;
     padding: 1.8rem 0 1.8rem 0;
     height: calc(100vh - 40px);
     max-height: 100vh;
     overflow: auto;
     display: block;
+    border-right: 4px solid #F4F6F9;
     scrollbar-width: 2px;
 
     #close {
@@ -185,9 +187,20 @@
 .content-exam {
     padding: 4rem;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-assessment-drawer {
+    display: none;
 }
 
 @media screen and (max-width: 768px) {
+
+    .close-assessment-drawer {
+        display: block;
+    }
+
     .assesment-btn-question {
         display: flex !important;
     }
@@ -218,6 +231,11 @@
 
 
 @media screen and (max-width: 1200px) and (min-width: 769px) {
+
+    .close-assessment-drawer {
+        display: block;
+    }
+
     .assesment-btn-question {
         display: flex !important;
     }

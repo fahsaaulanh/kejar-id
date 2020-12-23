@@ -191,13 +191,13 @@ class AssessmentController extends Controller
 
             if ($startAt !== null) {
                 $view .= '<div class="pt-2">';
-                    $view .= '<h6 class="text-grey-3"> Dimulai pada ' . $startAt . ' </h6>';
+                    $view .= '<h6 class="text-grey-3"> Dapat dikerjakan mulai dari ' . $startAt . ' </h6>';
                 $view .= '</div>';
             }
 
             if ($endAt !== null) {
                 $view .= '<div class="pt-2">';
-                    $view .= '<h6 class="text-grey-3"> Berakhir pada ' . $endAt . ' </h6>';
+                    $view .= '<h6 class="text-grey-3"> sampai dengan ' . $endAt . ' </h6>';
                 $view .= '</div>';
             }
 
