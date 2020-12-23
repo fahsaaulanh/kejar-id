@@ -1362,7 +1362,7 @@ class AssessmentController extends Controller
         return response()->json($create);
     }
 
-    public function studentGroups(Request $req, $assessmentGroupId)
+    public function studentGroups(Request $req, $type, $assessmentGroupId)
     {
         $meApi = new MeApi;
         $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
@@ -1376,12 +1376,13 @@ class AssessmentController extends Controller
 
         return view('teacher.counselor.student-groups.index')
             ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('type', $type)
             ->with('assessmentGroup', $assessmentGroup)
             ->with('studentGroups', $studentGroups['data'])
             ->with('studentGroupMeta', $studentGroups['meta']);
     }
 
-    public function studentGroupSubject(Request $req, $assessmentGroupId, $studentGroupId)
+    public function studentGroupSubject(Request $req, $type, $assessmentGroupId, $studentGroupId)
     {
         $schoolId = session()->get('user.userable.school_id');
         $schoolApi = new SchoolApi;
@@ -1397,12 +1398,13 @@ class AssessmentController extends Controller
         return view('teacher.counselor.student-groups.subject.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
+            ->with('type', $type)
             ->with('subjects', $subjects['data'])
             ->with('subjectMeta', $subjects['meta'])
             ->with('studentGroup', $studentGroup['data']);
     }
 
-    public function studentGroupScore(Request $req, $assessmentGroupId, $studentGroupId, $subjectId)
+    public function studentGroupScore(Request $req, $type, $assessmentGroupId, $studentGroupId, $subjectId)
     {
         $schoolId = session()->get('user.userable.school_id');
         $schoolApi = new SchoolApi;
@@ -1443,6 +1445,7 @@ class AssessmentController extends Controller
 
         return view('teacher.counselor.student-groups.score.index')
             ->with('assessmentGroupId', $assessmentGroupId)
+            ->with('type', $type)
             ->with('assessmentGroup', $assessmentGroup)
             ->with('subject', $subject['data'])
             ->with('subjectMeta', $subject['meta'])

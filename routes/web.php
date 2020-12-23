@@ -227,16 +227,18 @@ Route::middleware('session')->group(function () {
                     '{assessmentGroupId}/student-attendance/update',
                     'Teacher\AssessmentController@studentAttendanceUpdate',
                 );
+
+                // Homeroom Teacher
+                Route::get('/{assessmentGroupId}/student-groups', 'Teacher\AssessmentController@studentGroups');
+                Route::get(
+                    '/{assessmentGroupId}/student-groups/{studentGroupId}/subjects',
+                    'Teacher\AssessmentController@studentGroupSubject',
+                );
+                Route::get(
+                    '/{assessmentGroupId}/student-groups/{studentGroupId}/subjects/{subjectId}/score',
+                    'Teacher\AssessmentController@studentGroupScore',
+                );
             });
-            Route::get('/{assessmentGroupId}/student-groups', 'Teacher\AssessmentController@studentGroups');
-            Route::get(
-                '/{assessmentGroupId}/student-groups/{studentGroupId}/subjects',
-                'Teacher\AssessmentController@studentGroupSubject',
-            );
-            Route::get(
-                '/{assessmentGroupId}/student-groups/{studentGroupId}/subjects/{subjectId}/score',
-                'Teacher\AssessmentController@studentGroupScore',
-            );
 
             // Mini Assesments
 
