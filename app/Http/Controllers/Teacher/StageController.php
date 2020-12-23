@@ -22,7 +22,7 @@ class StageController extends Controller
         $schoolId = session('user')['userable']['school_id'];
         $entryYear = Carbon::now()->year . '/' . Carbon::now()->add(1, 'year')->year;
         $secondYear = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->year;
-        $thirdYear = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->sub(2, 'year')->year;
+        $thirdYear = Carbon::now()->sub(2, 'year')->year . '/' . Carbon::now()->sub(1, 'year')->year;
 
         $year = [$entryYear, $secondYear, $thirdYear];
         $batchApi = new BatchApi;
@@ -60,7 +60,7 @@ class StageController extends Controller
                 'count_8' => 0,
                 'count_9' => 0,
             ];
-            
+
             $number = 0;
             if (count($classData) !== 0) {
                 foreach ($classData as $data) {
