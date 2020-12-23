@@ -154,6 +154,7 @@ Route::middleware('session')->group(function () {
                     'Teacher\AssessmentController@settingMiniAssessment',
                 );
 
+
                 Route::get(
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/student-group/{studentGroupId}/score',
                     'Teacher\AssessmentController@score',
@@ -163,6 +164,16 @@ Route::middleware('session')->group(function () {
                     '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/'.
                     'student-group/{studentGroupId}/score/{taskId}/detail',
                     'Teacher\AssessmentController@detailScore',
+                );
+
+                Route::get(
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/status-task/{status}',
+                    'Teacher\AssessmentController@studentListStatusTask',
+                );
+
+                Route::post(
+                    'assessment/schedule/student-list',
+                    'Teacher\AssessmentController@studentListStatusTaskData',
                 );
 
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewQuestion');
