@@ -255,7 +255,8 @@
                     if(data.data.length > 0){
                         console.log('ada data');
                         var checked = '';
-                        if ($('#schedule-check-all-'+student_group_id).is(':checked')) {
+                        if ($('#schedule-check-all-'+student_group_id).is(':checked') || checkAllFunc) {
+                            $('#schedule-check-all-'+student_group_id).prop('checked', true);
                             checked = ' checked';
                         }
                         var html = '';

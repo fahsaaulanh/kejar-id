@@ -329,7 +329,6 @@ class AssessmentController extends Controller
 
                 $name = $student['name'];
                 $nis = $student['nis'];
-                $studentNote === '-';
 
                 if (!in_array($v['id'], $studentIdScheduleCreated)) {
                     // Siswa tidak ada jadwal
@@ -1892,5 +1891,130 @@ class AssessmentController extends Controller
         ];
 
         return $reportApi->exportAssessment($filter);
+    }
+
+    public function studentListStatusTask($teacherType, $assessmentGroupId, $subjectId, $grade)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $schoolApi = new SchoolApi;
+        $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
+        $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
+
+        return view('teacher.subject_teacher.assessment.student_list.by_status_task')
+                ->with('teacherType', $teacherType)
+                ->with('subject', $subject['data'])
+                ->with('assessmentGroupId', $assessmentGroupId)
+                ->with('assessmentGroup', $assessmentGroup)
+                ->with('grade', $grade);
+    }
+
+    public function studentListStatusTaskData(Request $req)
+    {
+        $schoolId = session()->get('user.userable.school_id');
+        $ScheduleApi = new ScheduleApi;
+
+        $ScheduleFilter = [
+            'per_page' => 40,
+            'filter[assessment_group_id]' => $req->assessment_group_id,
+            'filter[subject_id]' => ($req->subject_id ?? ''),
+            'filter[grade]' => ($req->grade ?? ''),
+            'filter[schedulable_status]' => ($req->status_task ?? ''),
+            'page' => ($req->page ?? 1),
+        ];
+
+        $scheduleStudents = $ScheduleApi->index($schoolId, $ScheduleFilter);
+
+        if (!isset($req->group)) {
+            return;
+        }
+
+        if ($req->group !== 'student_group') {
+            return;
+        }
+
+        $studentGroups = [];
+
+        foreach ($scheduleStudents['data'] as $key => $v) {
+            $studentGroupId = $v['student']['student_group_id'];
+            $studentGroups[$studentGroupId] = $v['student']['student_group'];
+        }
+
+        $studentList = [];
+        foreach ($studentGroups as $key => $v) {
+            $studentList[$key] = $v;
+            $students = [];
+            $no = 1;
+
+            foreach ($scheduleStudents['data'] as $d) {
+                if ($key === $d['student']['student_group_id']) {
+                    $students[$no] = $d;
+                    $studentList[$key]['rowspan'] = $no;
+                    $no++;
+                }
+            }
+
+            $studentList[$key]['data'] = $students;
+        }
+
+        // Html return
+        $html = '';
+
+        foreach ($studentList as $sG) {
+            $html .= '<tr>';
+                $html .= '<td rowspan="'. ($sG['rowspan'] + 1) .'">'. $sG['name'] .'</td>';
+            $html .= '</tr>';
+
+            foreach ($sG['data'] as $no => $v) {
+                $studentDetail = $v['student'];
+                $html .= '<tr>';
+                    $html .= '<td class="text-right">'. $no .'</td>';
+                    $html .= '<td>'. $studentDetail['name'] .'</td>';
+                    $html .= '<td>'. $studentDetail['nis'] .'</td>';
+                $html .= '</tr>';
+            }
+        }
+
+        // Pagination
+        $pgnt = '';
+        $paginationFunction = $req['paginationFunction'];
+        $page = (int)$req['page'];
+        $meta = $scheduleStudents['meta'];
+
+        if ($meta && $meta['total'] > 40) {
+            $pgnt .= '<nav class="navigation mt-5">';
+            $pgnt .= '<div>';
+            $pgnt .= '<span class="pagination-detail">' . ($meta['to'] ?? 0)
+                . ' dari ' . $meta['total'] . ' siswa</span>';
+            $pgnt .= '</div>';
+            $pgnt .= '<ul class="pagination">';
+            $pgnt .= '<li class="page-item ' . ($page - 1 <= 0 ? 'disabled' : '') . '">';
+            $pgnt .= '<a class="page-link" onclick="' .
+                $paginationFunction . '(' . ($page - 1) . ')"
+                        href="javascript::void(0)" tabindex="-1">&lt;</a>';
+            $pgnt .= '</li>';
+
+            for ($i = 1; $i <= $meta['last_page']; $i++) {
+                $pgnt .= '<li class="page-item ' . ($page === $i ? 'active disabled' : '') . '">';
+                $pgnt .= '<a class="page-link" onclick="' .
+                    $paginationFunction . '(' . $i . ')"
+                            href="javascript::void(0)">' . $i . '</a>';
+                $pgnt .= '</li>';
+            }
+
+            $pgnt .= '<li class="page-item ' . ($page + 1) . ' > ' . ($meta['last_page'] ? 'disabled' : '') . '">';
+            $pgnt .= '<a class="page-link" onclick="' .
+                $paginationFunction . '(' . ($page + 1) . ')"
+                        href="javascript::void(0)">&gt;</a>';
+            $pgnt .= '</li>';
+            $pgnt .= '</ul>';
+            $pgnt .= '</nav>';
+        }
+
+        $data = [
+            'table' => $html,
+            'pagination' => $pgnt,
+        ];
+
+        return response()->json($data);
     }
 }

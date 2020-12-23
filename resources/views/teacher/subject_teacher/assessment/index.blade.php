@@ -151,11 +151,18 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="mt-8">
+                    <div>
+                        <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/status-task/Undone') }}" class="text-black-1 text-decoration-none">
+                            <div class="w-100 bg-grey-15 mb-4 px-4 py-3">
+                                <i class="kejar-rombel"></i> Siswa Belum Mengerjakan (Semua Rombel)
+                            </div>
+                        </a>
+                    </div>
                     @foreach($studentGroup as $data)
                         <div>
-                            <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/student-group/'.$data['id'].'/score') }}" class="text-black-1">
+                            <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/student-group/'.$data['id'].'/score') }}" class="text-black-1 text-decoration-none">
                                 <div class="w-100 bg-grey-15 mb-4 px-4 py-3">
-                                    Rombel {{$data['name']}}
+                                    <i class="kejar-rombel"></i> Rombel {{$data['name']}}
                                 </div>
                             </a>
                         </div>
