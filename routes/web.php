@@ -124,6 +124,7 @@ Route::middleware('session')->group(function () {
             // API
             Route::get('/api/assessment-groups', 'HomeController@getAssessmentGroups');
             Route::post('/api/assessment-groups', 'HomeController@createAssessmentGroup');
+            Route::post('/questions/image-upload', 'Teacher\AssessmentController@imageUpload');
             //
 
             // Assessments

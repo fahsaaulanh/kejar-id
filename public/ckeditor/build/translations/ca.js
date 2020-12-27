@@ -1,1 +1,1 @@
-(function(a){const n=a["ca"]=a["ca"]||{};n.dictionary=Object.assign(n.dictionary||{},{Bold:"Negreta",Cancel:"Cancel·lar",Italic:"Cursiva",Save:"Desar",Underline:"Subrallat"});n.getPluralForm=function(a){return a!=1}})(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));
+!function(a){const n=a.ca=a.ca||{};n.dictionary=Object.assign(n.dictionary||{},{Bold:"Negreta",Cancel:"Cancel·lar",Italic:"Cursiva",Save:"Desar",Underline:"Subrallat"}),n.getPluralForm=function(a){return 1!=a}}(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));

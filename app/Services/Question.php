@@ -25,4 +25,11 @@ class Question extends Service
 
         return $this->showResponse($response);
     }
+
+    public function uploadImage($file)
+    {
+        $response = $this->postUploadImage('/libraries/questions/image-upload', $file, []);
+
+        return $response->json();
+    }
 }

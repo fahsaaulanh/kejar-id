@@ -120,6 +120,99 @@ var editorArray = [];
 function generateEditor(index, element) {
 
     showLoader();
+    var adapterData = $('#image-upload-adapter');
+    // if uploaded via server
+    if(adapterData) {
+        var apiHost = adapterData.attr('init-host');
+        var apiBearer = adapterData.attr('init-bearer');
+
+        ClassicEditor
+        .create( element, {
+            toolbar: {
+                items: [
+                    'bold',
+                    'italic',
+                    'underline',
+                    'bulletedList',
+                    'numberedList',
+                    'imageUpload'
+                ]
+            },
+            language: 'en',
+            image: {
+                styles: [
+                    'alignLeft', 'alignCenter', 'alignRight'
+                ],
+                resizeOptions: [
+                    {
+                        name: 'imageResize:original',
+                        label: 'Original',
+                        value: null
+                    },
+                    {
+                        name: 'imageResize:25',
+                        label: '25%',
+                        value: '25'
+                    },
+                    {
+                        name: 'imageResize:30',
+                        label: '30%',
+                        value: '30'
+                    },
+                    {
+                        name: 'imageResize:35',
+                        label: '35%',
+                        value: '35'
+                    },
+                    {
+                        name: 'imageResize:40',
+                        label: '40%',
+                        value: '40'
+                    },
+                    {
+                        name: 'imageResize:50',
+                        label: '50%',
+                        value: '50'
+                    },
+                    {
+                        name: 'imageResize:75',
+                        label: '75%',
+                        value: '75'
+                    }
+                ],
+                toolbar: [
+                    'imageResize','imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                ],
+            },
+            licenseKey: '',
+            simpleUpload: {
+                types: [ 'jpeg' ],
+                // The URL that the images are uploaded to.
+                uploadUrl: apiHost,
+
+                // // Enable the XMLHttpRequest.withCredentials property.
+                withCredentials: false,
+
+                // // Headers sent along with the XMLHttpRequest to the upload server.
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'accept': 'application/json',
+                }
+            }
+        } )
+        .then( editor => {
+            editorArray[index] = editor;
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+
+        setTimeout(() => {
+            hideLoader();
+        }, 1000);
+
+        return false;
+    }
 
     ClassicEditor
     .create( element, {
@@ -187,9 +280,6 @@ function generateEditor(index, element) {
         editorArray[index] = editor;
     } )
     .catch( error => {
-        console.error( 'Oops, something went wrong!' );
-        console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-        console.warn( 'Build id: nekgv7mmfgzn-cehsg6b07p1b' );
         console.error( error );
     } );
 
