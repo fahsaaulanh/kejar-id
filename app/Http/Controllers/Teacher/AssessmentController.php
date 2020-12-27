@@ -549,6 +549,9 @@ class AssessmentController extends Controller
             $questions = $getQuestions['data'] ?? [];
         }
 
+        $imageUpload = url('/teacher/questions/image-upload');
+        // $imageUpload = env('API_HOST').'/libraries/questions/image-upload';
+
         return view('teacher.subject_teacher.assessment.index')
             ->with('assessmentGroupId', $assessmentGroupId)
             ->with('assessmentGroup', $assessmentGroup)
@@ -564,6 +567,7 @@ class AssessmentController extends Controller
             ->with('studentGroup', $studentGroup)
             ->with('newestPackStatus', $newestPackStatus)
             ->with('questionCount', $questionCount)
+            ->with('imageUpload', $imageUpload)
             ->with('message', 'Data success');
     }
 
@@ -2016,5 +2020,22 @@ class AssessmentController extends Controller
         ];
 
         return response()->json($data);
+    }
+
+    public function imageUpload(Request $req)
+    {
+        $image = $req->file('upload');
+        $reqFile = [
+            [
+                'payload_name' => 'upload',
+                'file' => $image,
+                'file_name' => 'image',
+            ],
+        ];
+
+        $questionApi = new QuestionApi;
+        $response = $questionApi->uploadImage($reqFile);
+
+        return response()->json($response);
     }
 }

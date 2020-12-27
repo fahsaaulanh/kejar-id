@@ -17,10 +17,14 @@
         <span class="breadcrumb-item active">{{$subject['name']}}</span>
     </nav>
 
+
+
     <!-- Title -->
     <div class="page-title">
         <h2 class="mb-08rem">Kelas {{$grade}}</h2>
     </div>
+
+    <div id="image-upload-adapter" init-host="{{ $imageUpload }}" init-bearer="{{session('token', null)}}"></div>
 
     <!-- Upload Buttons -->
     @if($errors->has('round_file'))
