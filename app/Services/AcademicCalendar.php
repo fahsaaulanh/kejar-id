@@ -46,7 +46,7 @@ class AcademicCalendar
 
     private function shouldNotChangeYear()
     {
-        return (int) Carbon::now()->month()->format('m') <= Carbon::JULY
-        && (int) Carbon::now()->day()->format('d') < 19;
+        return (int) Carbon::now()->format('m') <= Carbon::JULY
+        && (int) Carbon::now()->format('d') < 19;
     }
 }
