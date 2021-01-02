@@ -117,11 +117,13 @@ class AssessmentController extends Controller
 
     public function studentGroupData(Request $req)
     {
+        $academicCalendar = new AcademicCalendar;
+
         $schoolId = session()->get('user.userable.school_id');
         $filter = [
             'page' => ($req->page ?? 1),
             'per_page' => 99,
-            'filter[entry_year]' => $this->entryYear(),
+            'filter[entry_year]' =>$academicCalendar->academicYearByGrade($req->grade),
         ];
         $BatchApi = new BatchApi;
         $batch = $BatchApi->index($schoolId, $filter);
@@ -438,7 +440,7 @@ class AssessmentController extends Controller
 
         $academicCalendar = new AcademicCalendar;
 
-        $year = $academicCalendar->currentAcademicYear();
+        $year = $academicCalendar->academicYearByGrade($grade);
 
         $batchApi = new BatchApi;
 

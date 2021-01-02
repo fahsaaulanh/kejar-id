@@ -4,6 +4,8 @@
 /public/js
 /public/css
 /public/mix-manifest.json
+/public/ckeditor/node_modules
+/public/ckeditor/yarn.lock
 /storage/*.key
 /vendor
 .env

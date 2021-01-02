@@ -264,7 +264,7 @@
                                             <i class="kejar-edit"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nav-{{$i}}">
-                                            <a class="dropdown-item font-15" onclick="editSelected('{{$i}}')" id="edit-q-{{$i}}" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
+                                            <a class="dropdown-item font-15" id="edit-q-{{$i}}" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
                                                 Edit Soal
                                             </a>
                                             <a class="dropdown-item font-15" href="javascript:void(0)" style="cursor: pointer;" data-toggle="modal" data-target="#delete_question"
@@ -387,7 +387,6 @@
 <script src="{{ mix('/js/admin/question/literasi.js') }}"></script>
 
 <script>
-    var editSelectedValue = '';
     var failedId = '{{$newestPackStatus}}';
     var type = '{{$type}}';
     $(document).ready(() => {
@@ -915,24 +914,6 @@
             }, 4000)
         }
     })
-
-    function editSelected(id) {
-        editSelectedValue = id;
-    }
-
-    function closeMessageCreate() {
-        $('#messageImage').modal('hide');
-        $('#create-pilihan-ganda').modal({
-            backdrop: 'static',
-            keyboard: false,
-            show: true,
-        });
-    }
-
-    function closeMessageUpdate() {
-        $('#messageImage').modal('hide');
-        $(`#edit-q-${editSelectedValue}`).click();
-    }
 
 </script>
 @endpush
