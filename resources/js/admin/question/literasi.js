@@ -30,32 +30,6 @@ $(document).on('click', '.ckeditor-btn-1 .photo-btn', function(){
     $(this).parent().prev().find('.ck-toolbar__items span button').click();
 });
 
-$(document).on('click', '.ckeditor-btn-1 .message-btn-create', function(){
-    var button = `<button type="button" onclick="closeMessageCreate()"\ 
-    class="btn btn-primary">Tutup</button>`;
-    $('#closeMessage').html(button);
-    $('#messageImage').modal({
-        backdrop: 'static',
-        keyboard: false,
-        show: true,
-    });
-    $('#create-pilihan-ganda').modal('hide');
-
-});
-
-$(document).on('click', '.ckeditor-btn-1 .message-btn-update', function(){
-    var button = `<button type="button" onclick="closeMessageUpdate()"\ 
-    class="btn btn-primary">Tutup</button>`;
-    $('#closeMessage').html(button);
-    $('#messageImage').modal({
-        backdrop: 'static',
-        keyboard: false,
-        show: true,
-    });
-    $('#update-pilihan-ganda').modal('hide');
-
-});
-
 $(document).on('click', '.ck-content p, .ck-content ul li, .ck-content ol li', function(e){
     checkActive(e);
 });
@@ -123,16 +97,6 @@ $(document).on('mousedown', '.ckeditor-list .number-list-btn', function(){
 });
 
 $(document).on('mousedown', '.ckeditor-list .photo-btn', function(){
-    var thisEl = $(this);
-    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
-});
-
-$(document).on('mousedown', '.ckeditor-list .message-btn-create', function(){
-    var thisEl = $(this);
-    setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
-});
-
-$(document).on('mousedown', '.ckeditor-list .message-btn-update', function(){
     var thisEl = $(this);
     setTimeout(function () { thisEl.parent().prev().find('.ck-content').focus(); }, 0);
 });
@@ -387,7 +351,6 @@ function updateModal(id, html, type = 'textarea') {
 
 $("div[id^='create']").on("show.bs.modal", function(e){
     showLoader();
-    clearEditorField();
     $(e.currentTarget).find('.editor-field').each((index, element) => {
         generateEditor(index, element);
     });
@@ -410,6 +373,10 @@ $("div[id^='update-']").on("show.bs.modal", function (e) {
 
 $("#update-description").on("show.bs.modal", function (e) {
     hideLoader();
+});
+
+$(".modal").on("hidden.bs.modal", function (){
+    clearEditorField();
 });
 
 $("div[id^='create']").on('hide.bs.modal', function () {
@@ -1191,7 +1158,7 @@ $('#update-pilihan-ganda').on('shown.bs.modal', function(e) {
                                 <button type="button" class="number-list-btn" title="Number list">
                                     <i class="kejar-number"></i>
                                 </button>
-                                <button type="button" class="message-btn-update" title="Masukkan foto">
+                                <button type="button" class="photo-btn" title="Masukkan foto">
                                     <i class="kejar-photo"></i>
                                 </button>
                             </div>
@@ -1226,7 +1193,7 @@ $('#update-pilihan-ganda').on('shown.bs.modal', function(e) {
                             <button type="button" class="number-list-btn" title="Number list">
                                 <i class="kejar-number"></i>
                             </button>
-                            <button type="button" class="message-btn-update" title="Masukkan foto">
+                            <button type="button" class="photo-btn" title="Masukkan foto">
                                 <i class="kejar-photo"></i>
                             </button>
                         </div>

@@ -32,7 +32,7 @@
                             <button type="button" class="number-list-btn" title="Number list">
                                 <i class="kejar-number"></i>
                             </button>
-                            <button type="button" class="message-btn-update" title="Masukkan foto">
+                            <button type="button" class="photo-btn" title="Masukkan foto">
                                 <i class="kejar-photo"></i>
                             </button>
                         </div>
@@ -66,7 +66,7 @@
                             <button type="button" class="number-list-btn" title="Number list">
                                 <i class="kejar-number"></i>
                             </button>
-                            <button type="button" class="message-btn-update" title="Masukkan foto">
+                            <button type="button" class="photo-btn" title="Masukkan foto">
                                 <i class="kejar-photo"></i>
                             </button>
                         </div>
