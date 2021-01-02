@@ -56,6 +56,7 @@
     width: 2px;
 }
 
+
 .drawer-exam {
     min-width: 21.2rem;
     padding: 1.8rem 1.6rem 1.8rem 2rem;
@@ -64,6 +65,7 @@
     overflow: auto;
     scrollbar-width: 2px;
     border-right: 4px solid #F4F6F9;
+    z-index: 1;
 }
 
 .drawer-exam-row {
@@ -75,6 +77,7 @@
     display: block;
     border-right: 4px solid #F4F6F9;
     scrollbar-width: 2px;
+    z-index: 1;
 
     #close {
         margin-right: 0.8rem;
@@ -199,6 +202,13 @@
 
     .close-assessment-drawer {
         display: block;
+    }
+
+    .nav-name {
+        white-space: nowrap;
+        width: 120px;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     .assesment-btn-question {

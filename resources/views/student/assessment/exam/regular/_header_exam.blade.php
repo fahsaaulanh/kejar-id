@@ -8,7 +8,9 @@
             <img src="{{ asset('assets/images/general/photo-profile-default-circle.svg') }}" class="profile-pict assesment-picture" alt="">
             @endif
             @endif
-            {{ session('user.userable.name') }}
+            <div class="nav-name">
+                {{ session('user.userable.name') }}
+            </div>
         </div>
     </a>
 
