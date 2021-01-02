@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Services\AcademicCalendar;
 use App\Services\Assessment as AssessmentApi;
 use App\Services\AssessmentGroup as AssessmentGroupApi;
 use App\Services\Batch as BatchApi;
@@ -107,17 +108,11 @@ class AssessmentController extends Controller
             ->with('grade', $grade);
     }
 
-    public function entryYear($grade)
+    public function entryYear($useDash = false)
     {
-        $yearNow = Carbon::now()->year;
+        $academicCalendar = new AcademicCalendar;
 
-        $year = [
-            '10' => $yearNow . '/' . ($yearNow + 1),
-            '11' => ($yearNow - 1) . '/' . $yearNow,
-            '12' => ($yearNow - 2) . '/' . ($yearNow - 1),
-        ];
-
-        return $year[$grade];
+        return $academicCalendar->currentAcademicYear($useDash);
     }
 
     public function studentGroupData(Request $req)
@@ -126,7 +121,7 @@ class AssessmentController extends Controller
         $filter = [
             'page' => ($req->page ?? 1),
             'per_page' => 99,
-            'filter[entry_year]' => $this->entryYear($req->grade),
+            'filter[entry_year]' => $this->entryYear(),
         ];
         $BatchApi = new BatchApi;
         $batch = $BatchApi->index($schoolId, $filter);
@@ -440,19 +435,10 @@ class AssessmentController extends Controller
     public function assessment($teacherType, $assessmentGroupId, $subjectId, $grade, Request $request)
     {
         $schoolId = session()->get('user.userable.school_id');
-        $year = '';
 
-        if ($grade === '10' || $grade === '7') {
-            $year = Carbon::now()->year . '/' . Carbon::now()->add(1, 'year')->year;
-        }
+        $academicCalendar = new AcademicCalendar;
 
-        if ($grade === '11' || $grade === '8') {
-            $year = Carbon::now()->sub(1, 'year')->year . '/' . Carbon::now()->year;
-        }
-
-        if ($grade === '12' || $grade === '9') {
-            $year = Carbon::now()->sub(2, 'year')->year . '/' . Carbon::now()->sub(1, 'year')->year;
-        }
+        $year = $academicCalendar->currentAcademicYear();
 
         $batchApi = new BatchApi;
 
@@ -1170,7 +1156,7 @@ class AssessmentController extends Controller
         $filter = [
             'page' => ($req->page ?? 1),
             'per_page' => 99,
-            'filter[entry_year]' => $this->entryYear($req->grade),
+            'filter[entry_year]' => $this->entryYear(),
         ];
         $BatchApi = new BatchApi;
         $batch = $BatchApi->index($schoolId, $filter);
