@@ -933,6 +933,6 @@
         $('#messageImage').modal('hide');
         $(`#edit-q-${editSelectedValue}`).click();
     }
-    
+
 </script>
 @endpush

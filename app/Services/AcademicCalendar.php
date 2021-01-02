@@ -49,4 +49,23 @@ class AcademicCalendar
         return (int) Carbon::now()->format('m') <= Carbon::JULY
         && (int) Carbon::now()->format('d') < 19;
     }
+
+    public function academicYearByGrade($grade)
+    {
+        $yearNow = Carbon::now()->year;
+        $monthNow = Carbon::now()->month;
+        $dayNow = Carbon::now()->day;
+
+        if ($monthNow <= 7 && $dayNow < 19) {
+            $yearNow -= 1;
+        }
+
+        $year = [
+            '10' => $yearNow . '/' . ($yearNow + 1),
+            '11' => ($yearNow - 1) . '/' . $yearNow,
+            '12' => ($yearNow - 2) . '/' . ($yearNow - 1),
+        ];
+
+        return $year[$grade];
+    }
 }
