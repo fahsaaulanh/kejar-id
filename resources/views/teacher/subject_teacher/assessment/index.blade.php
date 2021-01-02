@@ -229,10 +229,10 @@
                         <i class="kejar-add"></i>Tambah Soal
                     </button>
                     <!-- Pagination -->
-                    @if($questionMeta)
+                    @if($questionMeta  && ($questionMeta['total'] > 10))
                         <nav class="navigation mt-5">
                             <div>
-                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} mapel</span>
+                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} soal</span>
                             </div>
                             <ul class="pagination">
                                 <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
@@ -251,19 +251,20 @@
                     @endif()
 
                     <div class="table-questions border-top-none">
+                    @php $no = $questionMeta['from']; @endphp
                     @foreach($questions as $i => $question)
                         <div class="card type-pilihan-ganda">
                             <div class="w-100 bg-green px-4 py-3">
                                 <div class="row justify-content-between px-4">
                                     <div>
-                                        <h5>SOAL {{ $i + 1 }}</h5>
+                                        <h5>SOAL {{ $no }}</h5>
                                     </div>
                                     <div>
                                         <a href="javascript:void(0)" id="nav-{{$i}}" style="cursor: pointer;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="kejar-edit"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nav-{{$i}}">
-                                            <a class="dropdown-item font-15" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
+                                            <a class="dropdown-item font-15" onclick="editSelected('{{$i}}')" id="edit-q-{{$i}}" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
                                                 Edit Soal
                                             </a>
                                             <a class="dropdown-item font-15" href="javascript:void(0)" style="cursor: pointer;" data-toggle="modal" data-target="#delete_question"
@@ -308,13 +309,14 @@
                                 @endif
                             </div>
                         </div>
+                    @php $no++; @endphp
                     @endforeach
                     </div>
                     <!-- Pagination -->
                     @if($questionMeta && ($questionMeta['total'] > 10))
                         <nav class="navigation mt-5">
                             <div>
-                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} mapel</span>
+                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} soal</span>
                             </div>
                             <ul class="pagination">
                                 <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
@@ -376,6 +378,7 @@
     @include('teacher.subject_teacher.assessment.regular.update._duration')
 @endif
 @include('teacher.subject_teacher.assessment.mini.answer._view_answer')
+@include('teacher.subject_teacher.assessment.regular._message_image')
 
 @endsection
 
@@ -384,6 +387,7 @@
 <script src="{{ mix('/js/admin/question/literasi.js') }}"></script>
 
 <script>
+    var editSelectedValue = '';
     var failedId = '{{$newestPackStatus}}';
     var type = '{{$type}}';
     $(document).ready(() => {
@@ -911,5 +915,24 @@
             }, 4000)
         }
     })
+
+    function editSelected(id) {
+        editSelectedValue = id;
+    }
+
+    function closeMessageCreate() {
+        $('#messageImage').modal('hide');
+        $('#create-pilihan-ganda').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
+    }
+
+    function closeMessageUpdate() {
+        $('#messageImage').modal('hide');
+        $(`#edit-q-${editSelectedValue}`).click();
+    }
+    
 </script>
 @endpush

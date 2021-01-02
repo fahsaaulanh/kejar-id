@@ -505,8 +505,12 @@ class AssessmentController extends Controller
         $questionMeta = null;
         $newestPackStatus = '';
         $filter = 0;
+        $filterQuestion = [
+            'page' => ($request->page ?? 1),
+            'per_page' => 10,
+        ];
         if (count($dataAssessment) > 0) {
-            $getQuestions = $assessmentApi->questions($dataAssessment[0]['id'], $request->page ?? 1);
+            $getQuestions = $assessmentApi->questions($dataAssessment[0]['id'], $filterQuestion);
             if (count($dataAssessment) === 1) {
                 foreach ($getQuestions['data'] as $value) {
                     if ($value['answer'] !== '') {
@@ -518,7 +522,7 @@ class AssessmentController extends Controller
             } else {
                 $getQuestsMore = $assessmentApi->questions(
                     $dataAssessment[count($dataAssessment) - 1]['id'],
-                    $request->page ?? 1,
+                    $filterQuestion,
                 );
                 foreach ($getQuestsMore['data'] as $value) {
                     if ($value['answer'] !== '') {
@@ -1838,11 +1842,11 @@ class AssessmentController extends Controller
 
         $finishTime = Carbon::parse($taskDetail['data']['finish_time']);
 
-        $firstTime = Carbon::parse($taskDetail['data']['start_time'])->format('H:i');
+        $firstTime = Carbon::parse($taskDetail['data']['start_time'])->setTimezone('Asia/Jakarta')->format('H:i');
 
-        $secondTime = Carbon::parse($taskDetail['data']['finish_time'])->format('H:i');
+        $secondTime = Carbon::parse($taskDetail['data']['finish_time'])->setTimezone('Asia/Jakarta')->format('H:i');
 
-        $time = Carbon::parse($taskDetail['data']['start_time'])->isoFormat('D MMMM Y');
+        $time = Carbon::parse($taskDetail['data']['start_time'])->setTimezone('Asia/Jakarta')->isoFormat('D MMMM Y');
 
         $duration = $finishTime->diffInMinutes($startTime);
 

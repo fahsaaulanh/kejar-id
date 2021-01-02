@@ -32,14 +32,14 @@
                             <button type="button" class="number-list-btn" title="Number list">
                                 <i class="kejar-number"></i>
                             </button>
-                            <button type="button" class="photo-btn" title="Masukkan foto">
+                            <button type="button" class="message-btn-update" title="Masukkan foto">
                                 <i class="kejar-photo"></i>
                             </button>
                         </div>
                     </div>
                     <div class="form-group">
                         <h5>Jawaban</h5>
-                        <div class="pb-2"><h6-reg class="text-grey-3">Pilih satu jawaban benar.</h6-reg></div>
+                        <div class="pb-2"><h6-reg class="text-grey-3">Tidak perlu menginputkan A, B, C pilihan jawaban dan pilih satu jawaban benar.</h6-reg></div>
                         <table class="answer-list-table-pg" data-type="pilihan-ganda">
 
                         </table>
@@ -66,7 +66,7 @@
                             <button type="button" class="number-list-btn" title="Number list">
                                 <i class="kejar-number"></i>
                             </button>
-                            <button type="button" class="photo-btn" title="Masukkan foto">
+                            <button type="button" class="message-btn-update" title="Masukkan foto">
                                 <i class="kejar-photo"></i>
                             </button>
                         </div>
