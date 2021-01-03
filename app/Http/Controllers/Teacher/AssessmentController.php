@@ -507,11 +507,19 @@ class AssessmentController extends Controller
         $questionMeta = null;
         $newestPackStatus = '';
         $filter = 0;
-        $filterQuestion = [
-            'page' => ($request->page ?? 1),
-            'per_page' => 10,
-        ];
         if (count($dataAssessment) > 0) {
+            // if type assessment questions have pagination
+            $filterQuestion = [
+                'page' => ($request->page ?? 1),
+                'per_page' => 10,
+            ];
+            if ($dataForAssessment[0]['type'] === 'MINI_ASSESSMENT') {
+                $filterQuestion = [
+                    'page' => ($request->page ?? 1),
+                    'per_page' => 99,
+                ];
+            }
+
             $getQuestions = $assessmentApi->questions($dataAssessment[0]['id'], $filterQuestion);
             if (count($dataAssessment) === 1) {
                 foreach ($getQuestions['data'] as $value) {
@@ -778,7 +786,8 @@ class AssessmentController extends Controller
     {
         $teacherType;
         $assessmentApi = new AssessmentApi;
-        $question = $assessmentApi->questions($id);
+        $filterQuestion = ['per_page' => 99];
+        $question = $assessmentApi->questions($id, $filterQuestion);
 
         $detail = $assessmentApi->detail($id);
         $data = [];
@@ -932,7 +941,8 @@ class AssessmentController extends Controller
         $teacherType;
         $assessmentApi = new AssessmentApi;
 
-        $question = $assessmentApi->questions($id);
+        $filterQuestion = ['per_page' => 99];
+        $question = $assessmentApi->questions($id, $filterQuestion);
 
         $detail = $assessmentApi->detail($id);
 
