@@ -18,9 +18,9 @@ class Assessment extends Service
         return $this->showResponse($response);
     }
 
-    public function questions($id, $payload = [])
+    public function questions($id, $filter = [])
     {
-        $response = $this->get('/libraries/assessments/'.$id.'/questions', $payload);
+        $response = $this->get('/libraries/assessments/'.$id.'/questions', $filter);
 
         return $this->showResponse($response);
     }
