@@ -6,15 +6,15 @@
 <div class="container-lg">
 
     <!-- Link Back -->
-    <a class="btn-back" href="{{ url('/teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/student-group/'.$studentGroup['id'].'/score') }}">
+    <a class="btn-back" href="{{ url('/admin/'.$adminType.'/schools/'.$schoolId.'/assessment-groups/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/student-group/'.$studentGroup['id'].'/score') }}">
         <i class="kejar-back"></i>Kembali
     </a>
 
     <div class="row">
         <div class="col-10">
             <nav class="breadcrumb">
-                <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
-                <a class="breadcrumb-item" href="{{ url('/teacher/'.$teacherType.'/'.$assessmentGroupId.'/subject') }}">{{$assessmentGroup}}</a>
+                <a class="breadcrumb-item" href="{{ url('/admin/games') }}">Beranda</a>
+                <a class="breadcrumb-item" href="{{ url('/admin/'.$adminType.'/schools/'.$schoolId.'/assessment-groups/'.$assessmentGroupId.'/subjects') }}">{{$assessmentGroup}}</a>
                 <span class="breadcrumb-item active">{{$subject['name']}}</span>
             </nav>
             <div class="page-title">
@@ -115,7 +115,7 @@
         $('#AddFinalScore').html('Tunggu...');
 
         // run save
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/update-score') !!}";
+        const url = "{!! URL::to('/admin/curriculum/assessment/update-score') !!}";
         let data = new Object();
 
         data = {

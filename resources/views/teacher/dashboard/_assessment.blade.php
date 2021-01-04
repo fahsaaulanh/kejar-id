@@ -17,7 +17,7 @@
             $isCurriculum = in_array('CURRICULUM', $roles);
         @endphp
         @if($isCurriculum)
-        <div id="pts-tambah"class="card-pts mt-4">
+        <div id="pts-tambah" class="card-pts mt-4">
             <h3 class="text-reguler text-blue">
                 <i class="kejar-add text-blue mr-4"></i>
                 <span>Tambah Kelompok Penilaian</span>

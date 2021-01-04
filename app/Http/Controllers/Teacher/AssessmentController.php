@@ -571,7 +571,6 @@ class AssessmentController extends Controller
             ->with('message', 'Data success');
     }
 
-    // Editted
     public function createMiniAssessment(Request $request, $teacherType, $assessmentGroupId, $subjectId, $grade)
     {
         $teacherType;
@@ -739,7 +738,6 @@ class AssessmentController extends Controller
             return redirect()->back()->with('message', 'Maaf terjadi kesalahan, silahkan ulangi kembali!');
         }
     }
-    // Editted
 
     public function settingMiniAssessment(
         Request $request,
