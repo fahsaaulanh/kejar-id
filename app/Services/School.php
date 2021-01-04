@@ -4,6 +4,13 @@ namespace App\Services;
 
 class School extends Service
 {
+    public function index($filter = [])
+    {
+        $response = $this->get('/schools', $filter);
+
+        return $this->showResponse($response);
+    }
+
     public function subjectIndex($schoolId, $filter = [])
     {
         $response = $this->get("/schools/$schoolId/subjects", $filter);
@@ -28,6 +35,13 @@ class School extends Service
     public function subjects($schoolId)
     {
         $response = $this->get("/schools/$schoolId/subjects");
+
+        return $this->showResponse($response);
+    }
+
+    public function students($schoolId, $filter = [])
+    {
+        $response = $this->get("/schools/$schoolId/students", $filter);
 
         return $this->showResponse($response);
     }

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Services\AcademicCalendar;
 use App\Services\AssessmentGroup;
+use App\Services\School as SchoolApi;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -54,12 +55,34 @@ class HomeController extends Controller
             return redirect('/login');
         }
 
+        $schoolApi = new SchoolApi;
+        $filter=[
+            'per_page' => 99,
+        ];
+        $getSchools = $schoolApi->index($filter);
+        $dataSchools = [];
+        if ($getSchools['meta']['last_page'] > 1) {
+            for ($i = 1; $i <= $getSchools['meta']['last_page']; $i++) {
+                $filter=[
+                    'page' => $i,
+                    'per_page' => 99,
+                ];
+                $getSchools = $schoolApi->index($filter);
+                $dataSchools = array_merge($dataSchools, $getSchools['data']);
+            }
+        } else {
+            $dataSchools = $getSchools['data'];
+        }
+
         $miniAssesmentGroup = [
             'PTS-semester-ganjil-2020-2021' => 'PTS Semester Ganjil 2020-2021',
             'PTS-susulan-semester-ganjil-2020-2021' => 'PTS Susulan Semester Ganjil 2020-2021',
         ];
 
-        return view('admin.games.index', $user)->with('user', $user)->with('miniAssesmentGroup', $miniAssesmentGroup);
+        return view('admin.dashboard.index', $user)
+        ->with('user', $user)
+        ->with('miniAssesmentGroup', $miniAssesmentGroup)
+        ->with('schools', $dataSchools);
     }
 
     public function teacher(Request $request)

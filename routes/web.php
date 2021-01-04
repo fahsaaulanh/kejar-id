@@ -35,6 +35,86 @@ Route::middleware('session')->group(function () {
 
         Route::prefix('/admin')->group(function () {
 
+            // Assessment
+            Route::prefix('{type}')->group(function () {
+                Route::prefix('/schools/{schoolId}')->group(function () {
+
+                    Route::get('assessment-groups', 'Admin\AssessmentController@assessmentGroups');
+
+                    Route::prefix('/assessment-groups/{assessmentGroupId}')->group(function () {
+                        Route::get(
+                            'subjects',
+                            'Admin\AssessmentController@subjects',
+                        );
+                        Route::get(
+                            'subject/{subjectId}/{grade}/assessment',
+                            'Admin\AssessmentController@assessment',
+                        );
+                        Route::post(
+                            'subject/{subjectId}/{grade}/assessment',
+                            'Admin\AssessmentController@createMiniAssessment',
+                        );
+                        Route::patch(
+                            'subject/{subjectId}/{grade}/assessment/{assessmentId}',
+                            'Admin\AssessmentController@settingMiniAssessment',
+                        );
+                        Route::get(
+                            'subject/{subjectId}/{grade}/assessment/student-group/{studentGroupId}/score',
+                            'Admin\AssessmentController@score',
+                        );
+                        Route::get(
+                            '/subject/{subjectId}/{grade}/assessment/'.
+                            'student-group/{studentGroupId}/score/{taskId}/detail',
+                            'Admin\AssessmentController@detailScore',
+                        );
+                    });
+                });
+
+                Route::post('api/assessment-groups/create', 'Admin\AssessmentController@createAssessmentGroup');
+                Route::get('mini-assessment/view/{id}', 'Admin\AssessmentController@viewQuestion');
+                Route::post('assessment/mini/question/update', 'Admin\AssessmentController@updateQuestion');
+                Route::get('assessment/question/check/{id}', 'Admin\AssessmentController@checkQuestion');
+                Route::post('assessment/question/validation', 'Admin\AssessmentController@validationQuestion');
+                Route::post('assessment/question/delete', 'Admin\AssessmentController@deleteQuestion');
+                Route::post('assessment/duration', 'Admin\AssessmentController@durationAssessment');
+                Route::post(
+                    'assessment/{assessmentId}/subject/{subjectId}/question/create',
+                    'Admin\AssessmentController@createAssessQuestion',
+                );
+                Route::get('assessment/question/{questionId}/edit', 'Admin\AssessmentController@editQuestion');
+                Route::patch(
+                    'assessment/question/{questionId}/edit',
+                    'Admin\AssessmentController@updateAssessQuestion',
+                );
+
+                // for Ajax
+                Route::post('/get-student-group/{schoolId}', 'Admin\AssessmentController@schoolGroupData');
+                Route::post('assessment/getscore', 'Admin\AssessmentController@scoreBystudentGroup');
+                Route::post('assessment/update-score', 'Admin\AssessmentController@updateScore');
+                Route::post('/report-student', 'Admin\AssessmentController@reportStudent');
+                Route::post('/get-students/{schoolId}', 'Admin\AssessmentController@getStudents');
+                Route::post('/schedules-create/{schoolId}', 'Admin\AssessmentController@schedulesCreate');
+                Route::post('/schedule-delete/{schoolId}', 'Admin\AssessmentController@deleteSchedule');
+                Route::post('/schedule-update/{schoolId}', 'Admin\AssessmentController@updateSchedule');
+
+                Route::post('/student-group/{schoolId}', 'Admin\AssessmentController@studentGroupData');
+
+                Route::post(
+                    '/get-student-group-schedules/{schoolId}',
+                    'Admin\AssessmentController@getStudentByStudentGroupSchedules',
+                );
+
+                Route::post('/get-student-groups', 'Admin\AssessmentController@getStudentByStudentGroup');
+
+                Route::post('/student-attendance', 'Admin\AssessmentController@studentAttendance');
+
+                // Update Attendance
+                Route::post(
+                    '/student-attendance/update/{schoolId}',
+                    'Admin\AssessmentController@studentAttendanceUpdate',
+                );
+            });
+
             // Mini Assesments
 
             Route::post('mini-assessment/tracking-code', 'Admin\MiniAssessmentController@trackingCode');

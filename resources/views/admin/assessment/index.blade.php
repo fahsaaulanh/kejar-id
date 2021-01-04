@@ -6,25 +6,22 @@
 <div class="container">
 
     <!-- Link Back -->
-    <a class="btn-back" href="{{ url('/teacher/subject-teacher/'.$assessmentGroupId.'/subject') }}">
+    <a class="btn-back" href="{{ url('/admin/curriculum/schools/'.$school['id'].'/assessment-groups/'.$assessmentGroupId.'/subjects') }}">
         <i class="kejar-back"></i>Kembali
     </a>
 
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
-        <a class="breadcrumb-item" href="{{ url('/teacher/games') }}">Beranda</a>
-        <a class="breadcrumb-item" href="{{ url('/teacher/subject-teacher/'.$assessmentGroupId.'/subject') }}">{{$assessmentGroup}}</a>
-        <span class="breadcrumb-item active">{{$subject['name']}}</span>
+        <a class="breadcrumb-item" href="{{ url('/admin/games') }}">Beranda</a>
+        <a class="breadcrumb-item" href="{{ url('/admin/curriculum/schools/'.$school['id'].'/assessment-groups') }}">{{$school['name']}}</a>
+        <a class="breadcrumb-item" href="{{ url('/admin/curriculum/schools/'.$school['id'].'/assessment-groups/'.$assessmentGroupId.'/subjects') }}">Penilaian TP {{date('Y')}}-{{date('Y') + 1}}</a>
+        <span class="breadcrumb-item active">{{$assessmentGroup}}</span>
     </nav>
-
-
 
     <!-- Title -->
     <div class="page-title">
         <h2 class="mb-08rem">Kelas {{$grade}}</h2>
     </div>
-
-    <div id="image-upload-adapter" init-host="{{ $imageUpload }}" init-bearer="{{session('token', null)}}"></div>
 
     <!-- Upload Buttons -->
     @if($errors->has('round_file'))
@@ -51,7 +48,7 @@
                 </button>
             </div>
             <div class="col-sm-6">
-                <button class="btn-upload mb-0" onclick="setAdd('{{$assessmentGroupId}}', '{{$subject['id']}}', '{{$grade}}')">
+                <button class="btn-upload mb-0" onclick="setAdd('{{$school['id']}}', '{{$assessmentGroupId}}', '{{$subject['id']}}', '{{$grade}}')">
                     <i class="kejar-add"></i>Input Soal
                 </button>
                 <div class="mt-3" id="LoadingAssess4" style="display:none">
@@ -72,10 +69,10 @@
                 </div>
             </div>
         </div>
-    @else
-        <button class="btn btn-publish font-15" onclick="modalAssignShow(1)">
+
+        {{-- <button class="btn btn-publish font-15" onclick="modalAssignShow(1)">
             <i class="kejar-siswa"></i>Tugaskan Siswa
-        </button>
+        </button> --}}
     @endif
     @if(count($assessments) == 0)
         <h3 class="mt-8 mb-4">Unggah Naskah vs Input Soal</h3>
@@ -144,29 +141,23 @@
             </table>
         </div>
     @else
-        <ul class="nav nav-justified nav-tab-kejar  mt-8" id="myTab" role="tablist">
+        {{-- <ul class="nav nav-justified nav-tab-kejar  mt-8" id="myTab" role="tablist">
             <li class="nav-item w-50 text-center" role="presentation">
                 <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Penugasan dan Nilai</a>
             </li>
             <li class="nav-item w-50 text-center" role="presentation">
                 <a class="nav-link active" id="packgae-tab" data-toggle="tab" href="#packgae" role="tab" aria-controls="packgae" aria-selected="false">Soal</a>
             </li>
-        </ul>
+        </ul> --}}
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <div class="mt-8">
-                    <div>
-                        <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/status-task/Undone') }}" class="text-black-1 text-decoration-none">
-                            <div class="w-100 bg-grey-15 mb-4 px-4 py-3">
-                                <i class="kejar-rombel"></i> Siswa Belum Mengerjakan (Semua Rombel)
-                            </div>
-                        </a>
-                    </div>
                     @foreach($studentGroup as $data)
                         <div>
-                            <a href="{{ URL('teacher/subject-teacher/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/student-group/'.$data['id'].'/score') }}" class="text-black-1 text-decoration-none">
+                            <a href="{{ URL('admin/curriculum/schools/'.$school['id'].'/assessment-groups/'.$assessmentGroupId.'/subject/'.$subject['id'].'/'.$grade.'/assessment/student-group/'.$data['id'].'/score') }}" class="text-black-1">
                                 <div class="w-100 bg-grey-15 mb-4 px-4 py-3">
-                                    <i class="kejar-rombel"></i> Rombel {{$data['name']}}
+                                    <i class="kejar-rombel"></i>
+                                    Rombel {{$data['name']}}
                                 </div>
                             </a>
                         </div>
@@ -175,7 +166,7 @@
             </div>
             <div class="tab-pane fade show active" id="packgae" role="tabpanel" aria-labelledby="packgae-tab">
                 @if($newestPackStatus !== "" && $type === "MINI_ASSESSMENT")
-                <div class="answer-note text-grey-3 mt-8" id="answer_status">
+                <div class="answer-note text-grey-3 mt-8" id="answer_status" hidden>
                     Input semua paket soal beserta kunci jawabannya sebelum menugaskan siswa.
                 </div>
                 @endif
@@ -229,10 +220,10 @@
                         <i class="kejar-add"></i>Tambah Soal
                     </button>
                     <!-- Pagination -->
-                    @if($questionMeta  && ($questionMeta['total'] > 10))
+                    @if($questionMeta)
                         <nav class="navigation mt-5">
                             <div>
-                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} soal</span>
+                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} mapel</span>
                             </div>
                             <ul class="pagination">
                                 <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
@@ -251,20 +242,19 @@
                     @endif()
 
                     <div class="table-questions border-top-none">
-                    @php $no = $questionMeta['from']; @endphp
                     @foreach($questions as $i => $question)
                         <div class="card type-pilihan-ganda">
                             <div class="w-100 bg-green px-4 py-3">
                                 <div class="row justify-content-between px-4">
                                     <div>
-                                        <h5>SOAL {{ $no }}</h5>
+                                        <h5>SOAL {{ $i + 1 }}</h5>
                                     </div>
                                     <div>
                                         <a href="javascript:void(0)" id="nav-{{$i}}" style="cursor: pointer;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="kejar-edit"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="nav-{{$i}}">
-                                            <a class="dropdown-item font-15" id="edit-q-{{$i}}" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/teacher/subject-teacher/assessment/question/' . $question['id'].'/edit/') }}">
+                                            <a class="dropdown-item font-15" data-toggle="modal" style="cursor: pointer;" data-target="#update-pilihan-ganda"  data-url="{{ url('/admin/curriculum/assessment/question/' . $question['id'].'/edit/') }}">
                                                 Edit Soal
                                             </a>
                                             <a class="dropdown-item font-15" href="javascript:void(0)" style="cursor: pointer;" data-toggle="modal" data-target="#delete_question"
@@ -309,14 +299,13 @@
                                 @endif
                             </div>
                         </div>
-                    @php $no++; @endphp
                     @endforeach
                     </div>
                     <!-- Pagination -->
                     @if($questionMeta && ($questionMeta['total'] > 10))
                         <nav class="navigation mt-5">
                             <div>
-                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} soal</span>
+                                <span class="pagination-detail">{{ $questionMeta['to'] ?? 0 }} dari {{ $questionMeta['total'] }} mapel</span>
                             </div>
                             <ul class="pagination">
                                 <li class="page-item {{ (request()->page ?? 1) - 1 <= 0 ? 'disabled' : '' }}">
@@ -357,28 +346,21 @@
         @endfor
     @endif
 <textarea id="question_list" hidden><?php echo $list; ?></textarea>
-@include('teacher.subject_teacher.assessment.mini._upload_pdf')
+@include('admin.assessment.mini._upload_pdf')
 @if(count($assessments) > 0)
-    @include('teacher.subject_teacher.assessment.mini._setting_package')
-
-    <!-- Include Modal Assign -->
-
-    @include('teacher.subject_teacher.assessment.assign._assign_schedule')
-    @include('teacher.subject_teacher.assessment.assign._assign_select')
-    @include('teacher.subject_teacher.assessment.assign._assign_success')
+    @include('admin.assessment.mini._setting_package')
 @endif
 
-@include('teacher.subject_teacher.assessment.mini.answer._validation_answer')
-@include('teacher.subject_teacher.assessment.mini.answer._missing_answer')
-@include('teacher.subject_teacher.assessment.mini._info_token')
-@include('teacher.subject_teacher.assessment.regular.create._pilihan_ganda')
+@include('admin.assessment.mini.answer._validation_answer')
+@include('admin.assessment.mini.answer._missing_answer')
+@include('admin.assessment.mini._info_token')
+@include('admin.assessment.regular.create._pilihan_ganda')
 @if(count($assessments) > 0)
-    @include('teacher.subject_teacher.assessment.regular.update._pilihan_ganda')
-    @include('teacher.subject_teacher.assessment.regular._delete_question')
-    @include('teacher.subject_teacher.assessment.regular.update._duration')
+    @include('admin.assessment.regular.update._pilihan_ganda')
+    @include('admin.assessment.regular._delete_question')
+    @include('admin.assessment.regular.update._duration')
 @endif
-@include('teacher.subject_teacher.assessment.mini.answer._view_answer')
-@include('teacher.subject_teacher.assessment.regular._message_image')
+@include('admin.assessment.mini.answer._view_answer')
 
 @endsection
 
@@ -411,8 +393,8 @@
 
     const multiChoices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q'];
 
-    function setAdd(assessmentGroupId, subjectId, grade){
-        const url = `{!! URL::to('/teacher/subject-teacher/${assessmentGroupId}/subject/${subjectId}/${grade}/assessment') !!}`;
+    function setAdd(schoolId, assessmentGroupId, subjectId, grade){
+        const url = `{!! URL::to('/admin/curriculum/schools/${schoolId}/assessment-groups/${assessmentGroupId}/subject/${subjectId}/${grade}/assessment') !!}`;
         $.ajax({
             url,
             type: 'POST',
@@ -443,7 +425,7 @@
     }
 
     function saveDuration(assessmentGroupId, subjectId, grade, assessmentId){
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/duration') !!}";
+        const url = "{!! URL::to('/admin/curriculum/assessment/duration') !!}";
         var duration = $('#duration_assess').val();
 
         $.ajax({
@@ -483,7 +465,7 @@
     }
 
     function editQuestionList(assessmentId){
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/question/delete') !!}";
+        const url = "{!! URL::to('/admin/curriculum/assessment/question/delete') !!}";
         var selected = $('#edit_q_id').val();
         var newList = [selected];
         $.ajax({
@@ -570,7 +552,7 @@
             show: true,
         });
 
-        const url = "{!! URL::to('/teacher/subject-teacher/mini-assessment/view') !!}" + "/" + id;
+        const url = "{!! URL::to('/admin/curriculum/mini-assessment/view') !!}" + "/" + id;
         let data = new Object();
 
         // data = {};
@@ -694,7 +676,7 @@
     }
 
     function setAnswer(answer, questionId) {
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/mini/question/update') !!}";
+        const url = "{!! URL::to('/admin/curriculum/assessment/mini/question/update') !!}";
 
         $.ajax({
             url,
@@ -721,7 +703,7 @@
 
     function checkQuestion(assessmentId) {
         validatecCheckQuestion = true;
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/question/check') !!}" + "/" + assessmentId;
+        const url = "{!! URL::to('/admin/curriculum/assessment/question/check') !!}" + "/" + assessmentId;
         const htmlSpinner = `Tunggu...`;
         const htmlDone = `SIMPAN`;
 
@@ -827,7 +809,7 @@
     }
 
     function validationAssessment() {
-        const url = "{!! URL::to('/teacher/subject-teacher/assessment/question/validation') !!}";
+        const url = "{!! URL::to('/admin/curriculum/assessment/question/validation') !!}";
 
         $('#validasiButton').html('Tunggu...');
         $('#validasiButton').attr('disabled', 'true');
@@ -914,6 +896,5 @@
             }, 4000)
         }
     })
-
 </script>
 @endpush
