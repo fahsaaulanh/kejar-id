@@ -155,7 +155,11 @@ class AssessmentController extends Controller
         $newestPackStatus = '';
         $filter = 0;
         if (count($dataAssessment) > 0) {
-            $getQuestions = $assessmentApi->questions($dataAssessment[0]['id'], $request->page ?? 1);
+            $filterQuestion = [
+                'page' => ($request->page ?? 1),
+                'per_page' => 99,
+            ];
+            $getQuestions = $assessmentApi->questions($dataAssessment[0]['id'], $filterQuestion);
             if (count($dataAssessment) === 1) {
                 foreach ($getQuestions['data'] as $value) {
                     if ($value['answer'] !== '') {
@@ -167,7 +171,7 @@ class AssessmentController extends Controller
             } else {
                 $getQuestsMore = $assessmentApi->questions(
                     $dataAssessment[count($dataAssessment) - 1]['id'],
-                    $request->page ?? 1,
+                    $filterQuestion,
                 );
                 foreach ($getQuestsMore['data'] as $value) {
                     if ($value['answer'] !== '') {
