@@ -25,6 +25,13 @@ class Me extends Service
         return $this->showResponse($response);
     }
 
+    public function onGoingTask($activityId, $filter = [])
+    {
+        $response = $this->get("/me/tasks/ongoing/$activityId", $filter);
+
+        return $this->showResponse($response);
+    }
+
     public function getAssessmentSchedules($filter = [])
     {
         $response = $this->get('/me/schedules/assessments', $filter);

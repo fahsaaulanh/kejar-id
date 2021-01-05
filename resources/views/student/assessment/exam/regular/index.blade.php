@@ -404,9 +404,15 @@
     }
 
     function setQuestion(index) {
-        const parsedIndex = parseInt(index, 10);
+        let parsedIndex = parseInt(index, 10);
         const total = questions.length;
+
         localStorage.setItem('current', parsedIndex);
+
+        if (parsedIndex > (total - 1)) {
+            parsedIndex = 0;
+            localStorage.setItem('current', 0);
+        }
 
         const currentNum = parsedIndex + 1;
         $('#next').removeAttr('disabled');
@@ -433,9 +439,10 @@
             $(`#num-${i}`).removeClass('active');
         }
 
-        $(`#num-${index}`).addClass('active');
+        $(`#num-${parsedIndex}`).addClass('active');
 
         const question = questions[parsedIndex];
+        console.log({ question });
 
         const choices = question.choices;
         const questionText = question.question;
@@ -529,7 +536,7 @@
             keyboard: false,
             show: true,
         });
-        
+
         // $('#downloadAnswerSheet').modal({
         //     backdrop: 'static',
         //     keyboard: false,
