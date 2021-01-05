@@ -33,6 +33,15 @@ class AssessmentController extends Controller
         $meService = new Me;
 
         $schedule = $meService->assessmentScheduleDetail($schedule_id);
+        $assessment = $schedule['data'];
+
+        $responseCheck = $this->checkOnGoingTask($assessment['id']);
+
+        if ($responseCheck['error'] !== true) {
+            $task = $responseCheck['data'];
+
+            return $this->continueTask($task, $assessment);
+        }
 
         $now = Carbon::now()->format('Y-m-d H:i:s');
 
@@ -90,6 +99,49 @@ class AssessmentController extends Controller
             'schedule' => $schedule['data'],
             'task_id' => $responseTask['data']['id'] ?? '',
             'task' => $responseTask['data'] ?? [],
+            'answers' => $answers,
+        ];
+
+        $this->request->session()->put('task', $tasksSession);
+
+        return redirect("/student/assessment/$assessmentGroupId/subjects/$subjectId/exam");
+    }
+
+    public function checkOnGoingTask($taskableId)
+    {
+        $meService = new Me;
+
+        $filter = [
+            'filter[type]' => 'ASSESSMENT',
+        ];
+
+        return $meService->onGoingTask($taskableId, $filter);
+    }
+
+    public function continueTask($task, $assessment)
+    {
+        $assessmentGroupId = $assessment['assessment_group_id'];
+        $subjectId = $assessment['subject_id'];
+        $taskAnswer = $this->getAnswer($task['id']);
+
+        $questions = $taskAnswer['questions'];
+        $answers = $taskAnswer['answers'];
+
+        $diffMinutes = Carbon::now()->diffInMinutes(Carbon::parse($task['start_time']));
+
+        $addMinutes = $assessment['duration'] - $diffMinutes;
+
+        $endTime = Carbon::now()->addMinutes($addMinutes)->format('Y-m-d H:i:s');
+
+        $assessment['end_time'] = $endTime;
+        $assessment['questions'] = $questions;
+
+        $tasksSession = [
+            'subject_id' => $assessment['subject_id'],
+            'assessment' => $assessment,
+            'schedule' => $assessment,
+            'task_id' => $task['id'] ?? '',
+            'task' => $task ?? [],
             'answers' => $answers,
         ];
 
