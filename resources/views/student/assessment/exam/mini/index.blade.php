@@ -512,11 +512,19 @@
 
         $('#timeRemaining').modal('hide');
         $('#timeUp').modal('hide');
-        $('#downloadAnswerSheet').modal({
+
+        // skip donwload
+        $('#studentNote').modal({
             backdrop: 'static',
             keyboard: false,
             show: true,
         });
+
+        // $('#downloadAnswerSheet').modal({
+        //     backdrop: 'static',
+        //     keyboard: false,
+        //     show: true,
+        // });
 
         doneSuccess = true;
         doneDownloadAnswer = true;
