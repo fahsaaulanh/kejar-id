@@ -1825,7 +1825,7 @@ class AssessmentController extends Controller
         $token = $this->request->input('token');
 
         $payload = [
-            'schedule_ids' => [$scheduleId],
+            'schedule_ids' => explode(',', $scheduleId),
             'start_time' => $startDate,
             'finish_time' => $expiryDate,
             'token' => $token ?? null,
@@ -1907,11 +1907,21 @@ class AssessmentController extends Controller
         $subject = $schoolApi->subjectDetail($schoolId, $subjectId);
         $assessmentGroup = $this->assessmentGroups($assessmentGroupId);
 
+        $assessmentApi = new AssessmentApi;
+        $filterMA = [
+            'filter[grade]' => $grade,
+            'filter[assessment_group_id]' => $assessmentGroupId,
+            'filter[subject_id]' => $subjectId,
+        ];
+        $assessments = $assessmentApi->index($filterMA);
+
         return view('teacher.subject_teacher.assessment.student_list.by_status_task')
                 ->with('teacherType', $teacherType)
                 ->with('subject', $subject['data'])
                 ->with('assessmentGroupId', $assessmentGroupId)
                 ->with('assessmentGroup', $assessmentGroup)
+                ->with('type', $assessments['data'][0]['type'])
+                ->with('assessments', $assessments['data'])
                 ->with('grade', $grade);
     }
 
@@ -1975,6 +1985,8 @@ class AssessmentController extends Controller
                 $studentDetail = $v['student'];
                 $html .= '<tr>';
                     $html .= '<td class="text-right">'. $no .'</td>';
+                    $html .= '<td class="text-center"><input class="studentChecked" type="checkbox"\
+                    value="'. $v['id'] .'"></td>';
                     $html .= '<td>'. $studentDetail['name'] .'</td>';
                     $html .= '<td>'. $studentDetail['nis'] .'</td>';
                 $html .= '</tr>';
@@ -2014,6 +2026,12 @@ class AssessmentController extends Controller
                         href="javascript::void(0)">&gt;</a>';
             $pgnt .= '</li>';
             $pgnt .= '</ul>';
+            $pgnt .= '</nav>';
+        } else {
+            $pgnt .= '<nav class="navigation mt-5">';
+            $pgnt .= '<div>';
+            $pgnt .= '<span class="pagination-detail">' . ($meta['to'] ?? 0) . ' siswa</span>';
+            $pgnt .= '</div>';
             $pgnt .= '</nav>';
         }
 
