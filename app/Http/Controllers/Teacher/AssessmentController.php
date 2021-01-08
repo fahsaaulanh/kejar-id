@@ -1741,7 +1741,7 @@ class AssessmentController extends Controller
                 onclick="viewCreateSchedule(\'' . $v['id'] . '\',\'' . $v['name'] . '\')">Tugaskan Siswa</a></td>';
             }
 
-            if ($v['schedule'] !== null && $v['latest_task'] === null) {
+            if ($v['schedule']['schedulable_status'] === 'Undone') {
                 $view .= '<td colspan="6" class="text-grey-3">Belum mengerjakan.
                 <a class="text-primary" style="cursor:pointer"\
                 onclick="viewUpdateSchedule(\'' . $v['id'] . '\',\'' .
@@ -1751,7 +1751,11 @@ class AssessmentController extends Controller
                 >Edit Penugasan</a></td>';
             }
 
-            if ($v['latest_task'] !== null) {
+            if ($v['schedule']['schedulable_status'] === 'Ongoing') {
+                $view .= '<td colspan="6" class="text-grey-3">Sedang mengerjakan.</td>';
+            }
+
+            if ($v['schedule']['schedulable_status'] === 'Done') {
                 $startTime = Carbon::parse($v['latest_task']['start_time']);
                 $finishTime = Carbon::parse($v['latest_task']['finish_time']);
                 $diff = $finishTime->diffInMinutes($startTime);
@@ -2058,5 +2062,168 @@ class AssessmentController extends Controller
         $response = $questionApi->uploadImage($reqFile);
 
         return response()->json($response);
+    }
+
+    public function viewQuestionDetail($teacherType, $id)
+    {
+        $teacherType;
+        $taskApi = new TaskApi;
+        $assessmentApi = new AssessmentApi;
+
+        $question = $taskApi->questionsDetailAsessment($id);
+
+        $taskDetail = $taskApi->detialAssessment($id);
+
+        $assessment = $assessmentApi->detail($taskDetail['data']['taskable_id']);
+
+        $data = [];
+
+        $html = $assessment['data']['type'] === 'MINI_ASSESSMENT' ? $this->questionMAHtml(
+            $question['data'],
+            $assessment['data']['pdf_password'],
+            $assessment['data']['pdf'],
+        ) : $this->questionAssessmentHtml($question['data']);
+
+        $data['data'] = $html;
+
+        return response()->json($data);
+    }
+
+    public function questionAssessmentHtml($questions)
+    {
+        $view = '<div class="table-questions border-top-none">';
+
+        $no = 1;
+
+        foreach ($questions as $question) {
+            $view .= '<div class="card type-pilihan-ganda">';
+
+            
+            if ($question['is_correct']) {
+                $view .= '<div class="w-100 bg-green px-4 py-3">';
+                $view .= '<div class="row justify-content-between px-4">';
+                $view .= '<div>';
+                $view .= '<div class="pl-2 row">';
+                $view .= '<div><h5>SOAL ' . $no . '</h5></div>';
+                $view .= '<div> . <i class="kejar-pilihan-ganda"></i> Pilihan Ganda</div>';
+                $view .= '</div>';
+                $view .= '</div>';
+                $view .= '<div><h5>Benar</h5></div>';
+                $view .= '</div>';
+                $view .= '</div>';
+            } else {
+                $view .= '<div class="w-100 bg-red-5 px-4 py-3">';
+                $view .= '<div class="row justify-content-between px-4">';
+                $view .= '<div>';
+                $view .= '<div class="pl-2 row">';
+                $view .= '<div><h5>SOAL ' . $no . '</h5></div>';
+                $view .= '<div> . <i class="kejar-pilihan-ganda"></i> Pilihan Ganda</div>';
+                $view .= '</div>';
+                $view .= '</div>';
+                $view .= '<div><h5>Salah</h5></div>';
+                $view .= '</div>';
+                $view .= '</div>';
+            }
+
+            $view .= '<div class="card-body">';
+            $view .= '<div class="editor-display">'. $question['question'] .'</div>';
+            $view .= '<div class="question-answer-group">';
+            $view .= '<table class="question-answer-table">';
+            foreach ($question['choices'] as $key => $choice) {
+                $view .= '<tr>';
+                $view .= '<td>';
+                if ($key === $question['answer']) {
+                    $view .= '<i class="kejar-radio-button"></i>';
+                } else {
+                    $view .= '<i class="kejar-belum-dikerjakan"></i>';
+                }
+
+                $view .= '</td>';
+                $view .= '<td class="editor-display">'. $choice .'</td>';
+                $view .= '</tr>';
+            }
+
+            $view .= '</table>';
+            $view .= '</div>';
+            if ($question['explanation'] !== null && $question['explanation'] !== '') {
+                $view .= '<div class="explanation-group">';
+                $view .= '<strong>Pembahasan</strong>';
+                $view .= '<div class="editor-display">';
+                $view .= '<div>'. $question['explanation'] .'</div>';
+                $view .= '</div>';
+                $view .= '</div>';
+            }
+
+            $view .= '</div>';
+            $view .= '</div>';
+            $no++;
+        }
+
+        $view .= '</div>';
+
+        return $view;
+    }
+
+    public function questionMAHtml($questions, $password, $pdf)
+    {
+        $view = '<div class="table-questions border-top-none">';
+
+        $view .= '<div class="row">';
+
+        $view .= '<div class="col-6">';
+        $view .= '<div onClick="viewNaskah(\'' . $pdf . '\')" class="pts-btn-pdf" role="button">';
+        $view .= '<i class="kejar-pdf"></i>';
+        $view .= '<h4 class="text-reguler ml-4">Lihat Naskah Soal</h4>';
+        $view .= '</div>';
+        $view .= '</div>';
+
+        $view .= '<div class="col-6">';
+        $view .= '<h5><span class="float-left">Paket</h5>';
+        $view .= '<br/>';
+        $view .= '<p><span class="float-left">'. $password .'</p>';
+        $view .= '</div>';
+
+
+        $view .= '</div>';
+
+        $view .= '<div class="table-responsive table-result-stage">';
+
+        $view .= '<table class="table table-bordered" id="table-kejar">';
+
+        $view .= '<tr class="table-head">';
+        $view .= '<th width="10%"><span class="float-left">No. Soal</span></th>';
+        $view .= '<th width="25%"><span class="float-left">Jawaban Siswa</span></th>';
+        $view .= '<th width="25%"><span class="float-left">Kunci Jawaban</span></th>';
+        $view .= '<th width="40"><span class="float-left">Input Soal</th>';
+        $view .= ' </tr>';
+
+        $no = 1;
+
+        $view .= '<tbody>';
+
+        foreach ($questions as $question) {
+            $view .= '<tr>';
+            $view .= '<td class="text-right">' . $no . '</td>';
+            $view .= '<td>' . $question['answer'] . '</td>';
+            $view .= '<td>' . $question['correct_answer'] . '</td>';
+
+            if ($question['is_correct']) {
+                $view .= '<td><i class="font-24 kejar-sudah-dikerjakan text-green-2"></i> Benar</td>';
+            } else {
+                $view .= '<td><i class="font-24 kejar-belum-dikerjakan red-3"></i> Salah</td>';
+            }
+
+            $view .= '</tr>';
+            $no++;
+        }
+
+        $view .= '</tbody>';
+        
+        $view .= '</table>';
+        $view .= '</div>';
+
+        $view .= '</div>';
+
+        return $view;
     }
 }

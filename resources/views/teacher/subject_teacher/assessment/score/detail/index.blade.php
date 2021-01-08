@@ -98,6 +98,17 @@
         @endif
     </div>
 
+    <div class="pb-6">
+        <div class="pb-4">
+            <h3 class="title-question" style="display: none;">Jawaban Siswa</h3>
+        </div>
+        <div id="question-list">
+            <button onclick="viewQuestion()" class="btn-upload d-flex justify-content-center font-15">
+                Tampilkan Soal dan Jawaban
+            </button>
+        </div>
+    </div>
+
 </div>
 
 @include('teacher.subject_teacher.assessment.score.detail._update_score')
@@ -162,6 +173,59 @@
         $('#updateScore').modal('hide');
         $("#finalScore").val(score);
         $('.finalScore').html(score);
+    }
+
+    function viewQuestion() {
+
+        var id = "{{$task['id']}}"
+
+        const url = "{!! URL::to('/teacher/subject-teacher/services/tasks/assessments') !!}" + "/" + id + "/questions";
+
+        $("#question-list").html(`
+            <div class="row justify-content-center">
+                <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <div class="mr-2 spinner-grow spinner-grow-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <div class="mt-2 row justify-content-center">
+                <h5>Loading</h5>
+            </div>
+        `);
+
+        var request = new Request(url, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            })
+        });
+
+        fetch(request)
+            .then(response => response.json())
+            .then(function(data) {
+                $('.title-question').show();
+                $('#question-list').html(data.data);
+
+                console.log({
+                    data
+                });
+
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+    }
+
+    function viewNaskah(pdf) {
+        if (typeof window !== undefined) {
+            window.open(pdf, '_blank');
+        }
     }
 </script>
 @endpush

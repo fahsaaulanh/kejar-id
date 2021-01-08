@@ -190,4 +190,11 @@ class Task extends Service
 
         return $this->showResponse($response);
     }
+
+    public function questionsDetailAsessment($taskId)
+    {
+        $response = $this->get("/tasks/assessments/$taskId/questions");
+
+        return $this->showResponse($response);
+    }
 }
