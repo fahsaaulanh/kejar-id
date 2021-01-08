@@ -114,9 +114,9 @@ class Task extends Service
         return $this->showResponse($response);
     }
 
-    public function answersAssessment($taskId)
+    public function answersAssessment($taskId, $filter = [])
     {
-        $response = $this->get("/tasks/assessments/$taskId/answers");
+        $response = $this->get("/tasks/assessments/$taskId/answers", $filter);
 
         return $this->showResponse($response);
     }

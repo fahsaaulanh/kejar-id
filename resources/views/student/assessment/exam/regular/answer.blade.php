@@ -233,8 +233,13 @@
                         $maAnswerId = $collected[$j]['id'];
                         $answer = $answers[$maAnswerId]['answer'];
                     @endphp
+                    @if ($answer === null)
+                    <td class="pl-16 pt-8"></td>
+                    @endif
+                    @if ($answer !== null)
                     <td class="pl-16 pt-8">{{ $answer }}.</td>
-                    <td class="pl-8 pt-8">{!! $collected[$j]['choices'][$answer] !!}</td>
+                    <td class="pl-8 pt-8">{!! $collected[$j]['choices'][$answer] ?? '' !!}</td>
+                    @endif
                 </tr>
                 @endfor
             </table>

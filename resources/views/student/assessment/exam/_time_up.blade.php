@@ -7,13 +7,13 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
-                        <p class="font-15">Waktu pengerjaan sudah habis. Jawaban akan dikumpulkan sekarang.</p>
+                        <p class="font-15">Waktu pengerjaan sudah habis. Jawaban telah dikumpulkan sekarang.</p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer justify-content-end">
                 <div>
-                    <button type="button" class="btn btn-primary" id="lanjut-time-up">Kumpulkan Jawaban</button>
+                    <button type="button" class="btn btn-primary" id="lanjut-time-up">Selanjutnya</button>
                 </div>
             </div>
         </div>

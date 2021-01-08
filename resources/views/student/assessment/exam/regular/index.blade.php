@@ -155,13 +155,25 @@
         doneCheckAnswer = true;
     });
 
-    $('#lanjut-time-remaining').on('click', function() {
-        finish($(this));
+    $('#lanjut-time-remaining').on('click', async function() {
         doneDownloadAnswer = true;
+        await submitTask($(this));
+        $('#timeRemaining').modal('hide');
+        $('#downloadAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
     });
 
     $('#lanjut-time-up').on('click', function() {
-        finish($(this));
+        $('#timeUp').modal('hide');
+        $('#downloadAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
+        doneDownloadAnswer = true;
     });
 
     $('#downloadAnswerSheet').on('hide.bs.modal', function(e) {
@@ -195,14 +207,22 @@
                 $('#skip-download').removeAttr('disabled');
                 $('#downloadAnswerSheet .close').removeAttr('disabled');
                 $('#downloadAnswerSheet').modal('hide');
-                $('#checkAnswerSheet').modal('show');
+                $('#checkAnswerSheet').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true,
+                });
             }, 2000)
         }, 3000)
     });
 
     $('#unduh-lagi-check-answer').on('click', function() {
         $('#checkAnswerSheet').modal('hide');
-        $('#downloadAnswerSheet').modal('show');
+        $('#downloadAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
     });
 
     $('#lanjut-check-answer').on('click', function() {
@@ -226,7 +246,7 @@
     $('#simpan-note').on('click', function() {
         const noteStudent = $.trim($("#noteStudent").val());
         setDataToStorage('enc_n', noteStudent);
-        submitTask($(this));
+        editNote($(this));
     });
 
     $.ajaxSetup({
@@ -240,7 +260,7 @@
 
         var currTime = moment("{{ $now }}")
         var end = moment("{{ $task['assessment']['end_time'] }}");
-        var endTime = end.valueOf();;
+        var endTime = end.valueOf();
         // Update the count down every 1 second
         var x = setInterval(function() {
             // Get today's date and time and extend it
@@ -290,6 +310,7 @@
                 $('#missingAnswer').modal('hide');
                 $('#timeRunningOut').modal('hide');
                 clearInterval(x);
+                submitTask($('#lanjut-time-up'));
             }
         }, 1000);
     }
@@ -582,11 +603,11 @@
     async function submitTask(component) {
         const url = "{!! URL::to('/student/assessment/service/finish') !!}";
 
-        const htmlSelesai = 'Simpan dan Selesai';
+        const htmlSelesai = component.html();
 
         const htmlSpinner = `Tunggu...`;
 
-        $.ajax({
+        return $.ajax({
             url,
             type: 'POST',
             data: {},
@@ -601,7 +622,9 @@
                 component.removeAttr('disabled');
             },
             success: function(response) {
-                editNote(component);
+                $('#timeRemaining').modal('hide');
+                component.html(htmlSelesai);
+                component.removeAttr('disabled');
                 return;
             }
         });
@@ -611,7 +634,7 @@
         const url = "{!! URL::to('/student/assessment/service/edit_note') !!}";
 
         const htmlSpinner = `Tunggu...`;
-        const htmlSelesai = 'Simpan dan Selesai';
+        const htmlSelesai = component.html();
         const noteStudent = getDataFromStorage('enc_n') || null;
 
         if (noteStudent !== null) {
