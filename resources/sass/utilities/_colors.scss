@@ -31,6 +31,8 @@ $purple-tp: #F7F4FB;
 
 // alerts
 $red-2: #FF4343;
+$red-3: #FF6666;
+$red-5: #FFD6D6;
 $green: #19CE58;
 $dark-green: #008746;
 $green-2: #4DC978;
@@ -81,6 +83,10 @@ $green-bg: #D3EAC8;
     color: $green-2 !important;
 }
 
+.red-3{
+    color: $red-3;
+}
+
 .text-blue,
 .text-blue::before {
     color: $blue !important;
@@ -96,6 +102,10 @@ $green-bg: #D3EAC8;
 
 .bg-red-2{
     background-color: $red-2;
+}
+
+.bg-red-5{
+    background-color: $red-5;
 }
 
 .bg-blue-tp-2 {

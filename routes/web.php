@@ -63,8 +63,8 @@ Route::middleware('session')->group(function () {
                             'Admin\AssessmentController@score',
                         );
                         Route::get(
-                            '/subject/{subjectId}/{grade}/assessment/'.
-                            'student-group/{studentGroupId}/score/{taskId}/detail',
+                            '/subject/{subjectId}/{grade}/assessment/' .
+                                'student-group/{studentGroupId}/score/{taskId}/detail',
                             'Admin\AssessmentController@detailScore',
                         );
                     });
@@ -242,8 +242,8 @@ Route::middleware('session')->group(function () {
                 );
 
                 Route::get(
-                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/'.
-                    'student-group/{studentGroupId}/score/{taskId}/detail',
+                    '{assessmentGroupId}/subject/{subjectId}/{grade}/assessment/' .
+                        'student-group/{studentGroupId}/score/{taskId}/detail',
                     'Teacher\AssessmentController@detailScore',
                 );
 
@@ -258,6 +258,10 @@ Route::middleware('session')->group(function () {
                 );
 
                 Route::get('mini-assessment/view/{id}', 'Teacher\AssessmentController@viewQuestion');
+                Route::get(
+                    'services/tasks/assessments/{id}/questions',
+                    'Teacher\AssessmentController@viewQuestionDetail',
+                );
                 Route::post('assessment/mini/question/update', 'Teacher\AssessmentController@updateQuestion');
                 Route::get('assessment/question/check/{id}', 'Teacher\AssessmentController@checkQuestion');
                 Route::post('assessment/question/validation', 'Teacher\AssessmentController@validationQuestion');
