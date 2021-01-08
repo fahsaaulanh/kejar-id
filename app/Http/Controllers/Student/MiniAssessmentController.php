@@ -613,7 +613,9 @@ class MiniAssessmentController extends Controller
 
         $task = $this->request->session()->get('task');
 
-        $answers = $this->getAnswer($task['task_id'])['answers'] ?? [];
+        $filter = ['finished' => 'true'];
+
+        $answers = $this->getAnswer($task['task_id'], $filter)['answers'] ?? [];
 
         $user = $this->request->session()->get('user');
 
@@ -675,11 +677,12 @@ class MiniAssessmentController extends Controller
     // End Print Pdf
 
     // Private Function
-    private function getAnswer($taskId)
+    private function getAnswer($taskId, $filter = [])
     {
         $taskService = new Task;
 
-        $response = $taskService->answersAssessment($taskId);
+        $response = $taskService->answersAssessment($taskId, $filter);
+
         $data = [];
         $data['questions'] = [];
         $data['answers'] = [];

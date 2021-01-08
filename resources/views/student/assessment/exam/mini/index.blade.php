@@ -164,7 +164,11 @@
 
     $('#skip-download').on('click', function() {
         $('#downloadAnswerSheet').modal('hide');
-        $('#checkAnswerSheet').modal('show');
+        $('#checkAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
         // $('#studentNote').modal({
         //     backdrop: 'static',
         //     keyboard: false,
@@ -173,9 +177,15 @@
         doneCheckAnswer = true;
     });
 
-    $('#lanjut-time-remaining').on('click', function() {
-        finish($(this));
+    $('#lanjut-time-remaining').on('click', async function() {
         doneDownloadAnswer = true;
+        await submitTask($(this));
+        $('#timeRemaining').modal('hide');
+        $('#downloadAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
     });
 
     $('#downloadAnswerSheet').on('hide.bs.modal', function(e) {
@@ -260,16 +270,20 @@
     $('#simpan-note').on('click', function() {
         const noteStudent = $.trim($("#noteStudent").val());
         setDataToStorage('enc_n', noteStudent);
-        submitTask($(this));
+        editNote($(this));
     });
 
     $('#lanjut-time-up').on('click', function() {
-        finish($(this));
+        $('#timeUp').modal('hide');
+        $('#downloadAnswerSheet').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true,
+        });
     });
 
     function startTimer() {
         let modalRunningOutHasShown = false;
-
         var currTime = moment("{{ $now }}")
         var end = moment("{{ $task['assessment']['end_time'] }}");
         var endTime = end.valueOf();
@@ -321,6 +335,7 @@
                 $('#missingAnswer').modal('hide');
                 $('#timeRunningOut').modal('hide');
                 clearInterval(x);
+                submitTask($('#lanjut-time-up'));
             }
         }, 1000);
     }
@@ -475,11 +490,11 @@
     async function submitTask(component) {
         const url = "{!! URL::to('/student/assessment/service/finish') !!}";
 
-        const htmlSelesai = 'Simpan dan Selesai';
+        const htmlSelesai = component.html();
 
         const htmlSpinner = `Tunggu...`;
 
-        $.ajax({
+        return $.ajax({
             url,
             type: 'POST',
             data: {},
@@ -494,7 +509,9 @@
                 component.removeAttr('disabled');
             },
             success: function(response) {
-                editNote(component);
+                $('#timeRemaining').modal('hide');
+                component.html(htmlSelesai);
+                component.removeAttr('disabled');
                 return;
             }
         });
