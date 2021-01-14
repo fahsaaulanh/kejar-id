@@ -1,5 +1,5 @@
 [app]
-165.22.58.49
+206.189.150.177
 
 [app:vars]
 ansible_user=deployer
