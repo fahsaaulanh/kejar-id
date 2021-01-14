@@ -5,7 +5,6 @@ stages:
   - test
   - build
   - staging
-  - production
 
 test:lint:
   image: registry.gitlab.com/idsdeveloper/kejar/docker:latest
@@ -69,24 +68,5 @@ staging:deploy:
       when: on_success
   environment:
     name: staging
-    url: https://matrik-sushi.kejar.id
-
-production:deploy:
-  image: williamyeh/ansible:ubuntu18.04
-  stage: production
-  script:
-    - cd deploy
-    - echo "$DEPLOYER_PRIVATE_KEY" > production.key
-    - chmod 400 production.key
-    - export ANSIBLE_HOST_KEY_CHECKING=false
-    - ansible-playbook -v -i production playbook.yml
-    - rm -rf production.key
-  cache: {}
-  dependencies:
-    - build:app
-  only:
-    - /^release-.*$/
-  environment:
-    name: production
-    url: https://matrikulasi.kejar.id
+    url: https://matrik-soto.kejar.id
 
