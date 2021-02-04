@@ -13,12 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//ROUTE percobaan Fahsa
+
+//route ulasan/review
+Route::get('/teacher/activity-bank/review','teacher\ActivityBankController@review');
+Route::get('/teacher/activity-bank/ulasan','teacher\ActivityBankController@ulasan');
+
 Route::get('/', 'HomeController@index');
 Route::get('/login', 'LoginController@index');
 Route::post('/login', 'LoginController@login');
 Route::get('/debug-sentry', function () {
     throw new Exception('My first Sentry error!');
 });
+
 
 Route::middleware('session')->group(function () {
     Route::get('/logout', 'HomeController@logout');
