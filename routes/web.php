@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 //route ulasan/review
 Route::get('/teacher/activity-bank/review','teacher\ActivityBankController@review');
 Route::get('/teacher/activity-bank/ulasan','teacher\ActivityBankController@ulasan');
+Route::get('/teacher/activity-bank/subject/123123/topic/12312/activity/1231/review','teacher\ActivityBankController@reading');
 
 Route::get('/', 'HomeController@index');
 Route::get('/login', 'LoginController@index');

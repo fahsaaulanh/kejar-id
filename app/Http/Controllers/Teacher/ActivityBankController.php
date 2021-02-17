@@ -8,10 +8,19 @@ use Illuminate\Http\Request;
 class ActivityBankController extends Controller
 {
     //
-    public function review(){
+    public function review()
+    {
         return view('teacher.ActivityBank.review.index');
     }
-    public function ulasan(){
+
+    public function ulasan()
+    {
         return view('teacher.ActivityBank.review.indexx');
     }
+
+    public function reading()
+    {
+        return view('teacher.activity-bank.subject.topic.activity.content.reading.index');
+    }
+
 }

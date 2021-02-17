@@ -107,7 +107,7 @@
             </div>
             <div class="mt-7">
                 <div class="mb-3">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Buat ulasan materi..."></textarea>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Buat ulasan materi..."data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></textarea>
                 </div>
             </div>
         </form>
@@ -118,7 +118,7 @@
 
 
                 <!-- Form Editor-->
-        <div class="row">
+        <div class="row" class="collapse" id="collapseExample">
             <div class="col">
                 <div class="w-384r">
                     <div class="p-3 mb-2 bg-light text-dark" >
