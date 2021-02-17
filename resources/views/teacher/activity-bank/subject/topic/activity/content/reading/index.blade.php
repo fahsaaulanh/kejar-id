@@ -98,7 +98,7 @@
 
 
 
-                <!--form durasi baca-->
+                <!--form durasi bacaa-->
         <form action="" method="GET">
             <div class="p-3 mb-2 bg-light text-dark h-auto" >
                 Atur estimasi durasi baca
